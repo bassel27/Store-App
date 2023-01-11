@@ -27,26 +27,35 @@ class Cart with ChangeNotifier {
 
   void addItem(
       final String productId, final String productName, final double price) {
-    if (_cartItems.containsKey(productId)) {
-      // TODO: use ifabscent here
-      _cartItems.update(
-        productId,
-        (oldCartItem) => CartItem(
+    // TODO: use ifabscent here
+    _cartItems.update(
+      productId,
+      (oldCartItem) {
+        return CartItem(
             id: oldCartItem.id,
             name: oldCartItem.name,
             price: oldCartItem.price,
-            quantity: oldCartItem.quantity + 1),
-      );
-    } else {
-      _cartItems.putIfAbsent(
-        productId,
-        () => CartItem(
+            quantity: oldCartItem.quantity + 1);
+      },
+      ifAbsent: () {
+        return CartItem(
             id: DateTime.now().toString(),
             name: productName,
             quantity: 1,
-            price: price),
-      );
-    }
+            price: price);
+      },
+    );
     notifyListeners();
   }
 }
+
+
+// else {
+//       _cartItems.putIfAbsent(
+//         productId,
+//         () => CartItem(
+//             id: DateTime.now().toString(),
+//             name: productName,
+//             quantity: 1,
+//             price: price),
+//       );
