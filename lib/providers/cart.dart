@@ -15,17 +15,21 @@ class CartItem {
 
 class Cart with ChangeNotifier {
   /// Key is productId.
-  late Map<String, CartItem> _items;
+  late Map<String, CartItem> _cartItems = {};
 
   Map<String, CartItem> get items {
-    return {..._items};
+    return {..._cartItems};
+  }
+
+  get cartItemsCount {
+    return _cartItems.length;
   }
 
   void addItem(
       final String productId, final String productName, final double price) {
-    if (_items.containsKey(productId)) {
+    if (_cartItems.containsKey(productId)) {
       // TODO: use ifabscent here
-      _items.update(
+      _cartItems.update(
         productId,
         (oldCartItem) => CartItem(
             id: oldCartItem.id,
@@ -34,7 +38,7 @@ class Cart with ChangeNotifier {
             quantity: oldCartItem.quantity + 1),
       );
     } else {
-      _items.putIfAbsent(
+      _cartItems.putIfAbsent(
         productId,
         () => CartItem(
             id: DateTime.now().toString(),
@@ -43,5 +47,6 @@ class Cart with ChangeNotifier {
             price: price),
       );
     }
+    notifyListeners();
   }
 }

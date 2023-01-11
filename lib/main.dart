@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/providers/cart.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/theme/theme_constants.dart';
@@ -15,9 +16,16 @@ ThemeManager _themeManager = ThemeManager();
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      // here you're not using the .value because Products() object is created inside the changenotifierprovider
-      create: (ctx) => Products(), // the object you wanna keep track of
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          // here you're not using the .value because Products() object is created inside the changenotifierprovider
+          create: (_) => Products(), // the object you wanna keep track of
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
+        ),
+      ],
       child: MaterialApp(
         routes: {
           ProductDetailScreen.route: (ctx) => ProductDetailScreen(),

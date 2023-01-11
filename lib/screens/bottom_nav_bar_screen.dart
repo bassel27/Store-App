@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:store_app/widgets/products_grid.dart';
 import 'package:store_app/screens/settings_screen.dart';
-
+import 'package:badges/badges.dart';
+import '../providers/cart.dart';
 import '../widgets/my_drawer.dart';
 
 class BottomNavBarScreen extends StatefulWidget {
@@ -22,32 +24,36 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     ),
   ];
 
-  static const List<BottomNavigationBarItem> _navBarItems = [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.favorite),
-      label: 'Favorites',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.shopping_cart),
-      label: 'Cart',
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       appBar: AppBar(
         title: const Text("Pharmastore"),
       ),
       body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: _navBarItems,
-        currentIndex: _selectedIndex,
-        onTap: _onTap,
+      bottomNavigationBar: Consumer<Cart>(
+        builder: (_, cart, child) => BottomNavigationBar(
+          items: [
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorites',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Badge(
+                badgeContent: Text(cart.cartItemsCount.toString()),
+                child: const Icon(Icons.shopping_cart),
+              ),
+              label: 'Cart',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onTap,
+        ),
       ),
     );
   }
