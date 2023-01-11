@@ -40,9 +40,14 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  List<Product> get productsList {
+  List<Product> get products {
     return [..._productsList];
   }
+
+  List<Product> get favoriteProducts {
+    return [..._productsList].where((product) => product.isFavorite).toList();
+  }
+
   // Returns a copy so that the only way to add a
   // product is through our method which calls notifyListeners().
   // If you added to the returned original list, notifyListeners won't be called.

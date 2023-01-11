@@ -20,7 +20,7 @@ class ProductGridTile extends StatelessWidget {
         child: GridTile(
           footer: GridTileBar(
             trailing: IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
               onPressed: () {},
             ),
             leading: Consumer<Product>( // this is the only part that will get rebuilt because this is what we need to change. Everything else doesn't change. Listen is always true in consumer
