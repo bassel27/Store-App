@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => Products(),
+      // here you're not using the .value because Products() object is created inside the changenotifierprovider
+      create: (ctx) => Products(),  // the object you wanna keep track of 
       child: MaterialApp(
         routes: {
           ProductDetailScreen.route: (ctx) => ProductDetailScreen(),

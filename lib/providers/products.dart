@@ -3,11 +3,11 @@
 //The difference is that you merge some properties and methods from that class
 // to use in your class, but your class doesn't become an instance of that class.
 import 'package:provider/provider.dart';
-import 'package:store_app/models/product.dart';
+import 'package:store_app/providers/product.dart';
 import 'package:flutter/material.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _ProductsList = [
+  List<Product> _productsList = [
     Product(
       id: 'p1',
       title: 'Zyrtec',
@@ -41,14 +41,14 @@ class Products with ChangeNotifier {
   ];
 
   List<Product> get productsList {
-    return [..._ProductsList];
+    return [..._productsList];
   }
   // Returns a copy so that the only way to add a
   // product is through our method which calls notifyListeners().
   // If you added to the returned original list, notifyListeners won't be called.
 
   void addProduct(Product newProduct) {
-    _ProductsList.add(newProduct);
+    _productsList.add(newProduct);
     notifyListeners();
   }
 }

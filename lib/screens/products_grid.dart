@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/product.dart';
+import '../providers/product.dart';
 import '../providers/products.dart';
 import '../widgets/product_grid_tile.dart';
 
@@ -15,16 +15,21 @@ class ProductsGrid extends StatelessWidget {
     // You want to listen to the provider which provides you with an instance
     //of your Products class
     return GridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 20,
-          childAspectRatio: 3 / 2, // TODO: 3/2: a bit taller than they're wide
-        ),
-        itemBuilder: (context, index) {
-          return ProductGridTile(products[index]);
-        });
+      padding: const EdgeInsets.all(10),
+      itemCount: products.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 20,
+        childAspectRatio: 3 / 2, // TODO: 3/2: a bit taller than they're wide
+      ),
+      itemBuilder: (context, i) {
+        return ChangeNotifierProvider.value(
+          // use .value if you use provider on on an object that has already been created or something that is part of a list or a grid 
+          value: products[i],
+          child: ProductGridTile(),
+        );
+      },
+    );
   }
 }
