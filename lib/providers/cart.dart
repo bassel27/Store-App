@@ -54,15 +54,9 @@ class Cart with ChangeNotifier {
     );
     notifyListeners();
   }
+
+  void removeItem(cartItemId) {
+    _cartItems.removeWhere((_, cartItem) => cartItemId == cartItem.id);
+    notifyListeners();
+  }
 }
-
-
-// else {
-//       _cartItems.putIfAbsent(
-//         productId,
-//         () => CartItem(
-//             id: DateTime.now().toString(),
-//             name: productName,
-//             quantity: 1,
-//             price: price),
-//       );
