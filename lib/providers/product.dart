@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// TODO: private???????
 class Product with ChangeNotifier {
   final String id;
   final String title;

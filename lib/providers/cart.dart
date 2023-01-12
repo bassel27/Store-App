@@ -14,7 +14,7 @@ class CartItem {
 }
 
 class Cart with ChangeNotifier {
-  /// Key is productId.
+  /// Key is productId and value is cartItem.
   late Map<String, CartItem> _cartItems = {};
 
   Map<String, CartItem> get items {
@@ -25,9 +25,16 @@ class Cart with ChangeNotifier {
     return _cartItems.length;
   }
 
+  get total {
+    double total = 0.00;
+    _cartItems.forEach((productId, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
   void addItem(
       final String productId, final String productName, final double price) {
-    // TODO: use ifabscent here
     _cartItems.update(
       productId,
       (oldCartItem) {

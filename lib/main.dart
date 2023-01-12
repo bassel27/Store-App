@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart.dart';
+import 'package:store_app/providers/theme.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
-import 'package:store_app/theme/theme_constants.dart';
-import 'package:store_app/theme/theme_manager.dart';
+
 import '../providers/products.dart';
 
 void main() {
   runApp(MyApp());
 }
-
-ThemeManager _themeManager = ThemeManager();
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,16 +23,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Cart(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        ),
       ],
-      child: MaterialApp(
-        routes: {
-          ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
-        },
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: _themeManager.themeMode,
-        title: 'Flutter Demo',
-        home: BottomNavBarScreen(),
+      child: Consumer<ThemeProvider>(
+        builder: (_, theme, child) => MaterialApp(
+            themeMode: theme.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            routes: {
+              ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
+            },
+            title: 'Flutter Demo',
+            home: child),
+        child: BottomNavBarScreen(),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/widgets/products_grid.dart';
+import 'package:store_app/screens/cart_screen.dart';
+import 'package:store_app/screens/products_grid_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:badges/badges.dart';
 import '../providers/cart.dart';
@@ -17,20 +18,18 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int _selectedIndex = 1;
 
   final List<Widget> _screens = <Widget>[
-    const ProductsGrid(true),
-    const ProductsGrid(false),
-    const Text(
-      'Cart',
-    ),
+    const ProductsGridScreen(true),
+    const ProductsGridScreen(false),
+    CartScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
-      appBar: AppBar(
-        title: const Text("Pharmastore"),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("Pharmastore"),
+      // ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: Consumer<Cart>(
         builder: (_, cart, child) => BottomNavigationBar(

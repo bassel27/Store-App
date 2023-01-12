@@ -15,8 +15,8 @@ class MyDrawer extends StatelessWidget {
           leading: const Icon(Icons.settings),
           title: const Text("Settings"),
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const SettingsScreen()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => SettingsScreen()));
           },
         )
       ],
