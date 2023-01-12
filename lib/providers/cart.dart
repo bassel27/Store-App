@@ -1,16 +1,35 @@
 import 'package:flutter/cupertino.dart';
 
 class CartItem {
-  final String id;
-  final String name;
-  final int quantity;
-  final double price;
+  final String _id;
+  final String _name;
+  final int _quantity;
+  final double _price;
 
   CartItem(
-      {required this.id,
-      required this.name,
-      required this.quantity,
-      required this.price});
+      {required String id,
+      required String name,
+      required int quantity,
+      required double price})
+      : _id = id,
+        _name = name,
+        _quantity = quantity,
+        _price = price;
+  get id {
+    return _id;
+  }
+
+  get name {
+    return _name;
+  }
+
+  get quantity {
+    return _quantity;
+  }
+
+  get price {
+    return _price;
+  }
 }
 
 class Cart with ChangeNotifier {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '.././widgets/cart_item.dart';
+import '../widgets/cart_tile.dart';
 import '../providers/cart.dart' show Cart;
 import '.././widgets/total_container.dart';
 
@@ -19,7 +19,9 @@ class CartScreen extends StatelessWidget {
               builder: (__, cart, _) => ListView.builder(
                 itemCount: cart.cartItemsCount,
                 itemBuilder: (context, i) {
-                  return CartTile(cart.items.values.toList()[i]);
+                  //TODO: better way than searching to find id
+                  return CartTile(cart.items.values.toList()[i],
+                      cart.items.keys.toList()[i]);
                 },
               ),
             ),
