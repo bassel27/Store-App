@@ -3,19 +3,19 @@
 //The difference is that you merge some properties and methods from that class
 // to use in your class, but your class doesn't become an instance of that class.
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/product.dart';
+import 'package:store_app/providers/productNotifier.dart';
 import 'package:flutter/material.dart';
 
 class Products with ChangeNotifier {
-  final List<Product> _productsList = [
-    Product(
+  final List<ProductNotifier> _productsList = [
+    ProductNotifier(
       id: 'p1',
       title: 'Zyrtec',
       description: 'Cetirizine hydrochloride',
       price: 29.99,
       imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
     ),
-    Product(
+    ProductNotifier(
       id: 'p2',
       title: 'Panadol',
       description: 'Painkiller',
@@ -23,7 +23,7 @@ class Products with ChangeNotifier {
       imageUrl:
           'https://cdn.altibbi.com/cdn/cache/1000x500/image/2021/05/30/18178cb23d988afad24a24b16d914b3b.webp',
     ),
-    Product(
+    ProductNotifier(
       id: 'p3',
       title: 'Fucidin',
       description: 'Antibiotic',
@@ -31,7 +31,7 @@ class Products with ChangeNotifier {
       imageUrl:
           'https://seif-online.com/wp-content/uploads/2020/01/180614-.jpg',
     ),
-    Product(
+    ProductNotifier(
       id: 'p4',
       title: 'Augemntin',
       description: 'Antibiotic',
@@ -40,11 +40,11 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  List<Product> get products {
+  List<ProductNotifier> get products {
     return [..._productsList];
   }
 
-  List<Product> get favoriteProducts {
+  List<ProductNotifier> get favoriteProducts {
     return [..._productsList].where((product) => product.isFavorite).toList();
   }
 
@@ -52,7 +52,7 @@ class Products with ChangeNotifier {
   // product is through our method which calls notifyListeners().
   // If you added to the returned original list, notifyListeners won't be called.
 
-  void addProduct(Product newProduct) {
+  void addProduct(ProductNotifier newProduct) {
     _productsList.add(newProduct);
     notifyListeners();
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/product.dart';
+import '../providers/productNotifier.dart';
 import '../providers/products.dart';
 import '../widgets/my_drawer.dart';
 import '../widgets/product_grid_tile.dart';
@@ -14,7 +14,7 @@ class ProductsGridScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    final List<Product> products = showFavoritesOnly
+    final List<ProductNotifier> products = showFavoritesOnly
         ? productsData.favoriteProducts
         : productsData.products;
     // .of(context) sets up a direct communication channel in the widget tree

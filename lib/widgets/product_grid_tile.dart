@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import '../providers/cart.dart';
-import '../providers/product.dart';
+import '../providers/productNotifier.dart';
 
 class ProductGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Product product = Provider.of<Product>(context,
+    final ProductNotifier product = Provider.of<ProductNotifier>(context,
         listen:
             false); // the whole build method executes whenever this data changes if listen is true // listen: false to get the data which don't change (everything except is Favorite) so as not to rebuild
     final CartNotifier cart = Provider.of<CartNotifier>(context,
@@ -28,7 +28,7 @@ class ProductGridTile extends StatelessWidget {
                 cart.addItem(product.id, product.title, product.price);
               },
             ),
-            leading: Consumer<Product>(
+            leading: Consumer<ProductNotifier>(
               // this is the only part that will get rebuilt because this is what we need to change. Everything else doesn't change. Listen is always true in consumer another way to rebuild this part only is to place the following widgets in a separate file and use Provider.of(context) such that this file rebuilds itself without affecting the rest. // With consumer, you can split your widget such that only the part in the builder gets rebuilt
               builder: (context, product, _) => IconButton(
                 // child is a reference to the Consumer's child property which doesn't rebuild

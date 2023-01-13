@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/theme.dart';
+import 'package:store_app/providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -9,7 +9,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late var theme = Provider.of<ThemeNotifier>(context);
+  late var theme = Provider.of<ThemeProvider>(context);
   late bool _switchValue = theme.isDarkMode;
 
   @override
