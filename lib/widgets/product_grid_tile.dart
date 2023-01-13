@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
@@ -45,7 +43,7 @@ class ProductGridTile extends StatelessWidget {
                     ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 6),
               child: Align(
@@ -55,7 +53,7 @@ class ProductGridTile extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 2),
+            const SizedBox(height: 2),
             Padding(
               padding: const EdgeInsets.only(left: 6),
               child: Align(
@@ -66,8 +64,8 @@ class ProductGridTile extends StatelessWidget {
               ),
             ),
             IconButton(
-              padding: EdgeInsets.only(top: 8),
-              constraints: BoxConstraints(),
+              padding: const EdgeInsets.only(top: 8),
+              constraints: const BoxConstraints(),
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 cart.addItem(product.id, product.title, product.price);

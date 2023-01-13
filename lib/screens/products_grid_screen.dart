@@ -27,7 +27,7 @@ class ProductsGridScreen extends StatelessWidget {
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: AppBar(
-          title: showFavoritesOnly ? Text("Favorites") : Text("Pharmastore")),
+          title: showFavoritesOnly ? const Text("Favorites") : const Text("Pharmastore")),
       body: GridView.builder(
         // padding: const EdgeInsets.only(top: 10),
         itemCount: products.length,
