@@ -17,40 +17,47 @@ class ProductGridTile extends StatelessWidget {
     final CartNotifier cart = Provider.of<CartNotifier>(context,
         listen:
             false); // you only add to the cart in this widget so there's no need to lsiten
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: GestureDetector(
+    return LayoutBuilder(
+      builder: (ctx, constraints) => GestureDetector(
         onTap: () {
           Navigator.of(context)
               .pushNamed(ProductDetailScreen.route, arguments: product);
         },
-        child: Stack(alignment: Alignment.topRight, children: [
-          GridTile(
-            footer: GridTileBar(
-              trailing: IconButton(
-                icon: const Icon(Icons.shopping_cart),
-                onPressed: () {
-                  cart.addItem(product.id, product.title, product.price);
-                },
-              ),
-              backgroundColor: Colors.black54,
-              title: Text(
-                product.title,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            child: Image.network(
-              product.imageUrl,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Consumer<Product>(
-              // this is the only part that will get rebuilt because this is what we need to change. Everything else doesn't change. Listen is always true in consumer another way to rebuild this part only is to place the following widgets in a separate file and use Provider.of(context) such that this file rebuilds itself without affecting the rest. // With consumer, you can split your widget such that only the part in the builder gets rebuilt
-              builder: (context, product, _) => _MyFloatingActionButton(product)
-              // child is a reference to the Consumer's child property which doesn't rebuild
+        child: Card(
+          child: Column(children: [
+            Stack(
+              alignment: Alignment.topRight,
+              children: [
+                SizedBox(
+                  height: constraints.maxHeight * 0.5,
+                  width: double.infinity,
+                  child: Image.network(
+                    product.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Consumer<Product>(
+                    // this is the only part that will get rebuilt because this is what we need to change. Everything else doesn't change. Listen is always true in consumer another way to rebuild this part only is to place the following widgets in a separate file and use Provider.of(context) such that this file rebuilds itself without affecting the rest. // With consumer, you can split your widget such that only the part in the builder gets rebuilt
+                    builder: (context, product, _) =>
+                        _MyFloatingActionButton(product)
+                    // child is a reference to the Consumer's child property which doesn't rebuild
 
-              ),
-        ]),
+                    ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Text(
+              product.title,
+              textAlign: TextAlign.center,
+            ),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {
+                cart.addItem(product.id, product.title, product.price);
+              },
+            ),
+          ]),
+        ),
       ),
     );
   }
@@ -63,7 +70,7 @@ class _MyFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 3, right: 8),
+      margin: const EdgeInsets.only(top: 6, right: 7),
       width: 25,
       height: 25,
       child: FloatingActionButton(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/productNotifier.dart';
 import '../providers/products.dart';
 import '../widgets/my_drawer.dart';
 import '../widgets/product_grid_tile.dart';
+import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
 class ProductsGridScreen extends StatelessWidget {
   final bool showFavoritesOnly;
@@ -27,13 +29,12 @@ class ProductsGridScreen extends StatelessWidget {
       appBar: AppBar(
           title: showFavoritesOnly ? Text("Favorites") : Text("Pharmastore")),
       body: GridView.builder(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(top: 10),
         itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
           crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 20,
-          childAspectRatio: 3 / 2, // TODO: 3/2: a bit taller than they're wide
+          height: 200,
+          // TODO: 3/2: a bit taller than they're wide
         ),
         itemBuilder: (context, i) {
           return ChangeNotifierProvider.value(
@@ -46,3 +47,4 @@ class ProductsGridScreen extends StatelessWidget {
     );
   }
 }
+
