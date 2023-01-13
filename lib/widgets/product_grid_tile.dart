@@ -45,12 +45,29 @@ class ProductGridTile extends StatelessWidget {
                     ),
               ],
             ),
-            SizedBox(height: 20),
-            Text(
-              product.title,
-              textAlign: TextAlign.center,
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 6),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  product.title,
+                ),
+              ),
+            ),
+            SizedBox(height: 2),
+            Padding(
+              padding: const EdgeInsets.only(left: 6),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "EGP ${product.price.toString()}",
+                ),
+              ),
             ),
             IconButton(
+              padding: EdgeInsets.only(top: 8),
+              constraints: BoxConstraints(),
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 cart.addItem(product.id, product.title, product.price);

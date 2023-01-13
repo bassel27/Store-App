@@ -29,11 +29,12 @@ class ProductsGridScreen extends StatelessWidget {
       appBar: AppBar(
           title: showFavoritesOnly ? Text("Favorites") : Text("Pharmastore")),
       body: GridView.builder(
-        padding: const EdgeInsets.only(top: 10),
+        // padding: const EdgeInsets.only(top: 10),
         itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
           crossAxisCount: 2,
-          height: 200,
+          height: 190,
           // TODO: 3/2: a bit taller than they're wide
         ),
         itemBuilder: (context, i) {
@@ -47,4 +48,3 @@ class ProductsGridScreen extends StatelessWidget {
     );
   }
 }
-
