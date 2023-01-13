@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ProductNotifier with ChangeNotifier {
+class Product with ChangeNotifier {
   final String _id;
   final String _title;
   final String _description;
@@ -8,7 +8,7 @@ class ProductNotifier with ChangeNotifier {
   final String _imageUrl;
   bool _isFavorite;
 
-  ProductNotifier(
+  Product(
       {required String id,
       required String title,
       required String description,

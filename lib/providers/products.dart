@@ -7,23 +7,23 @@ import 'package:store_app/providers/productNotifier.dart';
 import 'package:flutter/material.dart';
 
 class Products with ChangeNotifier {
-  final List<ProductNotifier> _productsList = [
-    ProductNotifier(
+  final List<Product> _productsList = [
+    Product(
       id: 'p1',
       title: 'Zyrtec',
       description: 'Cetirizine hydrochloride',
       price: 29.99,
       imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
     ),
-    ProductNotifier(
+    Product(
       id: 'p2',
       title: 'Panadol',
       description: 'Painkiller',
       price: 59.99,
       imageUrl:
-          'https://cdn.altibbi.com/cdn/cache/1000x500/image/2021/05/30/18178cb23d988afad24a24b16d914b3b.webp',
+          'https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol/en_eg/Home/1680%20x%20600.jpg?auto=format',
     ),
-    ProductNotifier(
+    Product(
       id: 'p3',
       title: 'Fucidin',
       description: 'Antibiotic',
@@ -31,7 +31,7 @@ class Products with ChangeNotifier {
       imageUrl:
           'https://seif-online.com/wp-content/uploads/2020/01/180614-.jpg',
     ),
-    ProductNotifier(
+    Product(
       id: 'p4',
       title: 'Augemntin',
       description: 'Antibiotic',
@@ -40,11 +40,11 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  List<ProductNotifier> get products {
+  List<Product> get products {
     return [..._productsList];
   }
 
-  List<ProductNotifier> get favoriteProducts {
+  List<Product> get favoriteProducts {
     return [..._productsList].where((product) => product.isFavorite).toList();
   }
 
@@ -52,7 +52,7 @@ class Products with ChangeNotifier {
   // product is through our method which calls notifyListeners().
   // If you added to the returned original list, notifyListeners won't be called.
 
-  void addProduct(ProductNotifier newProduct) {
+  void addProduct(Product newProduct) {
     _productsList.add(newProduct);
     notifyListeners();
   }

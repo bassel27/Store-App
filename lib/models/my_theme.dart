@@ -8,6 +8,8 @@ var kAccentColor = Color(0xFF65DFF6);
 
 class MyTheme {
   static final lightTheme = ThemeData(
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: kSecondaryColor),
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(color: kAccentColor),
     ),

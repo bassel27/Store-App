@@ -14,7 +14,7 @@ class ProductsGridScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
-    final List<ProductNotifier> products = showFavoritesOnly
+    final List<Product> products = showFavoritesOnly
         ? productsData.favoriteProducts
         : productsData.products;
     // .of(context) sets up a direct communication channel in the widget tree
