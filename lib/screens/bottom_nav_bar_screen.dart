@@ -27,12 +27,10 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
-      // appBar: AppBar(
-      //   title: const Text("Pharmastore"),
-      // ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: Consumer<CartNotifier>(
         builder: (_, cart, child) => BottomNavigationBar(
+          elevation: 0,
           items: [
             const BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
