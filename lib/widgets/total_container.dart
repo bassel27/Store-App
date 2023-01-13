@@ -21,7 +21,7 @@ class TotalContainer extends StatelessWidget {
           children: [
             const Text("Total"),
             const Spacer(),
-            Consumer<Cart>(
+            Consumer<CartNotifier>(
               builder: (__, cart, _) => Chip(
                 label: Text("${cart.total}"),
               ),

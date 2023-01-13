@@ -21,13 +21,13 @@ class MyApp extends StatelessWidget {
           create: (_) => Products(), // the object you wanna keep track of
         ),
         ChangeNotifierProvider(
-          create: (_) => Cart(),
+          create: (_) => CartNotifier(),
         ),
         ChangeNotifierProvider(
-          create: (_) => ThemeProvider(),
+          create: (_) => ThemeNotifier(),
         ),
       ],
-      child: Consumer<ThemeProvider>(
+      child: Consumer<ThemeNotifier>(
         builder: (_, theme, child) => MaterialApp(
             themeMode: theme.themeMode,
             theme: MyThemes.lightTheme,

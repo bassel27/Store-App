@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/cart_tile.dart';
-import '../providers/cart.dart' show Cart;
+import '../providers/cart.dart' show CartNotifier;
 import '.././widgets/total_container.dart';
 
 class CartScreen extends StatelessWidget {
@@ -15,7 +15,7 @@ class CartScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: Consumer<Cart>(
+            child: Consumer<CartNotifier>(
               builder: (__, cart, _) => ListView.builder(
                 itemCount: cart.cartItemsCount,
                 itemBuilder: (context, i) {

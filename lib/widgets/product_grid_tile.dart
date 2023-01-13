@@ -10,7 +10,7 @@ class ProductGridTile extends StatelessWidget {
     final Product product = Provider.of<Product>(context,
         listen:
             false); // the whole build method executes whenever this data changes if listen is true // listen: false to get the data which don't change (everything except is Favorite) so as not to rebuild
-    final Cart cart = Provider.of<Cart>(context,
+    final CartNotifier cart = Provider.of<CartNotifier>(context,
         listen:
             false); // you only add to the cart in this widget so there's no need to lsiten
     return ClipRRect(

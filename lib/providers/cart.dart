@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../models/cart_item.dart';
 
-
-
-class Cart with ChangeNotifier {
+class CartNotifier with ChangeNotifier {
   /// Key is productId and value is cartItem.
   late Map<String, CartItem> _cartItems = {};
 

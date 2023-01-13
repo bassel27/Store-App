@@ -11,7 +11,7 @@ class CartTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Cart>(
+    return Consumer<CartNotifier>(
       builder: (context, cart, child) => Dismissible(
         onDismissed: (_) {
           cart.removeItem(cartItem.id);

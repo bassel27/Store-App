@@ -9,7 +9,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late var theme = Provider.of<ThemeProvider>(context);
+  late var theme = Provider.of<ThemeNotifier>(context);
   late bool _switchValue = theme.isDarkMode;
 
   @override

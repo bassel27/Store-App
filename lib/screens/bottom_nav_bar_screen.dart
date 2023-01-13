@@ -31,7 +31,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       //   title: const Text("Pharmastore"),
       // ),
       body: _screens[_selectedIndex],
-      bottomNavigationBar: Consumer<Cart>(
+      bottomNavigationBar: Consumer<CartNotifier>(
         builder: (_, cart, child) => BottomNavigationBar(
           items: [
             const BottomNavigationBarItem(
