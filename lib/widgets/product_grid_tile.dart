@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
+import 'package:store_app/widgets/price_text.dart';
 
 import '../providers/cart.dart';
 import '../providers/productNotifier.dart';
@@ -54,15 +55,7 @@ class ProductGridTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 2),
-            Padding(
-              padding: const EdgeInsets.only(left: 6),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "EGP ${product.price.toString()}",
-                ),
-              ),
-            ),
+            PriceText(product.price),
             IconButton(
               padding: const EdgeInsets.only(top: 8),
               constraints: const BoxConstraints(),
@@ -88,7 +81,9 @@ class _MyFloatingActionButton extends StatelessWidget {
       margin: const EdgeInsets.only(top: 6, right: 7),
       width: 25,
       height: 25,
-      child: FloatingActionButton(
+      child: RawMaterialButton(
+        fillColor: kSecondaryColor,
+        shape: CircleBorder(),
         onPressed: product.toggleFavoriteStatus,
         child: Icon(
           size: 20,
