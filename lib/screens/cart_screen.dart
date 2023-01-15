@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/cart_tile.dart';
-import '../providers/cart.dart' show CartNotifier;
+import 'package:store_app/providers/cart_notifier.dart';
 import '.././widgets/total_container.dart';
 
 class CartScreen extends StatelessWidget {

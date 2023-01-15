@@ -3,10 +3,11 @@
 //The difference is that you merge some properties and methods from that class
 // to use in your class, but your class doesn't become an instance of that class.
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/productNotifier.dart';
+import 'package:store_app/providers/product_notifier.dart';
 import 'package:flutter/material.dart';
+import '../models/product.dart';
 
-class Products with ChangeNotifier {
+class ProductsNotifier with ChangeNotifier {
   final List<Product> _productsList = [
     Product(
       id: 'p1',

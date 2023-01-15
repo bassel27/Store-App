@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/cart.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders.dart';
-import 'package:store_app/providers/theme_provider.dart';
+import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 
-import '../providers/products.dart';
+import 'providers/products_notifier.dart';
 import 'models/my_theme.dart';
 
 void main() {
@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           // here you're not using the .value because Products() object is created inside the changenotifierprovider
-          create: (_) => Products(), // the object you wanna keep track of
+          create: (_) =>
+              ProductsNotifier(), // the object you wanna keep track of
         ),
         ChangeNotifierProvider(
           create: (_) => CartNotifier(),

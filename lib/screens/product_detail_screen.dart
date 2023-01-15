@@ -3,14 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/widgets/price_text.dart';
 
-import '../providers/productNotifier.dart';
+import '../models/product.dart';
+import '../providers/product_notifier.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const route = 'productDetail';
   @override
   Widget build(BuildContext context) {
     // TODO: use provider
-    final product = ModalRoute.of(context)!.settings.arguments as Product;
+    final Product product = ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
       appBar: AppBar(title: Text(product.title)),
       body: Column(

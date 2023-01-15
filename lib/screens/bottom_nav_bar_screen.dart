@@ -4,7 +4,7 @@ import 'package:store_app/screens/cart_screen.dart';
 import 'package:store_app/screens/products_grid_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:badges/badges.dart';
-import '../providers/cart.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 import '../widgets/my_drawer.dart';
 import 'account_screen.dart';
 

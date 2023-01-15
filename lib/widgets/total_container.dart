@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 import '../providers/orders.dart';
 
 class TotalContainer extends StatelessWidget {

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/productNotifier.dart';
-import '../providers/products.dart';
+import '../models/product.dart';
+import '../providers/product_notifier.dart';
+import '../providers/products_notifier.dart';
 import '../widgets/my_drawer.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
+/// This screen is used for home and favorites screens.
 class ProductsGridScreen extends StatelessWidget {
   final bool showFavoritesOnly;
   const ProductsGridScreen(this.showFavoritesOnly);
@@ -15,10 +17,10 @@ class ProductsGridScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
+    final productsNotifier = Provider.of<ProductsNotifier>(context);
     final List<Product> products = showFavoritesOnly
-        ? productsData.favoriteProducts
-        : productsData.products;
+        ? productsNotifier.favoriteProducts
+        : productsNotifier.products;
     // .of(context) sets up a direct communication channel in the widget tree
     // Provider makes the connection to one of the provider classes
     // the angle brackets specify which provider you want to listen to.
@@ -27,7 +29,9 @@ class ProductsGridScreen extends StatelessWidget {
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: AppBar(
-          title: showFavoritesOnly ? const Text("Favorites") : const Text("Pharmastore")),
+          title: showFavoritesOnly
+              ? const Text("Favorites")
+              : const Text("Pharmastore")),
       body: GridView.builder(
         // padding: const EdgeInsets.only(top: 10),
         itemCount: products.length,
@@ -35,13 +39,15 @@ class ProductsGridScreen extends StatelessWidget {
             const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
           crossAxisCount: 2,
           height: 190,
-          // TODO: 3/2: a bit taller than they're wide
         ),
         itemBuilder: (context, i) {
-          return ChangeNotifierProvider.value(
+          return ChangeNotifierProvider<ProductNotifier>.value(
             // use .value if you use provider on on an object that has already been created or something that is part of a list or a grid
-            value: products[i],
-            child: ProductGridTile(),
+            value: ProductNotifier(products[i]),
+            builder: (context, child) {
+              print(products[i].title + "2");
+              return ProductGridTile(products[i]);
+            },
           );
         },
       ),

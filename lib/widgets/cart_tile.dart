@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/cart_item.dart';
-import '../providers/cart.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 
 class CartTile extends StatelessWidget {
   final CartItem cartItem;
