@@ -6,6 +6,7 @@ import 'package:store_app/screens/settings_screen.dart';
 import 'package:badges/badges.dart';
 import '../providers/cart.dart';
 import '../widgets/my_drawer.dart';
+import 'account_screen.dart';
 
 class BottomNavBarScreen extends StatefulWidget {
   const BottomNavBarScreen({super.key});
@@ -21,6 +22,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     const ProductsGridScreen(true),
     const ProductsGridScreen(false),
     CartScreen(),
+    AccountScreen(),
   ];
 
   @override
@@ -30,6 +32,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       body: _screens[_selectedIndex],
       bottomNavigationBar: Consumer<CartNotifier>(
         builder: (_, cart, child) => BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           elevation: 0,
           items: [
             const BottomNavigationBarItem(
@@ -47,6 +50,10 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
                 child: const Icon(Icons.shopping_cart),
               ),
               label: 'Cart',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'My Account',
             ),
           ],
           currentIndex: _selectedIndex,

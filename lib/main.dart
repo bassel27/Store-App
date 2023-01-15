@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart.dart';
+import 'package:store_app/providers/orders.dart';
 import 'package:store_app/providers/theme_provider.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
+import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 
 import '../providers/products.dart';
@@ -27,6 +29,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => ThemeProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => Orders(),
+        )
       ],
       child: Consumer<ThemeProvider>(
         builder: (_, theme, child) => MaterialApp(
@@ -35,6 +40,7 @@ class MyApp extends StatelessWidget {
             darkTheme: MyTheme.darkTheme,
             routes: {
               ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
+              OrdersScreen.route: (ctx) => OrdersScreen(),
             },
             title: 'Flutter Demo',
             home: child),

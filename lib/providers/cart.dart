@@ -3,20 +3,24 @@ import 'package:flutter/cupertino.dart';
 import '../models/cart_item.dart';
 
 class CartNotifier with ChangeNotifier {
+  
   /// Key is productId and value is cartItem.
-  late Map<String, CartItem> _cartItems = {};
+  late Map<String, CartItem> _items = {};
 
+  // A list of all products placed in cart.
   Map<String, CartItem> get items {
-    return {..._cartItems};
+    return {..._items};
   }
 
+  /// Number of products placed in cart.
   get cartItemsCount {
-    return _cartItems.length;
+    return _items.length;
   }
 
+  /// Cart total amount.
   get total {
     double total = 0.00;
-    _cartItems.forEach((productId, cartItem) {
+    _items.forEach((productId, cartItem) {
       total += cartItem.price * cartItem.quantity;
     });
     return total;
@@ -24,7 +28,7 @@ class CartNotifier with ChangeNotifier {
 
   void addItem(
       final String productId, final String productName, final double price) {
-    _cartItems.update(
+    _items.update(
       productId,
       (oldCartItem) {
         return CartItem(
@@ -44,8 +48,15 @@ class CartNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes an item from the cart using this item's id.
   void removeItem(cartItemId) {
-    _cartItems.removeWhere((_, cartItem) => cartItemId == cartItem.id);
+    _items.removeWhere((_, cartItem) => cartItemId == cartItem.id);
+    notifyListeners();
+  }
+
+  /// Removes all items from the cart.
+  void clear() {
+    _items = {};
     notifyListeners();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
+import '../providers/orders.dart';
 
 class TotalContainer extends StatelessWidget {
   const TotalContainer({super.key});
@@ -30,7 +31,13 @@ class TotalContainer extends StatelessWidget {
               width: 6,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                CartNotifier cartNotifier =
+                    Provider.of<CartNotifier>(context, listen: false);
+                Provider.of<Orders>(context, listen: false).addOrder(
+                    cartNotifier.items.values.toList(), cartNotifier.total);
+                cartNotifier.clear();
+              },
               child: const Text("Order Now"),
             )
           ],
