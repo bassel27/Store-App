@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/orders.dart';
+import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/widgets/order_list_tile.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -11,10 +11,10 @@ class OrdersScreen extends StatelessWidget {
     var ordersNotifier = Provider.of<Orders>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Orders"),
+        title: const Text("Orders"),
       ),
       body: ordersNotifier.numberOfOrders == 0
-          ? Text("No ordres")
+          ? const Text("No ordres")
           : ListView.builder(
               itemCount: ordersNotifier.numberOfOrders,
               itemBuilder: (_, i) => OrderListTile(ordersNotifier.orders[i]),

@@ -20,6 +20,7 @@ class OrderItem {
 
   get id => _id;
   get amount => _amount;
-  get products => _products;
+  List<CartItem> get products => _products;
   get dateTime => _dateTime;
+  int get numberOfProducts => _products.length;
 }

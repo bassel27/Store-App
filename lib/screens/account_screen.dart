@@ -9,7 +9,7 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          child: Text("Orders"),
+          child: const Text("Orders"),
           onPressed: () {
             Navigator.pushNamed(context, OrdersScreen.route);
           },

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 
 import '../models/cart_item.dart';
-import 'package:store_app/providers/cart_notifier.dart';
 
 class CartTile extends StatelessWidget {
   final CartItem cartItem;
@@ -36,27 +36,10 @@ class CartTile extends StatelessWidget {
         child: ListTile(
           title: Text(cartItem.name),
           subtitle: Text(
-              "Total: \$${(cartItem.price * cartItem.quantity).toString()}"),
+              "Total: \$${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}"),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           trailing: Text("${cartItem.quantity}x"),
-          // leading: Image.network(
-          //   product.imageUrl,
-          //   fit: BoxFit.cover,
-          // ),
-
-          // CircleAvatar(
-          //   backgroundColor: Colors.deepPurple,
-          //   child: FittedBox(
-          //     child: Padding(
-          //       padding: const EdgeInsets.all(3),
-          //       child: Text(
-          //         "\$${cartItem.price.toString()}",
-          //         style: const TextStyle(color: Colors.white),
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ),
       ),
     );

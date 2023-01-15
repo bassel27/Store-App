@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 
@@ -19,7 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Center(
         child: Row(
           children: [
-            Text("Dark Mode"),
+            const Text("Dark Mode"),
             Switch(
               value: _switchValue,
               onChanged: (value) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 // primaryColor2 over primaryColor
-var kPrimaryColor = Color(0xFF00478F);
+var kPrimaryColor = const Color(0xFF00478F);
 var kPrimaryColor2 = Colors.white;
-var kSecondaryColor = Color(0xFFCBEBF5);
-var kAccentColor = Color(0xFF65DFF6);
+var kSecondaryColor = const Color(0xFFCBEBF5);
+var kAccentColor = const Color(0xFF65DFF6);
 
 class MyTheme {
   static final lightTheme = ThemeData(
@@ -18,7 +18,7 @@ class MyTheme {
         backgroundColor: kPrimaryColor,
         selectedItemColor: kAccentColor,
         unselectedItemColor: kPrimaryColor2),
-    colorScheme: ColorScheme.light().copyWith(
+    colorScheme: const ColorScheme.light().copyWith(
       primary: kPrimaryColor,
       onPrimary: kPrimaryColor2,
       secondary: kSecondaryColor,
@@ -28,6 +28,6 @@ class MyTheme {
     ),
   );
   static final darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(),
+    colorScheme: const ColorScheme.dark(),
   );
 }

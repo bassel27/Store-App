@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/widgets/price_text.dart';
 
 import '../models/product.dart';
-import '../providers/product_notifier.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const route = 'productDetail';
   @override
   Widget build(BuildContext context) {
     // TODO: use provider
-    final Product product = ModalRoute.of(context)!.settings.arguments as Product;
+    final Product product =
+        ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
       appBar: AppBar(title: Text(product.title)),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 9, left: 5, bottom: 5),
+                  padding: const EdgeInsets.only(top: 9, left: 5, bottom: 5),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -30,8 +29,8 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: const BoxDecoration(),
                   height: MediaQuery.of(context).size.height * 0.4,
                   child: Image.network(
                     product.imageUrl,
@@ -46,10 +45,10 @@ class ProductDetailScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 color: kAccentColor, borderRadius: BorderRadius.circular(10)),
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             width: double.infinity,
             height: 40,
-            child: Center(
+            child: const Center(
               child: Text(
                 "ADD TO CART",
                 textAlign: TextAlign.center,
@@ -57,7 +56,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             width: double.infinity,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -66,7 +65,7 @@ class ProductDetailScreen extends StatelessWidget {
                   backgroundColor: kAccentColor,
                 ),
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "ADD TO CART",
                   textAlign: TextAlign.center,
                   style: TextStyle(

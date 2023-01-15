@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-
 
 ///This class is created by elMuso. Copied from here https://github.com/flutter/flutter/issues/55290
 class SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight
@@ -16,10 +14,10 @@ class SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight
     this.mainAxisSpacing = 0.0,
     this.crossAxisSpacing = 0.0,
     this.height = 56.0,
-  })  : assert(crossAxisCount != null && crossAxisCount > 0),
-        assert(mainAxisSpacing != null && mainAxisSpacing >= 0),
-        assert(crossAxisSpacing != null && crossAxisSpacing >= 0),
-        assert(height != null && height > 0);
+  })  : assert(crossAxisCount > 0),
+        assert(mainAxisSpacing >= 0),
+        assert(crossAxisSpacing >= 0),
+        assert(height > 0);
 
   /// The number of children in the cross axis.
   final int crossAxisCount;

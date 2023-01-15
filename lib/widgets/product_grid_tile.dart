@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/widgets/price_text.dart';
 
 import '../models/product.dart';
-import 'package:store_app/providers/cart_notifier.dart';
 import '../providers/product_notifier.dart';
 
 class ProductGridTile extends StatelessWidget {
   final Product product;
-  ProductGridTile(this.product);
+  const ProductGridTile(this.product);
   @override
   Widget build(BuildContext context) {
     final CartNotifier cart = Provider.of<CartNotifier>(context,
@@ -72,7 +72,7 @@ class ProductGridTile extends StatelessWidget {
 
 class _MyFloatingActionButton extends StatelessWidget {
   final ProductNotifier productNotifier;
-  _MyFloatingActionButton(this.productNotifier);
+  const _MyFloatingActionButton(this.productNotifier);
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class _MyFloatingActionButton extends StatelessWidget {
       height: 25,
       child: RawMaterialButton(
         fillColor: kSecondaryColor,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         onPressed: productNotifier.toggleFavoriteStatus,
         child: Icon(
           size: 20,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:store_app/providers/cart_notifier.dart';
-import '../providers/orders.dart';
+
+import '../providers/orders_notifier.dart';
 
 class TotalContainer extends StatelessWidget {
   const TotalContainer({super.key});
@@ -24,7 +24,7 @@ class TotalContainer extends StatelessWidget {
             const Spacer(),
             Consumer<CartNotifier>(
               builder: (__, cart, _) => Chip(
-                label: Text("${cart.total}"),
+                label: Text("${cart.total.toStringAsFixed(2)}"),
               ),
             ),
             const SizedBox(
