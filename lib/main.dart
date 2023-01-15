@@ -28,25 +28,23 @@ class MyApp extends StatelessWidget {
           create: (_) => CartNotifier(),
         ),
         ChangeNotifierProvider(
-          create: (_) => ThemeProvider(),
+          create: (_) => ThemeNotifier(),
         ),
         ChangeNotifierProvider(
           create: (_) => Orders(),
         )
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (_, theme, child) => MaterialApp(
-            themeMode: theme.themeMode,
-            theme: MyTheme.lightTheme,
-            darkTheme: MyTheme.darkTheme,
-            routes: {
-              ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
-              OrdersScreen.route: (ctx) => OrdersScreen(),
-            },
-            title: 'Flutter Demo',
-            home: child),
-        child: BottomNavBarScreen(),
-      ),
+      builder: (context, child) => MaterialApp(
+          themeMode: Provider.of<ThemeNotifier>(context).themeMode,
+          theme: MyTheme.lightTheme,
+          darkTheme: MyTheme.darkTheme,
+          routes: {
+            ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
+            OrdersScreen.route: (ctx) => OrdersScreen(),
+          },
+          title: 'Flutter Demo',
+          home: child),
+      child: BottomNavBarScreen(),
     );
   }
 }

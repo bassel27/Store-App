@@ -45,7 +45,6 @@ class ProductsGridScreen extends StatelessWidget {
             // use .value if you use provider on on an object that has already been created or something that is part of a list or a grid
             value: ProductNotifier(products[i]),
             builder: (context, child) {
-              print(products[i].title + "2");
               return ProductGridTile(products[i]);
             },
           );

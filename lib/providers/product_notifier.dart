@@ -10,7 +10,6 @@ class ProductNotifier with ChangeNotifier {
   }
 
   get isFavorite {
-    // print("check isFavorite ${_product.title}");
     return _product.isFavorite;
   }
 }
