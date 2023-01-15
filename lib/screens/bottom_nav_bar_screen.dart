@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/cart_screen.dart';
 import 'package:store_app/screens/products_grid_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
@@ -17,45 +18,41 @@ class BottomNavBarScreen extends StatefulWidget {
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int _selectedIndex = 1;
-
-  final List<Widget> _screens = <Widget>[
-    const ProductsGridScreen(true),
-    const ProductsGridScreen(false),
-    CartScreen(),
-    AccountScreen(),
-  ];
+  late final CartNotifier cartNotifier = Provider.of<CartNotifier>(context);
+  late final Map<StatelessWidget, BottomNavigationBarItem>
+      _screenToBottomNavBarItem = {
+    AccountScreen(): const BottomNavigationBarItem(
+      icon: Icon(Icons.account_circle_outlined),
+      label: 'My Account',
+    ),
+    const ProductsGridScreen(true): const BottomNavigationBarItem(
+      icon: Icon(Icons.favorite),
+      label: 'Favorites',
+    ),
+    const ProductsGridScreen(false): const BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    CartScreen(): BottomNavigationBarItem(
+      icon: Badge(
+        badgeColor: kSecondaryColor,
+        badgeContent: Text(cartNotifier.cartItemsCount.toString()),
+        child: const Icon(Icons.shopping_cart),
+      ),
+      label: 'Cart',
+    ),
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
-      body: _screens[_selectedIndex],
+      body: _screenToBottomNavBarItem.keys.toList()[_selectedIndex],
       bottomNavigationBar: Consumer<CartNotifier>(
         builder: (_, cart, child) => BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           elevation: 0,
-          items: [
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorites',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Badge(
-                badgeColor: Theme.of(context).colorScheme.secondary,
-                badgeContent: Text(cart.cartItemsCount.toString()),
-                child: const Icon(Icons.shopping_cart),
-              ),
-              label: 'Cart',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined),
-              label: 'My Account',
-            ),
-          ],
+          items: _screenToBottomNavBarItem.values.toList(),
           currentIndex: _selectedIndex,
           onTap: _onTap,
         ),
