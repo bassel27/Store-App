@@ -10,14 +10,14 @@ class ProductsNotifier with ChangeNotifier {
   final List<Product> _productsList = [
     Product(
       id: 'p1',
-      title: 'Zyrtec',
+      name: 'Zyrtec',
       description: 'Cetirizine hydrochloride',
       price: 29.99,
       imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
     ),
     Product(
       id: 'p2',
-      title: 'Panadol',
+      name: 'Panadol',
       description: 'Painkiller',
       price: 59.99,
       imageUrl:
@@ -25,7 +25,7 @@ class ProductsNotifier with ChangeNotifier {
     ),
     Product(
       id: 'p3',
-      title: 'Fucidin',
+      name: 'Fucidin',
       description: 'Antibiotic',
       price: 19.99,
       imageUrl:
@@ -33,7 +33,7 @@ class ProductsNotifier with ChangeNotifier {
     ),
     Product(
       id: 'p4',
-      title: 'Augemntin',
+      name: 'Augemntin',
       description: 'Antibiotic',
       price: 49.99,
       imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/40413-.jpg',

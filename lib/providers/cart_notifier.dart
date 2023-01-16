@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../models/cart_item.dart';
 
 class CartNotifier with ChangeNotifier {
-  
+  //TODO: remove productID if not used and convert it to a list
   /// Key is productId and value is cartItem.
   late Map<String, CartItem> _items = {};
 
@@ -26,6 +26,7 @@ class CartNotifier with ChangeNotifier {
     return total;
   }
 
+  /// Adds a new product to cart or increases the quantity of an already existing one.
   void addItem(
       final String productId, final String productName, final double price) {
     _items.update(
@@ -52,6 +53,22 @@ class CartNotifier with ChangeNotifier {
   void removeItem(cartItemId) {
     _items.removeWhere((_, cartItem) => cartItemId == cartItem.id);
     notifyListeners();
+  }
+
+  /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
+  void removeSingleItem(cartItemId) {
+    for (var cartItem in _items.values.toList()) {
+      if (cartItem.id == cartItemId) {
+        if (cartItem.quantity > 1) {
+          cartItem.quantity -= 1;
+        } else {
+          _items.removeWhere((_, cartItem) => cartItem.id == cartItemId);
+        }
+        notifyListeners();
+        break;
+      }
+    }
+    return;
   }
 
   /// Removes all items from the cart.

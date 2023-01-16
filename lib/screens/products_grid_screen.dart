@@ -37,7 +37,7 @@ class ProductsGridScreen extends StatelessWidget {
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
           crossAxisCount: 2,
-          height: 190,
+          height: 200,
         ),
         itemBuilder: (context, i) {
           return ChangeNotifierProvider<ProductNotifier>.value(

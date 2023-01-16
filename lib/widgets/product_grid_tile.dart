@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/cart_item.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
@@ -10,12 +11,15 @@ import '../providers/product_notifier.dart';
 
 class ProductGridTile extends StatelessWidget {
   final Product product;
+
   const ProductGridTile(this.product);
+
   @override
   Widget build(BuildContext context) {
-    final CartNotifier cart = Provider.of<CartNotifier>(context,
-        listen:
-            false); // you only add to the cart in this widget so there's no need to lsiten
+    final CartNotifier cartProvider = Provider.of<CartNotifier>(
+        context); // you only add to the cart in this widget so there's no need to lsiten
+    CartItem? cartItem = cartProvider.items[product.id];
+
     return LayoutBuilder(
       builder: (ctx, constraints) => GestureDetector(
         onTap: () {
@@ -44,25 +48,45 @@ class ProductGridTile extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 6),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  product.title,
-                ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                product.name,
               ),
             ),
             const SizedBox(height: 2),
             PriceText(product.price),
-            IconButton(
-              padding: const EdgeInsets.only(top: 8),
-              constraints: const BoxConstraints(),
-              icon: const Icon(Icons.shopping_cart),
-              onPressed: () {
-                cart.addItem(product.id, product.title, product.price);
-              },
-            ),
+            cartItem?.quantity != null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            cartProvider.removeSingleItem(cartItem!.id);
+                          },
+                          icon: const Icon(Icons.remove_circle)),
+                      Container(
+                        child: Text(
+                          cartItem!.quantity.toString(),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            cartProvider.addItem(
+                                product.id, product.name, product.price);
+                          },
+                          icon: const Icon(Icons.add_circle))
+                    ],
+                  )
+                : IconButton(
+                    padding: const EdgeInsets.only(top: 8),
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      cartProvider.addItem(
+                          product.id, product.name, product.price);
+                    },
+                  ),
           ]),
         ),
       ),

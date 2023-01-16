@@ -17,7 +17,7 @@ class BottomNavBarScreen extends StatefulWidget {
 }
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
   late final CartNotifier cartNotifier = Provider.of<CartNotifier>(context);
 
   @override

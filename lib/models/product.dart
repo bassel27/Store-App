@@ -1,33 +1,16 @@
-
 class Product {
-  final String _id;
-  final String _title;
-  final String _description;
-  final double _price;
-  final String _imageUrl;
+  final String id;
+  final String name;
+  final String description;
+  final double price;
+  final String imageUrl;
   bool isFavorite;
 
   Product(
-      {required String id,
-      required String title,
-      required String description,
-      required double price,
-      required String imageUrl,
-      isFavorite = false})
-      : _id = id,
-        _title = title,
-        _description = description,
-        _price = price,
-        _imageUrl = imageUrl,
-        isFavorite = isFavorite;
-
-  get id => _id;
-
-  get title => _title;
-
-  get description => _description;
-
-  get price => _price;
-
-  get imageUrl => _imageUrl;
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.price,
+      required this.imageUrl,
+      this.isFavorite = false});
 }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../models/order_item.dart';
 
+// TODO: fix order added even if you press order now on zero/ empty cart.
 class OrderListTile extends StatefulWidget {
   OrderItem order;
   OrderListTile(this.order);

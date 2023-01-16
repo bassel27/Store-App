@@ -12,7 +12,7 @@ class ProductDetailScreen extends StatelessWidget {
     final Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
-      appBar: AppBar(title: Text(product.title)),
+      appBar: AppBar(title: Text(product.name)),
       body: Column(
         children: [
           Expanded(
@@ -24,7 +24,7 @@ class ProductDetailScreen extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      product.title,
+                      product.name,
                     ),
                   ),
                 ),
