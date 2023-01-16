@@ -60,10 +60,13 @@ class ProductGridTile extends StatelessWidget {
                       cartProvider: cartProvider,
                       cartItem: cartItem,
                       product: product)
-                  : _MyIconButton(Icons.shopping_cart, () {
-                      cartProvider.addItem(
-                          product.id, product.name, product.price);
-                    }, EdgeInsets.zero),
+                  : _MyIconButton(
+                      Icons.shopping_cart,
+                      () {
+                        cartProvider.addItem(
+                            product.id, product.name, product.price);
+                      },
+                    ),
               const SizedBox(
                 height: 6,
               )
@@ -136,13 +139,11 @@ class _ChangeQuantityRow extends StatelessWidget {
         const SizedBox(
           width: 30,
         ),
-        _MyIconButton(Icons.remove_circle, removeOne,
-            EdgeInsets.only(left: kPaddingValue)),
+        _MyIconButton(Icons.remove_circle, removeOne),
         Text(
           cartItem.quantity.toString(),
         ),
-        _MyIconButton(
-            Icons.add_circle, addOne, EdgeInsets.only(right: kPaddingValue)),
+        _MyIconButton(Icons.add_circle, addOne),
         const SizedBox(
           width: 30,
         ),
@@ -154,8 +155,8 @@ class _ChangeQuantityRow extends StatelessWidget {
 class _MyIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData iconData;
-  final EdgeInsets edgeInsets;
-  const _MyIconButton(this.iconData, this.onPressed, this.edgeInsets);
+
+  const _MyIconButton(this.iconData, this.onPressed);
   @override
   Widget build(BuildContext context) {
     return IconButton(
