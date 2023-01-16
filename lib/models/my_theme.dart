@@ -26,7 +26,12 @@ class MyTheme {
       tertiary: Colors.amber,
       surface: Colors.lime,
     ),
+    textTheme: const TextTheme(
+      bodySmall: TextStyle(
+          fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black),
+    ),
   );
+
   static final darkTheme = ThemeData(
     colorScheme: const ColorScheme.dark(),
   );

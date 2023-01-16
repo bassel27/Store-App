@@ -12,6 +12,9 @@ import '../providers/product_notifier.dart';
 class ProductGridTile extends StatelessWidget {
   final Product product;
   const ProductGridTile(this.product);
+  void addToShoppingCart(CartNotifier cartProvider) {
+    cartProvider.addItem(product.id, product.name, product.price);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,25 +29,43 @@ class ProductGridTile extends StatelessWidget {
               .pushNamed(ProductDetailScreen.route, arguments: product);
         },
         child: Card(
-          child: Column(children: [
-            _ImageAndFavoriteStack(product: product, constraints: constraints),
-            const SizedBox(height: 10),
-            TextAlignedLeft(product.name),
-            const SizedBox(height: 2),
-            TextAlignedLeft("EGP ${product.price.toString()}"),
-            cartItem != null
-                ? _ChangeQuantityRow(
-                    cartProvider: cartProvider,
-                    cartItem: cartItem,
-                    product: product)
-                : IconButton(
-                    icon: const Icon(Icons.shopping_cart),
-                    onPressed: () {
-                      cartProvider.addItem(
-                          product.id, product.name, product.price);
-                    },
+          child: Column(
+            children: [
+              _ImageAndFavoriteStack(
+                  product: product, constraints: constraints),
+              const SizedBox(height: 10),
+              TextAlignedLeft(product.name),
+              const SizedBox(height: 2),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                  text: TextSpan(
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontWeight: FontWeight.w300, fontSize: 12),
+                    children: [
+                      const TextSpan(text: "EGP "),
+                      TextSpan(
+                          text: product.price.toString(),
+                          style: Theme.of(context).textTheme.bodySmall),
+                    ],
                   ),
-          ]),
+                ),
+              ),
+              cartItem != null
+                  ? _ChangeQuantityRow(
+                      cartProvider: cartProvider,
+                      cartItem: cartItem,
+                      product: product)
+                  : _MyIconButton(
+                      Icons.shopping_cart,
+                      () {
+                        addToShoppingCart(cartProvider);
+                      },
+                    ),
+            ],
+          ),
         ),
       ),
     );
@@ -67,7 +88,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
       alignment: Alignment.topRight,
       children: [
         SizedBox(
-          height: constraints.maxHeight * 0.5,
+          height: constraints.maxHeight * 0.6,
           width: double.infinity,
           child: Image.network(
             product.imageUrl,
@@ -96,26 +117,40 @@ class _ChangeQuantityRow extends StatelessWidget {
   final CartNotifier cartProvider;
   final CartItem cartItem;
   final Product product;
+  removeOne() {
+    cartProvider.removeSingleItem(cartItem.id);
+  }
+
+  addOne() {
+    cartProvider.addItem(product.id, product.name, product.price);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton(
-            onPressed: () {
-              cartProvider.removeSingleItem(cartItem.id);
-            },
-            icon: const Icon(Icons.remove_circle)),
+        _MyIconButton(Icons.remove_circle, removeOne),
         Text(
           cartItem.quantity.toString(),
         ),
-        IconButton(
-            onPressed: () {
-              cartProvider.addItem(product.id, product.name, product.price);
-            },
-            icon: const Icon(Icons.add_circle))
+        _MyIconButton(Icons.add_circle, addOne),
       ],
+    );
+  }
+}
+
+class _MyIconButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final IconData iconData;
+  const _MyIconButton(this.iconData, this.onPressed);
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      onPressed: onPressed,
+      icon: Icon(iconData),
     );
   }
 }
