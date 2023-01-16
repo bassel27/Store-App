@@ -63,7 +63,7 @@ class ProductGridTile extends StatelessWidget {
                   : _MyIconButton(Icons.shopping_cart, () {
                       cartProvider.addItem(
                           product.id, product.name, product.price);
-                    }, EdgeInsets.symmetric(horizontal: kPaddingValue)),
+                    }, EdgeInsets.zero),
               const SizedBox(
                 height: 6,
               )
@@ -131,8 +131,11 @@ class _ChangeQuantityRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        const SizedBox(
+          width: 30,
+        ),
         _MyIconButton(Icons.remove_circle, removeOne,
             EdgeInsets.only(left: kPaddingValue)),
         Text(
@@ -140,6 +143,9 @@ class _ChangeQuantityRow extends StatelessWidget {
         ),
         _MyIconButton(
             Icons.add_circle, addOne, EdgeInsets.only(right: kPaddingValue)),
+        const SizedBox(
+          width: 30,
+        ),
       ],
     );
   }
@@ -153,7 +159,7 @@ class _MyIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: edgeInsets,
+      padding: EdgeInsets.zero,
       constraints: const BoxConstraints(),
       onPressed: onPressed,
       icon: Icon(iconData),
