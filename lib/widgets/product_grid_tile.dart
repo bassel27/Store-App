@@ -9,12 +9,11 @@ import 'package:store_app/widgets/text_aligned_left.dart';
 import '../models/product.dart';
 import '../providers/product_notifier.dart';
 
+double kPaddingValue = 50;
+
 class ProductGridTile extends StatelessWidget {
   final Product product;
   const ProductGridTile(this.product);
-  void addToShoppingCart(CartNotifier cartProvider) {
-    cartProvider.addItem(product.id, product.name, product.price);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,17 +52,21 @@ class ProductGridTile extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 6,
+              ),
               cartItem != null
                   ? _ChangeQuantityRow(
                       cartProvider: cartProvider,
                       cartItem: cartItem,
                       product: product)
-                  : _MyIconButton(
-                      Icons.shopping_cart,
-                      () {
-                        addToShoppingCart(cartProvider);
-                      },
-                    ),
+                  : _MyIconButton(Icons.shopping_cart, () {
+                      cartProvider.addItem(
+                          product.id, product.name, product.price);
+                    }, EdgeInsets.symmetric(horizontal: kPaddingValue)),
+              const SizedBox(
+                height: 6,
+              )
             ],
           ),
         ),
@@ -88,7 +91,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
       alignment: Alignment.topRight,
       children: [
         SizedBox(
-          height: constraints.maxHeight * 0.6,
+          height: constraints.maxHeight * 0.55,
           width: double.infinity,
           child: Image.network(
             product.imageUrl,
@@ -130,11 +133,13 @@ class _ChangeQuantityRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _MyIconButton(Icons.remove_circle, removeOne),
+        _MyIconButton(Icons.remove_circle, removeOne,
+            EdgeInsets.only(left: kPaddingValue)),
         Text(
           cartItem.quantity.toString(),
         ),
-        _MyIconButton(Icons.add_circle, addOne),
+        _MyIconButton(
+            Icons.add_circle, addOne, EdgeInsets.only(right: kPaddingValue)),
       ],
     );
   }
@@ -143,11 +148,12 @@ class _ChangeQuantityRow extends StatelessWidget {
 class _MyIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData iconData;
-  const _MyIconButton(this.iconData, this.onPressed);
+  final EdgeInsets edgeInsets;
+  const _MyIconButton(this.iconData, this.onPressed, this.edgeInsets);
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: EdgeInsets.zero,
+      padding: edgeInsets,
       constraints: const BoxConstraints(),
       onPressed: onPressed,
       icon: Icon(iconData),
