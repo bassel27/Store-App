@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/models/my_theme.dart';
-import 'package:store_app/widgets/price_text.dart';
+import 'package:store_app/widgets/text_aligned_left.dart';
 
 import '../models/product.dart';
 
@@ -21,12 +21,7 @@ class ProductDetailScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 9, left: 5, bottom: 5),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      product.name,
-                    ),
-                  ),
+                  child: TextAlignedLeft(product.name),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -37,7 +32,7 @@ class ProductDetailScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                PriceText(product.price),
+                TextAlignedLeft("EGP ${product.price.toString()}"),
                 Text("Descripton: ${product.description}"),
               ],
             ),
