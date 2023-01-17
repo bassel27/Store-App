@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/theme_notifier.dart';
-import 'package:store_app/widgets/my_drawer.dart';
+import 'package:store_app/screens/products_manager_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const route = "/settings";
@@ -16,24 +16,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text("Settings"),
       ),
-      body: Center(
-        child: ListTile(
-          leading: const Icon(Icons.dark_mode_outlined),
-          title: const Text("Dark Mode"),
-          trailing: Switch(
-            value: _switchValue,
-            onChanged: (value) {
-              theme.toggleThemeMode(value);
-              setState(() {
-                _switchValue = !_switchValue;
-              });
-            },
+      body: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.dark_mode_outlined),
+            title: const Text("Dark Mode"),
+            trailing: Switch(
+              value: _switchValue,
+              onChanged: (value) {
+                theme.toggleThemeMode(value);
+                setState(() {
+                  _switchValue = !_switchValue;
+                });
+              },
+            ),
           ),
-        ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, ProductsManagerScreen.route);
+            },
+            child: const ListTile(
+              leading: Icon(Icons.edit),
+              title: Text("Products Manager"),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/products_notifier.dart';
-import 'package:store_app/widgets/my_drawer.dart';
+import 'package:store_app/screens/edit_product_screen.dart';
 
 import '../models/product.dart';
 
@@ -12,11 +12,14 @@ class ProductsManagerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text("Products Manager"),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, EditProductScreen.route);
+              },
+              icon: const Icon(Icons.add)),
         ],
       ),
       body: ListView.builder(
