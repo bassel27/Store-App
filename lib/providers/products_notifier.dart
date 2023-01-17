@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  final List<Product> _productsList = [
+  final List<Product> _products = [
     Product(
       id: 'p1',
       name: 'Zyrtec',
@@ -41,11 +41,11 @@ class ProductsNotifier with ChangeNotifier {
   ];
 
   List<Product> get products {
-    return [..._productsList];
+    return [..._products];
   }
 
   List<Product> get favoriteProducts {
-    return [..._productsList].where((product) => product.isFavorite).toList();
+    return [..._products].where((product) => product.isFavorite).toList();
   }
 
   // Returns a copy so that the only way to add a
@@ -53,7 +53,7 @@ class ProductsNotifier with ChangeNotifier {
   // If you added to the returned original list, notifyListeners won't be called.
 
   void addProduct(Product newProduct) {
-    _productsList.add(newProduct);
+    _products.add(newProduct);
     notifyListeners();
   }
 }

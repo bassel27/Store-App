@@ -6,9 +6,11 @@ import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
+import 'package:store_app/screens/products_manager_screen.dart';
+import 'package:store_app/screens/settings_screen.dart';
 
-import 'providers/products_notifier.dart';
 import 'models/my_theme.dart';
+import 'providers/products_notifier.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
           routes: {
             ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
             OrdersScreen.route: (ctx) => const OrdersScreen(),
+            ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
+            SettingsScreen.route: (ctx) =>  SettingsScreen(),
           },
           title: 'Flutter Demo',
           home: child),
