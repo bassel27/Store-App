@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/cart_screen.dart';
+import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_grid_screen.dart';
+import 'package:store_app/screens/settings_screen.dart';
 
-import '../widgets/my_drawer.dart';
-import 'account_screen.dart';
 //TODO: replace with persistent nav bar
 class BottomNavBarScreen extends StatefulWidget {
   const BottomNavBarScreen({super.key});
@@ -23,9 +23,9 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     var screenToBottomNavBarItem = {
-      const AccountScreen(): const BottomNavigationBarItem(
-        icon: Icon(Icons.account_circle_outlined),
-        label: 'My Account',
+      SettingsScreen(): const BottomNavigationBarItem(
+        icon: Icon(Icons.settings),
+        label: 'Settings',
       ),
       const ProductsGridScreen(true): const BottomNavigationBarItem(
         icon: Icon(Icons.favorite),
@@ -34,6 +34,10 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       const ProductsGridScreen(false): const BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: 'Home',
+      ),
+      const OrdersScreen(): const BottomNavigationBarItem(
+        icon: Icon(Icons.list_alt_sharp),
+        label: 'Orders',
       ),
       const CartScreen(): BottomNavigationBarItem(
         icon: Badge(
@@ -46,7 +50,6 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     };
 
     return Scaffold(
-      drawer: const MyDrawer(),
       body: screenToBottomNavBarItem.keys.toList()[_selectedIndex],
       bottomNavigationBar: Consumer<CartNotifier>(
         builder: (_, cart, child) => BottomNavigationBar(

@@ -12,7 +12,7 @@ class ProductsManagerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
     return Scaffold(
-      drawer: const MyDrawer(),
+      
       appBar: AppBar(
         title: const Text("Products Manager"),
         actions: [

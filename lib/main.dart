@@ -11,7 +11,7 @@ import 'package:store_app/screens/settings_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
-
+//TODO: use only one scaffold widget with MyDrawer and pass arguemnts to it
 void main() {
   runApp(MyApp());
 }

@@ -26,7 +26,7 @@ class ProductsGridScreen extends StatelessWidget {
     // You want to listen to the provider which provides you with an instance
     //of your Products class
     return Scaffold(
-      drawer: const MyDrawer(),
+      
       appBar: AppBar(
           title: showFavoritesOnly
               ? const Text("Favorites")

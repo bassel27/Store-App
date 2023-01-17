@@ -12,28 +12,27 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late var theme = Provider.of<ThemeNotifier>(context);
   late bool _switchValue = theme.isDarkMode;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const MyDrawer(),
+      
       appBar: AppBar(
         title: const Text("Settings"),
       ),
       body: Center(
-        child: Row(
-          children: [
-            const Text("Dark Mode"),
-            Switch(
-              value: _switchValue,
-              onChanged: (value) {
-                theme.toggleThemeMode(value);
-                setState(() {
-                  _switchValue = !_switchValue;
-                });
-              },
-            ),
-          ],
+        child: ListTile(
+          leading: const Icon(Icons.dark_mode_outlined),
+          title: const Text("Dark Mode"),
+          trailing: Switch(
+            value: _switchValue,
+            onChanged: (value) {
+              theme.toggleThemeMode(value);
+              setState(() {
+                _switchValue = !_switchValue;
+              });
+            },
+          ),
         ),
       ),
     );
