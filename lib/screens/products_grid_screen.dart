@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/product_notifier.dart';
 import '../providers/products_notifier.dart';
-import '../widgets/my_drawer.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
@@ -26,7 +25,6 @@ class ProductsGridScreen extends StatelessWidget {
     // You want to listen to the provider which provides you with an instance
     //of your Products class
     return Scaffold(
-      
       appBar: AppBar(
           title: showFavoritesOnly
               ? const Text("Favorites")

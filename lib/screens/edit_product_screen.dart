@@ -11,13 +11,29 @@ class EditProductScreen extends StatefulWidget {
 class _EditProductScreenState extends State<EditProductScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
+  final _imageUrlController = TextEditingController();
+  final _imageUrlFocusNode = FocusNode();
   // the image needs a controller because we want to access to the input before the user submits to add the preview
   @override
+  void initState() {
+    super.initState();
+    _imageUrlFocusNode.addListener(_updateImageUrl);
+  }
+
+  void _updateImageUrl() {
+    if (!_imageUrlFocusNode.hasFocus) {
+      setState(() {});
+    }
+  }
+
+  @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
+    _imageUrlFocusNode.dispose();
+    _imageUrlFocusNode.removeListener(_updateImageUrl);
+    _imageUrlController.dispose();
   }
 
   @override
@@ -58,7 +74,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               height: 20,
             ),
             Row(
-              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
                   height: 70,
@@ -66,6 +82,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: BoxDecoration(
                     border: Border.all(width: 2, color: Colors.grey),
                   ),
+                  child: _imageUrlController.text.isEmpty
+                      ? const FittedBox(child: Text("Enter a URL"))
+                      : Image.network(_imageUrlController.text,
+                          fit: BoxFit.cover),
                 ),
                 const SizedBox(
                   width: 15,
@@ -75,6 +95,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.url,
                     decoration: const InputDecoration(labelText: "Image URL"),
+                    controller: _imageUrlController,
+                    focusNode: _imageUrlFocusNode,
+                    onEditingComplete: () {
+                      setState(() {});
+                    },
                   ),
                 ),
               ],
