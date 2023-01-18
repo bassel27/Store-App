@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EditProductScreen extends StatefulWidget {
-  EditProductScreen({super.key});
+  const EditProductScreen({super.key});
   static const route = "/settings/edit_products_screen";
 
   @override
@@ -11,6 +11,15 @@ class EditProductScreen extends StatefulWidget {
 class _EditProductScreenState extends State<EditProductScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
+  // the image needs a controller because we want to access to the input before the user submits to add the preview
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +52,33 @@ class _EditProductScreenState extends State<EditProductScreen> {
               maxLines: 3,
               keyboardType: TextInputType.multiline,
               decoration: const InputDecoration(labelText: "Description"),
-              textInputAction: TextInputAction.done,
               focusNode: _descriptionFocusNode,
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.url,
+                    decoration: const InputDecoration(labelText: "Image URL"),
+                  ),
+                ),
+              ],
+            )
           ],
         ))),
       ),

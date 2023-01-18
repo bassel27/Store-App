@@ -38,15 +38,15 @@ class MyApp extends StatelessWidget {
         )
       ],
       builder: (context, child) => MaterialApp(
-          themeMode: Provider.of<ThemeNotifier>(context).themeMode,
+          themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
           theme: MyTheme.lightTheme,
           darkTheme: MyTheme.darkTheme,
           routes: {
             ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
             OrdersScreen.route: (ctx) => const OrdersScreen(),
             ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
-            SettingsScreen.route: (ctx) =>  SettingsScreen(),
-            EditProductScreen.route: (ctx) =>  const EditProductScreen(),
+            SettingsScreen.route: (ctx) => SettingsScreen(),
+            EditProductScreen.route: (ctx) => const EditProductScreen(),
           },
           title: 'Flutter Demo',
           home: child),
@@ -54,4 +54,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

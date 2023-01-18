@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class ThemeNotifier extends ChangeNotifier {
-  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode currentThemeMode = ThemeMode.system;
 
-  bool get isDarkMode => themeMode == ThemeMode.dark;
+  bool get isDarkMode =>
+      SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
   void toggleThemeMode(bool isDarkModeOn) {
-    themeMode = isDarkModeOn ? ThemeMode.dark : ThemeMode.light;
+    currentThemeMode = isDarkModeOn ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }
