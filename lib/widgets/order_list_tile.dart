@@ -22,31 +22,38 @@ class _OrderListTileState extends State<OrderListTile> {
     return Card(
       child: Column(
         children: [
-          ListTile(
-            title: Text("\$ ${widget.order.amount.toStringAsFixed(2)}"),
-            subtitle: Text(
-              DateFormat("dd/MM/yyyy, hh:mm a").format(widget.order.dateTime),
-            ),
-            trailing: IconButton(
-              icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
-              onPressed: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              },
+          Material(
+            elevation: 3,
+            child: ListTile(
+              title: Text("\$ ${widget.order.amount.toStringAsFixed(2)}"),
+              subtitle: Text(
+                DateFormat("dd/MM/yyyy, hh:mm a").format(widget.order.dateTime),
+              ),
+              trailing: IconButton(
+                icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
+                onPressed: () {
+                  setState(() {
+                    isExpanded = !isExpanded;
+                  });
+                },
+              ),
             ),
           ),
+          // if (isExpanded)
+          //   const Divider(
+          //     thickness: 1.5,
+          //   ),
           if (isExpanded)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-              height: min(widget.order.numberOfProducts * 20.0 + 10, 100),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              height: min(widget.order.numberOfProducts * 20.0 + 20, 80),
               child: ListView(
                   children: widget.order.products
                       .map(
                         (product) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("${product.name}"),
+                            Text(product.name),
                             Text("${product.quantity}x ${product.price}"),
                           ],
                         ),

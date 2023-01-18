@@ -5,6 +5,8 @@ var kPrimaryColor = const Color(0xFF00478F);
 var kPrimaryColor2 = Colors.white;
 var kSecondaryColor = const Color(0xFFCBEBF5);
 var kAccentColor = const Color(0xFF65DFF6);
+const TextStyle kBodySmallTestStyle =
+    TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
 
 class MyTheme {
   static final lightTheme = ThemeData(
@@ -20,19 +22,19 @@ class MyTheme {
         unselectedItemColor: kPrimaryColor2),
     colorScheme: const ColorScheme.light().copyWith(
       primary: kPrimaryColor,
-      onPrimary: kPrimaryColor2,
       secondary: kSecondaryColor,
-      background: Colors.green,
-      tertiary: Colors.amber,
-      surface: Colors.lime,
+      background: const Color.fromARGB(255, 233, 233, 233),
     ),
-    textTheme: const TextTheme(
-      bodySmall: TextStyle(
-          fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black),
+    textTheme: TextTheme(
+      bodySmall: kBodySmallTestStyle.copyWith(color: Colors.black),
     ),
   );
 
   static final darkTheme = ThemeData(
     colorScheme: const ColorScheme.dark(),
+    textTheme: TextTheme(
+      bodySmall: kBodySmallTestStyle.copyWith(
+          color: Colors.white), // for productGridTile
+    ),
   );
 }

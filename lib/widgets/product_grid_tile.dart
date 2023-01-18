@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/cart_item.dart';
-import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/widgets/text_aligned_left.dart';
@@ -28,45 +27,51 @@ class ProductGridTile extends StatelessWidget {
               .pushNamed(ProductDetailScreen.route, arguments: product);
         },
         child: Card(
+          elevation: 5,
           child: Column(
             children: [
               _ImageAndFavoriteStack(
                   product: product, constraints: constraints),
               const SizedBox(height: 10),
-              TextAlignedLeft(product.name),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: TextAlignedLeft(product.name),
+              ),
               const SizedBox(height: 2),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(fontWeight: FontWeight.w300, fontSize: 12),
-                    children: [
-                      const TextSpan(text: "EGP "),
-                      TextSpan(
-                          text: product.price.toString(),
-                          style: Theme.of(context).textTheme.bodySmall),
-                    ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(fontWeight: FontWeight.w300, fontSize: 13),
+                      children: [
+                        const TextSpan(text: "EGP "),
+                        TextSpan(
+                            text: product.price.toString(),
+                            style: Theme.of(context).textTheme.bodySmall),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 6,
+              Expanded(
+                child: cartItem != null
+                    ? _ChangeQuantityRow(
+                        cartProvider: cartProvider,
+                        cartItem: cartItem,
+                        product: product)
+                    : _MyIconButton(
+                        Icons.shopping_cart,
+                        () {
+                          cartProvider.addItem(
+                              product.id, product.name, product.price);
+                        },
+                      ),
               ),
-              cartItem != null
-                  ? _ChangeQuantityRow(
-                      cartProvider: cartProvider,
-                      cartItem: cartItem,
-                      product: product)
-                  : _MyIconButton(
-                      Icons.shopping_cart,
-                      () {
-                        cartProvider.addItem(
-                            product.id, product.name, product.price);
-                      },
-                    ),
               const SizedBox(
                 height: 6,
               )
@@ -137,7 +142,7 @@ class _ChangeQuantityRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         const SizedBox(
-          width: 30,
+          width: 10,
         ),
         _MyIconButton(Icons.remove_circle, removeOne),
         Text(
@@ -145,7 +150,7 @@ class _ChangeQuantityRow extends StatelessWidget {
         ),
         _MyIconButton(Icons.add_circle, addOne),
         const SizedBox(
-          width: 30,
+          width: 10,
         ),
       ],
     );
@@ -160,8 +165,10 @@ class _MyIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: EdgeInsets.zero,
+      splashRadius: 28,
+      iconSize: 33,
       constraints: const BoxConstraints(),
+      padding: const EdgeInsets.only(top: 2, bottom: 0),
       onPressed: onPressed,
       icon: Icon(iconData),
     );
@@ -179,13 +186,13 @@ class _MyFloatingActionButton extends StatelessWidget {
       width: 25,
       height: 25,
       child: RawMaterialButton(
-        fillColor: kSecondaryColor,
+        fillColor: Theme.of(context).colorScheme.secondary,
         shape: const CircleBorder(),
         onPressed: productProvider.toggleFavoriteStatus,
         child: Icon(
           size: 20,
           productProvider.isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: kAccentColor,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
       ),
     );

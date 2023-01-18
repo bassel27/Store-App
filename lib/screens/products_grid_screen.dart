@@ -25,6 +25,8 @@ class ProductsGridScreen extends StatelessWidget {
     // You want to listen to the provider which provides you with an instance
     //of your Products class
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      
       appBar: AppBar(
           title: showFavoritesOnly
               ? const Text("Favorites")
@@ -35,7 +37,7 @@ class ProductsGridScreen extends StatelessWidget {
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
           crossAxisCount: 2,
-          height: 200,
+          height: 250,
         ),
         itemBuilder: (context, i) {
           return ChangeNotifierProvider<ProductNotifier>.value(
