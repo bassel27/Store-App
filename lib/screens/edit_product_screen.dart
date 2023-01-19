@@ -2,45 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../models/product.dart';
 
-/// Returns null if entered image URL is valid. Else, it returns an error
-/// message that is displayed on the TextFormField.
-String? _validateImageUrl(value) {
-  if (value == null || value.isEmpty) {
-    return 'Please provide a valid image url.';
-  } else if (!value.startsWith('http') && !value.startsWith('https')) {
-    return 'Please provide a valid image url.';
-  } else if (!value.endsWith('.png') &&
-      !value.endsWith('.jpg') &&
-      !value.endsWith('.jpeg')) {
-    return 'Please provide a valid image url.';
-  }
-  return null;
-}
-
 /// The new product.
 Product _editedProduct =
     Product(id: '', name: '', description: '', price: 0, imageUrl: '');
-const TextStyle kErrorTextStyle =
-    TextStyle(fontWeight: FontWeight.w400, color: Colors.red);
-
-/// Runs all the validators and all the savers when the save button is pressed
-/// or the keyboard's done button is pressed in the image URL text field.
-void _saveForm() {
-  final areInputsValid = EditProductScreen._formKey.currentState!
-      .validate(); // this runs all the validators
-
-  if (areInputsValid) {
-    EditProductScreen._formKey.currentState!.save(); // this runs all the savers
-  }
-  print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
-}
-
 
 class EditProductScreen extends StatefulWidget {
+  static const route = "/settings/edit_products_screen";
   static final priceFocusNode = FocusNode();
   static final descriptionFocusNode = FocusNode();
   static final imageUrlFocusNode = FocusNode();
-  static const route = "/settings/edit_products_screen";
 
   /// Controller for accessing the input to add the image preview  before
   /// submission.
@@ -156,6 +126,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 }
+
+const TextStyle kErrorTextStyle =
+    TextStyle(fontWeight: FontWeight.w400, color: Colors.red);
 
 class NameTextFormField extends StatelessWidget {
   const NameTextFormField({super.key});
@@ -301,4 +274,31 @@ class ImageUrlTextFormField extends StatelessWidget {
           isFavorite: _editedProduct.isFavorite);
     }
   }
+}
+
+/// Returns null if entered image URL is valid. Else, it returns an error
+/// message that is displayed on the TextFormField.
+String? _validateImageUrl(value) {
+  if (value == null || value.isEmpty) {
+    return 'Please provide a valid image url.';
+  } else if (!value.startsWith('http') && !value.startsWith('https')) {
+    return 'Please provide a valid image url.';
+  } else if (!value.endsWith('.png') &&
+      !value.endsWith('.jpg') &&
+      !value.endsWith('.jpeg')) {
+    return 'Please provide a valid image url.';
+  }
+  return null;
+}
+
+/// Runs all the validators and all the savers when the save button is pressed
+/// or the keyboard's done button is pressed in the image URL text field.
+void _saveForm() {
+  final areInputsValid = EditProductScreen._formKey.currentState!
+      .validate(); // this runs all the validators
+
+  if (areInputsValid) {
+    EditProductScreen._formKey.currentState!.save(); // this runs all the savers
+  }
+  print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
 }
