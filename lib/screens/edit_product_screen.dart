@@ -2,52 +2,78 @@ import 'package:flutter/material.dart';
 
 import '../models/product.dart';
 
-//TODO: use something else except double for monetary values
+/// Returns null if entered image URL is valid. Else, it returns an error
+/// message that is displayed on the TextFormField.
+String? _validateImageUrl(value) {
+  if (value == null || value.isEmpty) {
+    return 'Please provide a valid image url.';
+  } else if (!value.startsWith('http') && !value.startsWith('https')) {
+    return 'Please provide a valid image url.';
+  } else if (!value.endsWith('.png') &&
+      !value.endsWith('.jpg') &&
+      !value.endsWith('.jpeg')) {
+    return 'Please provide a valid image url.';
+  }
+  return null;
+}
+
+/// The new product.
+Product _editedProduct =
+    Product(id: '', name: '', description: '', price: 0, imageUrl: '');
+const TextStyle kErrorTextStyle =
+    TextStyle(fontWeight: FontWeight.w400, color: Colors.red);
+
+/// Runs all the validators and all the savers when the save button is pressed
+/// or the keyboard's done button is pressed in the image URL text field.
+void _saveForm() {
+  final areInputsValid = EditProductScreen._formKey.currentState!
+      .validate(); // this runs all the validators
+
+  if (areInputsValid) {
+    EditProductScreen._formKey.currentState!.save(); // this runs all the savers
+  }
+  print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
+}
+
+
 class EditProductScreen extends StatefulWidget {
-  final _priceFocusNode = FocusNode();
-  final _descriptionFocusNode = FocusNode();
-  final _imageUrlFocusNode = FocusNode();
+  static final priceFocusNode = FocusNode();
+  static final descriptionFocusNode = FocusNode();
+  static final imageUrlFocusNode = FocusNode();
   static const route = "/settings/edit_products_screen";
 
   /// Controller for accessing the input to add the image preview  before
   /// submission.
-  final _imageUrlController = TextEditingController();
+  static final _imageUrlController = TextEditingController();
 
   /// Key for accessing all the validators and savers of all TextFormFields.
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
 
   @override
   State<EditProductScreen> createState() => _EditProductScreenState();
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-  static const TextStyle kErrorTextStyle =
-      TextStyle(fontWeight: FontWeight.w400, color: Colors.red);
-
-  /// The new product.
-  Product _editedProduct =
-      Product(id: '', name: '', description: '', price: 0, imageUrl: '');
-
   @override
   void initState() {
     super.initState();
-    widget._imageUrlFocusNode.addListener(_updateImageUrl);
+    EditProductScreen.imageUrlFocusNode.addListener(_updateImageUrl);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget._priceFocusNode.dispose();
-    widget._descriptionFocusNode.dispose();
-    widget._imageUrlFocusNode.dispose();
-    widget._imageUrlFocusNode.removeListener(_updateImageUrl);
-    widget._imageUrlController.dispose();
+    EditProductScreen.priceFocusNode.dispose();
+    EditProductScreen.descriptionFocusNode.dispose();
+    EditProductScreen.imageUrlFocusNode.dispose();
+    EditProductScreen.imageUrlFocusNode.removeListener(_updateImageUrl);
+    EditProductScreen._imageUrlController.dispose();
   }
 
-  void _onSaveButtonPress() {
-    setState(() {
-      _saveForm();
-    });
+  void _onSaveButtonPressed() {
+    setState(
+        () {}); // to display image after pressing save (imageurl textfield doesn't go out of foxus on save press)
+    _saveForm();
   }
 
   @override
@@ -56,7 +82,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: _onSaveButtonPress,
+            onPressed: _onSaveButtonPressed,
             icon: const Icon(Icons.save),
           ),
         ],
@@ -65,40 +91,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: widget._formKey,
+          key: EditProductScreen._formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Name",
-                    errorStyle: kErrorTextStyle,
-                  ),
-                  validator: _validateName,
-                  textInputAction: TextInputAction.next,
-                  onSaved: _onNameSaved,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                      labelText: "Price", errorStyle: kErrorTextStyle),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  focusNode: widget._priceFocusNode,
-                  validator: _validatePrice,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context)
-                        .requestFocus(widget._descriptionFocusNode);
-                  },
-                  onSaved: _onPriceSaved,
-                ),
-                TextFormField(
-                  maxLines: 3,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                      labelText: "Description", errorStyle: kErrorTextStyle),
-                  focusNode: widget._descriptionFocusNode,
-                  onSaved: _onDescriptionSaved,
-                ),
+                const NameTextFormField(),
+                const PriceTextField(),
+                const DescriptionTextField(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -109,20 +108,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     const SizedBox(
                       width: 15,
                     ),
-                    Expanded(
-                      child: TextFormField(
-                        validator: _validateImageUrl,
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.url,
-                        decoration: const InputDecoration(
-                            labelText: "Image URL",
-                            errorStyle: kErrorTextStyle),
-                        controller: widget._imageUrlController,
-                        focusNode: widget._imageUrlFocusNode,
-                        onFieldSubmitted: (_) =>
-                            _saveForm(), // when the done key is pressed
-                        onSaved: _onImageUrlSaved,
-                      ),
+                    const Expanded(
+                      child: ImageUrlTextFormField(),
                     ),
                   ],
                 ),
@@ -131,7 +118,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  onPressed: _onSaveButtonPress,
+                  onPressed: _onSaveButtonPressed,
                   child: const Text("Save"),
                 ),
               ],
@@ -149,9 +136,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
-      child: widget._imageUrlController.text.isEmpty
+      child: EditProductScreen._imageUrlController.text.isEmpty
           ? const FittedBox(child: Text("Enter a URL"))
-          : Image.network(widget._imageUrlController.text, fit: BoxFit.cover),
+          : Image.network(EditProductScreen._imageUrlController.text,
+              fit: BoxFit.cover),
     );
   }
 
@@ -160,26 +148,31 @@ class _EditProductScreenState extends State<EditProductScreen> {
   /// formfield goes out of focus).
   void _updateImageUrl() {
     // if the form field became out of focus and (it's empty or has valid url)
-    if (!widget._imageUrlFocusNode.hasFocus &&
-        (widget._imageUrlController.text.isEmpty ||
-            _validateImageUrl(widget._imageUrlController.text) == null)) {
+    if (!EditProductScreen.imageUrlFocusNode.hasFocus &&
+        (EditProductScreen._imageUrlController.text.isEmpty ||
+            _validateImageUrl(EditProductScreen._imageUrlController.text) ==
+                null)) {
       setState(() {});
     }
   }
+}
 
-  /// Runs all the validators and all the savers when the save button is pressed
-  /// or the keyboard's done button is pressed in the image URL text field.
-  void _saveForm() {
-    final areInputsValid = widget._formKey.currentState!
-        .validate(); // this runs all the validators
+class NameTextFormField extends StatelessWidget {
+  const NameTextFormField({super.key});
 
-    if (areInputsValid) {
-      widget._formKey.currentState!.save(); // this runs all the savers
-    }
-    print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        labelText: "Name",
+        errorStyle: kErrorTextStyle,
+      ),
+      validator: _validateName,
+      textInputAction: TextInputAction.next,
+      onSaved: _onNameSaved,
+    );
   }
 
-  //validators
   /// Returns null if entered name is valid. Else, it returns an error
   /// message that is displayed on the TextFormField.
   String? _validateName(value) {
@@ -187,6 +180,51 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return 'Please provide a value';
     }
     return null;
+  }
+
+  void _onNameSaved(value) {
+    if (value != null) {
+      _editedProduct = Product(
+          id: _editedProduct.id,
+          name: value,
+          description: _editedProduct.description,
+          price: _editedProduct.price,
+          imageUrl: _editedProduct.imageUrl,
+          isFavorite: _editedProduct.isFavorite);
+    }
+  }
+}
+
+class PriceTextField extends StatelessWidget {
+  const PriceTextField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: const InputDecoration(
+          labelText: "Price", errorStyle: kErrorTextStyle),
+      textInputAction: TextInputAction.next,
+      keyboardType: TextInputType.number,
+      focusNode: EditProductScreen.priceFocusNode,
+      validator: _validatePrice,
+      onFieldSubmitted: (_) {
+        FocusScope.of(context)
+            .requestFocus(EditProductScreen.descriptionFocusNode);
+      },
+      onSaved: _onPriceSaved,
+    );
+  }
+
+  void _onPriceSaved(value) {
+    if (value != null) {
+      _editedProduct = Product(
+          id: _editedProduct.id,
+          name: _editedProduct.name,
+          description: _editedProduct.description,
+          price: double.parse(value),
+          imageUrl: _editedProduct.imageUrl,
+          isFavorite: _editedProduct.isFavorite);
+    }
   }
 
   /// Returns null if ented price is valid. Else, it returns an error
@@ -203,45 +241,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     return null;
   }
+}
 
-  /// Returns null if entered image URL is valid. Else, it returns an error
-  /// message that is displayed on the TextFormField.
-  String? _validateImageUrl(value) {
-    if (value == null || value.isEmpty) {
-      return 'Please provide a valid image url.';
-    } else if (!value.startsWith('http') && !value.startsWith('https')) {
-      return 'Please provide a valid image url.';
-    } else if (!value.endsWith('.png') &&
-        !value.endsWith('.jpg') &&
-        !value.endsWith('.jpeg')) {
-      return 'Please provide a valid image url.';
-    }
-    return null;
-  }
+class DescriptionTextField extends StatelessWidget {
+  const DescriptionTextField({
+    Key? key,
+  }) : super(key: key);
 
-  // savers
-  void _onNameSaved(value) {
-    if (value != null) {
-      _editedProduct = Product(
-          id: _editedProduct.id,
-          name: value,
-          description: _editedProduct.description,
-          price: _editedProduct.price,
-          imageUrl: _editedProduct.imageUrl,
-          isFavorite: _editedProduct.isFavorite);
-    }
-  }
-
-  void _onPriceSaved(value) {
-    if (value != null) {
-      _editedProduct = Product(
-          id: _editedProduct.id,
-          name: _editedProduct.name,
-          description: _editedProduct.description,
-          price: double.parse(value),
-          imageUrl: _editedProduct.imageUrl,
-          isFavorite: _editedProduct.isFavorite);
-    }
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      maxLines: 3,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+          labelText: "Description", errorStyle: kErrorTextStyle),
+      focusNode: EditProductScreen.descriptionFocusNode,
+      onSaved: _onDescriptionSaved,
+    );
   }
 
   void _onDescriptionSaved(value) {
@@ -252,6 +268,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
         price: _editedProduct.price,
         imageUrl: _editedProduct.imageUrl,
         isFavorite: _editedProduct.isFavorite);
+  }
+}
+
+class ImageUrlTextFormField extends StatelessWidget {
+  const ImageUrlTextFormField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: _validateImageUrl,
+      textInputAction: TextInputAction.done,
+      keyboardType: TextInputType.url,
+      decoration: const InputDecoration(
+          labelText: "Image URL", errorStyle: kErrorTextStyle),
+      controller: EditProductScreen._imageUrlController,
+      focusNode: EditProductScreen.imageUrlFocusNode,
+      onFieldSubmitted: (_) => _saveForm(), // when the done key is pressed
+      onSaved: _onImageUrlSaved,
+    );
   }
 
   void _onImageUrlSaved(value) {

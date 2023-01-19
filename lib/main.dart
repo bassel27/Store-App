@@ -12,7 +12,7 @@ import 'package:store_app/screens/settings_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
-
+//TODO: use something else except double for monetary values
 void main() {
   runApp(MyApp());
 }
