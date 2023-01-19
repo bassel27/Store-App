@@ -9,11 +9,6 @@ class EditProductScreen extends StatefulWidget {
   final _imageUrlFocusNode = FocusNode();
   static const route = "/settings/edit_products_screen";
 
-  @override
-  State<EditProductScreen> createState() => _EditProductScreenState();
-}
-
-class _EditProductScreenState extends State<EditProductScreen> {
   /// Controller for accessing the input to add the image preview  before
   /// submission.
   final _imageUrlController = TextEditingController();
@@ -21,6 +16,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   /// Key for accessing all the validators and savers of all TextFormFields.
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  State<EditProductScreen> createState() => _EditProductScreenState();
+}
+
+class _EditProductScreenState extends State<EditProductScreen> {
   /// The new product.
   Product _editedProduct =
       Product(id: '', name: '', description: '', price: 0, imageUrl: '');
@@ -38,7 +38,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     widget._descriptionFocusNode.dispose();
     widget._imageUrlFocusNode.dispose();
     widget._imageUrlFocusNode.removeListener(_updateImageUrl);
-    _imageUrlController.dispose();
+    widget._imageUrlController.dispose();
   }
 
   @override
@@ -58,7 +58,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          key: _formKey,
+          key: widget._formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -104,7 +104,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         keyboardType: TextInputType.url,
                         decoration:
                             const InputDecoration(labelText: "Image URL"),
-                        controller: _imageUrlController,
+                        controller: widget._imageUrlController,
                         focusNode: widget._imageUrlFocusNode,
                         onFieldSubmitted: (_) =>
                             _saveForm(), // when the done key is pressed
@@ -128,9 +128,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
-      child: _imageUrlController.text.isEmpty
+      child: widget._imageUrlController.text.isEmpty
           ? const FittedBox(child: Text("Enter a URL"))
-          : Image.network(_imageUrlController.text, fit: BoxFit.cover),
+          : Image.network(widget._imageUrlController.text, fit: BoxFit.cover),
     );
   }
 
@@ -140,8 +140,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void _updateImageUrl() {
     // if the form field became out of focus and (it's empty or has valid url)
     if (!widget._imageUrlFocusNode.hasFocus &&
-        (_imageUrlController.text.isEmpty ||
-            _validateImageUrl(_imageUrlController.text) == null)) {
+        (widget._imageUrlController.text.isEmpty ||
+            _validateImageUrl(widget._imageUrlController.text) == null)) {
       setState(() {});
     }
   }
@@ -149,13 +149,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
   /// Runs all the validators and all the savers when the save button is pressed
   /// or the keyboard's done button is pressed in the image URL text field.
   void _saveForm() {
-    final areInputsValid =
-        _formKey.currentState!.validate(); // this runs all the validators
+    final areInputsValid = widget._formKey.currentState!
+        .validate(); // this runs all the validators
 
     if (areInputsValid) {
-      _formKey.currentState!.save(); // this runs all the savers
+      widget._formKey.currentState!.save(); // this runs all the savers
     }
-    print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
+    
   }
 
   //validators
