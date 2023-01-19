@@ -4,7 +4,9 @@ import '../models/product.dart';
 
 //TODO: use something else except double for monetary values
 class EditProductScreen extends StatefulWidget {
-  const EditProductScreen({super.key});
+  final _priceFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+  final _imageUrlFocusNode = FocusNode();
   static const route = "/settings/edit_products_screen";
 
   @override
@@ -12,10 +14,6 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-  final _priceFocusNode = FocusNode();
-  final _descriptionFocusNode = FocusNode();
-  final _imageUrlFocusNode = FocusNode();
-
   /// Controller for accessing the input to add the image preview  before
   /// submission.
   final _imageUrlController = TextEditingController();
@@ -30,16 +28,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void initState() {
     super.initState();
-    _imageUrlFocusNode.addListener(_updateImageUrl);
+    widget._imageUrlFocusNode.addListener(_updateImageUrl);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _priceFocusNode.dispose();
-    _descriptionFocusNode.dispose();
-    _imageUrlFocusNode.dispose();
-    _imageUrlFocusNode.removeListener(_updateImageUrl);
+    widget._priceFocusNode.dispose();
+    widget._descriptionFocusNode.dispose();
+    widget._imageUrlFocusNode.dispose();
+    widget._imageUrlFocusNode.removeListener(_updateImageUrl);
     _imageUrlController.dispose();
   }
 
@@ -49,7 +47,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: _saveForm,
+            onPressed: () {
+              _saveForm();
+            },
             icon: const Icon(Icons.save),
           ),
         ],
@@ -72,10 +72,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   decoration: const InputDecoration(labelText: "Price"),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
-                  focusNode: _priceFocusNode,
+                  focusNode: widget._priceFocusNode,
                   validator: _validatePrice,
                   onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                    FocusScope.of(context)
+                        .requestFocus(widget._descriptionFocusNode);
                   },
                   onSaved: _onPriceSaved,
                 ),
@@ -83,7 +84,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   maxLines: 3,
                   keyboardType: TextInputType.multiline,
                   decoration: const InputDecoration(labelText: "Description"),
-                  focusNode: _descriptionFocusNode,
+                  focusNode: widget._descriptionFocusNode,
                   onSaved: _onDescriptionSaved,
                 ),
                 const SizedBox(
@@ -104,7 +105,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         decoration:
                             const InputDecoration(labelText: "Image URL"),
                         controller: _imageUrlController,
-                        focusNode: _imageUrlFocusNode,
+                        focusNode: widget._imageUrlFocusNode,
                         onFieldSubmitted: (_) =>
                             _saveForm(), // when the done key is pressed
                         onSaved: _onImageUrlSaved,
@@ -138,7 +139,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   /// formfield goes out of focus).
   void _updateImageUrl() {
     // if the form field became out of focus and (it's empty or has valid url)
-    if (!_imageUrlFocusNode.hasFocus &&
+    if (!widget._imageUrlFocusNode.hasFocus &&
         (_imageUrlController.text.isEmpty ||
             _validateImageUrl(_imageUrlController.text) == null)) {
       setState(() {});
@@ -154,6 +155,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (areInputsValid) {
       _formKey.currentState!.save(); // this runs all the savers
     }
+    print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
   }
 
   //validators
