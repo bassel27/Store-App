@@ -44,15 +44,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
     widget._imageUrlController.dispose();
   }
 
+  void _onSaveButtonPress() {
+    setState(() {
+      _saveForm();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-              _saveForm();
-            },
+            onPressed: _onSaveButtonPress,
             icon: const Icon(Icons.save),
           ),
         ],
@@ -127,7 +131,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  onPressed: _saveForm,
+                  onPressed: _onSaveButtonPress,
                   child: const Text("Save"),
                 ),
               ],
