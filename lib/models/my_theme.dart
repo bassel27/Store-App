@@ -25,8 +25,12 @@ class MyTheme {
       secondary: kSecondaryColor,
       background: const Color.fromARGB(255, 233, 233, 233),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(backgroundColor: kAccentColor)),
     textTheme: TextTheme(
+      
       bodySmall: kBodySmallTestStyle.copyWith(color: Colors.black),
+      
     ),
   );
 

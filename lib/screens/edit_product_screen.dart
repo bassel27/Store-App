@@ -21,6 +21,9 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  static const TextStyle kErrorTextStyle =
+      TextStyle(fontWeight: FontWeight.w400, color: Colors.red);
+
   /// The new product.
   Product _editedProduct =
       Product(id: '', name: '', description: '', price: 0, imageUrl: '');
@@ -63,13 +66,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
             child: Column(
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(labelText: "Name"),
+                  decoration: const InputDecoration(
+                    labelText: "Name",
+                    errorStyle: kErrorTextStyle,
+                  ),
                   validator: _validateName,
                   textInputAction: TextInputAction.next,
                   onSaved: _onNameSaved,
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: "Price"),
+                  decoration: const InputDecoration(
+                      labelText: "Price", errorStyle: kErrorTextStyle),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                   focusNode: widget._priceFocusNode,
@@ -83,7 +90,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 TextFormField(
                   maxLines: 3,
                   keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(labelText: "Description"),
+                  decoration: const InputDecoration(
+                      labelText: "Description", errorStyle: kErrorTextStyle),
                   focusNode: widget._descriptionFocusNode,
                   onSaved: _onDescriptionSaved,
                 ),
@@ -102,8 +110,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         validator: _validateImageUrl,
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.url,
-                        decoration:
-                            const InputDecoration(labelText: "Image URL"),
+                        decoration: const InputDecoration(
+                            labelText: "Image URL",
+                            errorStyle: kErrorTextStyle),
                         controller: widget._imageUrlController,
                         focusNode: widget._imageUrlFocusNode,
                         onFieldSubmitted: (_) =>
@@ -112,7 +121,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                  onPressed: _saveForm,
+                  child: const Text("Save"),
+                ),
               ],
             ),
           ),
