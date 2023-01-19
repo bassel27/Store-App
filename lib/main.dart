@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             OrdersScreen.route: (ctx) => const OrdersScreen(),
             ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
             SettingsScreen.route: (ctx) => SettingsScreen(),
-            EditProductScreen.route: (ctx) => const EditProductScreen(),
+            EditProductScreen.route: (ctx) =>  EditProductScreen(),
           },
           title: 'Flutter Demo',
           home: child),
