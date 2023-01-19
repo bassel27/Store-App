@@ -155,7 +155,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (areInputsValid) {
       widget._formKey.currentState!.save(); // this runs all the savers
     }
-    
+    print("name: ${_editedProduct.name} and url: ${_editedProduct.imageUrl}");
   }
 
   //validators
@@ -198,7 +198,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return null;
   }
 
-  // saver
+  // savers
   void _onNameSaved(value) {
     if (value != null) {
       _editedProduct = Product(
@@ -234,7 +234,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _onImageUrlSaved(value) {
-    setState(() {});
+    // setState(() {});
     if (value != null) {
       _editedProduct = Product(
           id: _editedProduct.id,
