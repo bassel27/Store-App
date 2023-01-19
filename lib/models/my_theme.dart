@@ -5,6 +5,7 @@ var kPrimaryColor = const Color(0xFF00478F);
 var kPrimaryColor2 = Colors.white;
 var kSecondaryColor = const Color(0xFFCBEBF5);
 var kAccentColor = const Color(0xFF65DFF6);
+const Color kBackgroundColor = Color.fromARGB(255, 233, 233, 233);
 const TextStyle kBodySmallTestStyle =
     TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
 
@@ -23,14 +24,12 @@ class MyTheme {
     colorScheme: const ColorScheme.light().copyWith(
       primary: kPrimaryColor,
       secondary: kSecondaryColor,
-      background: const Color.fromARGB(255, 233, 233, 233),
+      background: kBackgroundColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(backgroundColor: kAccentColor)),
     textTheme: TextTheme(
-      
       bodySmall: kBodySmallTestStyle.copyWith(color: Colors.black),
-      
     ),
   );
 
