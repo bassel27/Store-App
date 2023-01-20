@@ -11,6 +11,12 @@ final _formKey = GlobalKey<FormState>();
 
 class EditProductScreen extends StatefulWidget {
   static const route = "/settings/edit_products_screen";
+
+  @override
+  State<EditProductScreen> createState() => _EditProductScreenState();
+}
+
+class _EditProductScreenState extends State<EditProductScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
@@ -18,26 +24,20 @@ class EditProductScreen extends StatefulWidget {
   /// Controller for accessing the input to add the image preview  before
   /// submission.
   final _imageUrlController = TextEditingController();
-
-  @override
-  State<EditProductScreen> createState() => _EditProductScreenState();
-}
-
-class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void initState() {
     super.initState();
-    widget._imageUrlFocusNode.addListener(_updateImageUrl);
+    _imageUrlFocusNode.addListener(_updateImageUrl);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget._priceFocusNode.dispose();
-    widget._descriptionFocusNode.dispose();
-    widget._imageUrlFocusNode.dispose();
-    widget._imageUrlFocusNode.removeListener(_updateImageUrl);
-    widget._imageUrlController.dispose();
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    _imageUrlFocusNode.dispose();
+    _imageUrlFocusNode.removeListener(_updateImageUrl);
+    _imageUrlController.dispose();
   }
 
   void _onSaveButtonPressed() {
@@ -66,9 +66,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
             child: Column(
               children: [
                 const NameTextFormField(),
-                PriceTextField(
-                    widget._priceFocusNode, widget._descriptionFocusNode),
-                DescriptionTextField(widget._descriptionFocusNode),
+                PriceTextField(_priceFocusNode, _descriptionFocusNode),
+                DescriptionTextField(_descriptionFocusNode),
                 const SizedBox(
                   height: 20,
                 ),
@@ -80,8 +79,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       width: 15,
                     ),
                     Expanded(
-                      child: ImageUrlTextFormField(widget._imageUrlFocusNode,
-                          widget._imageUrlController),
+                      child: ImageUrlTextFormField(
+                          _imageUrlFocusNode, _imageUrlController),
                     ),
                   ],
                 ),
@@ -108,9 +107,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
-      child: widget._imageUrlController.text.isEmpty
+      child: _imageUrlController.text.isEmpty
           ? const FittedBox(child: Text("Enter a URL"))
-          : Image.network(widget._imageUrlController.text, fit: BoxFit.cover),
+          : Image.network(_imageUrlController.text, fit: BoxFit.cover),
     );
   }
 
@@ -119,9 +118,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   /// formfield goes out of focus).
   void _updateImageUrl() {
     // if the form field became out of focus and (it's empty or has valid url)
-    if (!widget._imageUrlFocusNode.hasFocus &&
-        (widget._imageUrlController.text.isEmpty ||
-            _validateImageUrl(widget._imageUrlController.text) == null)) {
+    if (!_imageUrlFocusNode.hasFocus &&
+        (_imageUrlController.text.isEmpty ||
+            _validateImageUrl(_imageUrlController.text) == null)) {
       setState(() {});
     }
   }
