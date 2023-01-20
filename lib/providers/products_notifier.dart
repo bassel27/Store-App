@@ -53,6 +53,12 @@ class ProductsNotifier with ChangeNotifier {
   // If you added to the returned original list, notifyListeners won't be called.
 
   void addProduct(Product newProduct) {
+    newProduct = Product(
+        description: newProduct.description,
+        price: newProduct.price,
+        imageUrl: newProduct.imageUrl,
+        name: newProduct.name,
+        id: DateTime.now().toString());
     _products.add(newProduct);
     notifyListeners();
   }

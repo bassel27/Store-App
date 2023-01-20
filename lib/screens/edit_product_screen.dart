@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:store_app/providers/products_notifier.dart';
 
 import '../models/product.dart';
 
+//TODO: imageUrl validator check if link is valid and chekck if link contains iamge.
 /// The new product.
 Product _editedProduct =
     Product(id: '', name: '', description: '', price: 0, imageUrl: '');
@@ -43,7 +46,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void _onSaveButtonPressed() {
     setState(
         () {}); // to display image after pressing save (imageurl textfield doesn't go out of foxus on save press)
-    _saveForm();
+    _saveForm(context);
   }
 
   @override
@@ -257,7 +260,8 @@ class ImageUrlTextFormField extends StatelessWidget {
           labelText: "Image URL", errorStyle: kErrorTextStyle),
       controller: _imageUrlController,
       focusNode: _imageUrlFocusNode,
-      onFieldSubmitted: (_) => _saveForm(), // when the done key is pressed
+      onFieldSubmitted: (_) =>
+          _saveForm(context), // when the done key is pressed
       onSaved: _onImageUrlSaved,
     );
   }
@@ -293,13 +297,15 @@ String? _validateImageUrl(value) {
 
 /// Runs all the validators and all the savers when the save button is pressed
 /// or the keyboard's done button is pressed in the image URL text field.
-void _saveForm() {
+void _saveForm(BuildContext context) {
   final areInputsValid =
       _formKey.currentState!.validate(); // this runs all the validators
 
   if (areInputsValid) {
     _formKey.currentState!.save(); // this runs all the savers
+
+    Provider.of<ProductsNotifier>(context, listen: false)
+        .addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
-  print(
-      "name: ${_editedProduct.name}, price: ${_editedProduct.price} and url: ${_editedProduct.imageUrl}");
 }
