@@ -1,12 +1,13 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/my_theme.dart';
-import 'package:store_app/providers/cart_notifier.dart';
-import 'package:store_app/screens/cart_screen.dart';
-import 'package:store_app/screens/orders_screen.dart';
-import 'package:store_app/screens/products_grid_screen.dart';
-import 'package:store_app/screens/settings_screen.dart';
+
+import '../models/my_theme.dart';
+import '../providers/cart_notifier.dart';
+import '../screens/cart_screen.dart';
+import '../screens/orders_screen.dart';
+import '../screens/products_grid_screen.dart';
+import '../screens/settings_screen.dart';
 
 //TODO: replace with persistent nav bar
 class BottomNavBarScreen extends StatefulWidget {

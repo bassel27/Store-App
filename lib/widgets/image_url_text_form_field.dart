@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/validate_image_mixin.dart';
 
 import '../models/constants.dart';
+import '../models/validate_image_mixin.dart';
 import '../providers/products_notifier.dart';
 
 class ImageUrlTextFormField extends StatelessWidget with ValidateImageUrl {

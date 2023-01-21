@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/cart_notifier.dart';
+import '../providers/cart_notifier.dart';
 
 import '../models/cart_item.dart';
 

@@ -1,3 +1,4 @@
+//TODO: imageUrl validator check if link is valid and chekck if link contains iamge.
 mixin ValidateImageUrl {
   /// Returns null if entered image URL is valid. Else, it returns an error
   /// message that is displayed on the TextFormField.

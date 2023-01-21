@@ -14,6 +14,10 @@ class ProductsNotifier with ChangeNotifier {
     return _editedProduct;
   }
 
+  set editedProduct(Product product) {
+    _editedProduct = product;
+  }
+
   set editedProductId(String id) {
     _editedProduct = Product(
         id: id,

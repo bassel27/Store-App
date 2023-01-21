@@ -37,7 +37,9 @@ class ProductsManagerScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, EditProductScreen.route, arguments: products[i]);
+                      },
                       icon: Icon(
                         Icons.edit,
                         color: Theme.of(context).colorScheme.primary,

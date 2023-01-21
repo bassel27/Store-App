@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/validate_image_mixin.dart';
-import 'package:store_app/providers/products_notifier.dart';
 
+import '../models/product.dart';
+import '../models/validate_image_mixin.dart';
+import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';
 import '../widgets/image_url_text_form_field.dart';
 import '../widgets/name_text_form_field.dart';
 import '../widgets/price_text_form_field.dart';
-
-//TODO: imageUrl validator check if link is valid and chekck if link contains iamge.
 
 class EditProductScreen extends StatefulWidget {
   static const route = "/settings/edit_products_screen";
@@ -22,6 +21,7 @@ class _EditProductScreenState extends State<EditProductScreen>
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
+  bool _firstTime = true;
 
   /// Key for accessing all the validators and savers of all TextFormFields.
   final _formKey = GlobalKey<FormState>();
@@ -33,6 +33,18 @@ class _EditProductScreenState extends State<EditProductScreen>
   void initState() {
     super.initState();
     _imageUrlFocusNode.addListener(_updateImageUrl);
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_firstTime) {
+      if (ModalRoute.of(context)?.settings.arguments != null) {
+        Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
+            ModalRoute.of(context)?.settings.arguments as Product;
+      }
+      _firstTime = false;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -142,11 +154,11 @@ class _EditProductScreenState extends State<EditProductScreen>
     if (areInputsValid) {
       _formKey.currentState!.save(); // this runs all the savers
 
-      Provider.of<ProductsNotifier>(context, listen: false).addProduct(
-          Provider.of<ProductsNotifier>(context, listen: false).editedProduct);
+      var productProvider =
+          Provider.of<ProductsNotifier>(context, listen: false);
+      productProvider.addProduct(productProvider.editedProduct);
 
-      var editedProduct =
-          Provider.of<ProductsNotifier>(context, listen: false).editedProduct;
+      var editedProduct = productProvider.editedProduct;
       print(editedProduct.name +
           editedProduct.price.toString() +
           editedProduct.imageUrl);
