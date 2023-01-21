@@ -9,8 +9,7 @@ class NameTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var productsProvider =
-        Provider.of<ProductsNotifier>(context, listen: false);
+    var productsProvider = Provider.of<ProductsNotifier>(context);
     return TextFormField(
       decoration: const InputDecoration(
         labelText: "Name",
@@ -25,7 +24,8 @@ class NameTextFormField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       onSaved: (value) {
         if (value != null) {
-          productsProvider.editedProductName = value;
+          productsProvider.editedProduct =
+              productsProvider.editedProduct.copyWith(name: value);
         }
       },
     );

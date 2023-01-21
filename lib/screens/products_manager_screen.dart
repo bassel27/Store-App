@@ -25,20 +25,20 @@ class ProductsManagerScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: products.length,
         itemBuilder: (_, i) {
-          Product currentProduct = products[i];
           return Column(
             children: [
               ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(currentProduct.imageUrl),
+                  backgroundImage: NetworkImage(products[i].imageUrl),
                 ),
-                title: Text(currentProduct.name),
+                title: Text(products[i].name),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, EditProductScreen.route, arguments: products[i]);
+                        Navigator.pushNamed(context, EditProductScreen.route,
+                            arguments: products[i]);
                       },
                       icon: Icon(
                         Icons.edit,

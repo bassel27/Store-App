@@ -7,62 +7,16 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  Product _editedProduct =
-      Product(id: '', name: '', description: '', price: 0, imageUrl: '');
-
-  Product get editedProduct {
-    return _editedProduct;
-  }
+  Product _editedProduct = Product(
+      id: 'sart', name: 'start', description: 'start', price: 0, imageUrl: '');
 
   set editedProduct(Product product) {
     _editedProduct = product;
+    notifyListeners();
   }
 
-  set editedProductId(String id) {
-    _editedProduct = Product(
-        id: id,
-        name: _editedProduct.name,
-        description: _editedProduct.description,
-        price: _editedProduct.price,
-        imageUrl: _editedProduct.imageUrl);
-  }
-
-  set editedProductName(String name) {
-    _editedProduct = Product(
-        id: _editedProduct.id,
-        name: name,
-        description: _editedProduct.description,
-        price: _editedProduct.price,
-        imageUrl: _editedProduct.imageUrl);
-  }
-
-  set editedProductPrice(double price) {
-    _editedProduct = Product(
-        id: _editedProduct.id,
-        name: _editedProduct.name,
-        description: _editedProduct.description,
-        price: price,
-        imageUrl: _editedProduct.imageUrl);
-  }
-
-  set editedProductDescription(String? description) {
-    if (description != null) {
-      _editedProduct = Product(
-          id: _editedProduct.id,
-          name: _editedProduct.name,
-          description: description,
-          price: _editedProduct.price,
-          imageUrl: _editedProduct.imageUrl);
-    }
-  }
-
-  set editedProductImageUrl(String imageUrl) {
-    _editedProduct = Product(
-        id: _editedProduct.id,
-        name: _editedProduct.name,
-        description: _editedProduct.description,
-        price: _editedProduct.price,
-        imageUrl: imageUrl);
+  Product get editedProduct {
+    return _editedProduct;
   }
 
   List<Product> get products {

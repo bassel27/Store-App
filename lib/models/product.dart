@@ -20,6 +20,7 @@ class Product {
       String? description,
       double? price,
       String? imageUrl}) {
+    
     return Product(
         id: id ?? this.id,
         name: name ?? this.name,

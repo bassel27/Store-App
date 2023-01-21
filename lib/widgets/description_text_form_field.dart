@@ -9,6 +9,7 @@ class DescriptionTextFormField extends StatelessWidget {
   const DescriptionTextFormField(this._descriptionFocusNode);
   @override
   Widget build(BuildContext context) {
+    var productsProvider = Provider.of<ProductsNotifier>(context);
     return TextFormField(
         maxLines: 3,
         keyboardType: TextInputType.multiline,
@@ -16,8 +17,7 @@ class DescriptionTextFormField extends StatelessWidget {
             labelText: "Description", errorStyle: kErrorTextStyle),
         focusNode: _descriptionFocusNode,
         onSaved: (value) {
-          Provider.of<ProductsNotifier>(context, listen: false)
-              .editedProductDescription = value;
+          productsProvider.editedProduct=productsProvider.editedProduct.copyWith(description: value);
         });
   }
 }

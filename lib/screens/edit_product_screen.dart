@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/product.dart';
 import '../models/validate_image_mixin.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';
@@ -21,7 +20,7 @@ class _EditProductScreenState extends State<EditProductScreen>
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
-  bool _firstTime = true;
+  final bool _firstTime = true;
 
   /// Key for accessing all the validators and savers of all TextFormFields.
   final _formKey = GlobalKey<FormState>();
@@ -35,17 +34,18 @@ class _EditProductScreenState extends State<EditProductScreen>
     _imageUrlFocusNode.addListener(_updateImageUrl);
   }
 
-  @override
-  void didChangeDependencies() {
-    if (_firstTime) {
-      if (ModalRoute.of(context)?.settings.arguments != null) {
-        Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
-            ModalRoute.of(context)?.settings.arguments as Product;
-      }
-      _firstTime = false;
-    }
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   if (_firstTime) {
+  //     if (ModalRoute.of(context)?.settings.arguments != null) {
+  //       print("5555555");
+  //       Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
+  //           ModalRoute.of(context)?.settings.arguments as Product;
+  //     }
+  //     _firstTime = false;
+  //   }
+  //   super.didChangeDependencies();
+  // }
 
   @override
   void dispose() {
@@ -156,9 +156,9 @@ class _EditProductScreenState extends State<EditProductScreen>
 
       var productProvider =
           Provider.of<ProductsNotifier>(context, listen: false);
-      productProvider.addProduct(productProvider.editedProduct);
-
       var editedProduct = productProvider.editedProduct;
+      productProvider.addProduct(editedProduct);
+
       print(editedProduct.name +
           editedProduct.price.toString() +
           editedProduct.imageUrl);

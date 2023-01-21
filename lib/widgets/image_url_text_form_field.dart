@@ -16,6 +16,8 @@ class ImageUrlTextFormField extends StatelessWidget with ValidateImageUrl {
 
   @override
   Widget build(BuildContext context) {
+    var productsProvider = Provider.of<ProductsNotifier>(context);
+
     return TextFormField(
       validator: validateImageUrl,
       textInputAction: TextInputAction.done,
@@ -30,8 +32,7 @@ class ImageUrlTextFormField extends StatelessWidget with ValidateImageUrl {
       onSaved: (value) {
         // setState(() {});
         if (value != null) {
-          Provider.of<ProductsNotifier>(context, listen: false)
-              .editedProductImageUrl = value;
+          productsProvider.editedProduct = productsProvider.editedProduct.copyWith(imageUrl: value);
         }
       },
     );
