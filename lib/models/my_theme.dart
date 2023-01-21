@@ -30,6 +30,7 @@ class MyTheme {
         style: ElevatedButton.styleFrom(backgroundColor: kAccentColor)),
     textTheme: TextTheme(
       bodySmall: kBodySmallTestStyle.copyWith(color: Colors.black),
+      
     ),
   );
 
