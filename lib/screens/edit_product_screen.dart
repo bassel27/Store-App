@@ -158,10 +158,9 @@ class _EditProductScreenState extends State<EditProductScreen>
           Provider.of<ProductsNotifier>(context, listen: false);
       var editedProduct = productProvider.editedProduct;
       productProvider.addProduct(editedProduct);
-
-      print(editedProduct.name +
-          editedProduct.price.toString() +
-          editedProduct.imageUrl);
+      productProvider.resetEditedProduct();
+      print(
+          "summary:${editedProduct.name}${editedProduct.price}${editedProduct.imageUrl}");
       Navigator.of(context).pop();
     }
   }

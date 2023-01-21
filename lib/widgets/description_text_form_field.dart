@@ -9,7 +9,7 @@ class DescriptionTextFormField extends StatelessWidget {
   const DescriptionTextFormField(this._descriptionFocusNode);
   @override
   Widget build(BuildContext context) {
-    var productsProvider = Provider.of<ProductsNotifier>(context);
+    var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);
     return TextFormField(
         maxLines: 3,
         keyboardType: TextInputType.multiline,

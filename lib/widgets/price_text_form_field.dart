@@ -10,7 +10,8 @@ class PriceTextFormField extends StatelessWidget {
   final FocusNode descriptionFocusNode;
   @override
   Widget build(BuildContext context) {
-    var productsProvider = Provider.of<ProductsNotifier>(context);
+    var productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
     return TextFormField(
       decoration: const InputDecoration(
           labelText: "Price", errorStyle: kErrorTextStyle),
@@ -23,8 +24,8 @@ class PriceTextFormField extends StatelessWidget {
       },
       onSaved: (value) {
         if (value != null) {
-          productsProvider.editedProduct = productsProvider.editedProduct.copyWith(price: double.parse(value));
-          
+          productsProvider.editedProduct = productsProvider.editedProduct
+              .copyWith(price: double.parse(value));
         }
       },
     );

@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  Product _editedProduct = Product(
-      id: 'sart', name: 'start', description: 'start', price: 0, imageUrl: '');
+  Product _editedProduct =
+      Product(id: '', name: '', description: '', price: 0, imageUrl: '');
 
   set editedProduct(Product product) {
     _editedProduct = product;
@@ -17,6 +17,13 @@ class ProductsNotifier with ChangeNotifier {
 
   Product get editedProduct {
     return _editedProduct;
+  }
+
+  /// Called when you're done with editing or adding a new product.
+  void resetEditedProduct() {
+    _editedProduct =
+        Product(id: '', name: '', description: '', price: 0, imageUrl: '');
+    notifyListeners();
   }
 
   List<Product> get products {
