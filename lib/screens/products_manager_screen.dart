@@ -8,16 +8,21 @@ import '../models/product.dart';
 class ProductsManagerScreen extends StatelessWidget {
   const ProductsManagerScreen({super.key});
   static const route = "/product_manager_screen";
+
   @override
   Widget build(BuildContext context) {
-    List<Product> products = Provider.of<ProductsNotifier>(context).products;
+    var productsProvider = Provider.of<ProductsNotifier>(context);
+    // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
+    List<Product> products = productsProvider.products;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Products Manager"),
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, EditProductScreen.route);
+                Navigator.pushNamed(context, EditProductScreen.route)
+                    .then((_) => productsProvider.resetEditedProduct());
               },
               icon: const Icon(Icons.add)),
         ],
@@ -38,7 +43,8 @@ class ProductsManagerScreen extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         Navigator.pushNamed(context, EditProductScreen.route,
-                            arguments: products[i]);
+                                arguments: products[i])
+                            .then((_) => productsProvider.resetEditedProduct());
                       },
                       icon: Icon(
                         Icons.edit,

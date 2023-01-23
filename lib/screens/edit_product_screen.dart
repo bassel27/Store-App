@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/product.dart';
 import '../models/validate_image_mixin.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';
@@ -20,13 +21,16 @@ class _EditProductScreenState extends State<EditProductScreen>
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
-  final bool _firstTime = true;
+  bool _firstTime = true;
 
   /// Key for accessing all the validators and savers of all TextFormFields.
   final _formKey = GlobalKey<FormState>();
 
   /// Controller to access the input display image preview before submission.
-  final _imageUrlController = TextEditingController();
+  late final _imageUrlController = TextEditingController(
+      text: Provider.of<ProductsNotifier>(context, listen: false)
+          .editedProduct
+          .imageUrl);
 
   @override
   void initState() {
@@ -34,18 +38,17 @@ class _EditProductScreenState extends State<EditProductScreen>
     _imageUrlFocusNode.addListener(_updateImageUrl);
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_firstTime) {
-  //     if (ModalRoute.of(context)?.settings.arguments != null) {
-  //       print("5555555");
-  //       Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
-  //           ModalRoute.of(context)?.settings.arguments as Product;
-  //     }
-  //     _firstTime = false;
-  //   }
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void didChangeDependencies() {
+    if (_firstTime) {
+      if (ModalRoute.of(context)?.settings.arguments != null) {
+        Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
+            ModalRoute.of(context)?.settings.arguments as Product;
+      }
+      _firstTime = false;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {

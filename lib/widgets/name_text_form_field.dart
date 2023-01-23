@@ -9,8 +9,11 @@ class NameTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);
+    var productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
+
     return TextFormField(
+      initialValue: productsProvider.editedProduct.name,
       decoration: const InputDecoration(
         labelText: "Name",
         errorStyle: kErrorTextStyle,

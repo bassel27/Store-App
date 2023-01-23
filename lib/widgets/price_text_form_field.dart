@@ -13,6 +13,7 @@ class PriceTextFormField extends StatelessWidget {
     var productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     return TextFormField(
+      initialValue: productsProvider.editedProduct.price.toStringAsFixed(2),
       decoration: const InputDecoration(
           labelText: "Price", errorStyle: kErrorTextStyle),
       textInputAction: TextInputAction.next,

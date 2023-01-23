@@ -19,7 +19,7 @@ class ImageUrlTextFormField extends StatelessWidget with ValidateImageUrl {
     // this widget rebuilds when
     var productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
-
+    
     return TextFormField(
       validator: validateImageUrl,
       textInputAction: TextInputAction.done,
