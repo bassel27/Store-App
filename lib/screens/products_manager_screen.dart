@@ -39,37 +39,7 @@ class ProductsManagerScreen extends StatelessWidget {
                 valueKeyId: products[i].id,
                 onDismissed: (_) =>
                     onProductDelete(products[i], productsProvider),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(products[i].imageUrl),
-                  ),
-                  title: Text(products[i].name),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, EditProductScreen.route,
-                                  arguments: products[i])
-                              .then(
-                                  (_) => productsProvider.resetEditedProduct());
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () =>
-                            onProductDelete(products[i], productsProvider),
-                        icon: Icon(
-                          Icons.delete,
-                          color: Theme.of(context).errorColor,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                child: _ProductListTile(products[i]),
               ),
               const Divider(),
             ],
@@ -78,8 +48,48 @@ class ProductsManagerScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  void onProductDelete(Product product, ProductsNotifier productsProvider) {
-    productsProvider.deleteProduct(product.id);
+class _ProductListTile extends StatelessWidget {
+  final Product product;
+  const _ProductListTile(this.product);
+  @override
+  Widget build(BuildContext context) {
+    var productsProvider = Provider.of<ProductsNotifier>(context);
+
+    List<Product> products = productsProvider.products;
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(product.imageUrl),
+      ),
+      title: Text(product.name),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, EditProductScreen.route,
+                      arguments: product)
+                  .then((_) => productsProvider.resetEditedProduct());
+            },
+            icon: Icon(
+              Icons.edit,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          IconButton(
+            onPressed: () => onProductDelete(product, productsProvider),
+            icon: Icon(
+              Icons.delete,
+              color: Theme.of(context).errorColor,
+            ),
+          )
+        ],
+      ),
+    );
   }
+}
+
+void onProductDelete(Product product, ProductsNotifier productsProvider) {
+  productsProvider.deleteProduct(product.id);
 }

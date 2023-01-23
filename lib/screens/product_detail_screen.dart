@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/models/constants.dart';
 import 'package:store_app/models/my_theme.dart';
+import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/text_aligned_left.dart';
 
 import '../models/product.dart';
@@ -32,7 +34,7 @@ class ProductDetailScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                TextAlignedLeft("EGP ${product.price.toString()}"),
+                CurrencyAndPriceText(price: product.price),
                 Text("Descripton: ${product.description}"),
               ],
             ),
