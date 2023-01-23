@@ -156,14 +156,15 @@ class _EditProductScreenState extends State<EditProductScreen>
 
     if (areInputsValid) {
       _formKey.currentState!.save(); // this runs all the savers
-
       var productProvider =
           Provider.of<ProductsNotifier>(context, listen: false);
       var editedProduct = productProvider.editedProduct;
-      productProvider.addProduct(editedProduct);
-      productProvider.resetEditedProduct();
-      print(
-          "summary:${editedProduct.name}${editedProduct.price}${editedProduct.imageUrl}");
+      if (editedProduct.id.isEmpty) {
+        //if new product without an id
+        productProvider.addProduct(editedProduct);
+      } else {
+        productProvider.updateProduct(editedProduct.id, editedProduct);
+      }
       Navigator.of(context).pop();
     }
   }

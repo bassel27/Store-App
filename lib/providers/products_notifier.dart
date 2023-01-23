@@ -48,6 +48,14 @@ class ProductsNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+  updateProduct(String id, Product newProduct) {
+    final index = _products.indexWhere((element) => element.id == id);
+    if (index >= 0) {
+      _products[index] = newProduct;
+      notifyListeners();
+    }
+  }
+
   final List<Product> _products = [
     Product(
       id: 'p1',
