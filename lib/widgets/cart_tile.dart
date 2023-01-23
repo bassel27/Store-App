@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/cart_notifier.dart';
+import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/cart_item.dart';
+import '../providers/cart_notifier.dart';
 
 class CartTile extends StatelessWidget {
   final CartItem cartItem;
@@ -11,21 +12,12 @@ class CartTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CartNotifier>(
-      builder: (context, cart, child) => Dismissible(
-        onDismissed: (_) {
-          cart.removeItem(cartItem.id);
-        },
-        key: ValueKey(cartItem.id),
-        background: Container(
-          padding: const EdgeInsets.only(right: 15),
-          color: Theme.of(context).errorColor,
-          child: const Align(
-              alignment: Alignment.centerRight, child: Icon(Icons.delete)),
-        ),
-        direction: DismissDirection.endToStart,
-        child: child as Widget,
-      ),
+    return MyDismissible(
+      valueKeyId: cartItem.id,
+      onDismissed: (_) {
+        var cart = Provider.of<CartNotifier>(context, listen: false);
+        cart.removeItem(cartItem.id);
+      },
       child: Container(
         decoration: const BoxDecoration(
           border: Border(

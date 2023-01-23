@@ -7,6 +7,7 @@ import 'package:store_app/widgets/text_aligned_left.dart';
 
 import '../models/product.dart';
 import '../providers/product_notifier.dart';
+import '../models/constants.dart';
 
 double kPaddingValue = 50;
 
@@ -42,20 +43,8 @@ class ProductGridTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 6.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontWeight: FontWeight.w300, fontSize: 13),
-                      children: [
-                        const TextSpan(text: "EGP "),
-                        TextSpan(
-                            text: product.price.toString(),
-                            style: Theme.of(context).textTheme.bodySmall),
-                      ],
-                    ),
-                  ),
+                  child: CurrencyAndPriceText(
+                      currency: kCurrency, price: product.price),
                 ),
               ),
               Expanded(
@@ -78,6 +67,34 @@ class ProductGridTile extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CurrencyAndPriceText extends StatelessWidget {
+  const CurrencyAndPriceText({
+    Key? key,
+    required this.currency,
+    required this.price,
+  }) : super(key: key);
+  final String currency;
+  final double price;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context)
+            .textTheme
+            .bodySmall!
+            .copyWith(fontWeight: FontWeight.w300, fontSize: 13),
+        children: [
+          TextSpan(text: currency),
+          TextSpan(
+              text: price.toString(),
+              style: Theme.of(context).textTheme.bodySmall),
+        ],
       ),
     );
   }
