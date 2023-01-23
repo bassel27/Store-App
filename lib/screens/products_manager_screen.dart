@@ -11,9 +11,10 @@ class ProductsManagerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var productsProvider = Provider.of<ProductsNotifier>(context);
+    var productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
     // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
-    List<Product> products = productsProvider.products;
+    List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
     return Scaffold(
       appBar: AppBar(

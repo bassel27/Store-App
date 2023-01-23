@@ -20,10 +20,9 @@ class ProductsNotifier with ChangeNotifier {
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
-    
     _editedProduct =
         Product(id: '', name: '', description: '', price: 0, imageUrl: '');
-    
+    notifyListeners();
   }
 
   List<Product> get products {
