@@ -11,10 +11,9 @@ class ProductsManagerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var productsProvider =
-        Provider.of<ProductsNotifier>(context, listen: false);
-    // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
-    List<Product> products = Provider.of<ProductsNotifier>(context).products;
+    var productsProvider = Provider.of<ProductsNotifier>(context);
+
+    List<Product> products = productsProvider.products;
 
     return Scaffold(
       appBar: AppBar(
@@ -22,8 +21,9 @@ class ProductsManagerScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, EditProductScreen.route)
-                    .then((_) => productsProvider.resetEditedProduct());
+                Navigator.pushNamed(context, EditProductScreen.route).then(
+                    (_) => productsProvider
+                        .resetEditedProduct()); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
               },
               icon: const Icon(Icons.add)),
         ],
@@ -32,6 +32,7 @@ class ProductsManagerScreen extends StatelessWidget {
         itemCount: products.length,
         itemBuilder: (_, i) {
           return Column(
+            key: ValueKey(products[i].id),
             children: [
               ListTile(
                 leading: CircleAvatar(
@@ -53,11 +54,14 @@ class ProductsManagerScreen extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.delete,
-                          color: Theme.of(context).errorColor,
-                        ))
+                      onPressed: () {
+                        productsProvider.deleteProduct(products[i].id);
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).errorColor,
+                      ),
+                    )
                   ],
                 ),
               ),
