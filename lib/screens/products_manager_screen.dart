@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
+import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/product.dart';
 
@@ -34,35 +35,40 @@ class ProductsManagerScreen extends StatelessWidget {
           return Column(
             key: ValueKey(products[i].id),
             children: [
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(products[i].imageUrl),
-                ),
-                title: Text(products[i].name),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, EditProductScreen.route,
-                                arguments: products[i])
-                            .then((_) => productsProvider.resetEditedProduct());
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Theme.of(context).colorScheme.primary,
+              MyDismissible(
+                valueKeyId: products[i].id,
+                onDismissed: (_) =>
+                    onProductDelete(products[i], productsProvider),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(products[i].imageUrl),
+                  ),
+                  title: Text(products[i].name),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, EditProductScreen.route,
+                                  arguments: products[i])
+                              .then(
+                                  (_) => productsProvider.resetEditedProduct());
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        productsProvider.deleteProduct(products[i].id);
-                      },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).errorColor,
-                      ),
-                    )
-                  ],
+                      IconButton(
+                        onPressed: () =>
+                            onProductDelete(products[i], productsProvider),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).errorColor,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               const Divider(),
@@ -71,5 +77,9 @@ class ProductsManagerScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void onProductDelete(Product product, ProductsNotifier productsProvider) {
+    productsProvider.deleteProduct(product.id);
   }
 }
