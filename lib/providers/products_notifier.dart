@@ -2,25 +2,20 @@
 //Using a mixin is like extending another class.
 //The difference is that you merge some properties and methods from that class
 // to use in your class, but your class doesn't become an instance of that class.
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  Product _editedProduct =
+  Product editedProduct =
       Product(id: '', name: '', description: '', price: 0, imageUrl: '');
-
-  set editedProduct(Product product) {
-    _editedProduct = product;
-  }
-
-  Product get editedProduct {
-    return _editedProduct;
-  }
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
-    _editedProduct =
+    editedProduct =
         Product(id: '', name: '', description: '', price: 0, imageUrl: '');
     notifyListeners();
   }
@@ -29,23 +24,42 @@ class ProductsNotifier with ChangeNotifier {
     return [..._products];
   }
 
+  // Returns a copy so that the only way to add a
+  // product is through our method which calls notifyListeners().
+  // If you added to the returned original list, notifyListeners won't be called.
   List<Product> get favoriteProducts {
     return [..._products].where((product) => product.isFavorite).toList();
   }
 
-  // Returns a copy so that the only way to add a
-  // product is through our method which calls notifyListeners().
-  // If you added to the returned original list, notifyListeners won't be called.
+  /// Adds the new product to the end of the list of products.
+  Future<void> addProduct(Product newProduct) {
+    return addProductByIndex(newProduct, _products.length - 1);
+  }
 
-  void addProduct(Product newProduct) {
-    newProduct = Product(
-        description: newProduct.description,
-        price: newProduct.price,
-        imageUrl: newProduct.imageUrl,
-        name: newProduct.name,
-        id: DateTime.now().toString());
-    _products.add(newProduct);
-    notifyListeners();
+  /// Inserts the new product at a specific index in the list of products.
+  Future<void> addProductByIndex(Product newProduct, int index) {
+    final url = Uri.parse(
+        'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
+    return http
+        .post(url,
+            body: json.encode({
+              "title": newProduct.name,
+              "description": newProduct.description,
+              "imageUrl": newProduct.imageUrl,
+              "price": newProduct.price,
+              "isFavorite": newProduct.isFavorite,
+            }))
+        .then((response) {
+      newProduct = Product(
+          description: newProduct.description,
+          price: newProduct.price,
+          imageUrl: newProduct.imageUrl,
+          name: newProduct.name,
+          id: json.decode(response.body)["name"]);
+      _products.insert(index, newProduct);
+
+      notifyListeners();
+    });
   }
 
   updateProduct(String id, Product newProduct) {
@@ -55,10 +69,19 @@ class ProductsNotifier with ChangeNotifier {
       notifyListeners();
     }
   }
-  /// Deletes a product from the products list by id.
-  void deleteProduct(String productId) {
-    _products.removeWhere((product) => product.id == productId);
+
+  /// Deletes a product from the products list by id and returns its index.
+  int deleteProduct(String productId) {
+    int index = -1;
+    for (int i = 0; i < _products.length; i++) {
+      if (_products[i].id == productId) {
+        index = i;
+        _products.removeAt(index);
+      }
+    }
+
     notifyListeners();
+    return index;
   }
 
   final List<Product> _products = [

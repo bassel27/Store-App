@@ -22,6 +22,7 @@ class _EditProductScreenState extends State<EditProductScreen>
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
   bool _firstTime = true;
+  var _isLoading = false;
 
   /// Key for accessing all the validators and savers of all TextFormFields.
   final _formKey = GlobalKey<FormState>();
@@ -72,48 +73,54 @@ class _EditProductScreenState extends State<EditProductScreen>
         ],
         title: const Text("Edit Product"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const NameTextFormField(),
-                PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
-                DescriptionTextFormField(_descriptionFocusNode),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    imageContainer(),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: ImageUrlTextFormField(
-                        imageUrlFocusNode: _imageUrlFocusNode,
-                        imageUrlController: _imageUrlController,
-                        saveFormFunction: _saveForm,
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const NameTextFormField(),
+                      PriceTextFormField(
+                          _priceFocusNode, _descriptionFocusNode),
+                      DescriptionTextFormField(_descriptionFocusNode),
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                  ],
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          imageContainer(),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: ImageUrlTextFormField(
+                              imageUrlFocusNode: _imageUrlFocusNode,
+                              imageUrlController: _imageUrlController,
+                              saveFormFunction: _saveForm,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder()),
+                        onPressed: _onSaveButtonPressed,
+                        child: const Text("Save"),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  onPressed: _onSaveButtonPressed,
-                  child: const Text("Save"),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -153,19 +160,45 @@ class _EditProductScreenState extends State<EditProductScreen>
   void _saveForm() {
     final areInputsValid =
         _formKey.currentState!.validate(); // this runs all the validators
-
     if (areInputsValid) {
       _formKey.currentState!.save(); // this runs all the savers
+      setState(() {
+        _isLoading = true;
+      });
       var productProvider =
           Provider.of<ProductsNotifier>(context, listen: false);
       var editedProduct = productProvider.editedProduct;
       if (editedProduct.id.isEmpty) {
         //if new product without an id
-        productProvider.addProduct(editedProduct);
+        productProvider.addProduct(editedProduct).catchError((error) {
+          return   showDialog(  // showDialog's Future overwrites catchError's future
+            context: context,
+            builder: ((context) => AlertDialog(
+                  title: const Text("An error occurred"),
+                  content: const Text("Something went wrong"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();  // pop alert dialog //showDialog's future is resolved on popping
+                        },
+                        child: const Text("Okay"))
+                  ],
+                )),
+          );
+        }).then((_) {
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.of(context).pop();  // pop EditProductScreen
+        });
       } else {
+        // to be fixed
         productProvider.updateProduct(editedProduct.id, editedProduct);
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();  // pop EditProductScreen
       }
-      Navigator.of(context).pop();
     }
   }
 }

@@ -14,7 +14,7 @@ class ProductsManagerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var productsProvider = Provider.of<ProductsNotifier>(context);
 
-    List<Product> products = productsProvider.products;
+    List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,8 +37,7 @@ class ProductsManagerScreen extends StatelessWidget {
             children: [
               MyDismissible(
                 valueKeyId: products[i].id,
-                onDismissed: (_) =>
-                    onProductDelete(products[i], productsProvider),
+                onDismissed: (_) => onProductDelete(products[i], context),
                 child: _ProductListTile(products[i]),
               ),
               const Divider(),
@@ -78,7 +77,7 @@ class _ProductListTile extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => onProductDelete(product, productsProvider),
+            onPressed: () => onProductDelete(product, context),
             icon: Icon(
               Icons.delete,
               color: Theme.of(context).errorColor,
@@ -90,6 +89,19 @@ class _ProductListTile extends StatelessWidget {
   }
 }
 
-void onProductDelete(Product product, ProductsNotifier productsProvider) {
-  productsProvider.deleteProduct(product.id);
+void onProductDelete(Product product, BuildContext context) {
+  var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);
+  int productOldIndex = productsProvider.deleteProduct(product.id);
+  ScaffoldMessenger.of(context)
+      .hideCurrentSnackBar(); // to hide the previous snackbar if exists
+  // TODO: latest: on undo, show loading screen
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: const Text("Product deleted"),
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    action: SnackBarAction(
+        label: 'UNDO',
+        onPressed: () {
+          productsProvider.addProductByIndex(product, productOldIndex);
+        }),
+  ));
 }
