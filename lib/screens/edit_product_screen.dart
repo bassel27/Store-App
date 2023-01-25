@@ -32,7 +32,9 @@ class _EditProductScreenState extends State<EditProductScreen>
       text: Provider.of<ProductsNotifier>(context, listen: false)
           .editedProduct
           .imageUrl);
-
+  final mySizedBox = const SizedBox(
+                        height: 25,
+                      );
   @override
   void initState() {
     super.initState();
@@ -88,16 +90,12 @@ class _EditProductScreenState extends State<EditProductScreen>
                       PriceTextFormField(
                           _priceFocusNode, _descriptionFocusNode),
                       DescriptionTextFormField(_descriptionFocusNode),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      mySizedBox,
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          imageContainer(),
-                          const SizedBox(
-                            width: 15,
-                          ),
+                          _imageContainer(),
+                          mySizedBox,
                           Expanded(
                             child: ImageUrlTextFormField(
                               imageUrlFocusNode: _imageUrlFocusNode,
@@ -107,9 +105,7 @@ class _EditProductScreenState extends State<EditProductScreen>
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      mySizedBox,
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder()),
@@ -124,7 +120,7 @@ class _EditProductScreenState extends State<EditProductScreen>
     );
   }
 
-  Container imageContainer() {
+  Container _imageContainer() {
     return Container(
       height: 70,
       width: 70,
@@ -158,9 +154,8 @@ class _EditProductScreenState extends State<EditProductScreen>
   /// Runs all the validators and all the savers when the save button is pressed
   /// or the keyboard's done button is pressed in the image URL text field.
   void _saveForm() async {
-    final areInputsValid =
-        _formKey.currentState!.validate(); // this runs all the validators
-    if (areInputsValid) {
+    if (_formKey.currentState!.validate()) {
+      // this runs all the validators
       _formKey.currentState!.save(); // this runs all the savers
       setState(() {
         _isLoading = true;
@@ -169,27 +164,7 @@ class _EditProductScreenState extends State<EditProductScreen>
           Provider.of<ProductsNotifier>(context, listen: false);
       var editedProduct = productProvider.editedProduct;
       if (editedProduct.id.isEmpty) {
-        //if new product without an id
-        await productProvider
-            .addProduct(editedProduct)
-            .catchError((error) async {
-          await showDialog(
-            // showDialog's Future overwrites catchError's future
-            context: context,
-            builder: ((context) => AlertDialog(
-                  title: const Text("An error occurred"),
-                  content: const Text("Something went wrong"),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pop(); // pop alert dialog //showDialog's future is resolved on popping
-                        },
-                        child: const Text("Okay"))
-                  ],
-                )),
-          );
-        });
+        await addNewProduct(productProvider, editedProduct, context);
       } else {
         await productProvider.updateProduct(editedProduct.id, editedProduct);
       }
@@ -201,4 +176,27 @@ class _EditProductScreenState extends State<EditProductScreen>
       }
     }
   }
+}
+
+Future<void> addNewProduct(ProductsNotifier productProvider,
+    Product editedProduct, BuildContext context) async {
+  //if new product without an id
+  await productProvider.addProduct(editedProduct).catchError((error) async {
+    await showDialog(
+      // showDialog's Future overwrites catchError's future
+      context: context,
+      builder: ((context) => AlertDialog(
+            title: const Text("An error occurred"),
+            content: const Text("Something went wrong"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pop(); // pop alert dialog //showDialog's future is resolved on popping
+                  },
+                  child: const Text("Okay"))
+            ],
+          )),
+    );
+  });
 }

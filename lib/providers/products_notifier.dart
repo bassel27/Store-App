@@ -58,15 +58,15 @@ class ProductsNotifier with ChangeNotifier {
     }
   }
 
-  // TODO: handle error
   /// Adds the new product to the end of the list of products.
   Future<void> addProduct(Product newProduct) {
+    // TODO: handle error
     return addProductByIndex(newProduct, _products.length);
   }
 
-  // TODO: handle error
   /// Inserts the new product at a specific index in the list of products.
   Future<void> addProductByIndex(Product newProduct, int index) async {
+    // TODO: handle error
     // async returns a future automatically
     final response = await http.post(productsUrl,
         body: json.encode({
