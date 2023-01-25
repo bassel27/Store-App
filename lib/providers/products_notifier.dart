@@ -10,8 +10,9 @@ import 'package:http/http.dart' as http;
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  final url = Uri.parse(
-      'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json');
+  final basicUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
+  final productsUrl = Uri.parse(
+      'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
   Product editedProduct =
       Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
@@ -36,7 +37,7 @@ class ProductsNotifier with ChangeNotifier {
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
     try {
-      var response = await http.get(url);
+      var response = await http.get(productsUrl);
       Map<String, dynamic> extracedData = json.decode(response.body);
       final List<Product> loadedProducts = [];
       extracedData.forEach((prodId, prodData) {
@@ -67,9 +68,7 @@ class ProductsNotifier with ChangeNotifier {
   /// Inserts the new product at a specific index in the list of products.
   Future<void> addProductByIndex(Product newProduct, int index) async {
     // async returns a future automatically
-    final url = Uri.parse(
-        'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
-    final response = await http.post(url,
+    final response = await http.post(productsUrl,
         body: json.encode({
           "title": newProduct.title,
           "description": newProduct.description,
@@ -88,9 +87,18 @@ class ProductsNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  updateProduct(String id, Product newProduct) {
+  // TODO: handle error
+  Future<void> updateProduct(String id, Product newProduct) async {
     final index = _products.indexWhere((element) => element.id == id);
     if (index >= 0) {
+      var oldProductUrl = Uri.parse("$basicUrl/products/$id.json");
+      await http.patch(oldProductUrl,
+          body: json.encode({
+            "title": newProduct.title,
+            "description": newProduct.description,
+            "imageUrl": newProduct.imageUrl,
+            "price": newProduct.price,
+          }));
       _products[index] = newProduct;
       notifyListeners();
     }

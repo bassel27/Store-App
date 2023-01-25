@@ -192,7 +192,7 @@ class _EditProductScreenState extends State<EditProductScreen>
           Navigator.of(context).pop();  // pop EditProductScreen
         });
       } else {
-        // to be fixed
+        
         productProvider.updateProduct(editedProduct.id, editedProduct);
         setState(() {
           _isLoading = false;
