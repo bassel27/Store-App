@@ -33,8 +33,8 @@ class _EditProductScreenState extends State<EditProductScreen>
           .editedProduct
           .imageUrl);
   final mySizedBox = const SizedBox(
-                        height: 25,
-                      );
+    height: 25,
+  );
   @override
   void initState() {
     super.initState();
@@ -176,27 +176,27 @@ class _EditProductScreenState extends State<EditProductScreen>
       }
     }
   }
-}
 
-Future<void> addNewProduct(ProductsNotifier productProvider,
-    Product editedProduct, BuildContext context) async {
-  //if new product without an id
-  await productProvider.addProduct(editedProduct).catchError((error) async {
-    await showDialog(
-      // showDialog's Future overwrites catchError's future
-      context: context,
-      builder: ((context) => AlertDialog(
-            title: const Text("An error occurred"),
-            content: const Text("Something went wrong"),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pop(); // pop alert dialog //showDialog's future is resolved on popping
-                  },
-                  child: const Text("Okay"))
-            ],
-          )),
-    );
-  });
+  Future<void> addNewProduct(ProductsNotifier productProvider,
+      Product editedProduct, BuildContext context) async {
+    //if new product without an id
+    await productProvider.addProduct(editedProduct).catchError((error) async {
+      await showDialog(
+        // showDialog's Future overwrites catchError's future
+        context: context,
+        builder: ((context) => AlertDialog(
+              title: const Text("An error occurred"),
+              content: const Text("Something went wrong"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop(); // pop alert dialog //showDialog's future is resolved on popping
+                    },
+                    child: const Text("Okay"))
+              ],
+            )),
+      );
+    });
+  }
 }
