@@ -29,21 +29,24 @@ class ProductsManagerScreen extends StatelessWidget {
               icon: const Icon(Icons.add)),
         ],
       ),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (_, i) {
-          return Column(
-            key: ValueKey(products[i].id),
-            children: [
-              MyDismissible(
-                valueKeyId: products[i].id,
-                onDismissed: (_) => onProductDelete(products[i], context),
-                child: _ProductListTile(products[i]),
-              ),
-              const Divider(),
-            ],
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: () => productsProvider.fetchAndSetProducts(),
+        child: ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (_, i) {
+            return Column(
+              key: ValueKey(products[i].id),
+              children: [
+                MyDismissible(
+                  valueKeyId: products[i].id,
+                  onDismissed: (_) => onProductDelete(products[i], context),
+                  child: _ProductListTile(products[i]),
+                ),
+                const Divider(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
