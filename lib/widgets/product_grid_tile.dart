@@ -7,6 +7,7 @@ import 'package:store_app/widgets/text_aligned_left.dart';
 
 import '../models/product.dart';
 import '../providers/product_notifier.dart';
+import '../providers/products_notifier.dart';
 import 'currency_and_price_text.dart';
 
 double kPaddingValue = 50;
@@ -94,10 +95,10 @@ class _ImageAndFavoriteStack extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        Consumer<ProductNotifier>(
+        Consumer<ProductsNotifier>(
             // this is the only part that will get rebuilt because this is what we need to change. Everything else doesn't change. Listen is always true in consumer another way to rebuild this part only is to place the following widgets in a separate file and use Provider.of(context) such that this file rebuilds itself without affecting the rest. // With consumer, you can split your widget such that only the part in the builder gets rebuilt
-            builder: (context, productProvider, _) =>
-                _MyFloatingActionButton(productProvider)
+            builder: (context, productsProvider, _) =>
+                _MyFloatingActionButton(productsProvider, product)
             // child is a reference to the Consumer's child property which doesn't rebuild
             ),
       ],
@@ -164,8 +165,9 @@ class _MyIconButton extends StatelessWidget {
 }
 
 class _MyFloatingActionButton extends StatelessWidget {
-  final ProductNotifier productProvider;
-  const _MyFloatingActionButton(this.productProvider);
+  final ProductsNotifier productsProvider;
+  final Product product;
+  const _MyFloatingActionButton(this.productsProvider, this.product);
 
   @override
   Widget build(BuildContext context) {
@@ -176,10 +178,10 @@ class _MyFloatingActionButton extends StatelessWidget {
       child: RawMaterialButton(
         fillColor: Theme.of(context).colorScheme.secondary,
         shape: const CircleBorder(),
-        onPressed: productProvider.toggleFavoriteStatus,
+        onPressed: () => productsProvider.toggleFavoriteStatus(product),
         child: Icon(
           size: 20,
-          productProvider.isFavorite ? Icons.favorite : Icons.favorite_border,
+          product.isFavorite ? Icons.favorite : Icons.favorite_border,
           color: Theme.of(context).colorScheme.tertiary,
         ),
       ),

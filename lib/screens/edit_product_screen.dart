@@ -95,7 +95,9 @@ class _EditProductScreenState extends State<EditProductScreen>
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           _imageContainer(),
-                          mySizedBox,
+                          const SizedBox(
+                            width: 10,
+                          ),
                           Expanded(
                             child: ImageUrlTextFormField(
                               imageUrlFocusNode: _imageUrlFocusNode,

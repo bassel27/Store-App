@@ -10,6 +10,11 @@ import 'package:http/http.dart' as http;
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
+  void toggleFavoriteStatus(product) {
+    product.isFavorite = !product.isFavorite;
+    notifyListeners();
+  }
+
   final basicUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
   final productsUrl = Uri.parse(
       'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
