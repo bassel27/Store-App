@@ -13,7 +13,7 @@ class NameTextFormField extends StatelessWidget {
         Provider.of<ProductsNotifier>(context, listen: false);
 
     return TextFormField(
-      initialValue: productsProvider.editedProduct.name,
+      initialValue: productsProvider.editedProduct.title,
       decoration: const InputDecoration(
         labelText: "Name",
         errorStyle: kErrorTextStyle,
@@ -28,7 +28,7 @@ class NameTextFormField extends StatelessWidget {
       onSaved: (value) {
         if (value != null) {
           productsProvider.editedProduct =
-              productsProvider.editedProduct.copyWith(name: value);
+              productsProvider.editedProduct.copyWith(title: value);
         }
       },
     );

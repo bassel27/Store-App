@@ -61,7 +61,7 @@ class _ProductListTile extends StatelessWidget {
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),
       ),
-      title: Text(product.name),
+      title: Text(product.title),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

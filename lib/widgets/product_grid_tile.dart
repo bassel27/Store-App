@@ -36,7 +36,7 @@ class ProductGridTile extends StatelessWidget {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                child: TextAlignedLeft(product.name),
+                child: TextAlignedLeft(product.title),
               ),
               const SizedBox(height: 2),
               Padding(
@@ -56,7 +56,7 @@ class ProductGridTile extends StatelessWidget {
                         Icons.shopping_cart,
                         () {
                           cartProvider.addItem(
-                              product.id, product.name, product.price);
+                              product.id, product.title, product.price);
                         },
                       ),
               ),
@@ -121,7 +121,7 @@ class _ChangeQuantityRow extends StatelessWidget {
   }
 
   addOne() {
-    cartProvider.addItem(product.id, product.name, product.price);
+    cartProvider.addItem(product.id, product.title, product.price);
   }
 
   @override

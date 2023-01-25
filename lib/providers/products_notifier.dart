@@ -10,13 +10,15 @@ import 'package:http/http.dart' as http;
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
+  final url = Uri.parse(
+      'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json');
   Product editedProduct =
-      Product(id: '', name: '', description: '', price: 0, imageUrl: '');
+      Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
     editedProduct =
-        Product(id: '', name: '', description: '', price: 0, imageUrl: '');
+        Product(id: '', title: '', description: '', price: 0, imageUrl: '');
     notifyListeners();
   }
 
@@ -31,35 +33,59 @@ class ProductsNotifier with ChangeNotifier {
     return [..._products].where((product) => product.isFavorite).toList();
   }
 
-  /// Adds the new product to the end of the list of products.
-  Future<void> addProduct(Product newProduct) {
-    return addProductByIndex(newProduct, _products.length - 1);
-  }
-
-  /// Inserts the new product at a specific index in the list of products.
-  Future<void> addProductByIndex(Product newProduct, int index) {
-    final url = Uri.parse(
-        'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
-    return http
-        .post(url,
-            body: json.encode({
-              "title": newProduct.name,
-              "description": newProduct.description,
-              "imageUrl": newProduct.imageUrl,
-              "price": newProduct.price,
-              "isFavorite": newProduct.isFavorite,
-            }))
-        .then((response) {
-      newProduct = Product(
-          description: newProduct.description,
-          price: newProduct.price,
-          imageUrl: newProduct.imageUrl,
-          name: newProduct.name,
-          id: json.decode(response.body)["name"]);
-      _products.insert(index, newProduct);
+  // TODO: handle error
+  Future<void> fetchAndSetProducts() async {
+    try {
+      var response = await http.get(url);
+      Map<String, dynamic> extracedData = json.decode(response.body);
+      final List<Product> loadedProducts = [];
+      extracedData.forEach((prodId, prodData) {
+        loadedProducts.add(Product(
+          id: prodId,
+          description: prodData['description'],
+          price: prodData['price'],
+          title: prodData['title'],
+          isFavorite: prodData['isFavorite'],
+          imageUrl: prodData['imageUrl'],
+        ));
+      });
+      _products = loadedProducts;
 
       notifyListeners();
-    });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // TODO: handle error
+  /// Adds the new product to the end of the list of products.
+  Future<void> addProduct(Product newProduct) {
+    return addProductByIndex(newProduct, _products.length);
+  }
+
+  // TODO: handle error
+  /// Inserts the new product at a specific index in the list of products.
+  Future<void> addProductByIndex(Product newProduct, int index) async {
+    // async returns a future automatically
+    final url = Uri.parse(
+        'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
+    final response = await http.post(url,
+        body: json.encode({
+          "title": newProduct.title,
+          "description": newProduct.description,
+          "imageUrl": newProduct.imageUrl,
+          "price": newProduct.price,
+          "isFavorite": newProduct.isFavorite,
+        }));
+
+    newProduct = Product(
+        description: newProduct.description,
+        price: newProduct.price,
+        imageUrl: newProduct.imageUrl,
+        title: newProduct.title,
+        id: json.decode(response.body)["name"]);
+    _products.insert(index, newProduct);
+    notifyListeners();
   }
 
   updateProduct(String id, Product newProduct) {
@@ -79,22 +105,21 @@ class ProductsNotifier with ChangeNotifier {
         _products.removeAt(index);
       }
     }
-
     notifyListeners();
     return index;
   }
 
-  final List<Product> _products = [
+  List<Product> _products = [
     Product(
       id: 'p1',
-      name: 'Zyrtec',
+      title: 'Zyrtec',
       description: 'Cetirizine hydrochloride',
       price: 29.99,
       imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
     ),
     Product(
       id: 'p2',
-      name: 'Panadol',
+      title: 'Panadol',
       description: 'Painkiller',
       price: 59.99,
       imageUrl:
@@ -102,7 +127,7 @@ class ProductsNotifier with ChangeNotifier {
     ),
     Product(
       id: 'p3',
-      name: 'Fucidin',
+      title: 'Fucidin',
       description: 'Antibiotic',
       price: 19.99,
       imageUrl:
@@ -110,7 +135,7 @@ class ProductsNotifier with ChangeNotifier {
     ),
     Product(
       id: 'p4',
-      name: 'Augemntin',
+      title: 'Augemntin',
       description: 'Antibiotic',
       price: 49.99,
       imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/40413-.jpg',

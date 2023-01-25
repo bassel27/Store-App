@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/models/constants.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/text_aligned_left.dart';
@@ -14,7 +13,7 @@ class ProductDetailScreen extends StatelessWidget {
     final Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
     return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
+      appBar: AppBar(title: Text(product.title)),
       body: Column(
         children: [
           Expanded(
@@ -23,7 +22,7 @@ class ProductDetailScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 9, left: 5, bottom: 5),
-                  child: TextAlignedLeft(product.name),
+                  child: TextAlignedLeft(product.title),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
