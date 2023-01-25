@@ -157,7 +157,7 @@ class _EditProductScreenState extends State<EditProductScreen>
 
   /// Runs all the validators and all the savers when the save button is pressed
   /// or the keyboard's done button is pressed in the image URL text field.
-  void _saveForm() {
+  void _saveForm() async {
     final areInputsValid =
         _formKey.currentState!.validate(); // this runs all the validators
     if (areInputsValid) {
@@ -170,8 +170,11 @@ class _EditProductScreenState extends State<EditProductScreen>
       var editedProduct = productProvider.editedProduct;
       if (editedProduct.id.isEmpty) {
         //if new product without an id
-        productProvider.addProduct(editedProduct).catchError((error) {
-          return   showDialog(  // showDialog's Future overwrites catchError's future
+        await productProvider
+            .addProduct(editedProduct)
+            .catchError((error) async {
+          await showDialog(
+            // showDialog's Future overwrites catchError's future
             context: context,
             builder: ((context) => AlertDialog(
                   title: const Text("An error occurred"),
@@ -179,25 +182,22 @@ class _EditProductScreenState extends State<EditProductScreen>
                   actions: [
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();  // pop alert dialog //showDialog's future is resolved on popping
+                          Navigator.of(context)
+                              .pop(); // pop alert dialog //showDialog's future is resolved on popping
                         },
                         child: const Text("Okay"))
                   ],
                 )),
           );
-        }).then((_) {
-          setState(() {
-            _isLoading = false;
-          });
-          Navigator.of(context).pop();  // pop EditProductScreen
         });
       } else {
-        
-        productProvider.updateProduct(editedProduct.id, editedProduct);
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();  // pop EditProductScreen
+        await productProvider.updateProduct(editedProduct.id, editedProduct);
+      }
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        Navigator.of(context).pop(); // pop EditProductScreen
       }
     }
   }
