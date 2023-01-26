@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:store_app/models/http_exception.dart';
 
 import '../models/product.dart';
 
@@ -110,15 +111,25 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   /// Deletes a product from the products list by id and returns its index.
-  int deleteProduct(String productId) {
+  Future<int> deleteProduct(String productId) async {
+    final deletedProductUrl = Uri.parse("$basicUrl/products/$productId.json");
+    Product? existingProduct;
     int index = -1;
     for (int i = 0; i < _products.length; i++) {
       if (_products[i].id == productId) {
         index = i;
+        existingProduct = products[i];
         _products.removeAt(index);
+        notifyListeners();
+        final response = await http.delete(deletedProductUrl);
+        if (response.statusCode >= 400) {
+          _products.insert(index, existingProduct);
+          notifyListeners();
+          throw (HttpException("Could not delete product"));
+        }
       }
     }
-    notifyListeners();
+    existingProduct = null; // to be garabge collected
     return index;
   }
 

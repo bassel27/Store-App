@@ -92,13 +92,24 @@ class _ProductListTile extends StatelessWidget {
   }
 }
 
-void onProductDelete(Product product, BuildContext context) {
+void onProductDelete(Product product, BuildContext context) async {
   var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);
-  int productOldIndex = productsProvider.deleteProduct(product.id);
-  ScaffoldMessenger.of(context)
+  var scaffoldMessenger = ScaffoldMessenger.of(context);
+  int productOldIndex;
+  try {
+    productOldIndex = await productsProvider.deleteProduct(product.id);
+  } catch (e) {
+    scaffoldMessenger.hideCurrentSnackBar();
+    scaffoldMessenger.showSnackBar(const SnackBar(
+      content: Text("Deleting failed!"),
+    ));
+    return;
+  }
+
+  scaffoldMessenger
       .hideCurrentSnackBar(); // to hide the previous snackbar if exists
   // TODO: latest: on undo, show loading screen
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  scaffoldMessenger.showSnackBar(SnackBar(
     content: const Text("Product deleted"),
     padding: const EdgeInsets.symmetric(horizontal: 15),
     action: SnackBarAction(

@@ -46,7 +46,7 @@ class _OrderListTileState extends State<OrderListTile> {
           if (isExpanded)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              height: min(widget.order.numberOfProducts * 20.0 + 20, 80),
+              height: min(widget.order.numberOfProducts * 16.0 + 20, 80),
               child: ListView(
                   children: widget.order.products
                       .map(
