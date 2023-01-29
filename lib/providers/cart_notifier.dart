@@ -34,14 +34,14 @@ class CartNotifier with ChangeNotifier {
       (oldCartItem) {
         return CartItem(
             id: oldCartItem.id,
-            name: oldCartItem.name,
+            title: oldCartItem.title,
             price: oldCartItem.price,
             quantity: oldCartItem.quantity + 1);
       },
       ifAbsent: () {
         return CartItem(
             id: DateTime.now().toString(),
-            name: productName,
+            title: productName,
             quantity: 1,
             price: price);
       },

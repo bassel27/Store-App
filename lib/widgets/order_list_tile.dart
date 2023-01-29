@@ -53,7 +53,7 @@ class _OrderListTileState extends State<OrderListTile> {
                         (product) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(product.name),
+                            Text(product.title),
                             Text("${product.quantity}x ${product.price}"),
                           ],
                         ),

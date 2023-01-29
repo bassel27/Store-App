@@ -18,14 +18,13 @@ class ProductsGridScreen extends StatefulWidget {
 }
 
 class _ProductsGridScreenState extends State<ProductsGridScreen> {
-  var _isLoading = false;
+  // starting value is true
+  var _isLoading = true;
   @override
   void initState() {
     // don't use async here case you're supposed to be overriding it and not change its type
     super.initState();
-    setState(() {
-      _isLoading = true;
-    });
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductsNotifier>(context, listen: false)
           .fetchAndSetProducts()

@@ -26,7 +26,7 @@ class CartTile extends StatelessWidget {
           ),
         ),
         child: ListTile(
-          title: Text(cartItem.name),
+          title: Text(cartItem.title),
           subtitle: Text(
               "Total: \$${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}"),
           contentPadding:

@@ -12,6 +12,7 @@ import 'package:store_app/screens/settings_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
+
 //TODO: use something else except double for monetary values
 void main() {
   runApp(MyApp());
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           create: (_) => ThemeNotifier(),
         ),
         ChangeNotifierProvider(
-          create: (_) => Orders(),
+          create: (_) => OrdersNotifier(),
         )
       ],
       builder: (context, child) => MaterialApp(
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             OrdersScreen.route: (ctx) => const OrdersScreen(),
             ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
             SettingsScreen.route: (ctx) => SettingsScreen(),
-            EditProductScreen.route: (ctx) =>  EditProductScreen(),
+            EditProductScreen.route: (ctx) => EditProductScreen(),
           },
           title: 'Flutter Demo',
           home: child),

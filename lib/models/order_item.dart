@@ -10,11 +10,11 @@ class OrderItem {
 
   OrderItem(
       {required String id,
-      required double amount,
+      required double quantity,
       required List<CartItem> products,
       required DateTime dateTime})
       : _id = id,
-        _amount = amount,
+        _amount = quantity,
         _products = products,
         _dateTime = dateTime;
 

@@ -56,8 +56,9 @@ class _OrderButtonState extends State<_OrderButton> {
               setState(() {
                 _isLoading = true;
               });
-              await Provider.of<Orders>(context, listen: false).addOrder(
-                  cartProvider.items.values.toList(), cartProvider.total);
+              await Provider.of<OrdersNotifier>(context, listen: false)
+                  .addOrder(
+                      cartProvider.items.values.toList(), cartProvider.total);
               cartProvider.clear();
               setState(() {
                 _isLoading = false;
