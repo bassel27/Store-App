@@ -6,7 +6,6 @@ import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/widgets/text_aligned_left.dart';
 
 import '../models/product.dart';
-import '../providers/product_notifier.dart';
 import '../providers/products_notifier.dart';
 import 'currency_and_price_text.dart';
 
