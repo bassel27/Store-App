@@ -8,12 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:store_app/models/http_exception.dart';
 
+import '../models/constants.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  final basicUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
-  final productsUrl = Uri.parse(
-      'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
   Product editedProduct =
       Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
@@ -36,7 +34,7 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   Future<void> toggleFavoriteStatus(product) async {
-    var productUrl = Uri.parse("$basicUrl/products/${product.id}.json");
+    var productUrl = Uri.parse("$kBaseUrl/products/${product.id}.json");
     bool oldStatus = product.isFavorite;
     product.isFavorite = !product.isFavorite;
     notifyListeners();
@@ -59,7 +57,7 @@ class ProductsNotifier with ChangeNotifier {
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
     try {
-      var response = await http.get(productsUrl);
+      var response = await http.get(kProductsUrl);
       Map<String, dynamic>? extracedData = json.decode(response.body);
       final List<Product> loadedProducts = [];
       //TODO: this should be removed // if no products in database, create hard coded products just to get going
@@ -98,7 +96,7 @@ class ProductsNotifier with ChangeNotifier {
   Future<void> addProductByIndex(Product newProduct, int index) async {
     // TODO: handle error
     // async returns a future automatically
-    final response = await http.post(productsUrl,
+    final response = await http.post(kProductsUrl,
         body: json.encode({
           "title": newProduct.title,
           "description": newProduct.description,
@@ -121,7 +119,7 @@ class ProductsNotifier with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final index = _products.indexWhere((element) => element.id == id);
     if (index >= 0) {
-      var oldProductUrl = Uri.parse("$basicUrl/products/$id.json");
+      var oldProductUrl = Uri.parse("$kBaseUrl/products/$id.json");
       await http.patch(oldProductUrl,
           body: json.encode({
             "title": newProduct.title,
@@ -136,7 +134,7 @@ class ProductsNotifier with ChangeNotifier {
 
   /// Deletes a product from the products list by id and returns its index.
   Future<int> deleteProduct(String productId) async {
-    final deletedProductUrl = Uri.parse("$basicUrl/products/$productId.json");
+    final deletedProductUrl = Uri.parse("$kBaseUrl/products/$productId.json");
     Product? existingProduct;
     int index = -1;
     for (int i = 0; i < _products.length; i++) {

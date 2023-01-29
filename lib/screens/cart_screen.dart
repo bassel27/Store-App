@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../widgets/cart_tile.dart';
 import 'package:store_app/providers/cart_notifier.dart';
+
 import '.././widgets/total_container.dart';
+import '../widgets/cart_tile.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -26,7 +26,7 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
-          const TotalContainer(),
+          TotalContainer(),
         ],
       ),
     );
