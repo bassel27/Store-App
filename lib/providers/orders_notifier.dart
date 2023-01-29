@@ -50,6 +50,7 @@ class OrdersNotifier with ChangeNotifier {
     final response = await http.post(kOrdersUrl,
         body: json.encode({
           'quantity': total,
+          'dateTime': nowTimeStamp.toIso8601String(),
           'products': cartProducts
               .map((cartProduct) => {
                     'id': cartProduct.id,
@@ -58,7 +59,6 @@ class OrdersNotifier with ChangeNotifier {
                     'price': cartProduct.price,
                   })
               .toList(),
-          'dateTime': nowTimeStamp.toIso8601String(),
         }));
     _orders.insert(
       0,
