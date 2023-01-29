@@ -67,7 +67,9 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
                     return ProductGridTile(products[i]);
                   },
                 )
-              : const EmptyScreenText("No favorite products"),
+              : (widget.showFavoritesOnly
+                  ? const EmptyScreenText("No favorite products")
+                  : const EmptyScreenText("No Products")),
     );
   }
 }

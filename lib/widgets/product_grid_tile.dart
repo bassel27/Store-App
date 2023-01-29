@@ -177,7 +177,8 @@ class _MyFloatingActionButton extends StatelessWidget {
       child: RawMaterialButton(
         fillColor: Theme.of(context).colorScheme.secondary,
         shape: const CircleBorder(),
-        onPressed: () => productsProvider.toggleFavoriteStatus(product),
+        onPressed: ()  =>
+             productsProvider.toggleFavoriteStatus(product),
         child: Icon(
           size: 20,
           product.isFavorite ? Icons.favorite : Icons.favorite_border,

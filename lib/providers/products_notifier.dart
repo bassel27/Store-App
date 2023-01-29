@@ -11,11 +11,6 @@ import 'package:store_app/models/http_exception.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
-  void toggleFavoriteStatus(product) {
-    product.isFavorite = !product.isFavorite;
-    notifyListeners();
-  }
-
   final basicUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
   final productsUrl = Uri.parse(
       'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
@@ -40,12 +35,40 @@ class ProductsNotifier with ChangeNotifier {
     return [..._products].where((product) => product.isFavorite).toList();
   }
 
+  Future<void> toggleFavoriteStatus(product) async {
+    var productUrl = Uri.parse("$basicUrl/products/${product.id}.json");
+    bool oldStatus = product.isFavorite;
+    product.isFavorite = !product.isFavorite;
+    notifyListeners();
+    try {
+      final response = await http.patch(
+          productUrl, // delete, patch and put don't throw their own errors
+          body: json.encode({
+            "isFavorite": product.isFavorite,
+          }));
+      if (response.statusCode >= 400) {
+        product.isFavorite = oldStatus;
+        notifyListeners();
+      }
+    } catch (e) {
+      product.isFavorite = oldStatus;
+      notifyListeners();
+    }
+  }
+
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
     try {
       var response = await http.get(productsUrl);
-      Map<String, dynamic> extracedData = json.decode(response.body);
+      Map<String, dynamic>? extracedData = json.decode(response.body);
       final List<Product> loadedProducts = [];
+      //TODO: this should be removed // if no products in database, create hard coded products just to get going
+      if (extracedData == null) {
+        for (var element in _hardCodedProducts) {
+          addProduct(element);
+        }
+        return;
+      }
       extracedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
           id: prodId,
@@ -56,6 +79,7 @@ class ProductsNotifier with ChangeNotifier {
           imageUrl: prodData['imageUrl'],
         ));
       });
+
       _products = loadedProducts;
 
       notifyListeners();
@@ -133,7 +157,8 @@ class ProductsNotifier with ChangeNotifier {
     return index;
   }
 
-  List<Product> _products = [
+  List<Product> _products = [];
+  final List<Product> _hardCodedProducts = [
     Product(
       id: 'p1',
       title: 'Zyrtec',
