@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/widgets/order_list_tile.dart';
@@ -15,37 +14,41 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  bool _isLoading = true;
+  final bool _isLoading = true;
+  late Future _ordersFuture;
+
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Provider.of<OrdersNotifier>(context, listen: false)
-          .fetchAndSetOrders()
-          .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    });
+    _ordersFuture =
+        Provider.of<OrdersNotifier>(context, listen: false).fetchAndSetOrders();
   }
 
   @override
   Widget build(BuildContext context) {
     var ordersProvider = Provider.of<OrdersNotifier>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Orders"),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ordersProvider.numberOfOrders == 0
-              ? const EmptyScreenText("No orders")
-              : ListView.builder(
-                  itemCount: ordersProvider.numberOfOrders,
-                  itemBuilder: (_, i) =>
-                      OrderListTile(ordersProvider.orders[i]),
-                ),
-    );
+        appBar: AppBar(
+          title: const Text("Orders"),
+        ),
+        body: FutureBuilder(
+          future: _ordersFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              if (snapshot.hasError) {
+                return const Text("Error");
+              } else {
+                return ordersProvider.numberOfOrders == 0
+                    ? const EmptyScreenText("No orders")
+                    : ListView.builder(
+                        itemCount: ordersProvider.numberOfOrders,
+                        itemBuilder: (_, i) =>
+                            OrderListTile(ordersProvider.orders[i]));
+              }
+            }
+          },
+        ));
   }
 }
