@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +7,7 @@ import 'package:store_app/models/constants.dart';
 
 import '../models/cart_item.dart';
 import '../models/order_item.dart';
+import '../services/base_client.dart';
 
 class Failure {
   String message;
@@ -27,37 +27,33 @@ class OrdersNotifier with ChangeNotifier {
   int get numberOfOrders => _orders.length;
   // TODO: error handling
   Future<void> fetchAndSetOrders() async {
-    try {
-      var response = await http.get(kOrdersUri);
-      Map<String, dynamic>? ordersExtractedData = json.decode(response.body);
-      final List<OrderItem> loadedOrders = [];
-      if (ordersExtractedData == null) {
-        return;
-      }
-      ordersExtractedData.forEach((orderId, orderData) {
-        List<dynamic> productsMaps = orderData['products'];
-        List<CartItem> cartItems = productsMaps
-            .map((productMap) => CartItem(
-                  quantity: productMap['quantity'],
-                  id: productMap['id'],
-                  title: productMap['title'],
-                  price: productMap['price'],
-                ))
-            .toList();
-        loadedOrders.add(OrderItem(
-          id: orderId,
-          quantity: orderData['quantity'],
-          dateTime: DateTime.parse(orderData['dateTime']),
-          products: cartItems,
-        ));
-      });
-
-      _orders = loadedOrders.reversed.toList();
-      notifyListeners();
-    } on SocketException {
-      throw Failure(
-          "No Internet connection"); // in dart, you can throw objects not only excpeiotns
+    Map<String, dynamic>? ordersExtractedData =
+        await BaseClient.get(kOrdersUrl) as Map<String, dynamic>?;
+    final List<OrderItem> loadedOrders = [];
+    if (ordersExtractedData == null) {
+      return;
     }
+
+    ordersExtractedData.forEach((orderId, orderData) {
+      List<dynamic> productsMaps = orderData['products'];
+      List<CartItem> cartItems = productsMaps
+          .map((productMap) => CartItem(
+                quantity: productMap['quantity'],
+                id: productMap['id'],
+                title: productMap['title'],
+                price: productMap['price'],
+              ))
+          .toList();
+      loadedOrders.add(OrderItem(
+        id: orderId,
+        quantity: orderData['quantity'],
+        dateTime: DateTime.parse(orderData['dateTime']),
+        products: cartItems,
+      ));
+    });
+
+    _orders = loadedOrders.reversed.toList();
+    notifyListeners();
   }
 
 //TODO: error handling
