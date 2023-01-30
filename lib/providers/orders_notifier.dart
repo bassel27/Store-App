@@ -37,11 +37,8 @@ class OrdersNotifier with ChangeNotifier {
     ordersExtractedData.forEach((orderId, orderData) {
       List<dynamic> productsMaps = orderData['products'];
       List<CartItem> cartItems = productsMaps
-          .map((productMap) => CartItem(
-                quantity: productMap['quantity'],
-                id: productMap['id'],
-                title: productMap['title'],
-                price: productMap['price'],
+          .map((productMap) => CartItem.fromJson(
+                productMap
               ))
           .toList();
       loadedOrders.add(OrderItem(
