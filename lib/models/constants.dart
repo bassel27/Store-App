@@ -6,7 +6,9 @@ const TextStyle kErrorTextStyle =
 
 const String kCurrency = 'EGP';
 const kBaseUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
-final kProductsUrl = Uri.parse(
+final kProductsUri = Uri.parse(
     'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json'); //create a products folder or add to it if it already exists
-final kOrdersUrl = Uri.parse(
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/orders.json');
+final kOrdersUri =
+    Uri.parse('https://shop-app-f7639-default-rtdb.firebaseio.com/orders.json');
+const kOrdersUrl =
+    'https://shop-app-f7639-default-rtdb.firebaseio.com/orders.json';

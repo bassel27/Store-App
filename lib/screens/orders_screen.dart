@@ -14,7 +14,6 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  final bool _isLoading = true;
   late Future _ordersFuture;
 
   @override
@@ -26,7 +25,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var ordersProvider = Provider.of<OrdersNotifier>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Orders"),
@@ -38,8 +36,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
               return const Center(child: CircularProgressIndicator());
             } else {
               if (snapshot.hasError) {
-                return const Text("Error");
+                return Center(child: Text(snapshot.error.toString()));
               } else {
+                var ordersProvider = Provider.of<OrdersNotifier>(context);
                 return ordersProvider.numberOfOrders == 0
                     ? const EmptyScreenText("No orders")
                     : ListView.builder(

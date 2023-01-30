@@ -57,7 +57,7 @@ class ProductsNotifier with ChangeNotifier {
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
     try {
-      var response = await http.get(kProductsUrl);
+      var response = await http.get(kProductsUri);
       Map<String, dynamic>? extracedData = json.decode(response.body);
       final List<Product> loadedProducts = [];
       //TODO: this should be removed // if no products in database, create hard coded products just to get going
@@ -96,7 +96,7 @@ class ProductsNotifier with ChangeNotifier {
   Future<void> addProductByIndex(Product newProduct, int index) async {
     // TODO: handle error
     // async returns a future automatically
-    final response = await http.post(kProductsUrl,
+    final response = await http.post(kProductsUri,
         body: json.encode({
           "title": newProduct.title,
           "description": newProduct.description,

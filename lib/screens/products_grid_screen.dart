@@ -19,7 +19,7 @@ class ProductsGridScreen extends StatefulWidget {
 
 class _ProductsGridScreenState extends State<ProductsGridScreen> {
   // starting value is true
-  var _isLoading = true;
+  late bool _isLoading = true;
   @override
   void initState() {
     // don't use async here case you're supposed to be overriding it and not change its type
@@ -29,9 +29,11 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
       Provider.of<ProductsNotifier>(context, listen: false)
           .fetchAndSetProducts()
           .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       });
     });
   }
