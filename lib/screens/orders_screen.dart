@@ -21,11 +21,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
     super.initState();
     // _ordersFuture =
     //     Provider.of<OrdersNotifier>(context, listen: false).fetchAndSetOrders();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<OrdersNotifier>(context, listen: false).orders =
-          await OrdersController().fetchOrders();
-      setState(() {
-        _isLoading = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      OrdersController().fetchOrders().then((orders) {
+        Provider.of<OrdersNotifier>(context, listen: false).orders = orders;
+        setState(() {
+          _isLoading = false;
+        });
       });
     });
   }

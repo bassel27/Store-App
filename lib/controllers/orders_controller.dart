@@ -7,8 +7,8 @@ import '../services/base_client.dart';
 
 class OrdersController with BaseController {
   Future<List<OrderItem>> fetchOrders() async {
-    Map<String, dynamic>? ordersExtractedData =
-        await BaseClient.get(kOrdersUrl) as Map<String, dynamic>?;
+    Map<String, dynamic>? ordersExtractedData = await BaseClient.get(kOrdersUrl)
+        .catchError(handleError) as Map<String, dynamic>?;
     final List<OrderItem> loadedOrders = [];
     if (ordersExtractedData == null) {
       return [];
@@ -26,6 +26,7 @@ class OrdersController with BaseController {
         products: cartItems,
       ));
     });
-    return loadedOrders.reversed.toList();  // newest first
+    //TDOO: return empty list even if fetching failed?
+    return loadedOrders.reversed.toList(); // newest first
   }
 }

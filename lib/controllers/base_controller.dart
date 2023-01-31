@@ -4,7 +4,7 @@ import '../services/app_exception.dart';
 
 /// Handles exceptions.
 class BaseController {
-  void handleError( error) {
+  void handleError(error) {
     if (error is BadRequestException) {
       var message = error.message;
       DialogHelper.showErroDialog(description: message);
@@ -13,7 +13,8 @@ class BaseController {
       DialogHelper.showErroDialog(description: message);
     } else if (error is ApiNotRespondingException) {
       DialogHelper.showErroDialog(
-          description: 'Oops! It took longer to respond. Check your internet connection and try again.');
+          description:
+              'Oops! It took longer to respond. Check your internet connection and try again.');
     }
   }
 }

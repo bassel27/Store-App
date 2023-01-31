@@ -28,8 +28,6 @@ class OrdersNotifier with ChangeNotifier {
   }
 
   int get numberOfOrders => _orders.length;
-  
-  
 
 //TODO: error handling
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
