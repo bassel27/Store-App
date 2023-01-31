@@ -14,7 +14,7 @@ class BaseClient {
 
       return _processResponse(response);
     } on SocketException {
-      throw _MyException('No internet connection');
+      throw _MyException('No internet connection'); 
     }
   }
 
