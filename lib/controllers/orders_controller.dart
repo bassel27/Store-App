@@ -6,6 +6,7 @@ import '../models/order_item.dart';
 import '../services/base_client.dart';
 
 class OrdersController with BaseController {
+  /// Returns fetched orders.
   Future<List<OrderItem>> fetchOrders() async {
     Map<String, dynamic>? ordersExtractedData = await BaseClient.get(kOrdersUrl)
         .catchError(handleError) as Map<String, dynamic>?;
@@ -26,7 +27,34 @@ class OrdersController with BaseController {
         products: cartItems,
       ));
     });
-    //TDOO: return empty list even if fetching failed?
+    //TODO: return empty list even if fetching failed?
     return loadedOrders.reversed.toList(); // newest first
+  }
+
+  /// Returns post ID
+  Future<String?> postOrder(
+      List<CartItem> cartProducts, double total, DateTime nowTimeStamp) async {
+    final payLoadInput = {
+      'quantity': total,
+      'dateTime': nowTimeStamp.toIso8601String(),
+      'products': cartProducts
+          .map((cartProduct) => {
+                'id': cartProduct.id,
+                'title': cartProduct.title,
+                'quantity': cartProduct.quantity,
+                'price': cartProduct.price,
+              })
+          .toList()
+    };
+    String? id;
+    try {
+      var response = await BaseClient.post(kOrdersUrl, payLoadInput);
+      id = response.body;
+    } catch (e) {
+      handleError(e);
+      return null;
+    }
+
+    return id;
   }
 }
