@@ -27,6 +27,10 @@ class OrdersNotifier with ChangeNotifier {
   }
 
   int get numberOfOrders => _orders.length;
+  Future<void> fetchAndSetOrders() async {
+    _orders = await OrdersController().fetchOrders();
+    notifyListeners();
+  }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final nowTimeStamp = DateTime.now();

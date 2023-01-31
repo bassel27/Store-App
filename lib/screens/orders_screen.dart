@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/controllers/orders_controller.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/widgets/order_list_tile.dart';
 
@@ -19,11 +18,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   void initState() {
     super.initState();
-    // _ordersFuture =
-    //     Provider.of<OrdersNotifier>(context, listen: false).fetchAndSetOrders();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      OrdersController().fetchOrders().then((orders) {
-        Provider.of<OrdersNotifier>(context, listen: false).orders = orders;
+      Provider.of<OrdersNotifier>(context, listen: false)
+          .fetchAndSetOrders()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -39,7 +37,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         title: const Text("Orders"),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center()
           : ordersProvider.numberOfOrders == 0
               ? const EmptyScreenText("No orders")
               : ListView.builder(
