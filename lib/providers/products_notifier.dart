@@ -82,7 +82,7 @@ class ProductsNotifier with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print(e);
+      print("fetchandset products error:$e");
     }
   }
 

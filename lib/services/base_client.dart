@@ -4,17 +4,27 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import 'app_exception.dart';
+
 class BaseClient {
-  static const int TIME_OUT_DURATION = 2;
+  static const int TIME_OUT_DURATION = 5;
 
   /// Returns the decoded reponse.
   static Future<dynamic> get(String url) async {
     try {
-      var response = await http.get(Uri.parse(url));
+      var response = await http
+          .get(Uri.parse(url))
+          .timeout(const Duration(seconds: TIME_OUT_DURATION));
 
       return _processResponse(response);
-    } on SocketException {
-      throw _MyException('No internet connection'); 
+    } on SocketException catch (e) {
+      print(e.toString());
+      throw FetchDataException('No Internet connection', url);
+    } on TimeoutException {
+      throw ApiNotRespondingException(
+          'Check your internet connection and try again');
+    } catch (e) {
+      Exception('An error occurred. Contact system administrator');
     }
   }
 
@@ -26,7 +36,12 @@ class BaseClient {
           .timeout(const Duration(seconds: TIME_OUT_DURATION));
       return _processResponse(response);
     } on SocketException {
-      throw _MyException("No internet connection");
+      throw FetchDataException('No Internet connection', url);
+    } on TimeoutException {
+      throw ApiNotRespondingException(
+          'Check your internet connection and try again', url);
+    } catch (e) {
+      Exception('An error occurred. Contact system administrator');
     }
   }
 
@@ -42,28 +57,19 @@ class BaseClient {
         return responseJson;
 
       case 400:
-        throw _MyException(
+        throw BadRequestException(
             "${json.decode(response.body)}, ${response.request!.url}");
       case 401:
       case 403:
-        throw _MyException(
+        throw UnAuthorizedException(
             "${json.decode(response.body)}, ${response.request!.url}");
       case 422:
-        throw _MyException(
+        throw BadRequestException(
             "${json.decode(response.body)}, ${response.request!.url}");
       case 500:
       default:
-        throw _MyException(
+        throw FetchDataException(
             'Error occured with code : ${response.statusCode}, ${response.request!.url.toString()}');
     }
-  }
-}
-
-class _MyException {
-  _MyException(this.message);
-  String message;
-  @override
-  String toString() {
-    return message;
   }
 }

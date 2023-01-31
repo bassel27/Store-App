@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
           create: (_) => OrdersNotifier(),
         )
       ],
-      builder: (context, child) => MaterialApp(
+      // TODO: use materialapp
+      builder: (context, child) => GetMaterialApp(
           themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
           theme: MyTheme.lightTheme,
           darkTheme: MyTheme.darkTheme,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/controllers/orders_controller.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/widgets/order_list_tile.dart';
 
@@ -14,40 +15,37 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  late Future _ordersFuture;
-
+  bool _isLoading = true;
   @override
   void initState() {
     super.initState();
-    _ordersFuture =
-        Provider.of<OrdersNotifier>(context, listen: false).fetchAndSetOrders();
+    // _ordersFuture =
+    //     Provider.of<OrdersNotifier>(context, listen: false).fetchAndSetOrders();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<OrdersNotifier>(context, listen: false).orders =
+          await OrdersController().fetchOrders();
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var ordersProvider = Provider.of<OrdersNotifier>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Orders"),
-        ),
-        body: FutureBuilder(
-          future: _ordersFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
-              } else {
-                var ordersProvider = Provider.of<OrdersNotifier>(context);
-                return ordersProvider.numberOfOrders == 0
-                    ? const EmptyScreenText("No orders")
-                    : ListView.builder(
-                        itemCount: ordersProvider.numberOfOrders,
-                        itemBuilder: (_, i) =>
-                            OrderListTile(ordersProvider.orders[i]));
-              }
-            }
-          },
-        ));
+      appBar: AppBar(
+        title: const Text("Orders"),
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ordersProvider.numberOfOrders == 0
+              ? const EmptyScreenText("No orders")
+              : ListView.builder(
+                  itemCount: ordersProvider.numberOfOrders,
+                  itemBuilder: (_, i) =>
+                      OrderListTile(ordersProvider.orders[i]),
+                ),
+    );
   }
 }
