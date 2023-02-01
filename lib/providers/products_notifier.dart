@@ -6,14 +6,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:store_app/controllers/products_controller.dart';
 import 'package:store_app/models/http_exception.dart';
 
 import '../models/constants.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
+  /// Used to finalize and be added to products list or cancel making it.
+  ///
+  /// Either way, you have to reset it afterwards.
   Product editedProduct =
       Product(id: '', title: '', description: '', price: 0, imageUrl: '');
+  ProductsController _productsController = ProductsController();
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
@@ -56,6 +61,15 @@ class ProductsNotifier with ChangeNotifier {
 
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
+    List<Product> fetchedProducts = await _productsController.fetchProducts();
+    //TODO: this should be removed // if no products in database, create hard coded products just to get going
+    if (fetchedProducts == null) {
+      for (var element in _hardCodedProducts) {
+        addProduct(element);
+      }
+      return;
+    }
+
     try {
       var response = await http.get(kProductsUri);
       Map<String, dynamic>? extracedData = json.decode(response.body);

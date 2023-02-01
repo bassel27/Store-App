@@ -18,6 +18,8 @@ class Failure {
 }
 
 class OrdersNotifier with ChangeNotifier {
+  final OrdersController _ordersController = OrdersController();
+
   /// List of all order sorted by recency.
   List<OrderItem> _orders = [];
 
@@ -28,14 +30,14 @@ class OrdersNotifier with ChangeNotifier {
 
   int get numberOfOrders => _orders.length;
   Future<void> fetchAndSetOrders() async {
-    _orders = await OrdersController().fetchOrders();
+    _orders = await _ordersController.fetchOrders();
     notifyListeners();
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final nowTimeStamp = DateTime.now();
     String? id =
-        await OrdersController().postOrder(cartProducts, total, nowTimeStamp);
+        await _ordersController.postOrder(cartProducts, total, nowTimeStamp);
     if (id != null) {
       _orders.insert(
         0,
