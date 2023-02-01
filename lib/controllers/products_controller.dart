@@ -8,15 +8,12 @@ import '../services/base_client.dart';
 class ProductsController with BaseController {
   /// Returns list of products or null if no products or if exception thrown.
   Future<List<Product>?> fetchProducts() async {
-    DialogHelper.showLoading();
+
     Map<String, dynamic>? extracedData;
 
-    try {
-      extracedData = await BaseClient.get(kProductsUrl);
-    } catch (e) {
-      handleError(e);
-      return null;
-    }
+    
+    extracedData = await BaseClient.get(kProductsUrl);
+    
     List<Product>? loadedProducts = [];
     if (extracedData != null) {
       // if fetching succeeded but there are no products
@@ -33,7 +30,7 @@ class ProductsController with BaseController {
     } else {
       loadedProducts = null;
     }
-    DialogHelper.hideCurrentDialog();
+    
     return loadedProducts;
   }
 }

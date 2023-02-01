@@ -45,31 +45,68 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
     return FutureBuilder(
       future: _fetchAndSetProductsFuture,
       builder: (context, snapshot) {
-        return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            appBar: AppBar(
-                title: widget.showFavoritesOnly
-                    ? const Text("Favorites")
-                    : const Text("Pharmastore")),
-            body: snapshot.connectionState == ConnectionState.done
-                ? (products.isNotEmpty
-                    ? GridView.builder(
-                        // padding: const EdgeInsets.only(top: 10),
-                        itemCount: products.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                          crossAxisCount: 2,
-                          height: 250,
-                        ),
-                        itemBuilder: (context, i) {
-                          return ProductGridTile(products[i]);
-                        },
-                      )
-                    : (widget.showFavoritesOnly
-                        ? const EmptyScreenText("No favorite products")
-                        : const EmptyScreenText("No Products")))
-                : const Center());
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+          } else if (snapshot.hasData) {
+            return _MyScaffold(
+                showFavoritesOnly: widget.showFavoritesOnly,
+                products: products,
+                connectionState: ConnectionState.done);
+          }
+          else {
+            
+          }
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return _MyScaffold(
+              showFavoritesOnly: widget.showFavoritesOnly,
+              products: products,
+              connectionState: ConnectionState.waiting);
+        } else {}
       },
     );
   }
+}
+
+class _MyScaffold extends StatelessWidget {
+  _MyScaffold({
+    Key? key,
+    required this.showFavoritesOnly,
+    required this.products,
+    required this.connectionState,
+  }) : super(key: key);
+
+  final bool showFavoritesOnly;
+  final List<Product> products;
+  final ConnectionState connectionState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+            title: showFavoritesOnly
+                ? const Text("Favorites")
+                : const Text("Pharmastore")),
+        body: scaffoldBody[connectionState] as Widget);
+  }
+
+  late Map<ConnectionState, Widget> scaffoldBody = {
+    ConnectionState.waiting: const Center(child: CircularProgressIndicator()),
+    ConnectionState.done: (products.isNotEmpty
+        ? GridView.builder(
+            // padding: const EdgeInsets.only(top: 10),
+            itemCount: products.length,
+            gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+              crossAxisCount: 2,
+              height: 250,
+            ),
+            itemBuilder: (context, i) {
+              return ProductGridTile(products[i]);
+            },
+          )
+        : (showFavoritesOnly
+            ? const EmptyScreenText("No favorite products")
+            : const EmptyScreenText("No Products"))),
+  };
 }
