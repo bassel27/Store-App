@@ -8,7 +8,7 @@ import 'app_exception.dart';
 
 class BaseClient {
   static const int TIME_OUT_DURATION = 5;
-
+  //TODO: get, patch and put use the same functioon
   /// Returns the decoded reponse's body.
   static Future<dynamic> get(String url) async {
     try {
@@ -17,8 +17,7 @@ class BaseClient {
           .timeout(const Duration(seconds: TIME_OUT_DURATION));
 
       return _processResponse(response);
-    } on SocketException catch (e) {
-      print(e.toString());
+    } on SocketException {
       throw FetchDataException('No Internet connection', url);
     } on TimeoutException {
       throw ApiNotRespondingException(
@@ -34,6 +33,24 @@ class BaseClient {
       var response = await http
           .post(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(const Duration(seconds: TIME_OUT_DURATION));
+      return _processResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet connection', url);
+    } on TimeoutException {
+      throw ApiNotRespondingException(
+          'Check your internet connection and try again', url);
+    } catch (e) {
+      Exception('An error occurred. Contact system administrator');
+    }
+  }
+
+  /// Returns the decoded reponse.
+  static Future<dynamic> patch(String url, Map payloadInput,
+      {timeOutDuration = TIME_OUT_DURATION}) async {
+    try {
+      var response = await http
+          .patch(Uri.parse(url), body: json.encode(payloadInput))
+          .timeout(Duration(seconds: timeOutDuration));
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection', url);

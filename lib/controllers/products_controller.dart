@@ -1,5 +1,4 @@
 import 'package:store_app/controllers/base_controller.dart';
-import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
 import 'package:store_app/models/product.dart';
 
@@ -8,12 +7,8 @@ import '../services/base_client.dart';
 class ProductsController with BaseController {
   /// Returns list of products or null if no products or if exception thrown.
   Future<List<Product>?> fetchProducts() async {
-
     Map<String, dynamic>? extracedData;
-
-    
     extracedData = await BaseClient.get(kProductsUrl);
-    
     List<Product>? loadedProducts = [];
     if (extracedData != null) {
       // if fetching succeeded but there are no products
@@ -30,7 +25,16 @@ class ProductsController with BaseController {
     } else {
       loadedProducts = null;
     }
-    
     return loadedProducts;
+  }
+
+  Future<void> toggleFavoriteStatus(Product product) async {
+    var productUrl = "$kBaseUrl/products/${product.id}.json";
+    final response = await BaseClient.patch(
+        productUrl, // delete, patch and put don't throw their own errors
+        {
+          "isFavorite": product.isFavorite,
+        },
+        timeOutDuration: 1);
   }
 }

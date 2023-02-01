@@ -36,27 +36,16 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   Future<void> toggleFavoriteStatus(product) async {
-    var productUrl = Uri.parse("$kBaseUrl/products/${product.id}.json");
     bool oldStatus = product.isFavorite;
     product.isFavorite = !product.isFavorite;
     notifyListeners();
-    try {
-      final response = await http.patch(
-          productUrl, // delete, patch and put don't throw their own errors
-          body: json.encode({
-            "isFavorite": product.isFavorite,
-          }));
-      if (response.statusCode >= 400) {
-        product.isFavorite = oldStatus;
-        notifyListeners();
-      }
-    } catch (e) {
+    _productsController.toggleFavoriteStatus(product).catchError((e) {
       product.isFavorite = oldStatus;
       notifyListeners();
-    }
+      throw e;
+    });
   }
 
-  // TODO: handle error
   Future<void> fetchAndSetProducts() async {
     List<Product>? fetchedProducts = await _productsController.fetchProducts();
     if (fetchedProducts != null) {
@@ -135,39 +124,39 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   List<Product> _products = [];
-  final List<Product> _hardCodedProducts = [
-    Product(
-      id: 'p1',
-      title: 'Zyrtec',
-      description: 'Cetirizine hydrochloride',
-      price: 29.99,
-      imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Panadol',
-      description: 'Painkiller',
-      price: 59.99,
-      imageUrl:
-          'https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol/en_eg/Home/1680%20x%20600.jpg?auto=format',
-    ),
-    Product(
-      id: 'p3',
-      title: 'Fucidin',
-      description: 'Antibiotic',
-      price: 19.99,
-      imageUrl:
-          'https://seif-online.com/wp-content/uploads/2020/01/180614-.jpg',
-    ),
-    Product(
-      id: 'p4',
-      title: 'Augemntin',
-      description: 'Antibiotic',
-      price: 49.99,
-      imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/40413-.jpg',
-    ),
-  ];
 }
+
+final List<Product> _hardCodedProducts = [
+  Product(
+    id: 'p1',
+    title: 'Zyrtec',
+    description: 'Cetirizine hydrochloride',
+    price: 29.99,
+    imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
+  ),
+  Product(
+    id: 'p2',
+    title: 'Panadol',
+    description: 'Painkiller',
+    price: 59.99,
+    imageUrl:
+        'https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol/en_eg/Home/1680%20x%20600.jpg?auto=format',
+  ),
+  Product(
+    id: 'p3',
+    title: 'Fucidin',
+    description: 'Antibiotic',
+    price: 19.99,
+    imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/180614-.jpg',
+  ),
+  Product(
+    id: 'p4',
+    title: 'Augemntin',
+    description: 'Antibiotic',
+    price: 49.99,
+    imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/40413-.jpg',
+  ),
+];
    //TODO: this should be removed // if no products in database, create hard coded products just to get going
     // if (fetchedProducts == null) {
     //   for (var element in _hardCodedProducts) {
