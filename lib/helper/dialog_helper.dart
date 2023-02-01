@@ -40,8 +40,8 @@ class DialogHelper {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 8),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 8),
               Text(message ?? 'Loading...'),
             ],
           ),
@@ -50,8 +50,8 @@ class DialogHelper {
     );
   }
 
-  /// Hides loading dialog if open.
-  static void hideLoading() {
+  /// Hides loading or error dialog.
+  static void hideCurrentDialog() {
     if (Get.isDialogOpen!) Get.back();
   }
 }

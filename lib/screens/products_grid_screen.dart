@@ -19,7 +19,6 @@ class ProductsGridScreen extends StatefulWidget {
 
 class _ProductsGridScreenState extends State<ProductsGridScreen> {
   // starting value is true
-  late bool _isLoading = true;
   @override
   void initState() {
     // don't use async here case you're supposed to be overriding it and not change its type
@@ -27,14 +26,7 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProductsNotifier>(context, listen: false)
-          .fetchAndSetProducts()
-          .then((_) {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      });
+          .fetchAndSetProducts();
     });
   }
 
@@ -51,26 +43,22 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
           title: widget.showFavoritesOnly
               ? const Text("Favorites")
               : const Text("Pharmastore")),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
+      body: products.isNotEmpty
+          ? GridView.builder(
+              // padding: const EdgeInsets.only(top: 10),
+              itemCount: products.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                crossAxisCount: 2,
+                height: 250,
+              ),
+              itemBuilder: (context, i) {
+                return ProductGridTile(products[i]);
+              },
             )
-          : products.isNotEmpty
-              ? GridView.builder(
-                  // padding: const EdgeInsets.only(top: 10),
-                  itemCount: products.length,
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                    crossAxisCount: 2,
-                    height: 250,
-                  ),
-                  itemBuilder: (context, i) {
-                    return ProductGridTile(products[i]);
-                  },
-                )
-              : (widget.showFavoritesOnly
-                  ? const EmptyScreenText("No favorite products")
-                  : const EmptyScreenText("No Products")),
+          : (widget.showFavoritesOnly
+              ? const EmptyScreenText("No favorite products")
+              : const EmptyScreenText("No Products")),
     );
   }
 }

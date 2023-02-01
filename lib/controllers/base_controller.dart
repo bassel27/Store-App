@@ -5,7 +5,7 @@ import '../services/app_exception.dart';
 /// Handles exceptions.
 class BaseController {
   void handleError(error) {
-    DialogHelper.hideLoading();
+    DialogHelper.hideCurrentDialog();
     if (error is BadRequestException) {
       var message = error.message;
       DialogHelper.showErroDialog(description: message);

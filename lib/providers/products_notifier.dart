@@ -59,13 +59,7 @@ class ProductsNotifier with ChangeNotifier {
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
     List<Product>? fetchedProducts = await _productsController.fetchProducts();
-    //TODO: this should be removed // if no products in database, create hard coded products just to get going
-    if (fetchedProducts == null) {
-      for (var element in _hardCodedProducts) {
-        addProduct(element);
-      }
-      return;
-    } else {
+    if (fetchedProducts != null) {
       _products = fetchedProducts;
     }
     notifyListeners();
@@ -174,3 +168,12 @@ class ProductsNotifier with ChangeNotifier {
     ),
   ];
 }
+   //TODO: this should be removed // if no products in database, create hard coded products just to get going
+    // if (fetchedProducts == null) {
+    //   for (var element in _hardCodedProducts) {
+    //     addProduct(element);
+    //   }
+    //   return;
+    // } else {
+    //   _products = fetchedProducts;
+    // }

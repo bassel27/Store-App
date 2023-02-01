@@ -29,7 +29,7 @@ class OrdersController with BaseController {
         products: cartItems,
       ));
     });
-    DialogHelper.hideLoading();
+    DialogHelper.hideCurrentDialog();
     //TODO: return empty list even if fetching failed?
     return loadedOrders.reversed.toList(); // newest first
   }
@@ -60,4 +60,3 @@ class OrdersController with BaseController {
     return id;
   }
 }
-
