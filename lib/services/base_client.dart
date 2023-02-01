@@ -9,7 +9,7 @@ import 'app_exception.dart';
 class BaseClient {
   static const int TIME_OUT_DURATION = 5;
 
-  /// Returns the decoded reponse.
+  /// Returns the decoded reponse's body.
   static Future<dynamic> get(String url) async {
     try {
       var response = await http
@@ -49,12 +49,12 @@ class BaseClient {
   static dynamic _processResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:
-        var responseJson = json.decode(response.body);
-        return responseJson;
+        var responseJsonBody = json.decode(response.body);
+        return responseJsonBody;
 
       case 201:
-        var responseJson = json.decode(response.body);
-        return responseJson;
+        var responseJsonBody = json.decode(response.body);
+        return responseJsonBody;
 
       case 400:
         throw BadRequestException(

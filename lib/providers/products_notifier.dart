@@ -6,12 +6,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:store_app/controllers/products_controller.dart';
 import 'package:store_app/models/http_exception.dart';
 
 import '../models/constants.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
+  final ProductsController _productsController = ProductsController();
   Product editedProduct =
       Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
@@ -56,34 +58,17 @@ class ProductsNotifier with ChangeNotifier {
 
   // TODO: handle error
   Future<void> fetchAndSetProducts() async {
-    try {
-      var response = await http.get(kProductsUri);
-      Map<String, dynamic>? extracedData = json.decode(response.body);
-      final List<Product> loadedProducts = [];
-      //TODO: this should be removed // if no products in database, create hard coded products just to get going
-      if (extracedData == null) {
-        for (var element in _hardCodedProducts) {
-          addProduct(element);
-        }
-        return;
+    List<Product>? fetchedProducts = await _productsController.fetchProducts();
+    //TODO: this should be removed // if no products in database, create hard coded products just to get going
+    if (fetchedProducts == null) {
+      for (var element in _hardCodedProducts) {
+        addProduct(element);
       }
-      extracedData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
-          id: prodId,
-          description: prodData['description'],
-          price: prodData['price'],
-          title: prodData['title'],
-          isFavorite: prodData['isFavorite'],
-          imageUrl: prodData['imageUrl'],
-        ));
-      });
-
-      _products = loadedProducts;
-
-      notifyListeners();
-    } catch (e) {
-      print("fetchandset products error:$e");
+      return;
+    } else {
+      _products = fetchedProducts;
     }
+    notifyListeners();
   }
 
   /// Adds the new product to the end of the list of products.
