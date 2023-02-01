@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
@@ -18,16 +17,22 @@ class ProductsGridScreen extends StatefulWidget {
 }
 
 class _ProductsGridScreenState extends State<ProductsGridScreen> {
-  // starting value is true
+  late Future _fetchAndSetProductsFuture;
   @override
   void initState() {
     // don't use async here case you're supposed to be overriding it and not change its type
     super.initState();
+    _fetchAndSetProductsFuture = fetchAndSetProducts();
+  }
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProductsNotifier>(context, listen: false)
-          .fetchAndSetProducts();
-    });
+  Future<void> fetchAndSetProducts() {
+    ProductsNotifier productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
+    if (productsProvider.products.isEmpty) {
+      return productsProvider.fetchAndSetProducts();
+    } else {
+      return Future.delayed(Duration.zero);
+    }
   }
 
   @override
@@ -37,28 +42,34 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
         ? productsNotifier.favoriteProducts
         : productsNotifier.products;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-          title: widget.showFavoritesOnly
-              ? const Text("Favorites")
-              : const Text("Pharmastore")),
-      body: products.isNotEmpty
-          ? GridView.builder(
-              // padding: const EdgeInsets.only(top: 10),
-              itemCount: products.length,
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                crossAxisCount: 2,
-                height: 250,
-              ),
-              itemBuilder: (context, i) {
-                return ProductGridTile(products[i]);
-              },
-            )
-          : (widget.showFavoritesOnly
-              ? const EmptyScreenText("No favorite products")
-              : const EmptyScreenText("No Products")),
+    return FutureBuilder(
+      future: _fetchAndSetProductsFuture,
+      builder: (context, snapshot) {
+        return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            appBar: AppBar(
+                title: widget.showFavoritesOnly
+                    ? const Text("Favorites")
+                    : const Text("Pharmastore")),
+            body: snapshot.connectionState == ConnectionState.done
+                ? (products.isNotEmpty
+                    ? GridView.builder(
+                        // padding: const EdgeInsets.only(top: 10),
+                        itemCount: products.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                          crossAxisCount: 2,
+                          height: 250,
+                        ),
+                        itemBuilder: (context, i) {
+                          return ProductGridTile(products[i]);
+                        },
+                      )
+                    : (widget.showFavoritesOnly
+                        ? const EmptyScreenText("No favorite products")
+                        : const EmptyScreenText("No Products")))
+                : const Center());
+      },
     );
   }
 }
