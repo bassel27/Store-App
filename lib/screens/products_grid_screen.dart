@@ -58,7 +58,7 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
   Future<void> fetchAndSetProducts() {
     ProductsNotifier productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
-    if (productsProvider.products.isEmpty) {
+    if (!productsProvider.areProductsFetched) {
       return productsProvider.fetchAndSetProducts();
     } else {
       return Future.delayed(Duration.zero);

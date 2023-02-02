@@ -13,6 +13,7 @@ import '../models/constants.dart';
 import '../models/product.dart';
 
 class ProductsNotifier with ChangeNotifier {
+  bool areProductsFetched = false;
   final ProductsController _productsController = ProductsController();
   Product editedProduct =
       Product(id: '', title: '', description: '', price: 0, imageUrl: '');
@@ -51,6 +52,7 @@ class ProductsNotifier with ChangeNotifier {
     if (fetchedProducts != null) {
       _products = fetchedProducts;
     }
+    areProductsFetched = true;
     notifyListeners();
   }
 
