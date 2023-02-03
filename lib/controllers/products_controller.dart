@@ -30,11 +30,24 @@ class ProductsController with BaseController {
 
   Future<void> toggleFavoriteStatus(Product product) async {
     var productUrl = "$kBaseUrl/products/${product.id}.json";
-    final response = await BaseClient.patch(
+    await BaseClient.patch(
         productUrl, // delete, patch and put don't throw their own errors
         {
           "isFavorite": product.isFavorite,
         },
         timeOutDuration: 1);
+  }
+  /// Returns product id or null if product not added successfully.
+  Future<String?> addProduct(Product newProduct) async {
+    var responseBody = await BaseClient.post(kProductsUrl, {
+      "title": newProduct.title,
+      "description": newProduct.description,
+      "imageUrl": newProduct.imageUrl,
+      "price": newProduct.price,
+      "isFavorite": newProduct.isFavorite,
+    });
+    return responseBody == null
+        ? null
+        : BaseClient.getObjectIdByResponse(responseBody);
   }
 }

@@ -58,31 +58,22 @@ class ProductsNotifier with ChangeNotifier {
 
   /// Adds the new product to the end of the list of products.
   Future<void> addProduct(Product newProduct) {
-    // TODO: handle error
     return addProductByIndex(newProduct, _products.length);
   }
 
   /// Inserts the new product at a specific index in the list of products.
   Future<void> addProductByIndex(Product newProduct, int index) async {
-    // TODO: handle error
-    // async returns a future automatically
-    final response = await http.post(kProductsUri,
-        body: json.encode({
-          "title": newProduct.title,
-          "description": newProduct.description,
-          "imageUrl": newProduct.imageUrl,
-          "price": newProduct.price,
-          "isFavorite": newProduct.isFavorite,
-        }));
-
-    newProduct = Product(
-        description: newProduct.description,
-        price: newProduct.price,
-        imageUrl: newProduct.imageUrl,
-        title: newProduct.title,
-        id: json.decode(response.body)["name"]);
-    _products.insert(index, newProduct);
-    notifyListeners();
+    String? id = await _productsController.addProduct(newProduct);
+    if (id != null) {
+      newProduct = Product(
+          description: newProduct.description,
+          price: newProduct.price,
+          imageUrl: newProduct.imageUrl,
+          title: newProduct.title,
+          id: id);
+      _products.insert(index, newProduct);
+      notifyListeners();
+    }
   }
 
   // TODO: handle error

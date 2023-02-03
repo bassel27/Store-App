@@ -27,7 +27,7 @@ class BaseClient {
     }
   }
 
-  /// Returns the decoded reponse.
+  /// Returns the decoded reponse's body.
   static Future<dynamic> post(String url, Map payloadInput) async {
     try {
       var response = await http
@@ -88,5 +88,9 @@ class BaseClient {
         throw FetchDataException(
             'Error occured with code : ${response.statusCode}, ${response.request!.url.toString()}');
     }
+  }
+
+  static String getObjectIdByResponse(Map responseDecodedBody) {
+    return responseDecodedBody["name"];
   }
 }
