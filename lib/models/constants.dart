@@ -13,3 +13,6 @@ const kProductsUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json';
 const kOrdersUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/orders.json';
+
+const String kErrorMessage =
+    "Oops! Something went wrong. Check your internet connection and try again.";

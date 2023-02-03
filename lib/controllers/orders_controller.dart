@@ -17,7 +17,8 @@ class OrdersController with BaseController {
 
     final List<OrderItem> loadedOrders = [];
     if (ordersExtractedData == null) {
-      return [];
+      // if no orders exist
+      return loadedOrders;
     }
 
     ordersExtractedData.forEach((orderId, orderData) {
@@ -32,7 +33,6 @@ class OrdersController with BaseController {
         products: cartItems,
       ));
     });
-    //TODO: return empty list even if fetching failed?
 
     return loadedOrders.reversed.toList(); // newest first
   }

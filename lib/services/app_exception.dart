@@ -22,12 +22,12 @@ class FetchDataException extends AppException {
 
 class ApiNotRespondingException extends AppException {
   ApiNotRespondingException(String message, [String? url])
-      : super(message, 'Api not responded in time', url);
+      : super(message, 'Api did not respond in time', url);
 }
 
 class UnAuthorizedException extends AppException {
   UnAuthorizedException(String message, [String? url])
-      : super(message, 'UnAuthorized request', url);
+      : super(message, 'Unauthorized request', url);
 }
 
 class ProductUnavailableException implements Exception {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/constants.dart';
 
 class ErrorScaffoldBody extends StatelessWidget {
   const ErrorScaffoldBody(this.exception);
@@ -6,8 +7,7 @@ class ErrorScaffoldBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text(
-          "Oops! Something went wrong. Check your internet connection and try again."),
+      child: Text(kErrorMessage),
     );
   }
 }

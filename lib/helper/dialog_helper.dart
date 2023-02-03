@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../models/constants.dart';
 
 class DialogHelper {
   static void showErroDialog(
-      {String title = 'Error', String? description = 'Something went wrong'}) {
+      {String title = 'Error', String? description = kErrorMessage}) {
     Get.dialog(
       Dialog(
         child: Padding(
@@ -33,7 +34,8 @@ class DialogHelper {
   }
 
   static void showLoading([String? message]) {
-    Future.delayed( // 
+    Future.delayed(
+        //
         Duration.zero,
         () => Get.dialog(
               Dialog(
