@@ -150,6 +150,7 @@ class _EditProductScreenState extends State<EditProductScreen>
   /// or the keyboard's done button is pressed in the image URL text field.
   void _saveForm() async {
     if (_formKey.currentState!.validate()) {
+      dismissKeyboard();
       // this runs all the validators
       _formKey.currentState!.save(); // this runs all the savers
       var productProvider =
@@ -164,7 +165,17 @@ class _EditProductScreenState extends State<EditProductScreen>
         if (mounted) {
           Navigator.of(context).pop(); // pop EditProductScreen
         }
-      } catch (e) {}
+      } catch (e) {
+        // do nothing and leave error dialog and leave edit screen
+      }
+    }
+  }
+
+  void dismissKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
     }
   }
 
