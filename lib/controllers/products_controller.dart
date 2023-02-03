@@ -7,7 +7,7 @@ import '../services/base_client.dart';
 
 class ProductsController with BaseController {
   /// Returns list of products or null if no products or if exception thrown.
-  Future<List<Product>?> fetchProducts() async {
+  Future<List<Product>?> get() async {
     Map<String, dynamic>? extracedData;
     extracedData = await BaseClient.get(kProductsUrl);
     List<Product>? loadedProducts = [];
@@ -40,7 +40,7 @@ class ProductsController with BaseController {
   }
 
   /// Returns product id or null if product not added successfully.
-  Future<String?> addProduct(Product newProduct) async {
+  Future<String?> create(Product newProduct) async {
     DialogHelper.showLoading();
     Map responseBody;
     try {
@@ -76,7 +76,7 @@ class ProductsController with BaseController {
     DialogHelper.hideCurrentDialog();
   }
 
-  Future<void> deleteProduct(String productId) async {
+  Future<void> delete(String productId) async {
     String deletedProductUrl = "$kBaseUrl/products/$productId.json";
     await BaseClient.delete(deletedProductUrl);
   }

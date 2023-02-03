@@ -45,7 +45,7 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    List<Product>? fetchedProducts = await _productsController.fetchProducts();
+    List<Product>? fetchedProducts = await _productsController.get();
     if (fetchedProducts != null) {
       _products = fetchedProducts;
     }
@@ -62,7 +62,7 @@ class ProductsNotifier with ChangeNotifier {
   Future<void> addProductByIndex(Product newProduct, int index) async {
     String? id;
     try {
-      id = await _productsController.addProduct(newProduct);
+      id = await _productsController.create(newProduct);
     } catch (e) {
       rethrow; // rethrow here is unnecessary. I just put it to clarify that the error is propagated to EditProductScreen
     } // rethrow in order to not pop screen in case of error
@@ -93,7 +93,7 @@ class ProductsNotifier with ChangeNotifier {
 
   /// Deletes a product from the products list by id and returns its index.
   Future<int> deleteProduct(String productId) async {
-    await _productsController.deleteProduct(productId);
+    await _productsController.delete(productId);
     int index = -1;
     for (int i = 0; i < _products.length; i++) {
       if (_products[i].id == productId) {

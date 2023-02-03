@@ -8,7 +8,7 @@ import '../services/base_client.dart';
 
 class OrdersController with BaseController {
   /// Returns fetched orders, handles errors and loading.
-  Future<List<OrderItem>> fetchOrders() async {
+  Future<List<OrderItem>> get() async {
     DialogHelper.showLoading();
     Map<String, dynamic>? ordersExtractedData = await BaseClient.get(kOrdersUrl)
         .catchError(handleError) as Map<String, dynamic>?;
@@ -35,7 +35,7 @@ class OrdersController with BaseController {
   }
 
   /// Returns post ID and handles errors.
-  Future<String?> postOrder(
+  Future<String?> create(
       List<CartItem> cartProducts, double total, DateTime nowTimeStamp) async {
     final payLoadInput = {
       'quantity': total,
