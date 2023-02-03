@@ -24,7 +24,7 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
   void initState() {
     // don't use async here case you're supposed to be overriding it and not change its type
     super.initState();
-    _fetchAndSetProductsFuture = fetchAndSetProducts();
+    _fetchAndSetProductsFuture = getAndSetProducts();
   }
 
   @override
@@ -56,7 +56,7 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
     );
   }
 
-  Future<void> fetchAndSetProducts() {
+  Future<void> getAndSetProducts() {
     ProductsNotifier productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     if (!productsProvider.areProductsFetched) {
