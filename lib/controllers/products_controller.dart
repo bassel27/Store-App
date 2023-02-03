@@ -75,4 +75,9 @@ class ProductsController with BaseController {
     }
     DialogHelper.hideCurrentDialog();
   }
+
+  Future<void> deleteProduct(String productId) async {
+    String deletedProductUrl = "$kBaseUrl/products/$productId.json";
+    await BaseClient.delete(deletedProductUrl);
+  }
 }

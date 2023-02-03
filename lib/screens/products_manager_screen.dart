@@ -101,7 +101,7 @@ void onProductDelete(Product product, BuildContext context) async {
   } catch (e) {
     scaffoldMessenger.hideCurrentSnackBar();
     scaffoldMessenger.showSnackBar(const SnackBar(
-      content: Text("Deleting failed!"),
+      content: Text("Deleting failed! Product is not available."),
     ));
     return;
   }

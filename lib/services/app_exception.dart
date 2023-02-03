@@ -29,3 +29,12 @@ class UnAuthorizedException extends AppException {
   UnAuthorizedException(String message, [String? url])
       : super(message, 'UnAuthorized request', url);
 }
+
+class ProductUnavailableException implements Exception {
+  final String message;
+  ProductUnavailableException(this.message);
+  @override
+  String toString() {
+    return message;
+  }
+}

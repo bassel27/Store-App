@@ -4,12 +4,10 @@
 // to use in your class, but your class doesn't become an instance of that class.
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:store_app/controllers/products_controller.dart';
-import 'package:store_app/models/http_exception.dart';
 
-import '../models/constants.dart';
 import '../models/product.dart';
+import '../services/app_exception.dart';
 
 class ProductsNotifier with ChangeNotifier {
   bool areProductsFetched = false;
@@ -86,7 +84,7 @@ class ProductsNotifier with ChangeNotifier {
       try {
         await _productsController.updateProduct(id, newProduct);
       } catch (e) {
-        rethrow;  // try catch is unnecessary here. It's just here to show that error is propagated.
+        rethrow; // try catch is unnecessary here. It's just here to show that error is propagated.
       }
       _products[index] = newProduct;
       notifyListeners();
@@ -95,24 +93,21 @@ class ProductsNotifier with ChangeNotifier {
 
   /// Deletes a product from the products list by id and returns its index.
   Future<int> deleteProduct(String productId) async {
-    final deletedProductUrl = Uri.parse("$kBaseUrl/products/$productId.json");
-    Product? existingProduct;
+    await _productsController.deleteProduct(productId);
     int index = -1;
     for (int i = 0; i < _products.length; i++) {
       if (_products[i].id == productId) {
         index = i;
-        existingProduct = products[i];
-        _products.removeAt(index);
-        notifyListeners();
-        final response = await http.delete(deletedProductUrl);
-        if (response.statusCode >= 400) {
-          _products.insert(index, existingProduct);
-          notifyListeners();
-          throw (HttpException("Could not delete product"));
-        }
       }
     }
-    existingProduct = null; // to be garabge collected
+    if (index != -1) {
+      _products.removeAt(index);
+      notifyListeners();
+    } else {
+      // product not found in list
+      throw ProductUnavailableException(
+          "Deleting failed! Product not available.");
+    }
     return index;
   }
 

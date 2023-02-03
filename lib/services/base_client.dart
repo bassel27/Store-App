@@ -35,7 +35,8 @@ class BaseClient {
           .timeout(const Duration(seconds: TIME_OUT_DURATION));
       return _processResponse(response);
     } on SocketException {
-      throw FetchDataException('Check your internet connection and try again', url);
+      throw FetchDataException(
+          'Check your internet connection and try again', url);
     } on TimeoutException {
       throw ApiNotRespondingException(
           'Check your internet connection and try again', url);
@@ -54,6 +55,24 @@ class BaseClient {
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection', url);
+    } on TimeoutException {
+      throw ApiNotRespondingException(
+          'Check your internet connection and try again', url);
+    } catch (e) {
+      Exception('An error occurred. Contact system administrator');
+    }
+  }
+
+  /// Returns the decoded reponse's body.
+  static Future<dynamic> delete(String url) async {
+    try {
+      var response = await http
+          .delete(Uri.parse(url))
+          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+      return _processResponse(response);
+    } on SocketException {
+      throw FetchDataException(
+          'Check your internet connection and try again', url);
     } on TimeoutException {
       throw ApiNotRespondingException(
           'Check your internet connection and try again', url);
