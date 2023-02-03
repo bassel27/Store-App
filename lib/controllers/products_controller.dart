@@ -1,4 +1,5 @@
 import 'package:store_app/controllers/base_controller.dart';
+import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
 import 'package:store_app/models/product.dart';
 
@@ -40,17 +41,21 @@ class ProductsController with BaseController {
 
   /// Returns product id or null if product not added successfully.
   Future<String?> addProduct(Product newProduct) async {
-    var responseBody = await BaseClient.post(kProductsUrl, {
-      "title": newProduct.title,
-      "description": newProduct.description,
-      "imageUrl": newProduct.imageUrl,
-      "price": newProduct.price,
-      "isFavorite": newProduct.isFavorite,
-    }).catchError((e) {
+    DialogHelper.showLoading();
+    Map responseBody;
+    try {
+      responseBody = await BaseClient.post(kProductsUrl, {
+        "title": newProduct.title,
+        "description": newProduct.description,
+        "imageUrl": newProduct.imageUrl,
+        "price": newProduct.price,
+        "isFavorite": newProduct.isFavorite,
+      });
+    } catch (e) {
       handleError(e);
-    });
-    return responseBody == null
-        ? null
-        : BaseClient.getObjectIdByResponse(responseBody);
+      rethrow;
+    }
+    DialogHelper.hideCurrentDialog();
+    return BaseClient.getObjectIdByResponse(responseBody);
   }
 }

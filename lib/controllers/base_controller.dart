@@ -5,7 +5,7 @@ import '../services/app_exception.dart';
 /// Handles exceptions.
 class BaseController {
   void handleError(error) {
-    DialogHelper.hideCurrentDialog();
+    DialogHelper.hideCurrentDialog(); // If loading dialog was open
     if (error is BadRequestException) {
       DialogHelper.showErroDialog(description: error.message);
     } else if (error is FetchDataException) {
