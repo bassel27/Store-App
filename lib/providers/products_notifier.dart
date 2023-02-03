@@ -2,7 +2,6 @@
 //Using a mixin is like extending another class.
 //The difference is that you merge some properties and methods from that class
 // to use in your class, but your class doesn't become an instance of that class.
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +62,12 @@ class ProductsNotifier with ChangeNotifier {
 
   /// Inserts the new product at a specific index in the list of products.
   Future<void> addProductByIndex(Product newProduct, int index) async {
-    String? id = await _productsController.addProduct(newProduct);
+    String? id;
+    try {
+      id = await _productsController.addProduct(newProduct);
+    } catch (e) {
+      rethrow; // rethrow here is unnecessary. I just put it to clarify that the error is propagated to EditProductScreen
+    } // rethrow in order to not pop screen in case of error
     if (id != null) {
       newProduct = Product(
           description: newProduct.description,
@@ -76,18 +80,14 @@ class ProductsNotifier with ChangeNotifier {
     }
   }
 
-  // TODO: handle error
   Future<void> updateProduct(String id, Product newProduct) async {
     final index = _products.indexWhere((element) => element.id == id);
     if (index >= 0) {
-      var oldProductUrl = Uri.parse("$kBaseUrl/products/$id.json");
-      await http.patch(oldProductUrl,
-          body: json.encode({
-            "title": newProduct.title,
-            "description": newProduct.description,
-            "imageUrl": newProduct.imageUrl,
-            "price": newProduct.price,
-          }));
+      try {
+        await _productsController.updateProduct(id, newProduct);
+      } catch (e) {
+        rethrow;  // try catch is unnecessary here. It's just here to show that error is propagated.
+      }
       _products[index] = newProduct;
       notifyListeners();
     }

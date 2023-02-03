@@ -58,4 +58,21 @@ class ProductsController with BaseController {
     DialogHelper.hideCurrentDialog();
     return BaseClient.getObjectIdByResponse(responseBody);
   }
+
+  Future<void> updateProduct(String id, Product newProduct) async {
+    DialogHelper.showLoading();
+    var oldProductUrl = "$kBaseUrl/products/$id.json";
+    try {
+      await BaseClient.patch(oldProductUrl, {
+        "title": newProduct.title,
+        "description": newProduct.description,
+        "imageUrl": newProduct.imageUrl,
+        "price": newProduct.price,
+      });
+    } catch (e) {
+      handleError(e);
+      rethrow;
+    }
+    DialogHelper.hideCurrentDialog();
+  }
 }
