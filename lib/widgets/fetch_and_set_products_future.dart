@@ -16,21 +16,23 @@ class GetAndSetFutureBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _fetchAndSetProductsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return ErrorScaffoldBody(snapshot.error as Exception);
+    return Center(
+      child: FutureBuilder(
+        future: _fetchAndSetProductsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return ErrorScaffoldBody(snapshot.error as Exception);
+            } else {
+              return _successfulWidgetBody;
+            }
           } else {
-            return _successfulWidgetBody;
+            return Text('State: ${snapshot.connectionState}');
           }
-        } else {
-          return Text('State: ${snapshot.connectionState}');
-        }
-      },
+        },
+      ),
     );
   }
 }

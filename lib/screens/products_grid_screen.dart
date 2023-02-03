@@ -34,12 +34,10 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
           title: widget.showFavoritesOnly
               ? const Text("Favorites")
               : const Text("Pharmastore")),
-      body: Center(
-        child: GetAndSetFutureBuilder(
-            fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
-            successfulScaffoldBody: _SuccessfulScaffoldBody(
-                showFavoritesOnly: widget.showFavoritesOnly)),
-      ),
+      body: GetAndSetFutureBuilder(
+          fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
+          successfulScaffoldBody: _SuccessfulScaffoldBody(
+              showFavoritesOnly: widget.showFavoritesOnly)),
     );
   }
 
