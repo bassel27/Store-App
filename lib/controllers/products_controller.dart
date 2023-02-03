@@ -37,6 +37,7 @@ class ProductsController with BaseController {
         },
         timeOutDuration: 1);
   }
+
   /// Returns product id or null if product not added successfully.
   Future<String?> addProduct(Product newProduct) async {
     var responseBody = await BaseClient.post(kProductsUrl, {
@@ -45,6 +46,8 @@ class ProductsController with BaseController {
       "imageUrl": newProduct.imageUrl,
       "price": newProduct.price,
       "isFavorite": newProduct.isFavorite,
+    }).catchError((e) {
+      handleError(e);
     });
     return responseBody == null
         ? null

@@ -35,7 +35,7 @@ class BaseClient {
           .timeout(const Duration(seconds: TIME_OUT_DURATION));
       return _processResponse(response);
     } on SocketException {
-      throw FetchDataException('No Internet connection', url);
+      throw FetchDataException('Check your internet connection and try again', url);
     } on TimeoutException {
       throw ApiNotRespondingException(
           'Check your internet connection and try again', url);
