@@ -30,7 +30,7 @@ class ProductsManagerScreen extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => productsProvider.fetchAndSetProducts(),
+        onRefresh: () => productsProvider.getAndSetProducts(),
         child: ListView.builder(
           itemCount: products.length,
           itemBuilder: (_, i) {

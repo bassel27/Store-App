@@ -21,6 +21,7 @@ class OrdersNotifier with ChangeNotifier {
   /// List of all order sorted by recency.
   List<OrderItem> _orders = [];
 
+  final OrdersController _ordersController = OrdersController();
   List<OrderItem> get orders => UnmodifiableListView(_orders);
   set orders(List<OrderItem> orders) {
     _orders = orders;
@@ -28,14 +29,19 @@ class OrdersNotifier with ChangeNotifier {
 
   int get numberOfOrders => _orders.length;
   Future<void> getAndSetOrders() async {
-    _orders = await OrdersController().get();
+    try {
+      _orders = await _ordersController.get();
+      notifyListeners();
+    } catch (e) {
+      rethrow;
+    }
     notifyListeners();
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final nowTimeStamp = DateTime.now();
     String? id =
-        await OrdersController().create(cartProducts, total, nowTimeStamp);
+        await _ordersController.create(cartProducts, total, nowTimeStamp);
     if (id != null) {
       _orders.insert(
         0,

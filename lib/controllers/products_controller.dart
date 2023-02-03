@@ -26,6 +26,7 @@ class ProductsController with BaseController {
     } else {
       loadedProducts = null;
     }
+    
     return loadedProducts;
   }
 

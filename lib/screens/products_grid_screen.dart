@@ -8,6 +8,7 @@ import '../widgets/empty_screen_text.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
+// TODO: stateless?
 /// This screen is used for home and favorites screens.
 class ProductsGridScreen extends StatefulWidget {
   final bool showFavoritesOnly;
@@ -59,7 +60,7 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
     ProductsNotifier productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     if (!productsProvider.areProductsFetched) {
-      return productsProvider.fetchAndSetProducts();
+      return productsProvider.getAndSetProducts();
     } else {
       return Future.delayed(Duration.zero);
     }

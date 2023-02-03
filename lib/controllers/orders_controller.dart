@@ -1,5 +1,4 @@
 import 'package:store_app/controllers/base_controller.dart';
-import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/cart_item.dart';
@@ -9,9 +8,13 @@ import '../services/base_client.dart';
 class OrdersController with BaseController {
   /// Returns fetched orders, handles errors and loading.
   Future<List<OrderItem>> get() async {
-    DialogHelper.showLoading();
-    Map<String, dynamic>? ordersExtractedData = await BaseClient.get(kOrdersUrl)
-        .catchError(handleError) as Map<String, dynamic>?;
+    Map<String, dynamic>? ordersExtractedData;
+    try {
+      ordersExtractedData = await BaseClient.get(kOrdersUrl);
+    } catch (e) {
+      rethrow;
+    }
+
     final List<OrderItem> loadedOrders = [];
     if (ordersExtractedData == null) {
       return [];
@@ -29,8 +32,8 @@ class OrdersController with BaseController {
         products: cartItems,
       ));
     });
-    DialogHelper.hideCurrentDialog();
     //TODO: return empty list even if fetching failed?
+
     return loadedOrders.reversed.toList(); // newest first
   }
 

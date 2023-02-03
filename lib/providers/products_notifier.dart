@@ -44,7 +44,7 @@ class ProductsNotifier with ChangeNotifier {
     });
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> getAndSetProducts() async {
     List<Product>? fetchedProducts = await _productsController.get();
     if (fetchedProducts != null) {
       _products = fetchedProducts;
