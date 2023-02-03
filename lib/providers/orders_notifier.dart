@@ -27,7 +27,7 @@ class OrdersNotifier with ChangeNotifier {
   }
 
   int get numberOfOrders => _orders.length;
-  Future<void> fetchAndSetOrders() async {
+  Future<void> getAndSetOrders() async {
     _orders = await OrdersController().get();
     notifyListeners();
   }

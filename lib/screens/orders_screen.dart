@@ -20,7 +20,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<OrdersNotifier>(context, listen: false)
-          .fetchAndSetOrders()
+          .getAndSetOrders()
           .then((_) {
         setState(() {
           _isLoading = false;
