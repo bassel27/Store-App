@@ -2,12 +2,12 @@ import 'package:store_app/controllers/base_controller.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/cart_item.dart';
-import '../models/order_item.dart';
+import '../models/order.dart';
 import '../services/base_client.dart';
 
 class OrdersController with BaseController {
   /// Returns fetched orders, handles errors and loading.
-  Future<List<OrderItem>> get() async {
+  Future<List<Order>> get() async {
     Map<String, dynamic>? ordersExtractedData;
     try {
       ordersExtractedData = await BaseClient.get(kOrdersUrl);
@@ -15,7 +15,7 @@ class OrdersController with BaseController {
       rethrow;
     }
 
-    final List<OrderItem> loadedOrders = [];
+    final List<Order> loadedOrders = [];
     if (ordersExtractedData == null) {
       // if no orders exist
       return loadedOrders;
@@ -26,9 +26,9 @@ class OrdersController with BaseController {
       List<CartItem> cartItems = productsMaps
           .map((productMap) => CartItem.fromJson(productMap))
           .toList();
-      loadedOrders.add(OrderItem(
+      loadedOrders.add(Order(
         id: orderId,
-        quantity: orderData['quantity'],
+        total: orderData['total'],
         dateTime: DateTime.parse(orderData['dateTime']),
         products: cartItems,
       ));
@@ -39,16 +39,16 @@ class OrdersController with BaseController {
 
   /// Returns post ID and handles errors.
   Future<String?> create(
-      List<CartItem> cartProducts, double total, DateTime nowTimeStamp) async {
+      List<CartItem> cartItems, double total, DateTime nowTimeStamp) async {
     final payLoadInput = {
-      'quantity': total,
+      'total': total,
       'dateTime': nowTimeStamp.toIso8601String(),
-      'products': cartProducts
-          .map((cartProduct) => {
-                'id': cartProduct.id,
-                'title': cartProduct.title,
-                'quantity': cartProduct.quantity,
-                'price': cartProduct.price,
+      'products': cartItems
+          .map((cartItem) => {
+                'id': cartItem.id,
+                'title': cartItem.title,
+                'quantity': cartItem.quantity,
+                'price': cartItem.price,
               })
           .toList()
     };

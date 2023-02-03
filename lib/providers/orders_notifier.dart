@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../controllers/orders_controller.dart';
 import '../models/cart_item.dart';
-import '../models/order_item.dart';
+import '../models/order.dart';
 
 class Failure {
   String message;
@@ -19,11 +19,11 @@ class Failure {
 
 class OrdersNotifier with ChangeNotifier {
   /// List of all order sorted by recency.
-  List<OrderItem> _orders = [];
+  List<Order> _orders = [];
 
   final OrdersController _ordersController = OrdersController();
-  List<OrderItem> get orders => UnmodifiableListView(_orders);
-  set orders(List<OrderItem> orders) {
+  List<Order> get orders => UnmodifiableListView(_orders);
+  set orders(List<Order> orders) {
     _orders = orders;
   }
 
@@ -45,9 +45,9 @@ class OrdersNotifier with ChangeNotifier {
     if (id != null) {
       _orders.insert(
         0,
-        OrderItem(
+        Order(
           id: json.decode(id)["name"],
-          quantity: total,
+          total: total,
           products: cartProducts,
           dateTime: nowTimeStamp,
         ),

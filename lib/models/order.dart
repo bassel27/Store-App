@@ -1,6 +1,6 @@
 import 'package:store_app/models/cart_item.dart';
 
-class OrderItem {
+class Order {
   final String _id;
   final double _amount;
   final List<CartItem> _products;
@@ -8,13 +8,13 @@ class OrderItem {
   /// Time the order was placed.
   final DateTime _dateTime;
 
-  OrderItem(
+  Order(
       {required String id,
-      required double quantity,
+      required double total,
       required List<CartItem> products,
       required DateTime dateTime})
       : _id = id,
-        _amount = quantity,
+        _amount = total,
         _products = products,
         _dateTime = dateTime;
 
