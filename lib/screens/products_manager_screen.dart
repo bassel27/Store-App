@@ -5,10 +5,23 @@ import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/product.dart';
+import '../widgets/fetch_and_set_products_future.dart';
 
-class ProductsManagerScreen extends StatelessWidget {
+class ProductsManagerScreen extends StatefulWidget {
   const ProductsManagerScreen({super.key});
   static const route = "/product_manager_screen";
+
+  @override
+  State<ProductsManagerScreen> createState() => _ProductsManagerScreenState();
+}
+
+class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
+  late Future _fetchAndSetProductsFuture;
+  @override
+  void initState() {
+    super.initState();
+    _fetchAndSetProductsFuture = getAndSetProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,36 +30,65 @@ class ProductsManagerScreen extends StatelessWidget {
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Products Manager"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, EditProductScreen.route).then(
-                    (_) => productsProvider
-                        .resetEditedProduct()); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
-              },
-              icon: const Icon(Icons.add)),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => productsProvider.getAndSetProducts(),
-        child: ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (_, i) {
-            return Column(
-              key: ValueKey(products[i].id),
-              children: [
-                MyDismissible(
-                  valueKeyId: products[i].id,
-                  onDismissed: (_) => onProductDelete(products[i], context),
-                  child: _ProductListTile(products[i]),
-                ),
-                const Divider(),
-              ],
-            );
-          },
+        appBar: AppBar(
+          title: const Text("Products Manager"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, EditProductScreen.route).then(
+                      (_) => productsProvider
+                          .resetEditedProduct()); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
+                },
+                icon: const Icon(Icons.add)),
+          ],
         ),
+        body: GetAndSetFutureBuilder(
+          fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
+          successfulScaffoldBody: _SuccessfulScaffoldBody(
+              productsProvider: productsProvider, products: products),
+        ));
+  }
+
+  Future<void> getAndSetProducts() {
+    ProductsNotifier productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
+    if (!productsProvider.areProductsFetched) {
+      return productsProvider.getAndSetProducts();
+    } else {
+      return Future.delayed(Duration.zero);
+    }
+  }
+}
+
+class _SuccessfulScaffoldBody extends StatelessWidget {
+  const _SuccessfulScaffoldBody({
+    Key? key,
+    required this.productsProvider,
+    required this.products,
+  }) : super(key: key);
+
+  final ProductsNotifier productsProvider;
+  final List<Product> products;
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () => productsProvider.getAndSetProducts(),
+      child: ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (_, i) {
+          return Column(
+            key: ValueKey(products[i].id),
+            children: [
+              MyDismissible(
+                valueKeyId: products[i].id,
+                onDismissed: (_) => onProductDelete(products[i], context),
+                child: _ProductListTile(products[i]),
+              ),
+              const Divider(),
+            ],
+          );
+        },
       ),
     );
   }
