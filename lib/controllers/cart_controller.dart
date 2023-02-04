@@ -4,7 +4,7 @@ import 'package:store_app/models/constants.dart';
 import '../services/base_client.dart';
 
 class CartController {
-  Future<List<CartItem>> get() async {
+  Future<List<CartItem>>? get() async {
     Map<String, dynamic> cartItemMaps =
         await BaseClient.get(kCartUrl); // map of cartItem maps.
     List<CartItem> cartItems = [];
@@ -14,12 +14,17 @@ class CartController {
     return cartItems;
   }
 
+  /// Creates a new cart item in cart.
   Future<void> create(CartItem cartItem) async {
-    var response = await BaseClient.put(
-        cartUrlWithId(cartItem.id), {'cartItem': cartItem.toJson()});
+    await BaseClient.put(_cartUrlWithId(cartItem.id), cartItem.toJson());
   }
 
-  String cartUrlWithId(String id) {
+  /// Increments the quantity of an already existing CartItem using its id.
+  Future<void> incrementQuanity(CartItem cartItem) async {
+    await BaseClient.put(_cartUrlWithId(cartItem.id), cartItem.toJson());
+  }
+
+  String _cartUrlWithId(String id) {
     return "$kCartBaseUrl/$id.json";
   }
 }

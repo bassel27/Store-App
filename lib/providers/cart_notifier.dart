@@ -8,24 +8,25 @@ import '../models/cart_item.dart';
 import '../models/product.dart';
 
 class CartNotifier with ChangeNotifier {
+  bool isCartFetched = false;
   //TODO: remove productID if not used and convert it to a list
   /// Key is productId and value is cartItem.
-  late List<CartItem> _cartItems = [];
+  late List<CartItem> _items = [];
   final CartController _cartController = CartController();
   // A list of all products placed in cart.
   List<CartItem> get items {
-    return UnmodifiableListView(_cartItems);
+    return UnmodifiableListView(_items);
   }
 
   /// Number of products placed in cart.
   get cartItemsCount {
-    return _cartItems.length;
+    return _items.length;
   }
 
   /// Cart total amount.
   double get total {
     double total = 0.00;
-    for (var cartItem in _cartItems) {
+    for (var cartItem in _items) {
       total += cartItem.product.price * cartItem.quantity;
     }
 
@@ -33,7 +34,7 @@ class CartNotifier with ChangeNotifier {
   }
 
   CartItem? getCartItem(Product product) {
-    for (CartItem cartItem in _cartItems) {
+    for (CartItem cartItem in _items) {
       if (cartItem.product.id == product.id) {
         return cartItem;
       }
@@ -41,9 +42,20 @@ class CartNotifier with ChangeNotifier {
     return null;
   }
 
+  Future<void> getAndSetCart() async {
+    List<CartItem>? items = await _cartController.get();
+    if (items != null) {
+      // if not empty
+      _items = items;
+      notifyListeners();
+    }
+    isCartFetched = true;
+  }
+
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product) async {
-    for (CartItem cartItem in _cartItems) {
+    // optimistic update
+    for (CartItem cartItem in _items) {
       if (cartItem.product.id == product.id) {
         cartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
         return;
@@ -51,13 +63,13 @@ class CartNotifier with ChangeNotifier {
     }
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
-    _cartItems.add(newCartItem);
+    _items.add(newCartItem);
     notifyListeners();
     try {
       await _cartController.create(newCartItem);
     } catch (e) {
       // if product doesn't exist in cart
-      _cartItems.remove(newCartItem);
+      _items.remove(newCartItem);
       notifyListeners();
       rethrow;
     }
@@ -65,16 +77,16 @@ class CartNotifier with ChangeNotifier {
 
   /// Removes an item from the cart using this item's id.
   void removeItem(CartItem cartItemInput) {
-    _cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
+    _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
     notifyListeners();
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
   void removeSingleItem(CartItem cartItemInput) {
-    for (CartItem cartItem in _cartItems) {
+    for (CartItem cartItem in _items) {
       if (cartItem.id == cartItemInput.id) {
         if (cartItem.quantity == 1) {
-          _cartItems.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
+          _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
         } else {
           cartItem.copyWith(quantity: cartItem.quantity - 1);
         }
@@ -87,7 +99,7 @@ class CartNotifier with ChangeNotifier {
 
   /// Removes all items from the cart.
   void clear() {
-    _cartItems = [];
+    _items = [];
     notifyListeners();
   }
 }
