@@ -1,32 +1,19 @@
-class Product {
-  final String id;
-  final String title;
-  final String description;
-  final double price;
-  final String imageUrl;
-  bool isFavorite;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Product(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.price,
-      required this.imageUrl,
-      this.isFavorite = false});
+part 'product.freezed.dart';
+part 'product.g.dart';
 
-  Product copyWith(
-      {String? id,
-      String? title,
-      String? description,
-      double? price,
-      String? imageUrl,
-      bool? isFavorite}) {
-    return Product(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        price: price ?? this.price,
-        imageUrl: imageUrl ?? this.imageUrl,
-        isFavorite: isFavorite ?? this.isFavorite);
-  }
+@freezed
+class Product with _$Product {
+  const factory Product({
+    required String imageUrl,
+    required String title,
+    required String description,
+    required String id,
+    required double price,
+    @Default(false) bool isFavorite,
+  }) = _Product;
+
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 }
