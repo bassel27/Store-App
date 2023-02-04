@@ -121,7 +121,7 @@ class _ChangeQuantityRow extends StatelessWidget {
           width: 10,
         ),
         _MyIconButton(Icons.remove_circle, () {
-          cartProvider.removeSingleItem(cartItem);
+          cartProvider.decrementQuantity(cartItem);
         }),
         Text(
           cartItem.quantity.toString(),

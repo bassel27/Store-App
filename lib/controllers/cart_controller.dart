@@ -25,6 +25,15 @@ class CartController {
         cartItem.copyWith(quantity: cartItem.quantity + 1).toJson());
   }
 
+  Future<void> decrementQuantity(CartItem cartItem) async {
+    await BaseClient.patch(_cartUrlWithId(cartItem.id),
+        cartItem.copyWith(quantity: cartItem.quantity - 1).toJson());
+  }
+
+  Future<void> delete(CartItem cartItem) async {
+    await BaseClient.delete("$kCartBaseUrl/${cartItem.id}.json");
+  }
+
   String _cartUrlWithId(String id) {
     return "$kCartBaseUrl/$id.json";
   }

@@ -97,13 +97,30 @@ class CartNotifier with ChangeNotifier {
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
-  void removeSingleItem(CartItem cartItemInput) {
-    for (CartItem cartItem in _items) {
-      if (cartItem.id == cartItemInput.id) {
-        if (cartItem.quantity == 1) {
+  void decrementQuantity(CartItem cartItemInput) async {
+    for (int i = 0; i < _items.length; i++) {
+      if (_items[i].id == cartItemInput.id) {
+        if (_items[i].quantity == 1) {
+          CartItem removedProduct = _items[i];
           _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
+          notifyListeners();
+          try {
+            await _cartController.delete(removedProduct);
+          } catch (e) {
+            _items.add(removedProduct);
+            notifyListeners();
+            rethrow;
+          }
         } else {
-          cartItem.copyWith(quantity: cartItem.quantity - 1);
+          _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
+          notifyListeners();
+          try {
+            await _cartController.decrementQuantity(cartItemInput);
+          } catch (e) {
+            _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
+            notifyListeners();
+            rethrow;
+          }
         }
         notifyListeners();
         break;
