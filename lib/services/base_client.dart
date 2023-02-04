@@ -41,6 +41,7 @@ class BaseClient {
       throw ApiNotRespondingException(
           'Check your internet connection and try again', url);
     } catch (e) {
+      print(e);
       Exception('An error occurred. Contact system administrator');
     }
   }

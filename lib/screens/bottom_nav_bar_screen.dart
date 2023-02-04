@@ -52,14 +52,12 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
 
     return Scaffold(
       body: screenToBottomNavBarItem.keys.toList()[_selectedIndex],
-      bottomNavigationBar: Consumer<CartNotifier>(
-        builder: (_, cart, child) => BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-          items: screenToBottomNavBarItem.values.toList(),
-          currentIndex: _selectedIndex,
-          onTap: _onTap,
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+        items: screenToBottomNavBarItem.values.toList(),
+        currentIndex: _selectedIndex,
+        onTap: _onTap,
       ),
     );
   }

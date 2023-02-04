@@ -46,7 +46,7 @@ class OrdersNotifier with ChangeNotifier {
       _orders.insert(
         0,
         Order(
-          id: json.decode(id)["name"],
+          id: id,
           total: total,
           products: cartProducts,
           dateTime: nowTimeStamp,

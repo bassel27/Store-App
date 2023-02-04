@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 
 import '.././widgets/total_container.dart';
+import '../models/cart_item.dart';
 import '../widgets/cart_tile.dart';
 
 class CartScreen extends StatelessWidget {
@@ -16,12 +17,12 @@ class CartScreen extends StatelessWidget {
         children: [
           Expanded(
             child: Consumer<CartNotifier>(
-              builder: (__, cart, _) => ListView.builder(
-                itemCount: cart.cartItemsCount,
+              builder: (__, CartNotifier cartProvider, _) => ListView.builder(
+                itemCount: cartProvider.cartItemsCount,
                 itemBuilder: (context, i) {
                   //TODO: better way than searching to find id
-                  return CartTile(cart.items.values.toList()[i],
-                      cart.items.keys.toList()[i]);
+                  CartItem cartItem = cartProvider.items[i];
+                  return CartTile(cartItem, cartItem.product.id);
                 },
               ),
             ),

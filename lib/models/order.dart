@@ -2,6 +2,7 @@ import 'package:store_app/models/cart_item.dart';
 
 class Order {
   final String _id;
+  /// Total amount paid.
   final double _amount;
   final List<CartItem> _products;
 

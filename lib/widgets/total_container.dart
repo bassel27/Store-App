@@ -21,8 +21,8 @@ class TotalContainer extends StatelessWidget {
             const Text("Total"),
             const Spacer(),
             Consumer<CartNotifier>(
-              builder: (__, cart, _) => Chip(
-                label: Text("${cart.total.toStringAsFixed(2)}"),
+              builder: (__, CartNotifier cart, _) => Chip(
+                label: Text(cart.total.toStringAsFixed(2)),
               ),
             ),
             const SizedBox(
@@ -57,8 +57,7 @@ class _OrderButtonState extends State<_OrderButton> {
                 _isLoading = true;
               });
               await Provider.of<OrdersNotifier>(context, listen: false)
-                  .addOrder(
-                      cartProvider.items.values.toList(), cartProvider.total);
+                  .addOrder(cartProvider.items, cartProvider.total);
               cartProvider.clear();
               setState(() {
                 _isLoading = false;

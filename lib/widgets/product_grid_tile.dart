@@ -19,7 +19,7 @@ class ProductGridTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final CartNotifier cartProvider = Provider.of<CartNotifier>(
         context); // you only add to the cart in this widget so there's no need to lsiten
-    CartItem? cartItem = cartProvider.items[product.id];
+    CartItem? cartItem = cartProvider.getCartItem(product);
 
     return LayoutBuilder(
       builder: (ctx, constraints) => GestureDetector(
@@ -55,8 +55,7 @@ class ProductGridTile extends StatelessWidget {
                     : _MyIconButton(
                         Icons.shopping_cart,
                         () {
-                          cartProvider.addItem(
-                              product.id, product.title, product.price);
+                          cartProvider.addItem(product);
                         },
                       ),
               ),
@@ -117,11 +116,11 @@ class _ChangeQuantityRow extends StatelessWidget {
   final CartItem cartItem;
   final Product product;
   removeOne() {
-    cartProvider.removeSingleItem(cartItem.id);
+    cartProvider.removeSingleItem(cartItem);
   }
 
   addOne() {
-    cartProvider.addItem(product.id, product.title, product.price);
+    cartProvider.addItem(product);
   }
 
   @override
@@ -177,8 +176,7 @@ class _MyFloatingActionButton extends StatelessWidget {
       child: RawMaterialButton(
         fillColor: Theme.of(context).colorScheme.secondary,
         shape: const CircleBorder(),
-        onPressed: ()  =>
-             productsProvider.toggleFavoriteStatus(product),
+        onPressed: () => productsProvider.toggleFavoriteStatus(product),
         child: Icon(
           size: 20,
           product.isFavorite ? Icons.favorite : Icons.favorite_border,

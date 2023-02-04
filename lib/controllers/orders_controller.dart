@@ -20,7 +20,6 @@ class OrdersController with BaseController {
       // if no orders exist
       return loadedOrders;
     }
-
     ordersExtractedData.forEach((orderId, orderData) {
       List<dynamic> productsMaps = orderData['products'];
       List<CartItem> cartItems = productsMaps
@@ -45,17 +44,22 @@ class OrdersController with BaseController {
       'dateTime': nowTimeStamp.toIso8601String(),
       'products': cartItems
           .map((cartItem) => {
-                'id': cartItem.id,
-                'title': cartItem.title,
+                'product': {
+                  "id": cartItem.product.id,
+                  "title": cartItem.product.title,
+                  "description": cartItem.product.description,
+                  "imageUrl": cartItem.product.imageUrl,
+                  "price": cartItem.product.price,
+                  "isFavorite": cartItem.product.isFavorite,
+                },
                 'quantity': cartItem.quantity,
-                'price': cartItem.price,
               })
           .toList()
     };
     String? id;
     try {
       var response = await BaseClient.post(kOrdersUrl, payLoadInput);
-      id = response.body;
+      id = response['name'];
     } catch (e) {
       handleError(e);
       return null;

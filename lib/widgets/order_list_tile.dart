@@ -50,11 +50,11 @@ class _OrderListTileState extends State<OrderListTile> {
               child: ListView(
                   children: widget.order.products
                       .map(
-                        (product) => Row(
+                        (cartItem) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(product.title),
-                            Text("${product.quantity}x ${product.price}"),
+                            Text(cartItem.product.title),
+                            Text("${cartItem.quantity}x ${cartItem.product.price}"),
                           ],
                         ),
                       )

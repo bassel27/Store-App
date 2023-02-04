@@ -13,10 +13,10 @@ class CartTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyDismissible(
-      valueKeyId: cartItem.id,
+      valueKeyId: cartItem.id!,
       onDismissed: (_) {
         var cart = Provider.of<CartNotifier>(context, listen: false);
-        cart.removeItem(cartItem.id);
+        cart.removeItem(cartItem);
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -26,9 +26,9 @@ class CartTile extends StatelessWidget {
           ),
         ),
         child: ListTile(
-          title: Text(cartItem.title),
+          title: Text(cartItem.product.title),
           subtitle: Text(
-              "Total: \$${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}"),
+              "Total: \$${(cartItem.product.price * cartItem.quantity).toStringAsFixed(2)}"),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           trailing: Text("${cartItem.quantity}x"),

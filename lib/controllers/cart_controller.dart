@@ -12,10 +12,8 @@ class CartController {
     await BaseClient.post(kCartUrl, {
       'cartItem': cartItems
           .map((cartItem) => {
-                'id': cartItem.id,
-                'title': cartItem.title,
+                'product': cartItem.product,
                 'quantity': cartItem.quantity,
-                'price': cartItem.price,
               })
           .toList()
     });
