@@ -28,6 +28,24 @@ class BaseClient {
   }
 
   /// Returns the decoded reponse's body.
+  static Future<dynamic> put(String url, Map payloadInput) async {
+    try {
+      var response = await http
+          .put(Uri.parse(url), body: json.encode(payloadInput))
+          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+      return _processResponse(response);
+    } on SocketException {
+      throw FetchDataException(
+          'Check your internet connection and try again', url);
+    } on TimeoutException {
+      throw ApiNotRespondingException(
+          'Check your internet connection and try again', url);
+    } catch (e) {
+      Exception('An error occurred. Contact system administrator');
+    }
+  }
+
+  /// Returns the decoded reponse's body.
   static Future<dynamic> post(String url, Map payloadInput) async {
     try {
       var response = await http
@@ -41,7 +59,6 @@ class BaseClient {
       throw ApiNotRespondingException(
           'Check your internet connection and try again', url);
     } catch (e) {
-      print(e);
       Exception('An error occurred. Contact system administrator');
     }
   }

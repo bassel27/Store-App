@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
+import 'package:store_app/controllers/cart_controller.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/cart_item.dart';
 import '../models/product.dart';
@@ -9,7 +11,7 @@ class CartNotifier with ChangeNotifier {
   //TODO: remove productID if not used and convert it to a list
   /// Key is productId and value is cartItem.
   late List<CartItem> _cartItems = [];
-
+  final CartController _cartController = CartController();
   // A list of all products placed in cart.
   List<CartItem> get items {
     return UnmodifiableListView(_cartItems);
@@ -40,19 +42,25 @@ class CartNotifier with ChangeNotifier {
   }
 
   /// Adds a new product to cart or increases the quantity of an already existing one.
-  void addItem(Product product) {
+  void add(Product product) async {
     for (CartItem cartItem in _cartItems) {
       if (cartItem.product.id == product.id) {
         cartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
-
         return;
       }
     }
-    _cartItems.add(CartItem(
-        id: DateTime.now().toString(),
-        product: product,
-        quantity: 1)); // if product doesn't exist in cart
+    CartItem newCartItem =
+        CartItem(id: const Uuid().v4(), product: product, quantity: 1);
+    _cartItems.add(newCartItem);
     notifyListeners();
+    try {
+      await _cartController.create(newCartItem);
+    } catch (e) {
+      // if product doesn't exist in cart
+      _cartItems.remove(newCartItem);
+      notifyListeners();
+      rethrow;
+    }
   }
 
   /// Removes an item from the cart using this item's id.

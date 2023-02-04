@@ -55,7 +55,7 @@ class ProductGridTile extends StatelessWidget {
                     : _MyIconButton(
                         Icons.shopping_cart,
                         () {
-                          cartProvider.addItem(product);
+                          cartProvider.add(product);
                         },
                       ),
               ),
@@ -120,7 +120,7 @@ class _ChangeQuantityRow extends StatelessWidget {
   }
 
   addOne() {
-    cartProvider.addItem(product);
+    cartProvider.add(product);
   }
 
   @override

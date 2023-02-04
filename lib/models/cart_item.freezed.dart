@@ -20,7 +20,7 @@ CartItem _$CartItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CartItem {
-  String? get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError;
 
@@ -35,7 +35,7 @@ abstract class $CartItemCopyWith<$Res> {
   factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
       _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
-  $Res call({String? id, int quantity, Product product});
+  $Res call({String id, int quantity, Product product});
 
   $ProductCopyWith<$Res> get product;
 }
@@ -53,15 +53,15 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? quantity = null,
     Object? product = null,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -89,7 +89,7 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
       __$$_CartItemCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, int quantity, Product product});
+  $Res call({String id, int quantity, Product product});
 
   @override
   $ProductCopyWith<$Res> get product;
@@ -106,15 +106,15 @@ class __$$_CartItemCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? quantity = null,
     Object? product = null,
   }) {
     return _then(_$_CartItem(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -137,7 +137,7 @@ class _$_CartItem implements _CartItem {
       _$$_CartItemFromJson(json);
 
   @override
-  final String? id;
+  final String id;
   @override
   final int quantity;
   @override
@@ -179,14 +179,14 @@ class _$_CartItem implements _CartItem {
 
 abstract class _CartItem implements CartItem {
   const factory _CartItem(
-      {required final String? id,
+      {required final String id,
       required final int quantity,
       required final Product product}) = _$_CartItem;
 
   factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
   @override
-  String? get id;
+  String get id;
   @override
   int get quantity;
   @override
