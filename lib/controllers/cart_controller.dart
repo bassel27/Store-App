@@ -20,8 +20,9 @@ class CartController {
   }
 
   /// Increments the quantity of an already existing CartItem using its id.
-  Future<void> incrementQuanity(CartItem cartItem) async {
-    await BaseClient.put(_cartUrlWithId(cartItem.id), cartItem.toJson());
+  Future<void> incrementQuantity(CartItem cartItem) async {
+    await BaseClient.patch(_cartUrlWithId(cartItem.id),
+        cartItem.copyWith(quantity: cartItem.quantity + 1).toJson());
   }
 
   String _cartUrlWithId(String id) {

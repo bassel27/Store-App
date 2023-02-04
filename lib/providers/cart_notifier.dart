@@ -54,13 +54,10 @@ class CartNotifier with ChangeNotifier {
 
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product) async {
-    // optimistic update
-    for (CartItem cartItem in _items) {
-      if (cartItem.product.id == product.id) {
-        cartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
-        return;
-      }
+    if (await incrementQuantityIfPossible(product)) {
+      return;
     }
+
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
     _items.add(newCartItem);
@@ -73,6 +70,24 @@ class CartNotifier with ChangeNotifier {
       notifyListeners();
       rethrow;
     }
+  }
+
+  /// Returns true if product was found and quantity got incremented.
+  Future<bool> incrementQuantityIfPossible(product) async {
+    // optimistic update
+    for (int i = 0; i < _items.length; i++) {
+      if (_items[i].product.id == product.id) {
+        _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
+        notifyListeners();
+        try {
+          await _cartController.incrementQuantity(_items[i]);
+        } catch (e) {
+          rethrow;
+        }
+        return true;
+      }
+    }
+    return false;
   }
 
   /// Removes an item from the cart using this item's id.

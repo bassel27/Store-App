@@ -38,24 +38,35 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(title: const Text("Cart")),
       body: GetAndSetFutureBuilder(
         fetchAndSetProductsFuture: _future,
-        successfulScaffoldBody: Column(
-          children: [
-            Expanded(
-              child: Consumer<CartNotifier>(
-                builder: (__, CartNotifier cartProvider, _) => ListView.builder(
-                  itemCount: cartProvider.cartItemsCount,
-                  itemBuilder: (context, i) {
-                    //TODO: better way than searching to find id
-                    CartItem cartItem = cartProvider.items[i];
-                    return CartTile(cartItem, cartItem.product.id);
-                  },
-                ),
-              ),
-            ),
-            TotalContainer(),
-          ],
-        ),
+        successfulScaffoldBody: const _SuccessfulScaffoldBody(),
       ),
+    );
+  }
+}
+
+class _SuccessfulScaffoldBody extends StatelessWidget {
+  const _SuccessfulScaffoldBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Consumer<CartNotifier>(
+            builder: (__, CartNotifier cartProvider, _) => ListView.builder(
+              itemCount: cartProvider.cartItemsCount,
+              itemBuilder: (context, i) {
+                //TODO: better way than searching to find id
+                CartItem cartItem = cartProvider.items[i];
+                return CartTile(cartItem, cartItem.product.id);
+              },
+            ),
+          ),
+        ),
+        TotalContainer(),
+      ],
     );
   }
 }

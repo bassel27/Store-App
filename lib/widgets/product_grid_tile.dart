@@ -48,10 +48,7 @@ class ProductGridTile extends StatelessWidget {
               ),
               Expanded(
                 child: cartItem != null
-                    ? _ChangeQuantityRow(
-                        cartProvider: cartProvider,
-                        cartItem: cartItem,
-                        product: product)
+                    ? _ChangeQuantityRow(cartItem: cartItem, product: product)
                     : _MyIconButton(
                         Icons.shopping_cart,
                         () {
@@ -107,35 +104,31 @@ class _ImageAndFavoriteStack extends StatelessWidget {
 class _ChangeQuantityRow extends StatelessWidget {
   const _ChangeQuantityRow({
     Key? key,
-    required this.cartProvider,
     required this.cartItem,
     required this.product,
   }) : super(key: key);
 
-  final CartNotifier cartProvider;
   final CartItem cartItem;
   final Product product;
-  removeOne() {
-    cartProvider.removeSingleItem(cartItem);
-  }
-
-  addOne() {
-    cartProvider.add(product);
-  }
 
   @override
   Widget build(BuildContext context) {
+    final CartNotifier cartProvider = Provider.of<CartNotifier>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         const SizedBox(
           width: 10,
         ),
-        _MyIconButton(Icons.remove_circle, removeOne),
+        _MyIconButton(Icons.remove_circle, () {
+          cartProvider.removeSingleItem(cartItem);
+        }),
         Text(
           cartItem.quantity.toString(),
         ),
-        _MyIconButton(Icons.add_circle, addOne),
+        _MyIconButton(Icons.add_circle, () {
+          cartProvider.add(product);
+        }),
         const SizedBox(
           width: 10,
         ),
