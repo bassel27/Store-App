@@ -22,5 +22,5 @@ class DescriptionTextFormField extends StatelessWidget {
           productsProvider.editedProduct =
               productsProvider.editedProduct.copyWith(description: value);
         });
-  }
+  } 
 }

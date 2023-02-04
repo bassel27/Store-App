@@ -22,7 +22,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 mixin _$Product {
   String get imageUrl => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $ProductCopyWith<$Res> {
   $Res call(
       {String imageUrl,
       String title,
-      String description,
+      String? description,
       String id,
       double price,
       bool isFavorite});
@@ -61,7 +61,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   $Res call({
     Object? imageUrl = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? id = null,
     Object? price = null,
     Object? isFavorite = null,
@@ -75,10 +75,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -105,7 +105,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   $Res call(
       {String imageUrl,
       String title,
-      String description,
+      String? description,
       String id,
       double price,
       bool isFavorite});
@@ -123,7 +123,7 @@ class __$$_ProductCopyWithImpl<$Res>
   $Res call({
     Object? imageUrl = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? id = null,
     Object? price = null,
     Object? isFavorite = null,
@@ -137,10 +137,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -176,7 +176,7 @@ class _$_Product implements _Product {
   @override
   final String title;
   @override
-  final String description;
+  final String? description;
   @override
   final String id;
   @override
@@ -229,7 +229,7 @@ abstract class _Product implements Product {
   const factory _Product(
       {required final String imageUrl,
       required final String title,
-      required final String description,
+      required final String? description,
       required final String id,
       required final double price,
       final bool isFavorite}) = _$_Product;
@@ -241,7 +241,7 @@ abstract class _Product implements Product {
   @override
   String get title;
   @override
-  String get description;
+  String? get description;
   @override
   String get id;
   @override

@@ -8,7 +8,7 @@ class Product with _$Product {
   const factory Product({
     required String imageUrl,
     required String title,
-    required String description,
+    required String? description,
     required String id,
     required double price,
     @Default(false) bool isFavorite,

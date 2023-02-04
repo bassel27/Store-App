@@ -9,7 +9,7 @@ part of 'product.dart';
 _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       imageUrl: json['imageUrl'] as String,
       title: json['title'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       id: json['id'] as String,
       price: (json['price'] as num).toDouble(),
       isFavorite: json['isFavorite'] as bool? ?? false,

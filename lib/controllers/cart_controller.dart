@@ -9,13 +9,7 @@ class CartController {
   // }
 
   Future<void> create(List<CartItem> cartItems) async {
-    await BaseClient.post(kCartUrl, {
-      'cartItem': cartItems
-          .map((cartItem) => {
-                'product': cartItem.product,
-                'quantity': cartItem.quantity,
-              })
-          .toList()
-    });
+    await BaseClient.post(kCartUrl,
+        {'cartItem': cartItems.map((cartItem) => cartItem.toJson()).toList()});
   }
 }
