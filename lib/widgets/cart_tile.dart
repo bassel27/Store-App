@@ -16,7 +16,7 @@ class CartTile extends StatelessWidget {
       valueKeyId: cartItem.id,
       onDismissed: (_) {
         var cart = Provider.of<CartNotifier>(context, listen: false);
-        cart.removeItem(cartItem);
+        cart.deleteItem(cartItem);
       },
       child: Container(
         decoration: const BoxDecoration(

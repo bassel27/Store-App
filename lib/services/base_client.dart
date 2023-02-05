@@ -84,11 +84,12 @@ class BaseClient {
   }
 
   /// Returns the decoded reponse's body.
-  static Future<dynamic> delete(String url) async {
+  static Future<dynamic> delete(String url,
+      {int timeoutDuration = TIME_OUT_DURATION}) async {
     try {
       var response = await http
           .delete(Uri.parse(url))
-          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+          .timeout(Duration(seconds: timeoutDuration));
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(

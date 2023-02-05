@@ -49,10 +49,22 @@ class CartNotifier with ChangeNotifier {
     isCartFetched = true;
   }
 
+  void increment(CartItem cartItem) {
+    cartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
+  }
+
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product) async {
-    if (await incrementQuantityIfPossible(product)) {
-      return;
+    for (int i = 0; i < _items.length; i++) {
+      if (_items[i].product.id == product.id) {
+        _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
+        await optimisticUpdate(mayFailFunction: () async {
+          await _cartController.incrementQuantity(_items[i]);
+        }, onFailure: () {
+          _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
+        });
+        return;
+      }
     }
     // create new cartItem with quantity of 1
     CartItem newCartItem =
@@ -66,43 +78,6 @@ class CartNotifier with ChangeNotifier {
       decrementQuantity(newCartItem);
       notifyListeners();
     }
-  }
-
-  void optimisticUpdate(
-      {Function? function1,
-      required Function mayFailFunction,
-      required Function onFailure}) async {
-    if (function1 != null) function1();
-    notifyListeners();
-    try {
-      await mayFailFunction();
-    } catch (e) {
-      onFailure();
-      notifyListeners();
-    }
-  }
-
-  /// Returns true if product found and incremented. Returns false if product not found.
-  Future<bool> incrementQuantityIfPossible(product) async {
-    // optimistic update
-    for (int i = 0; i < _items.length; i++) {
-      if (_items[i].product.id == product.id) {
-        _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
-        optimisticUpdate(mayFailFunction: () async {
-          await _cartController.incrementQuantity(_items[i]);
-        }, onFailure: () {
-          _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
-        });
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /// Removes an item from the cart using this item's id.
-  void removeItem(CartItem cartItemInput) {
-    _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
-    notifyListeners();
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
@@ -131,6 +106,28 @@ class CartNotifier with ChangeNotifier {
       }
     }
     return;
+  }
+
+  /// Delete an item from the cart using this item's id.
+  void deleteItem(CartItem cartItemInput) {
+    _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
+    notifyListeners();
+  }
+
+  Future<bool> optimisticUpdate(
+      {Function? function1,
+      required Function mayFailFunction,
+      required Function onFailure}) async {
+    if (function1 != null) function1();
+    notifyListeners();
+    try {
+      await mayFailFunction();
+      return true;
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+      return false;
+    }
   }
 
   /// Removes all items from the cart.

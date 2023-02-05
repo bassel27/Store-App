@@ -42,7 +42,8 @@ class CartController {
   }
 
   Future<void> delete(CartItem cartItem) async {
-    await BaseClient.delete("$kCartBaseUrl/${cartItem.id}.json");
+    await BaseClient.delete("$kCartBaseUrl/${cartItem.id}.json",
+        timeoutDuration: CHANGE_QUANTITY_TIMEOUT);
   }
 
   String _cartUrlWithId(String id) {
