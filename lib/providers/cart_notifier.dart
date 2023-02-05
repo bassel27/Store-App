@@ -72,18 +72,31 @@ class CartNotifier with ChangeNotifier {
     }
   }
 
-  /// Returns true if product was found and quantity got incremented.
+  void optimisticUpdate(
+      {Function? function1,
+      required Function mayFailFunction,
+      required Function onFailure}) async {
+    if (function1 != null) function1();
+    notifyListeners();
+    try {
+      await mayFailFunction();
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+    }
+  }
+
+  /// Returns true if product found and incremented. Returns false if product not found.
   Future<bool> incrementQuantityIfPossible(product) async {
     // optimistic update
     for (int i = 0; i < _items.length; i++) {
       if (_items[i].product.id == product.id) {
         _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
-        notifyListeners();
-        try {
+        optimisticUpdate(mayFailFunction: () async {
           await _cartController.incrementQuantity(_items[i]);
-        } catch (e) {
-          rethrow;
-        }
+        }, onFailure: () {
+          _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
+        });
         return true;
       }
     }
@@ -102,25 +115,20 @@ class CartNotifier with ChangeNotifier {
       if (_items[i].id == cartItemInput.id) {
         if (_items[i].quantity == 1) {
           CartItem removedProduct = _items[i];
-          _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
-          notifyListeners();
-          try {
+          optimisticUpdate(function1: () {
+            _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
+          }, mayFailFunction: () async {
             await _cartController.delete(removedProduct);
-          } catch (e) {
+          }, onFailure: () {
             _items.add(removedProduct);
-            notifyListeners();
-            rethrow;
-          }
+          });
         } else {
           _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
-          notifyListeners();
-          try {
+          optimisticUpdate(mayFailFunction: () async {
             await _cartController.decrementQuantity(cartItemInput);
-          } catch (e) {
+          }, onFailure: () {
             _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
-            notifyListeners();
-            rethrow;
-          }
+          });
         }
         notifyListeners();
         break;

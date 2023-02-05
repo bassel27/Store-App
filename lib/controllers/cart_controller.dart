@@ -4,13 +4,15 @@ import 'package:store_app/models/constants.dart';
 import '../services/base_client.dart';
 
 class CartController {
-  Future<List<CartItem>>? get() async {
-    Map<String, dynamic> cartItemMaps =
+  Future<List<CartItem>> get() async {
+    Map<String, dynamic>? cartItemMaps =
         await BaseClient.get(kCartUrl); // map of cartItem maps.
     List<CartItem> cartItems = [];
-    cartItemMaps.forEach((cartItemId, cartItemData) {
-      cartItems.add(CartItem.fromJson(cartItemData));
-    });
+    if (cartItemMaps != null) { // if cart not empty
+      cartItemMaps.forEach((cartItemId, cartItemData) {
+        cartItems.add(CartItem.fromJson(cartItemData));
+      });
+    }
     return cartItems;
   }
 

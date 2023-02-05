@@ -70,6 +70,7 @@ class BaseClient {
       var response = await http
           .patch(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(Duration(seconds: timeOutDuration));
+
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection', url);
