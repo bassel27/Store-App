@@ -23,6 +23,7 @@ class OrdersController with BaseController {
     ordersExtractedData.forEach((orderId, orderData) {
       List<dynamic> productsMaps = orderData['products'];
       List<CartItem> cartItems = productsMaps
+          // TODO: id not expected in fromJson. Cause error on opening orders screen with no internet.
           .map((productMap) => CartItem.fromJson(productMap))
           .toList();
       loadedOrders.add(Order(

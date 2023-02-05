@@ -7,15 +7,6 @@ import '../controllers/orders_controller.dart';
 import '../models/cart_item.dart';
 import '../models/order.dart';
 
-class Failure {
-  String message;
-
-  Failure(this.message);
-  @override
-  String toString() {
-    return message;
-  }
-}
 
 class OrdersNotifier with ChangeNotifier {
   /// List of all order sorted by recency.
@@ -40,6 +31,7 @@ class OrdersNotifier with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final nowTimeStamp = DateTime.now();
+    
     String? id =
         await _ordersController.create(cartProducts, total, nowTimeStamp);
     if (id != null) {

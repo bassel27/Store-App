@@ -28,11 +28,12 @@ class BaseClient {
   }
 
   /// Returns the decoded reponse's body.
-  static Future<dynamic> put(String url, Map payloadInput) async {
+  static Future<dynamic> put(String url, Map payloadInput,
+      {int timeOutDuration = TIME_OUT_DURATION}) async {
     try {
       var response = await http
           .put(Uri.parse(url), body: json.encode(payloadInput))
-          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+          .timeout(Duration(seconds: timeOutDuration));
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(

@@ -44,11 +44,8 @@ class CartNotifier with ChangeNotifier {
 
   Future<void> getAndSetCart() async {
     List<CartItem>? items = await _cartController.get();
-    if (items != null) {
-      // if not empty
-      _items = items;
-      notifyListeners();
-    }
+    _items = items;
+    notifyListeners();
     isCartFetched = true;
   }
 
@@ -57,7 +54,7 @@ class CartNotifier with ChangeNotifier {
     if (await incrementQuantityIfPossible(product)) {
       return;
     }
-
+    // create new cartItem with quantity of 1
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
     _items.add(newCartItem);
@@ -65,10 +62,9 @@ class CartNotifier with ChangeNotifier {
     try {
       await _cartController.create(newCartItem);
     } catch (e) {
-      // if product doesn't exist in cart
-      _items.remove(newCartItem);
+      // decrement if the user preseed + right after cart or totally remove.
+      decrementQuantity(newCartItem);
       notifyListeners();
-      rethrow;
     }
   }
 
@@ -95,7 +91,7 @@ class CartNotifier with ChangeNotifier {
         optimisticUpdate(mayFailFunction: () async {
           await _cartController.incrementQuantity(_items[i]);
         }, onFailure: () {
-          _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
+          _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
         });
         return true;
       }

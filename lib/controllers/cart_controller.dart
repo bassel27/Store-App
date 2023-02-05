@@ -3,12 +3,15 @@ import 'package:store_app/models/constants.dart';
 
 import '../services/base_client.dart';
 
+const int CHANGE_QUANTITY_TIMEOUT = 1;
+
 class CartController {
   Future<List<CartItem>> get() async {
     Map<String, dynamic>? cartItemMaps =
         await BaseClient.get(kCartUrl); // map of cartItem maps.
     List<CartItem> cartItems = [];
-    if (cartItemMaps != null) { // if cart not empty
+    if (cartItemMaps != null) {
+      // if cart not empty
       cartItemMaps.forEach((cartItemId, cartItemData) {
         cartItems.add(CartItem.fromJson(cartItemData));
       });
@@ -18,18 +21,24 @@ class CartController {
 
   /// Creates a new cart item in cart.
   Future<void> create(CartItem cartItem) async {
-    await BaseClient.put(_cartUrlWithId(cartItem.id), cartItem.toJson());
+    await BaseClient.put(_cartUrlWithId(cartItem.id), cartItem.toJson(),
+        timeOutDuration: CHANGE_QUANTITY_TIMEOUT);
   }
 
   /// Increments the quantity of an already existing CartItem using its id.
   Future<void> incrementQuantity(CartItem cartItem) async {
     await BaseClient.patch(_cartUrlWithId(cartItem.id),
-        cartItem.copyWith(quantity: cartItem.quantity + 1).toJson());
+        cartItem.copyWith(quantity: cartItem.quantity + 1).toJson(),
+        timeOutDuration: CHANGE_QUANTITY_TIMEOUT);
   }
 
   Future<void> decrementQuantity(CartItem cartItem) async {
-    await BaseClient.patch(_cartUrlWithId(cartItem.id),
-        cartItem.copyWith(quantity: cartItem.quantity - 1).toJson());
+    await BaseClient.patch(
+        _cartUrlWithId(
+          cartItem.id,
+        ),
+        cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
+        timeOutDuration: CHANGE_QUANTITY_TIMEOUT);
   }
 
   Future<void> delete(CartItem cartItem) async {
