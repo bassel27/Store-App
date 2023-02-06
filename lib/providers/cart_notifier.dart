@@ -79,13 +79,12 @@ class CartNotifier with ChangeNotifier {
   void add(Product product) async {
     for (int i = 0; i < _items.length; i++) {
       if (_items[i].product.id == product.id) {
-        try {
+        await handleErrorByDoingNothing(() async {
           await _cartController.incrementQuantity(_items[i]);
           _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
           notifyListeners();
-        } catch (e) {
-          // so that second line doesn't execute if incrementing fails}
-        }
+        });
+
         return;
       }
     }
@@ -93,11 +92,11 @@ class CartNotifier with ChangeNotifier {
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
 
-    try {
+    await handleErrorByDoingNothing(() async {
       await _cartController.create(newCartItem);
       _items.add(newCartItem);
       notifyListeners();
-    } catch (e) {}
+    });
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
@@ -106,12 +105,9 @@ class CartNotifier with ChangeNotifier {
       if (_items[i].id == cartItemInput.id) {
         if (_items[i].quantity == 1) {
           CartItem removedProduct = _items[i];
-          optimisticUpdate(function1: () {
-            _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
-          }, mayFailFunction: () async {
+          await handleErrorByDoingNothing(() async {
             await _cartController.delete(removedProduct);
-          }, onFailure: () {
-            _items.add(removedProduct);
+            _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
           });
         } else {
           _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
@@ -132,5 +128,14 @@ class CartNotifier with ChangeNotifier {
   void clear() {
     _items = [];
     notifyListeners();
+  }
+
+  Future<void> handleErrorByDoingNothing(Function foo1) async {
+    try {
+      foo1();
+    } catch (e) {
+      // so that second line doesn't execute if incrementing fails}
+      // error is handled internally and rethrown
+    }
   }
 }
