@@ -1,12 +1,10 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 
 import '../controllers/orders_controller.dart';
 import '../models/cart_item.dart';
 import '../models/order.dart';
-
 
 class OrdersNotifier with ChangeNotifier {
   /// List of all order sorted by recency.
@@ -28,23 +26,21 @@ class OrdersNotifier with ChangeNotifier {
     }
     notifyListeners();
   }
-
+  /// Throws an exception if operation not successful.
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final nowTimeStamp = DateTime.now();
-    
-    String? id =
+
+    String id =
         await _ordersController.create(cartProducts, total, nowTimeStamp);
-    if (id != null) {
-      _orders.insert(
-        0,
-        Order(
-          id: id,
-          total: total,
-          products: cartProducts,
-          dateTime: nowTimeStamp,
-        ),
-      );
-      notifyListeners();
-    }
+    _orders.insert(
+      0,
+      Order(
+        id: id,
+        total: total,
+        products: cartProducts,
+        dateTime: nowTimeStamp,
+      ),
+    );
+    notifyListeners();
   }
 }

@@ -58,27 +58,34 @@ class CartController with BaseController {
   }
 
   /// Returns true if operation was successful.
-  Future<bool> delete(CartItem cartItem) async {
+  Future<bool> delete(CartItem cartItem, {bool showLoading = true}) async {
     return await httpRequestTemplate(() async {
       await BaseClient.delete(
         "$kCartBaseUrl/${cartItem.id}.json",
       );
-    });
+    }, showLoading: showLoading);
   }
 
   String _cartUrlWithId(String id) {
     return "$kCartBaseUrl/$id.json";
   }
 
-  Future<bool> httpRequestTemplate(Function foo) async {
-    DialogHelper.showLoading();
+  Future<bool> httpRequestTemplate(Function foo,
+      {bool showLoading = true}) async {
+    if (showLoading) DialogHelper.showLoading();
     try {
       await foo();
     } catch (e) {
       handleError(e);
       return false;
     }
-    DialogHelper.hideCurrentDialog();
+    if (showLoading) DialogHelper.hideCurrentDialog();
     return true;
+  }
+
+  Future<void> clearCart(List<CartItem> cartItems) async {
+    for (var cartItem in cartItems) {
+      await delete(cartItem, showLoading: false);
+    }
   }
 }

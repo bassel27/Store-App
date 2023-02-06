@@ -132,7 +132,8 @@ class CartNotifier with ChangeNotifier {
   }
 
   /// Removes all items from the cart.
-  void clear() {
+  Future<void> clear() async {
+    await _cartController.clearCart(_items);
     _items = [];
     notifyListeners();
   }

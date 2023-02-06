@@ -37,8 +37,10 @@ class OrdersController with BaseController {
     return loadedOrders.reversed.toList(); // newest first
   }
 
-  /// Returns post ID and handles errors.
-  Future<String?> create(
+  /// Returns post ID and handles error using dialog.
+  /// 
+  /// Throws exception if operation not successful.
+  Future<String> create(
       List<CartItem> cartItems, double total, DateTime nowTimeStamp) async {
     final payLoadInput = {
       'total': total,
@@ -57,13 +59,13 @@ class OrdersController with BaseController {
               })
           .toList()
     };
-    String? id;
+    String id;
     try {
       var response = await BaseClient.post(kOrdersUrl, payLoadInput);
       id = response['name'];
     } catch (e) {
       handleError(e);
-      return null;
+      rethrow;
     }
     return id;
   }
