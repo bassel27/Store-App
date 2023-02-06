@@ -8,6 +8,12 @@ import '../models/cart_item.dart';
 import '../models/product.dart';
 
 class CartNotifier with ChangeNotifier {
+  /// Delete an item from the cart using this item's id.
+  void deleteItem(CartItem cartItemInput) {
+    _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
+    notifyListeners();
+  }
+
   bool isCartFetched = false;
   //TODO: remove productID if not used and convert it to a list
   /// Key is productId and value is cartItem.
@@ -31,6 +37,22 @@ class CartNotifier with ChangeNotifier {
     }
 
     return total;
+  }
+
+  Future<bool> optimisticUpdate(
+      {Function? function1,
+      required Function mayFailFunction,
+      required Function onFailure}) async {
+    if (function1 != null) function1();
+    notifyListeners();
+    try {
+      await mayFailFunction();
+      return true;
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+      return false;
+    }
   }
 
   CartItem? getCartItem(Product product) {
@@ -57,27 +79,25 @@ class CartNotifier with ChangeNotifier {
   void add(Product product) async {
     for (int i = 0; i < _items.length; i++) {
       if (_items[i].product.id == product.id) {
-        _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
-        await optimisticUpdate(mayFailFunction: () async {
+        try {
           await _cartController.incrementQuantity(_items[i]);
-        }, onFailure: () {
-          _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
-        });
+          _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
+          notifyListeners();
+        } catch (e) {
+          // so that second line doesn't execute if incrementing fails}
+        }
         return;
       }
     }
     // create new cartItem with quantity of 1
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
-    _items.add(newCartItem);
-    notifyListeners();
+
     try {
       await _cartController.create(newCartItem);
-    } catch (e) {
-      // decrement if the user preseed + right after cart or totally remove.
-      decrementQuantity(newCartItem);
+      _items.add(newCartItem);
       notifyListeners();
-    }
+    } catch (e) {}
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
@@ -106,28 +126,6 @@ class CartNotifier with ChangeNotifier {
       }
     }
     return;
-  }
-
-  /// Delete an item from the cart using this item's id.
-  void deleteItem(CartItem cartItemInput) {
-    _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
-    notifyListeners();
-  }
-
-  Future<bool> optimisticUpdate(
-      {Function? function1,
-      required Function mayFailFunction,
-      required Function onFailure}) async {
-    if (function1 != null) function1();
-    notifyListeners();
-    try {
-      await mayFailFunction();
-      return true;
-    } catch (e) {
-      onFailure();
-      notifyListeners();
-      return false;
-    }
   }
 
   /// Removes all items from the cart.
