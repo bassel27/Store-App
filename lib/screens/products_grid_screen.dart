@@ -47,6 +47,7 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
     if (!productsProvider.areProductsFetched) {
       return productsProvider.getAndSetProducts();
     } else {
+      print("lol");
       return Future.delayed(Duration.zero);
     }
   }
