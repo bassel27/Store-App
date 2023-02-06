@@ -5,6 +5,7 @@ import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/product.dart';
+import '../widgets/my_future_builder.dart';
 
 class ProductsManagerScreen extends StatefulWidget {
   const ProductsManagerScreen({super.key});
@@ -28,24 +29,23 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
 
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Products Manager"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, EditProductScreen.route).then(
-                      (_) => productsProvider
-                          .resetEditedProduct()); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
-                },
-                icon: const Icon(Icons.add)),
-          ],
-        ),
-        body: ScaffoldFutureBuilderuilder(
-          fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
-          onSuccessWidget: _SuccessfulScaffoldBody(
-              productsProvider: productsProvider, products: products),
-        ));
+    return ScaffoldFutureBuilder(
+      appBar: AppBar(
+        title: const Text("Products Manager"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, EditProductScreen.route).then(
+                    (_) => productsProvider
+                        .resetEditedProduct()); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
+              },
+              icon: const Icon(Icons.add)),
+        ],
+      ),
+      fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
+      onSuccessWidget: _SuccessfulScaffoldBody(
+          productsProvider: productsProvider, products: products),
+    );
   }
 
   Future<void> getAndSetProducts() {

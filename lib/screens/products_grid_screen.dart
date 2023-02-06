@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/empty_screen_text.dart';
+import '../widgets/my_future_builder.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
@@ -28,16 +29,14 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: widget.showFavoritesOnly
-              ? const Text("Favorites")
-              : const Text("Pharmastore")),
-      body: ScaffoldFutureBuilderuilder(
-          fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
-          onSuccessWidget: _SuccessfulScaffoldBody(
-              showFavoritesOnly: widget.showFavoritesOnly)),
-    );
+    return ScaffoldFutureBuilder(
+        appBar: AppBar(
+            title: widget.showFavoritesOnly
+                ? const Text("Favorites")
+                : const Text("Pharmastore")),
+        fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
+        onSuccessWidget: _SuccessfulScaffoldBody(
+            showFavoritesOnly: widget.showFavoritesOnly));
   }
 
   Future<void> getAndSetProducts() {

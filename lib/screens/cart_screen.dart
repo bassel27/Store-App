@@ -5,6 +5,7 @@ import 'package:store_app/providers/cart_notifier.dart';
 import '.././widgets/total_container.dart';
 import '../models/cart_item.dart';
 import '../widgets/cart_tile.dart';
+import '../widgets/my_future_builder.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -33,12 +34,10 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScaffoldFutureBuilder(
       appBar: AppBar(title: const Text("Cart")),
-      body: ScaffoldFutureBuilderuilder(
-        fetchAndSetProductsFuture: _future,
-        onSuccessWidget: const _SuccessfulScaffoldBody(),
-      ),
+      fetchAndSetProductsFuture: _future,
+      onSuccessWidget: const _SuccessfulScaffoldBody(),
     );
   }
 }
