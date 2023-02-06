@@ -71,20 +71,31 @@ class CartNotifier with ChangeNotifier {
     isCartFetched = true;
   }
 
+  // Increments the quantity of the CartItem if it exists in cart.
   void increment(CartItem cartItem) {
-    cartItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
+    int index = _items.indexOf(cartItem);
+    if (index != -1) {
+      _items[index] = cartItem.copyWith(quantity: cartItem.quantity + 1);
+    }
+  }
+
+  // Decrements the quantity of the CartItem if it exists in cart.
+  void decrement(CartItem cartItem) {
+    int index = _items.indexOf(cartItem);
+    if (index != -1) {
+      _items[index] = cartItem.copyWith(quantity: cartItem.quantity - 1);
+    }
   }
 
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product) async {
     for (int i = 0; i < _items.length; i++) {
       if (_items[i].product.id == product.id) {
-        await handleErrorByDoingNothing(() async {
-          await _cartController.incrementQuantity(_items[i]);
+        if (await _cartController.incrementQuantity(_items[i])) {
+          // on success
           _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
           notifyListeners();
-        });
-
+        }
         return;
       }
     }
@@ -92,11 +103,10 @@ class CartNotifier with ChangeNotifier {
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
 
-    await handleErrorByDoingNothing(() async {
-      await _cartController.create(newCartItem);
+    if (await _cartController.create(newCartItem)) {
       _items.add(newCartItem);
       notifyListeners();
-    });
+    }
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
@@ -105,19 +115,16 @@ class CartNotifier with ChangeNotifier {
       if (_items[i].id == cartItemInput.id) {
         if (_items[i].quantity == 1) {
           CartItem removedProduct = _items[i];
-          await handleErrorByDoingNothing(() async {
-            await _cartController.delete(removedProduct);
+          if (await _cartController.delete(removedProduct)) {
             _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
-          });
+            notifyListeners();
+          }
         } else {
-          _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
-          optimisticUpdate(mayFailFunction: () async {
-            await _cartController.decrementQuantity(cartItemInput);
-          }, onFailure: () {
-            _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
-          });
+          if (await _cartController.decrementQuantity(cartItemInput)) {
+            _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
+            notifyListeners();
+          }
         }
-        notifyListeners();
         break;
       }
     }
@@ -128,14 +135,5 @@ class CartNotifier with ChangeNotifier {
   void clear() {
     _items = [];
     notifyListeners();
-  }
-
-  Future<void> handleErrorByDoingNothing(Function foo1) async {
-    try {
-      foo1();
-    } catch (e) {
-      // so that second line doesn't execute if incrementing fails}
-      // error is handled internally and rethrown
-    }
   }
 }

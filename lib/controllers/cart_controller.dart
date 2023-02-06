@@ -20,7 +20,9 @@ class CartController with BaseController {
   }
 
   /// Creates a new cart item in cart.
-  Future<void> create(CartItem cartItem) async {
+  ///
+  /// Returns true if operation was successful.
+  Future<bool> create(CartItem cartItem) async {
     DialogHelper.showLoading();
     try {
       await BaseClient.put(
@@ -29,13 +31,16 @@ class CartController with BaseController {
       );
     } catch (e) {
       handleError(e);
-      return;
+      return false;
     }
     DialogHelper.hideCurrentDialog();
+    return true;
   }
 
   /// Increments the quantity of an already existing CartItem using its id.
-  Future<void> incrementQuantity(CartItem cartItem) async {
+  ///
+  /// Returns true if operation was successful.
+  Future<bool> incrementQuantity(CartItem cartItem) async {
     DialogHelper.showLoading();
     try {
       await BaseClient.patch(
@@ -44,27 +49,60 @@ class CartController with BaseController {
       );
     } catch (e) {
       handleError(e);
-      rethrow;
+      return false;
     }
     DialogHelper.hideCurrentDialog();
+    return true;
   }
 
-  Future<void> decrementQuantity(CartItem cartItem) async {
-    await BaseClient.patch(
-      _cartUrlWithId(
-        cartItem.id,
-      ),
-      cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
-    );
+  ///Decrements quantity of cart item by one.
+  ///
+  /// Returns true if operation was successful.
+  Future<bool> decrementQuantity(CartItem cartItem) async {
+    DialogHelper.showLoading();
+    try {
+      await BaseClient.patch(
+        _cartUrlWithId(
+          cartItem.id,
+        ),
+        cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
+      );
+    } catch (e) {
+      handleError(e);
+      return false;
+    }
+    DialogHelper.hideCurrentDialog();
+    return true;
   }
 
-  Future<void> delete(CartItem cartItem) async {
-    await BaseClient.delete(
-      "$kCartBaseUrl/${cartItem.id}.json",
-    s);
+  /// Returns true if operation was successful.
+  Future<bool> delete(CartItem cartItem) async {
+    DialogHelper.showLoading();
+    try {
+      await BaseClient.delete(
+        "$kCartBaseUrl/${cartItem.id}.json",
+      );
+    } catch (e) {
+      handleError(e);
+      return false;
+    }
+    DialogHelper.hideCurrentDialog();
+    return true;
   }
 
   String _cartUrlWithId(String id) {
     return "$kCartBaseUrl/$id.json";
+  }
+
+  bool httpRequestTemplate(Function foo) {
+    DialogHelper.showLoading();
+    try {
+      foo();
+    } catch (e) {
+      handleError(e);
+      return false;
+    }
+    DialogHelper.hideCurrentDialog();
+    return true;
   }
 }
