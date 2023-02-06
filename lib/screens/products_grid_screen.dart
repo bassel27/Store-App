@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/empty_screen_text.dart';
-import '../widgets/fetch_and_set_products_future.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
@@ -34,9 +33,9 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
           title: widget.showFavoritesOnly
               ? const Text("Favorites")
               : const Text("Pharmastore")),
-      body: GetAndSetFutureBuilder(
+      body: ScaffoldFutureBuilderuilder(
           fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
-          successfulScaffoldBody: _SuccessfulScaffoldBody(
+          onSuccessWidget: _SuccessfulScaffoldBody(
               showFavoritesOnly: widget.showFavoritesOnly)),
     );
   }
@@ -47,7 +46,6 @@ class _ProductsGridScreenState extends State<ProductsGridScreen> {
     if (!productsProvider.areProductsFetched) {
       return productsProvider.getAndSetProducts();
     } else {
-      print("lol");
       return Future.delayed(Duration.zero);
     }
   }

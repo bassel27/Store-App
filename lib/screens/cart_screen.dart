@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
-import 'package:store_app/widgets/fetch_and_set_products_future.dart';
 
 import '.././widgets/total_container.dart';
 import '../models/cart_item.dart';
@@ -36,9 +35,9 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Cart")),
-      body: GetAndSetFutureBuilder(
+      body: ScaffoldFutureBuilderuilder(
         fetchAndSetProductsFuture: _future,
-        successfulScaffoldBody: const _SuccessfulScaffoldBody(),
+        onSuccessWidget: const _SuccessfulScaffoldBody(),
       ),
     );
   }

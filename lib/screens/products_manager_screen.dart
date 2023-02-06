@@ -5,7 +5,6 @@ import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/product.dart';
-import '../widgets/fetch_and_set_products_future.dart';
 
 class ProductsManagerScreen extends StatefulWidget {
   const ProductsManagerScreen({super.key});
@@ -42,9 +41,9 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
                 icon: const Icon(Icons.add)),
           ],
         ),
-        body: GetAndSetFutureBuilder(
+        body: ScaffoldFutureBuilderuilder(
           fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
-          successfulScaffoldBody: _SuccessfulScaffoldBody(
+          onSuccessWidget: _SuccessfulScaffoldBody(
               productsProvider: productsProvider, products: products),
         ));
   }

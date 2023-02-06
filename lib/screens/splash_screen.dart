@@ -1,6 +1,7 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/my_theme.dart';
 
 import '../providers/products_notifier.dart';
 import 'bottom_nav_bar_screen.dart';
@@ -10,12 +11,28 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen.withScreenFunction(
-      splash: Icons.medical_information_outlined,
-      screenFunction: () async {
-        await context.read<ProductsNotifier>().getAndSetProducts();
-        return const BottomNavBarScreen();
-      },
+    return ScaffoldFutureBuilderuilder(
+      fetchAndSetProductsFuture:
+          context.read<ProductsNotifier>().getAndSetProducts(),
+      onSuccessWidget: const BottomNavBarScreen(),
+      onLoadingWidget: const _SplashScreen(),
+    );
+  }
+}
+
+class _SplashScreen extends StatelessWidget {
+  const _SplashScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kSecondaryColor,
+      body: Center(
+        child: Lottie.asset(
+          'assets/animations/pharmacy.json',
+          width: MediaQuery.of(context).size.width * 0.8,
+        ),
+      ),
     );
   }
 }

@@ -4,17 +4,17 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import '../models/constants.dart';
 import 'app_exception.dart';
 
 class BaseClient {
-  static const int TIME_OUT_DURATION = 5;
   //TODO: get, patch and put use the same functioon
   /// Returns the decoded reponse's body.
   static Future<dynamic> get(String url) async {
     try {
       var response = await http
           .get(Uri.parse(url))
-          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: kDefaultTimeOutDuation));
 
       return _processResponse(response);
     } on SocketException {
@@ -29,7 +29,7 @@ class BaseClient {
 
   /// Returns the decoded reponse's body.
   static Future<dynamic> put(String url, Map payloadInput,
-      {int timeOutDuration = TIME_OUT_DURATION}) async {
+      {int timeOutDuration = kDefaultTimeOutDuation}) async {
     try {
       var response = await http
           .put(Uri.parse(url), body: json.encode(payloadInput))
@@ -51,7 +51,7 @@ class BaseClient {
     try {
       var response = await http
           .post(Uri.parse(url), body: json.encode(payloadInput))
-          .timeout(const Duration(seconds: TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: kDefaultTimeOutDuation));
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(
@@ -66,7 +66,7 @@ class BaseClient {
 
   /// Returns the decoded reponse.
   static Future<dynamic> patch(String url, Map payloadInput,
-      {timeOutDuration = TIME_OUT_DURATION}) async {
+      {timeOutDuration = kDefaultTimeOutDuation}) async {
     try {
       var response = await http
           .patch(Uri.parse(url), body: json.encode(payloadInput))
@@ -85,7 +85,7 @@ class BaseClient {
 
   /// Returns the decoded reponse's body.
   static Future<dynamic> delete(String url,
-      {int timeoutDuration = TIME_OUT_DURATION}) async {
+      {int timeoutDuration = kDefaultTimeOutDuation}) async {
     try {
       var response = await http
           .delete(Uri.parse(url))
