@@ -23,81 +23,57 @@ class CartController with BaseController {
   ///
   /// Returns true if operation was successful.
   Future<bool> create(CartItem cartItem) async {
-    DialogHelper.showLoading();
-    try {
+    return await httpRequestTemplate(() async {
       await BaseClient.put(
         _cartUrlWithId(cartItem.id),
         cartItem.toJson(),
       );
-    } catch (e) {
-      handleError(e);
-      return false;
-    }
-    DialogHelper.hideCurrentDialog();
-    return true;
+    });
   }
 
   /// Increments the quantity of an already existing CartItem using its id.
   ///
   /// Returns true if operation was successful.
   Future<bool> incrementQuantity(CartItem cartItem) async {
-    DialogHelper.showLoading();
-    try {
+    return await httpRequestTemplate(() async {
       await BaseClient.patch(
         _cartUrlWithId(cartItem.id),
         cartItem.copyWith(quantity: cartItem.quantity + 1).toJson(),
       );
-    } catch (e) {
-      handleError(e);
-      return false;
-    }
-    DialogHelper.hideCurrentDialog();
-    return true;
+    });
   }
 
   ///Decrements quantity of cart item by one.
   ///
   /// Returns true if operation was successful.
   Future<bool> decrementQuantity(CartItem cartItem) async {
-    DialogHelper.showLoading();
-    try {
+    return await httpRequestTemplate(() async {
       await BaseClient.patch(
         _cartUrlWithId(
           cartItem.id,
         ),
         cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
       );
-    } catch (e) {
-      handleError(e);
-      return false;
-    }
-    DialogHelper.hideCurrentDialog();
-    return true;
+    });
   }
 
   /// Returns true if operation was successful.
   Future<bool> delete(CartItem cartItem) async {
-    DialogHelper.showLoading();
-    try {
+    return await httpRequestTemplate(() async {
       await BaseClient.delete(
         "$kCartBaseUrl/${cartItem.id}.json",
       );
-    } catch (e) {
-      handleError(e);
-      return false;
-    }
-    DialogHelper.hideCurrentDialog();
-    return true;
+    });
   }
 
   String _cartUrlWithId(String id) {
     return "$kCartBaseUrl/$id.json";
   }
 
-  bool httpRequestTemplate(Function foo) {
+  Future<bool> httpRequestTemplate(Function foo) async {
     DialogHelper.showLoading();
     try {
-      foo();
+      await foo();
     } catch (e) {
       handleError(e);
       return false;
