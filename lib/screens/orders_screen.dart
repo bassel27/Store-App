@@ -62,7 +62,9 @@ class _SuccessfulScaffoldBody extends StatelessWidget {
         ? const EmptyScreenText("No orders")
         : ListView.builder(
             itemCount: ordersProvider.numberOfOrders,
-            itemBuilder: (_, i) => OrderListTile(ordersProvider.orders[i]),
+            itemBuilder: (_, i) {
+              return OrderListTile(ordersProvider.orders[i]);
+            },
           );
   }
 }
