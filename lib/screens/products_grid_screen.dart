@@ -4,54 +4,29 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/empty_screen_text.dart';
-import '../widgets/my_future_builder.dart';
 import '../widgets/product_grid_tile.dart';
 import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_height.dart';
 
 // TODO: stateless?
 /// This screen is used for home and favorites screens.
-class ProductsGridScreen extends StatefulWidget {
+class ProductsGridScreen extends StatelessWidget {
   final bool showFavoritesOnly;
   const ProductsGridScreen(this.showFavoritesOnly);
 
   @override
-  State<ProductsGridScreen> createState() => _ProductsGridScreenState();
-}
-
-class _ProductsGridScreenState extends State<ProductsGridScreen> {
-  late Future _fetchAndSetProductsFuture;
-  @override
-  void initState() {
-    // don't use async here case you're supposed to be overriding it and not change its type
-    super.initState();
-    _fetchAndSetProductsFuture = getAndSetProducts();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ScaffoldFutureBuilder(
-        appBar: AppBar(
-            title: widget.showFavoritesOnly
-                ? const Text("Favorites")
-                : const Text("Pharmastore")),
-        fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
-        onSuccessWidget: _SuccessfulScaffoldBody(
-            showFavoritesOnly: widget.showFavoritesOnly));
-  }
-
-  Future<void> getAndSetProducts() {
-    ProductsNotifier productsProvider =
-        Provider.of<ProductsNotifier>(context, listen: false);
-    if (!productsProvider.areProductsFetched) {
-      return productsProvider.getAndSetProducts();
-    } else {
-      return Future.delayed(Duration.zero);
-    }
+    return Scaffold(
+      appBar: AppBar(
+          title: showFavoritesOnly
+              ? const Text("Favorites")
+              : const Text("Pharmastore")),
+      body: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
+    );
   }
 }
 
-class _SuccessfulScaffoldBody extends StatelessWidget {
-  const _SuccessfulScaffoldBody({
+class _ScaffoldBody extends StatelessWidget {
+  const _ScaffoldBody({
     Key? key,
     required this.showFavoritesOnly,
   }) : super(key: key);
