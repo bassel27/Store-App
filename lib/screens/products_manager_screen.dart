@@ -42,7 +42,7 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
               icon: const Icon(Icons.add)),
         ],
       ),
-      fetchAndSetProductsFuture: _fetchAndSetProductsFuture,
+      getAndSetProductsFuture: _fetchAndSetProductsFuture,
       onSuccessWidget: _SuccessfulScaffoldBody(
           productsProvider: productsProvider, products: products),
     );

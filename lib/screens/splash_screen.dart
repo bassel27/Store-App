@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldFutureBuilder(
-      fetchAndSetProductsFuture: Future.wait([
+      getAndSetProductsFuture: Future.wait([
         context.read<CartNotifier>().getAndSetCart(),
         context.read<ProductsNotifier>().getAndSetProducts()
       ]),

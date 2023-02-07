@@ -6,13 +6,13 @@ import 'error_scaffold_body.dart';
 class ScaffoldFutureBuilder extends StatelessWidget {
   const ScaffoldFutureBuilder({
     Key? key,
-    required this.fetchAndSetProductsFuture,
+    required this.getAndSetProductsFuture,
     required this.onSuccessWidget,
     this.onLoadingWidget = const CircularProgressIndicator(),
     this.appBar,
   });
 
-  final Future fetchAndSetProductsFuture;
+  final Future getAndSetProductsFuture;
   final Widget onSuccessWidget;
   final Widget onLoadingWidget;
   final AppBar? appBar;
@@ -22,7 +22,7 @@ class ScaffoldFutureBuilder extends StatelessWidget {
       appBar: appBar,
       body: Center(
         child: FutureBuilder(
-          future: fetchAndSetProductsFuture,
+          future: getAndSetProductsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return onLoadingWidget;
