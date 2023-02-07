@@ -36,14 +36,15 @@ part 'order.g.dart';
 
 @freezed
 class Order with _$Order {
+  const Order._();
   const factory Order(
       {required String id,
       required double total,
       required List<CartItem> cartItems,
       required DateTime dateTime}) = _Order;
-
-  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
   int get numberOfProducts {
     return cartItems.length;
   }
+
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 }

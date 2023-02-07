@@ -1,0 +1,23 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'order.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
+      id: json['id'] as String,
+      total: (json['total'] as num).toDouble(),
+      cartItems: (json['cartItems'] as List<dynamic>)
+          .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      dateTime: DateTime.parse(json['dateTime'] as String),
+    );
+
+Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
+      'id': instance.id,
+      'total': instance.total,
+      'cartItems': instance.cartItems,
+      'dateTime': instance.dateTime.toIso8601String(),
+    };
