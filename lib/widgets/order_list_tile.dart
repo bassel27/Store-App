@@ -25,7 +25,7 @@ class _OrderListTileState extends State<OrderListTile> {
           Material(
             elevation: 3,
             child: ListTile(
-              title: Text("\$ ${widget.order.amount.toStringAsFixed(2)}"),
+              title: Text("\$ ${widget.order.total.toStringAsFixed(2)}"),
               subtitle: Text(
                 DateFormat("dd/MM/yyyy, hh:mm a").format(widget.order.dateTime),
               ),
@@ -48,13 +48,14 @@ class _OrderListTileState extends State<OrderListTile> {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               height: min(widget.order.numberOfProducts * 16.0 + 20, 80),
               child: ListView(
-                  children: widget.order.products
+                  children: widget.order.cartItems
                       .map(
                         (cartItem) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(cartItem.product.title),
-                            Text("${cartItem.quantity}x ${cartItem.product.price}"),
+                            Text(
+                                "${cartItem.quantity}x ${cartItem.product.price}"),
                           ],
                         ),
                       )

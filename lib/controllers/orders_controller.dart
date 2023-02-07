@@ -30,7 +30,7 @@ class OrdersController with BaseController {
         id: orderId,
         total: orderData['total'],
         dateTime: DateTime.parse(orderData['dateTime']),
-        products: cartItems,
+        cartItems: cartItems,
       ));
     });
 

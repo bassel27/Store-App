@@ -37,7 +37,7 @@ class OrdersNotifier with ChangeNotifier {
       Order(
         id: id,
         total: total,
-        products: cartProducts,
+        cartItems: cartProducts,
         dateTime: nowTimeStamp,
       ),
     );
