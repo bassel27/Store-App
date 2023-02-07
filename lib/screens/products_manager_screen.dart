@@ -4,7 +4,7 @@ import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
-import '../models/product.dart';
+import '../models/product/product.dart';
 import '../widgets/my_future_builder.dart';
 
 class ProductsManagerScreen extends StatefulWidget {

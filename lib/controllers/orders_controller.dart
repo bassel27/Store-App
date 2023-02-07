@@ -1,7 +1,7 @@
 import 'package:store_app/controllers/base_controller.dart';
 import 'package:store_app/models/constants.dart';
 
-import '../models/order.dart';
+import '../models/order/order.dart';
 import '../services/base_client.dart';
 
 class OrdersController with BaseController {

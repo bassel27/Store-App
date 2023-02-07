@@ -6,7 +6,8 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/products_controller.dart';
 
-import '../models/product.dart';
+
+import '../models/product/product.dart';
 import '../services/app_exception.dart';
 
 class ProductsNotifier with ChangeNotifier {

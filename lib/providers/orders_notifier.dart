@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
 import '../controllers/orders_controller.dart';
-import '../models/cart_item.dart';
-import '../models/order.dart';
+import '../models/cart_item/cart_item.dart';
+import '../models/order/order.dart';
+
 
 class OrdersNotifier with ChangeNotifier {
   /// List of all order sorted by recency.

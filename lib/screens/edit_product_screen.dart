@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/product.dart';
 import '../mixins/validate_image_mixin.dart';
+import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';
 import '../widgets/image_url_text_form_field.dart';

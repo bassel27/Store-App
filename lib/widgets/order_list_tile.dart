@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/order.dart';
+import '../models/order/order.dart';
 
 // TODO: fix order added even if you press order now on zero/ empty cart.
 class OrderListTile extends StatefulWidget {

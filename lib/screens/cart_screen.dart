@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 
 import '.././widgets/total_container.dart';
-import '../models/cart_item.dart';
+
+import '../models/cart_item/cart_item.dart';
 import '../widgets/cart_tile.dart';
 import '../widgets/my_future_builder.dart';
 

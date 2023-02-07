@@ -3,7 +3,9 @@ import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/text_aligned_left.dart';
 
-import '../models/product.dart';
+import '../models/product/product.dart';
+
+
 
 class ProductDetailScreen extends StatelessWidget {
   static const route = 'productDetail';

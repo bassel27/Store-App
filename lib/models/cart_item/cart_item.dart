@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:store_app/models/product.dart';
+
+import '../product/product.dart';
 
 part 'cart_item.freezed.dart';
 part 'cart_item.g.dart';
@@ -15,6 +16,3 @@ class CartItem with _$CartItem {
   factory CartItem.fromJson(Map<String, dynamic> json) =>
       _$CartItemFromJson(json);
 }
-
-
-

@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/cart_controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/cart_item.dart';
-import '../models/product.dart';
+
+import '../models/cart_item/cart_item.dart';
+
+import '../models/product/product.dart';
 
 class CartNotifier with ChangeNotifier {
   /// Delete an item from the cart using this item's id.

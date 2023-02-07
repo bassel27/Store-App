@@ -1,8 +1,9 @@
 import 'package:store_app/controllers/base_controller.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
-import 'package:store_app/models/product.dart';
 
+
+import '../models/product/product.dart';
 import '../services/base_client.dart';
 
 class ProductsController with BaseController {

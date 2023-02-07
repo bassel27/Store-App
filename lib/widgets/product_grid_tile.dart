@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/cart_item.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/widgets/text_aligned_left.dart';
 
-import '../models/product.dart';
+import '../models/cart_item/cart_item.dart';
+import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 import 'currency_and_price_text.dart';
 

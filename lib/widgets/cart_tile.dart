@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
-import '../models/cart_item.dart';
+import '../models/cart_item/cart_item.dart';
 import '../providers/cart_notifier.dart';
 
 class CartTile extends StatelessWidget {
