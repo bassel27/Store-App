@@ -21,9 +21,9 @@ class CartController with ErrorHandler {
 
   /// Creates a new cart item in cart.
   ///
-  /// Returns true if operation was successful.
-  Future<bool> create(CartItem cartItem) async {
-    return await httpRequestTemplate(() async {
+  /// Throws an exception if operatoin fails.
+  Future<void> create(CartItem cartItem) async {
+    await httpRequestTemplate(() async {
       await BaseClient.put(
         _cartUrlWithId(cartItem.id),
         cartItem.toJson(),
@@ -33,9 +33,9 @@ class CartController with ErrorHandler {
 
   /// Increments the quantity of an already existing CartItem using its id.
   ///
-  /// Returns true if operation was successful.
-  Future<bool> incrementQuantity(CartItem cartItem) async {
-    return await httpRequestTemplate(() async {
+  /// Throws an exception if operatoin fails.
+  Future<void> incrementQuantity(CartItem cartItem) async {
+    await httpRequestTemplate(() async {
       await BaseClient.patch(
         _cartUrlWithId(cartItem.id),
         cartItem.copyWith(quantity: cartItem.quantity + 1).toJson(),
@@ -45,9 +45,9 @@ class CartController with ErrorHandler {
 
   ///Decrements quantity of cart item by one.
   ///
-  /// Returns true if operation was successful.
-  Future<bool> decrementQuantity(CartItem cartItem) async {
-    return await httpRequestTemplate(() async {
+  /// Throws an exception if operatoin fails.
+  Future<void> decrementQuantity(CartItem cartItem) async {
+    await httpRequestTemplate(() async {
       await BaseClient.patch(
         _cartUrlWithId(
           cartItem.id,
@@ -57,9 +57,9 @@ class CartController with ErrorHandler {
     });
   }
 
-  /// Returns true if operation was successful.
-  Future<bool> delete(CartItem cartItem, {bool showLoading = true}) async {
-    return await httpRequestTemplate(() async {
+  /// Throws an exception if operatoin fails.
+  Future<void> delete(CartItem cartItem, {bool showLoading = true}) async {
+    await httpRequestTemplate(() async {
       await BaseClient.delete(
         "$kCartBaseUrl/${cartItem.id}.json",
       );
@@ -70,17 +70,11 @@ class CartController with ErrorHandler {
     return "$kCartBaseUrl/$id.json";
   }
 
-  Future<bool> httpRequestTemplate(Function foo,
+  Future<void> httpRequestTemplate(Function foo,
       {bool showLoading = true}) async {
     if (showLoading) DialogHelper.showLoading();
-    try {
-      await foo();
-    } catch (e) {
-      handleError(e);
-      return false;
-    }
+    await foo();
     if (showLoading) DialogHelper.hideCurrentDialog();
-    return true;
   }
 
   Future<void> clearCart(List<CartItem> cartItems) async {

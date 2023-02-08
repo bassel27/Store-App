@@ -4,7 +4,7 @@ import 'package:store_app/models/constants.dart';
 
 import '../models/product/product.dart';
 import '../services/base_client.dart';
-
+// TODO: use tojson and from json. send my id
 class ProductsController with ErrorHandler {
   /// Returns list of products or null if no products or if exception thrown.
   Future<List<Product>?> get() async {

@@ -4,12 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/cart_controller.dart';
 import 'package:uuid/uuid.dart';
 
-
+import '../controllers/error_handler.dart';
 import '../models/cart_item/cart_item.dart';
-
 import '../models/product/product.dart';
 
-class CartNotifier with ChangeNotifier {
+class CartNotifier with ChangeNotifier, ErrorHandler {
   /// Delete an item from the cart using this item's id.
   void deleteItem(CartItem cartItemInput) {
     _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
@@ -93,11 +92,12 @@ class CartNotifier with ChangeNotifier {
   void add(Product product) async {
     for (int i = 0; i < _items.length; i++) {
       if (_items[i].product.id == product.id) {
-        if (await _cartController.incrementQuantity(_items[i])) {
-          // on success
-          _items[i] = _items[i].copyWith(quantity: _items[i].quantity + 1);
-          notifyListeners();
-        }
+        await _cartController
+            .incrementQuantity(_items[i])
+            .then((value) => increment(_items[i]))
+            .catchError(handleError);
+        notifyListeners();
+
         return;
       }
     }
@@ -105,10 +105,11 @@ class CartNotifier with ChangeNotifier {
     CartItem newCartItem =
         CartItem(id: const Uuid().v4(), product: product, quantity: 1);
 
-    if (await _cartController.create(newCartItem)) {
-      _items.add(newCartItem);
-      notifyListeners();
-    }
+    await _cartController
+        .create(newCartItem)
+        .then((_) => _items.add(newCartItem))
+        .catchError(handleError);
+    notifyListeners();
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
@@ -117,15 +118,17 @@ class CartNotifier with ChangeNotifier {
       if (_items[i].id == cartItemInput.id) {
         if (_items[i].quantity == 1) {
           CartItem removedProduct = _items[i];
-          if (await _cartController.delete(removedProduct)) {
-            _items.removeWhere((cartItem) => cartItem.id == cartItemInput.id);
-            notifyListeners();
-          }
+          await _cartController
+              .delete(removedProduct)
+              .then((_) => _items
+                  .removeWhere((cartItem) => cartItem.id == cartItemInput.id))
+              .catchError(handleError);
+          notifyListeners();
         } else {
-          if (await _cartController.decrementQuantity(cartItemInput)) {
-            _items[i] = _items[i].copyWith(quantity: _items[i].quantity - 1);
-            notifyListeners();
-          }
+          await _cartController.decrementQuantity(cartItemInput).then((_) {
+            decrement(_items[i]);
+          }).catchError(handleError);
+          notifyListeners();
         }
         break;
       }

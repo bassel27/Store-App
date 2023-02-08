@@ -23,6 +23,8 @@ class BaseClient {
   }
 
   /// Returns the decoded reponse's body.
+  ///
+  /// Returns null if there's no objects.
   static Future<dynamic> get(String url) async {
     return await _tryProcessResponseAndCatchForm(() async {
       return await http
@@ -35,7 +37,7 @@ class BaseClient {
   static Future<dynamic> put(String url, Map payloadInput,
       {int timeOutDuration = kDefaultTimeOutDuation}) async {
     return await _tryProcessResponseAndCatchForm(() async {
-      await http
+      return await http
           .put(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(Duration(seconds: timeOutDuration));
     }, url);
