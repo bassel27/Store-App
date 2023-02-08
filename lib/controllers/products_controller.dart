@@ -1,11 +1,11 @@
-import 'package:store_app/controllers/base_controller.dart';
+import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/product/product.dart';
 import '../services/base_client.dart';
 
-class ProductsController with BaseController {
+class ProductsController with ErrorHandler {
   /// Returns list of products or null if no products or if exception thrown.
   Future<List<Product>?> get() async {
     Map<String, dynamic>? extracedData;

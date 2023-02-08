@@ -1,10 +1,10 @@
-import 'package:store_app/controllers/base_controller.dart';
+import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/order/order.dart';
 import '../services/base_client.dart';
 
-class OrdersController with BaseController {
+class OrdersController with ErrorHandler {
   /// Returns fetched orders.
   ///
   /// Throws an exception if operation fails.

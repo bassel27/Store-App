@@ -14,12 +14,11 @@ class BaseClient {
       var response = await sendHttpRequest();
       return _processResponse(response);
     } on SocketException {
-      throw FetchDataException('No Internet connection', url);
+      throw FetchDataException(kErrorMessage, url);
     } on TimeoutException {
-      throw ApiNotRespondingException(
-          'Check your internet connection and try again');
+      throw ApiNotRespondingException(kErrorMessage);
     } catch (e) {
-      Exception('An error occurred. Contact system administrator');
+      throw Exception();
     }
   }
 
@@ -54,7 +53,7 @@ class BaseClient {
   /// Returns the decoded reponse.
   static Future<dynamic> patch(String url, Map payloadInput,
       {timeOutDuration = kDefaultTimeOutDuation}) async {
-    return await _tryProcessResponseAndCatchForm(() async{
+    return await _tryProcessResponseAndCatchForm(() async {
       return await http
           .patch(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(Duration(seconds: timeOutDuration));
@@ -64,7 +63,7 @@ class BaseClient {
   /// Returns the decoded reponse's body.
   static Future<dynamic> delete(String url,
       {int timeoutDuration = kDefaultTimeOutDuation}) async {
-    return await _tryProcessResponseAndCatchForm(() async{
+    return await _tryProcessResponseAndCatchForm(() async {
       return await http
           .delete(Uri.parse(url))
           .timeout(Duration(seconds: timeoutDuration));
