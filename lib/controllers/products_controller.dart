@@ -4,82 +4,50 @@ import 'package:store_app/models/constants.dart';
 
 import '../models/product/product.dart';
 import '../services/base_client.dart';
+
 // TODO: use tojson and from json. send my id
 class ProductsController with ErrorHandler {
-  /// Returns list of products or null if no products or if exception thrown.
-  Future<List<Product>?> get() async {
+  /// Returns list of products.
+  ///
+  /// Throws excpetion if operation fails.
+  Future<List<Product>> get() async {
     Map<String, dynamic>? extracedData;
     extracedData = await BaseClient.get(kProductsUrl);
     List<Product>? loadedProducts = [];
     if (extracedData != null) {
       // if fetching succeeded but there are no products
-      extracedData.forEach((prodId, prodData) {
-        loadedProducts!.add(Product(
-          id: prodId,
-          description: prodData['description'],
-          price: prodData['price'],
-          title: prodData['title'],
-          isFavorite: prodData['isFavorite'],
-          imageUrl: prodData['imageUrl'],
-        ));
+      extracedData.forEach((_, prodData) {
+        loadedProducts.add(Product.fromJson(prodData));
       });
-    } else {
-      loadedProducts = null;
     }
 
     return loadedProducts;
   }
 
-  /// Handles errors and rethrows them .
+  /// Throws an error if operation fails.
   Future<void> toggleFavoriteStatus(Product product) async {
     var productUrl = "$kBaseUrl/products/${product.id}.json";
-    try {
-      await BaseClient.patch(
-          productUrl, // delete, patch and put don't throw their own errors
-          {
-            "isFavorite": product.isFavorite,
-          },
-          timeOutDuration: 1);
-    } catch (e) {
-      handleError(e);
-      rethrow;
-    }
+    await BaseClient.patch(
+        productUrl, // delete, patch and put don't throw their own errors
+        {
+          "isFavorite": product.isFavorite,
+        },
+        timeOutDuration: 1);
   }
 
-  /// Returns product id or null if product not added successfully.
-  Future<String?> create(Product newProduct) async {
+  /// Throws an exception if operation fails.
+  Future<void> create(Product newProduct) async {
     DialogHelper.showLoading();
-    Map responseBody;
-    try {
-      responseBody = await BaseClient.post(kProductsUrl, {
-        "title": newProduct.title,
-        "description": newProduct.description,
-        "imageUrl": newProduct.imageUrl,
-        "price": newProduct.price,
-        "isFavorite": newProduct.isFavorite,
-      });
-    } catch (e) {
-      handleError(e);
-      rethrow;
-    }
+    await BaseClient.put(
+        "$kProductsBaseUrl/${newProduct.id}.json", newProduct.toJson());
     DialogHelper.hideCurrentDialog();
-    return BaseClient.getObjectIdByResponse(responseBody);
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
+  /// Throws an exception if operation fails.
+  Future<void> updateProduct(Product newProduct) async {
     DialogHelper.showLoading();
-    var oldProductUrl = "$kBaseUrl/products/$id.json";
-    try {
-      await BaseClient.patch(oldProductUrl, {
-        "title": newProduct.title,
-        "description": newProduct.description,
-        "imageUrl": newProduct.imageUrl,
-        "price": newProduct.price,
-      });
-    } catch (e) {
-      handleError(e);
-      rethrow;
-    }
+    var oldProductUrl = "$kBaseUrl/products/${newProduct.id}.json";
+    await BaseClient.patch(oldProductUrl, newProduct.toJson());
     DialogHelper.hideCurrentDialog();
   }
 

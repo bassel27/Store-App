@@ -16,6 +16,8 @@ const String kCartBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/cart';
     const kOrdersBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/orders';
+        const kProductsBaseUrl =
+    'https://shop-app-f7639-default-rtdb.firebaseio.com/products';
 const String kErrorMessage =
     "Oops! Something went wrong. Check your internet connection and try again.";
 /// Default timeout duration for http requests in seconds.

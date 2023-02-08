@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
+import '../controllers/error_handler.dart';
 import '../mixins/validate_image_mixin.dart';
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
@@ -153,20 +155,21 @@ class _EditProductScreenState extends State<EditProductScreen>
       dismissKeyboard();
       // this runs all the validators
       _formKey.currentState!.save(); // this runs all the savers
-      var productProvider =
+      var productsProvider =
           Provider.of<ProductsNotifier>(context, listen: false);
-      var editedProduct = productProvider.editedProduct;
+      var editedProduct = productsProvider.editedProduct;
       try {
         if (editedProduct.id.isEmpty) {
-          await addNewProduct(productProvider, editedProduct, context);
+          await addNewProduct(productsProvider,
+              editedProduct.copyWith(id: const Uuid().v4()), context);
         } else {
-          await productProvider.updateProduct(editedProduct.id, editedProduct);
+          await productsProvider.updateProduct(editedProduct);
         }
         if (mounted) {
           Navigator.of(context).pop(); // pop EditProductScreen
         }
       } catch (e) {
-        // do nothing and leave error dialog and leave edit screen
+        ErrorHandler().handleError(e);
       }
     }
   }

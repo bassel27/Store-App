@@ -4,7 +4,9 @@ import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
+import '../controllers/error_handler.dart';
 import '../models/product/product.dart';
+import '../widgets/empty_screen_text.dart';
 import '../widgets/my_future_builder.dart';
 
 class ProductsManagerScreen extends StatefulWidget {
@@ -30,6 +32,9 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
     return ScaffoldFutureBuilder(
+      getAndSetProductsFuture: _fetchAndSetProductsFuture,
+      onSuccessWidget: _SuccessfulScaffoldBody(
+          productsProvider: productsProvider, products: products),
       appBar: AppBar(
         title: const Text("Products Manager"),
         actions: [
@@ -42,9 +47,6 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
               icon: const Icon(Icons.add)),
         ],
       ),
-      getAndSetProductsFuture: _fetchAndSetProductsFuture,
-      onSuccessWidget: _SuccessfulScaffoldBody(
-          productsProvider: productsProvider, products: products),
     );
   }
 
@@ -73,22 +75,24 @@ class _SuccessfulScaffoldBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => productsProvider.getAndSetProducts(),
-      child: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (_, i) {
-          return Column(
-            key: ValueKey(products[i].id),
-            children: [
-              MyDismissible(
-                valueKeyId: products[i].id,
-                onDismissed: (_) => onProductDelete(products[i], context),
-                child: _ProductListTile(products[i]),
-              ),
-              const Divider(),
-            ],
-          );
-        },
-      ),
+      child: products.isEmpty
+          ? const EmptyScreenText("No products.\n\nAdd some to get started!")
+          : ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (_, i) {
+                return Column(
+                  key: ValueKey(products[i].id),
+                  children: [
+                    MyDismissible(
+                      valueKeyId: products[i].id,
+                      onDismissed: (_) => onProductDelete(products[i], context),
+                      child: _ProductListTile(products[i]),
+                    ),
+                    const Divider(),
+                  ],
+                );
+              },
+            ),
     );
   }
 }
@@ -156,7 +160,11 @@ void onProductDelete(Product product, BuildContext context) async {
     action: SnackBarAction(
         label: 'UNDO',
         onPressed: () {
-          productsProvider.addProductByIndex(product, productOldIndex);
+          try {
+            productsProvider.addProductByIndex(product, productOldIndex);
+          } catch (e) {
+            ErrorHandler().handleError(e);
+          }
         }),
   ));
 }

@@ -6,10 +6,17 @@ class EmptyScreenText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Text(
-      _text,
-      style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 30),
-    ));
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: Center(
+          child: Text(
+        _text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 30,
+        ),
+      )),
+    );
   }
 }

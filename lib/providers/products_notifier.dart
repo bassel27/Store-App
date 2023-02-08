@@ -1,15 +1,11 @@
-// the ChnageNotifier is a mixin.
-//Using a mixin is like extending another class.
-//The difference is that you merge some properties and methods from that class
-// to use in your class, but your class doesn't become an instance of that class.
-
 import 'package:flutter/material.dart';
+import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/controllers/products_controller.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
 
-class ProductsNotifier with ChangeNotifier {
+class ProductsNotifier with ChangeNotifier, ErrorHandler {
   bool areProductsFetched = false;
   final ProductsController _productsController = ProductsController();
   Product editedProduct =
@@ -40,6 +36,7 @@ class ProductsNotifier with ChangeNotifier {
       _products[index] = product.copyWith(isFavorite: !product.isFavorite);
       notifyListeners();
       _productsController.toggleFavoriteStatus(product).catchError((e) {
+        handleError(e);
         _products[index] = product.copyWith(isFavorite: oldStatus);
         notifyListeners();
       });
@@ -47,10 +44,7 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   Future<void> getAndSetProducts() async {
-    List<Product>? fetchedProducts = await _productsController.get();
-    if (fetchedProducts != null) {
-      _products = fetchedProducts;
-    }
+    _products = await _productsController.get();
     areProductsFetched = true;
     notifyListeners();
   }
@@ -61,33 +55,20 @@ class ProductsNotifier with ChangeNotifier {
   }
 
   /// Inserts the new product at a specific index in the list of products.
+  ///
+  /// Throws an excpetion if operation fails.
   Future<void> addProductByIndex(Product newProduct, int index) async {
-    String? id;
-    try {
-      id = await _productsController.create(newProduct);
-    } catch (e) {
-      rethrow; // rethrow here is unnecessary. I just put it to clarify that the error is propagated to EditProductScreen
-    } // rethrow in order to not pop screen in case of error
-    if (id != null) {
-      newProduct = Product(
-          description: newProduct.description,
-          price: newProduct.price,
-          imageUrl: newProduct.imageUrl,
-          title: newProduct.title,
-          id: id);
-      _products.insert(index, newProduct);
-      notifyListeners();
-    }
+    await _productsController.create(newProduct);
+    _products.insert(index, newProduct);
+    notifyListeners();
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
-    final index = _products.indexWhere((element) => element.id == id);
+  Future<void> updateProduct(Product newProduct) async {
+    //TODO: find the obejct itself
+    final index =
+        _products.indexWhere((element) => element.id == newProduct.id);
     if (index >= 0) {
-      try {
-        await _productsController.updateProduct(id, newProduct);
-      } catch (e) {
-        rethrow; // try catch is unnecessary here. It's just here to show that error is propagated.
-      }
+      await _productsController.updateProduct(newProduct);
       _products[index] = newProduct;
       notifyListeners();
     }
@@ -115,44 +96,3 @@ class ProductsNotifier with ChangeNotifier {
 
   List<Product> _products = [];
 }
-
-final List<Product> _hardCodedProducts = [
-  const Product(
-    id: 'p1',
-    title: 'Zyrtec',
-    description: 'Cetirizine hydrochloride',
-    price: 29.99,
-    imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
-  ),
-  const Product(
-    id: 'p2',
-    title: 'Panadol',
-    description: 'Painkiller',
-    price: 59.99,
-    imageUrl:
-        'https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol/en_eg/Home/1680%20x%20600.jpg?auto=format',
-  ),
-  const Product(
-    id: 'p3',
-    title: 'Fucidin',
-    description: 'Antibiotic',
-    price: 19.99,
-    imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/180614-.jpg',
-  ),
-  const Product(
-    id: 'p4',
-    title: 'Augemntin',
-    description: 'Antibiotic',
-    price: 49.99,
-    imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/40413-.jpg',
-  ),
-];
-   //TODO: this should be removed // if no products in database, create hard coded products just to get going
-    // if (fetchedProducts == null) {
-    //   for (var element in _hardCodedProducts) {
-    //     addProduct(element);
-    //   }
-    //   return;
-    // } else {
-    //   _products = fetchedProducts;
-    // }
