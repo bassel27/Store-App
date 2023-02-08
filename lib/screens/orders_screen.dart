@@ -41,6 +41,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 return const CircularProgressIndicator();
               } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
+                  print(snapshot.error);
                   return ErrorScaffoldBody(snapshot.error as Exception);
                 } else {
                   return _SuccessfulScaffoldBody();

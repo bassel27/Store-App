@@ -8,14 +8,10 @@ import '../models/constants.dart';
 import 'app_exception.dart';
 
 class BaseClient {
-  //TODO: get, patch and put use the same functioon
-  /// Returns the decoded reponse's body.
-  static Future<dynamic> get(String url) async {
+  static Future<dynamic> _tryProcessResponseAndCatchForm(
+      Function sendHttpRequest, String url) async {
     try {
-      var response = await http
-          .get(Uri.parse(url))
-          .timeout(const Duration(seconds: kDefaultTimeOutDuation));
-
+      var response = await sendHttpRequest();
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection', url);
@@ -28,78 +24,51 @@ class BaseClient {
   }
 
   /// Returns the decoded reponse's body.
+  static Future<dynamic> get(String url) async {
+    return await _tryProcessResponseAndCatchForm(() async {
+      return await http
+          .get(Uri.parse(url))
+          .timeout(const Duration(seconds: kDefaultTimeOutDuation));
+    }, url);
+  }
+
+  /// Returns the decoded reponse's body.
   static Future<dynamic> put(String url, Map payloadInput,
       {int timeOutDuration = kDefaultTimeOutDuation}) async {
-    try {
-      var response = await http
+    return await _tryProcessResponseAndCatchForm(() async {
+      await http
           .put(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(Duration(seconds: timeOutDuration));
-      return _processResponse(response);
-    } on SocketException {
-      throw FetchDataException(
-          'Check your internet connection and try again', url);
-    } on TimeoutException {
-      throw ApiNotRespondingException(
-          'Check your internet connection and try again', url);
-    } catch (e) {
-      Exception('An error occurred. Contact system administrator');
-    }
+    }, url);
   }
 
   /// Returns the decoded reponse's body.
   static Future<dynamic> post(String url, Map payloadInput) async {
-    try {
-      var response = await http
+    return await _tryProcessResponseAndCatchForm(() async {
+      return await http
           .post(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(const Duration(seconds: kDefaultTimeOutDuation));
-      return _processResponse(response);
-    } on SocketException {
-      throw FetchDataException(
-          'Check your internet connection and try again', url);
-    } on TimeoutException {
-      throw ApiNotRespondingException(
-          'Check your internet connection and try again', url);
-    } catch (e) {
-      Exception('An error occurred. Contact system administrator');
-    }
+    }, url);
   }
 
   /// Returns the decoded reponse.
   static Future<dynamic> patch(String url, Map payloadInput,
       {timeOutDuration = kDefaultTimeOutDuation}) async {
-    try {
-      var response = await http
+    return await _tryProcessResponseAndCatchForm(() async{
+      return await http
           .patch(Uri.parse(url), body: json.encode(payloadInput))
           .timeout(Duration(seconds: timeOutDuration));
-
-      return _processResponse(response);
-    } on SocketException {
-      throw FetchDataException('No Internet connection', url);
-    } on TimeoutException {
-      throw ApiNotRespondingException(
-          'Check your internet connection and try again', url);
-    } catch (e) {
-      Exception('An error occurred. Contact system administrator');
-    }
+    }, url);
   }
 
   /// Returns the decoded reponse's body.
   static Future<dynamic> delete(String url,
       {int timeoutDuration = kDefaultTimeOutDuation}) async {
-    try {
-      var response = await http
+    return await _tryProcessResponseAndCatchForm(() async{
+      return await http
           .delete(Uri.parse(url))
           .timeout(Duration(seconds: timeoutDuration));
-      return _processResponse(response);
-    } on SocketException {
-      throw FetchDataException(
-          'Check your internet connection and try again', url);
-    } on TimeoutException {
-      throw ApiNotRespondingException(
-          'Check your internet connection and try again', url);
-    } catch (e) {
-      Exception('An error occurred. Contact system administrator');
-    }
+    }, url);
   }
 
   /// Decode response.
