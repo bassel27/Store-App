@@ -6,7 +6,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/products_controller.dart';
 
-
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
 
@@ -14,12 +13,12 @@ class ProductsNotifier with ChangeNotifier {
   bool areProductsFetched = false;
   final ProductsController _productsController = ProductsController();
   Product editedProduct =
-      Product(id: '', title: '', description: '', price: 0, imageUrl: '');
+      const Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
-    editedProduct =
-        Product(id: '', title: '', description: '', price: 0, imageUrl: '');
+    editedProduct = const Product(
+        id: '', title: '', description: '', price: 0, imageUrl: '');
     notifyListeners();
   }
 
@@ -34,15 +33,17 @@ class ProductsNotifier with ChangeNotifier {
     return [..._products].where((product) => product.isFavorite).toList();
   }
 
-  Future<void> toggleFavoriteStatus(product) async {
-    bool oldStatus = product.isFavorite;
-    product.isFavorite = !product.isFavorite;
-    notifyListeners();
-    _productsController.toggleFavoriteStatus(product).catchError((e) {
-      product.isFavorite = oldStatus;
+  Future<void> toggleFavoriteStatus(Product product) async {
+    int index = _products.indexOf(product);
+    if (index != -1) {
+      bool oldStatus = product.isFavorite;
+      _products[index] = product.copyWith(isFavorite: !product.isFavorite);
       notifyListeners();
-      throw e;
-    });
+      _productsController.toggleFavoriteStatus(product).catchError((e) {
+        _products[index] = product.copyWith(isFavorite: oldStatus);
+        notifyListeners();
+      });
+    }
   }
 
   Future<void> getAndSetProducts() async {
@@ -116,14 +117,14 @@ class ProductsNotifier with ChangeNotifier {
 }
 
 final List<Product> _hardCodedProducts = [
-  Product(
+  const Product(
     id: 'p1',
     title: 'Zyrtec',
     description: 'Cetirizine hydrochloride',
     price: 29.99,
     imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/57612-.jpg',
   ),
-  Product(
+  const Product(
     id: 'p2',
     title: 'Panadol',
     description: 'Painkiller',
@@ -131,14 +132,14 @@ final List<Product> _hardCodedProducts = [
     imageUrl:
         'https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol/en_eg/Home/1680%20x%20600.jpg?auto=format',
   ),
-  Product(
+  const Product(
     id: 'p3',
     title: 'Fucidin',
     description: 'Antibiotic',
     price: 19.99,
     imageUrl: 'https://seif-online.com/wp-content/uploads/2020/01/180614-.jpg',
   ),
-  Product(
+  const Product(
     id: 'p4',
     title: 'Augemntin',
     description: 'Antibiotic',

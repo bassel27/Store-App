@@ -2,7 +2,6 @@ import 'package:store_app/controllers/base_controller.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
 
-
 import '../models/product/product.dart';
 import '../services/base_client.dart';
 
@@ -27,18 +26,24 @@ class ProductsController with BaseController {
     } else {
       loadedProducts = null;
     }
-    
+
     return loadedProducts;
   }
 
+  /// Handles errors and rethrows them .
   Future<void> toggleFavoriteStatus(Product product) async {
     var productUrl = "$kBaseUrl/products/${product.id}.json";
-    await BaseClient.patch(
-        productUrl, // delete, patch and put don't throw their own errors
-        {
-          "isFavorite": product.isFavorite,
-        },
-        timeOutDuration: 1);
+    try {
+      await BaseClient.patch(
+          productUrl, // delete, patch and put don't throw their own errors
+          {
+            "isFavorite": product.isFavorite,
+          },
+          timeOutDuration: 1);
+    } catch (e) {
+      handleError(e);
+      rethrow;
+    }
   }
 
   /// Returns product id or null if product not added successfully.
