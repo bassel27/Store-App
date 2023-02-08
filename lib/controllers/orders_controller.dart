@@ -11,7 +11,8 @@ class OrdersController with ErrorHandler {
   Future<List<Order>> get() async {
     final List<Order> orders = [];
     Map<String, dynamic>? ordersMaps = await BaseClient.get(kOrdersUrl);
-    if (ordersMaps != null) {   // if there are orders.
+    if (ordersMaps != null) {
+      // if there are orders.
       ordersMaps.forEach((_, orderData) {
         orders.add(Order.fromJson(orderData));
       });
@@ -23,12 +24,10 @@ class OrdersController with ErrorHandler {
   ///
   /// Throws exception if operation not successful.
   Future<void> create(Order newOrder) async {
-    try {
-      // TODO: makes new id??
-      var response = await BaseClient.post(kOrdersUrl, newOrder.toJson());
-    } catch (e) {
-      handleError(e);
-      rethrow;
-    }
+    await BaseClient.put(ordersUrlWithId(newOrder.id), newOrder.toJson());
+  }
+
+  String ordersUrlWithId(String id) {
+    return "$kOrdersBaseUrl/$id.json";
   }
 }

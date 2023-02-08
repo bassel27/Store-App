@@ -1,11 +1,10 @@
-import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../services/base_client.dart';
 
-class CartController with ErrorHandler {
+class CartController {
   Future<List<CartItem>> get() async {
     Map<String, dynamic>? cartItemMaps =
         await BaseClient.get(kCartUrl); // map of cartItem maps.
