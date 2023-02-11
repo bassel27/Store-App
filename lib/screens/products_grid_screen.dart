@@ -21,40 +21,51 @@ class ProductsGridScreen extends StatelessWidget {
         SliverAppBar(
           floating: true,
           snap: true,
-          centerTitle: true,
           pinned: true,
+          centerTitle: true,
           title:
               Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
             Icon(Icons.location_on_sharp),
             Text(" Delivering to ......."),
             Icon(Icons.keyboard_arrow_down_sharp),
           ]),
-          bottom: AppBar(
-            title: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(20)),
-              width: double.infinity,
-              height: 40,
-              child: const Center(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search for something',
-                    prefixIcon: Icon(Icons.search),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          bottom: AppBar(title: const _SearchBar(), actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.sort))
+          ]),
         ),
         SliverToBoxAdapter(
           child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
         )
       ],
     ));
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.white,
+          ),
+          borderRadius: BorderRadius.circular(20)),
+      width: double.infinity,
+      height: 40,
+      child: const Center(
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search for something',
+            prefixIcon: Icon(Icons.search),
+          ),
+        ),
+      ),
+    );
   }
 }
 
