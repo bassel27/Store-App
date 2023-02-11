@@ -20,14 +20,13 @@ class ProductsGridScreen extends StatelessWidget {
       slivers: [
         SliverAppBar(
           floating: true,
-          snap: false,
+          snap: true,
           centerTitle: true,
           pinned: true,
-          leading: const Icon(Icons.menu),
           title:
               Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
             Icon(Icons.location_on_sharp),
-            Text(" Deliver to ......."),
+            Text(" Delivering to ......."),
             Icon(Icons.keyboard_arrow_down_sharp),
           ]),
           bottom: AppBar(
