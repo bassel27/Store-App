@@ -10,7 +10,7 @@ class TextAlignedLeft extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         text,
-        style: Theme.of(context).textTheme.bodySmall,
+        style: Theme.of(context).textTheme.bodyText2,
       ),
     );
   }

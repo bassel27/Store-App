@@ -121,14 +121,14 @@ class _ProductListTile extends StatelessWidget {
             },
             icon: Icon(
               Icons.edit,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
           IconButton(
             onPressed: () => onProductDelete(product, context),
             icon: Icon(
               Icons.delete,
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.error,
             ),
           )
         ],

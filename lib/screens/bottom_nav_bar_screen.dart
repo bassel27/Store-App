@@ -42,7 +42,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       ),
       const CartScreen(): BottomNavigationBarItem(
         icon: Badge(
-          badgeColor: Theme.of(context).colorScheme.background,
+          badgeColor: Theme.of(context).colorScheme.primary,
           badgeContent: Text(cartNotifier.cartItemsCount.toString()),
           child: const Icon(Icons.shopping_cart_outlined),
         ),

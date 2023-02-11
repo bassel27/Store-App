@@ -107,7 +107,10 @@ class _EditProductScreenState extends State<EditProductScreen>
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   onPressed: _onSaveButtonPressed,
-                  child: const Text("Save"),
+                  child: Text(
+                    "Save",
+                    style: Theme.of(context).textTheme.button,
+                  ),
                 ),
               ],
             ),

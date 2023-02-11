@@ -16,13 +16,13 @@ class CurrencyAndPriceText extends StatelessWidget {
       text: TextSpan(
         style: Theme.of(context)
             .textTheme
-            .bodySmall!
+            .bodyText2!
             .copyWith(fontWeight: FontWeight.w300, fontSize: 13),
         children: [
           const TextSpan(text: "$kCurrency "),
           TextSpan(
               text: price.toString(),
-              style: Theme.of(context).textTheme.bodySmall),
+              style: Theme.of(context).textTheme.bodyText2),
         ],
       ),
     );

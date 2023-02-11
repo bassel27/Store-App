@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/my_theme.dart';
 
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
@@ -16,28 +17,33 @@ class ProductsGridScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          floating: true,
-          snap: true,
-          pinned: true,
-          centerTitle: true,
-          title:
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
-            Icon(Icons.location_on_outlined),
-            Text(" Delivering to ......."),
-            Icon(Icons.keyboard_arrow_down_sharp),
-          ]),
-          bottom: AppBar(title: const _SearchBar(), actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.sort_outlined))
-          ]),
-        ),
-        SliverToBoxAdapter(
-          child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
-        )
-      ],
-    ));
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              pinned: true,
+              centerTitle: true,
+              title:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  color: kTextColor,
+                ),
+                const Text(" Delivering to ......."),
+                const Icon(Icons.keyboard_arrow_down_sharp),
+              ]),
+              bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.sort_outlined))
+              ]),
+            ),
+            SliverToBoxAdapter(
+              child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
+            )
+          ],
+        ));
   }
 }
 
@@ -60,6 +66,7 @@ class _SearchBar extends StatelessWidget {
       child: const Center(
         child: TextField(
           decoration: InputDecoration(
+            border: InputBorder.none,
             hintText: 'Search for something',
             prefixIcon: Icon(Icons.search),
           ),

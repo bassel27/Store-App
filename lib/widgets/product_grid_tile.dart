@@ -28,6 +28,7 @@ class ProductGridTile extends StatelessWidget {
               .pushNamed(ProductDetailScreen.route, arguments: product);
         },
         child: Card(
+          color: Theme.of(context).colorScheme.primary,
           elevation: 5,
           child: Column(
             children: [
@@ -164,20 +165,21 @@ class _MyFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.red, width: 0.5),
+        border: Border.all(
+            color: Theme.of(context).colorScheme.tertiary, width: 0.5),
         shape: BoxShape.circle,
       ),
       margin: const EdgeInsets.only(top: 6, right: 7),
       width: 25,
       height: 25,
       child: RawMaterialButton(
-        fillColor: Theme.of(context).colorScheme.background,
+        fillColor: Theme.of(context).colorScheme.primary,
         shape: const CircleBorder(),
         onPressed: () => productsProvider.toggleFavoriteStatus(product),
         child: Icon(
           size: 20,
           product.isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
       ),
     );

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 // primaryColor2 over primaryColor
-var kPrimaryColor = const Color(0xFFF8F8F8);
-var kSecondaryColor = Colors.black;
-var kAccentColor = Colors.red;
-const TextStyle kBodySmallTestStyle =
+var kBackgroundColor = const Color(0xFFF8F8F8);
+var kPrimaryColor = Colors.white;
+var kSecondaryColor = const Color(0xFF8B8B94);
+var kAccentColor = const Color(0xFFF39D1A);
+var kTextColor = Colors.black;
+const TextStyle kBodyText1Style =
     TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
 
 class MyTheme {
@@ -13,34 +15,46 @@ class MyTheme {
     floatingActionButtonTheme:
         FloatingActionButtonThemeData(backgroundColor: kSecondaryColor),
     appBarTheme: AppBarTheme(
-      color: kPrimaryColor,
+      color: kBackgroundColor,
       iconTheme: IconThemeData(color: kAccentColor),
     ),
+    // for text firelds
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: kAccentColor),
+      ),
+      labelStyle: TextStyle(color: kTextColor),
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: kAccentColor,
+      selectionColor: kAccentColor,
+      selectionHandleColor: kAccentColor,
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: kBackgroundColor,
         selectedItemColor: kAccentColor,
         unselectedItemColor: kSecondaryColor),
     colorScheme: const ColorScheme.light().copyWith(
-        background: kPrimaryColor,
-        primary: kSecondaryColor,
-        secondary: kAccentColor,
-        onPrimary: Colors.black),
+        background: kBackgroundColor,
+        primary: kPrimaryColor,
+        secondary: kSecondaryColor,
+        tertiary: kAccentColor,
+        onPrimary: Colors.black,
+        onBackground: Colors.black,
+        onTertiary: Colors.white),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(backgroundColor: kAccentColor)),
     textTheme: TextTheme(
-      bodySmall: kBodySmallTestStyle.copyWith(color: Colors.black),
-    ),
+        bodyText1: kBodyText1Style.copyWith(color: Colors.black),
+        button: TextStyle(color: kPrimaryColor)),
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kBackgroundColor,
       actionTextColor: kAccentColor,
     ),
   );
 
   static final darkTheme = ThemeData(
     colorScheme: const ColorScheme.dark(),
-    textTheme: TextTheme(
-      bodySmall: kBodySmallTestStyle.copyWith(
-          color: Colors.white), // for productGridTile
-    ),
+    textTheme: const TextTheme(),
   );
 }
