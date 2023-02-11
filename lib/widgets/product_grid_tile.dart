@@ -10,6 +10,7 @@ import '../providers/products_notifier.dart';
 import 'currency_and_price_text.dart';
 
 double kPaddingValue = 50;
+double kRoundedEdgeRadius = 22;
 
 class ProductGridTile extends StatelessWidget {
   final Product product;
@@ -28,6 +29,9 @@ class ProductGridTile extends StatelessWidget {
               .pushNamed(ProductDetailScreen.route, arguments: product);
         },
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
+          ),
           color: Theme.of(context).colorScheme.primary,
           elevation: 5,
           child: Column(
@@ -85,15 +89,22 @@ class _ImageAndFavoriteStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double padding = 12;
     return Stack(
       alignment: Alignment.topRight,
       children: [
-        SizedBox(
-          height: constraints.maxHeight * 0.7,
-          width: double.infinity,
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
+        Padding(
+          padding: EdgeInsets.only(top: padding, left: padding, right: padding),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
+            child: SizedBox(
+              height: constraints.maxHeight * 0.7,
+              width: double.infinity,
+              child: Image.network(
+                product.imageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
         ),
         Consumer<ProductsNotifier>(
