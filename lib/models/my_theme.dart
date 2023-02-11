@@ -48,7 +48,7 @@ class MyTheme {
         bodyText1: kBodyText1Style.copyWith(color: Colors.black),
         button: TextStyle(color: kPrimaryColor)),
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kPrimaryColor,
       actionTextColor: kAccentColor,
     ),
   );

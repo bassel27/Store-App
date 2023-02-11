@@ -1,8 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
-import 'package:store_app/widgets/text_aligned_left.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -36,9 +36,14 @@ class ProductGridTile extends StatelessWidget {
                   product: product, constraints: constraints),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                child: TextAlignedLeft(product.title),
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: AutoSizeText(
+                        product.title,
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ))),
               const SizedBox(height: 2),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -84,7 +89,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
       alignment: Alignment.topRight,
       children: [
         SizedBox(
-          height: constraints.maxHeight * 0.55,
+          height: constraints.maxHeight * 0.7,
           width: double.infinity,
           child: Image.network(
             product.imageUrl,
