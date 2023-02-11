@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
       ]),
       onSuccessWidget: const BottomNavBarScreen(),
       onLoadingWidget: Scaffold(
-        backgroundColor: kSecondaryColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Center(
           child: Lottie.asset(
             'assets/animations/pharmacy.json',

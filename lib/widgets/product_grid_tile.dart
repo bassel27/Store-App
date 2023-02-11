@@ -50,7 +50,7 @@ class ProductGridTile extends StatelessWidget {
                 child: cartItem != null
                     ? _ChangeQuantityRow(cartItem: cartItem, product: product)
                     : _MyIconButton(
-                        Icons.shopping_cart,
+                        Icons.shopping_cart_outlined,
                         () {
                           cartProvider.add(product);
                         },
@@ -163,17 +163,21 @@ class _MyFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.red, width: 0.5),
+        shape: BoxShape.circle,
+      ),
       margin: const EdgeInsets.only(top: 6, right: 7),
       width: 25,
       height: 25,
       child: RawMaterialButton(
-        fillColor: Theme.of(context).colorScheme.secondary,
+        fillColor: Theme.of(context).colorScheme.background,
         shape: const CircleBorder(),
         onPressed: () => productsProvider.toggleFavoriteStatus(product),
         child: Icon(
           size: 20,
           product.isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: Theme.of(context).colorScheme.tertiary,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );

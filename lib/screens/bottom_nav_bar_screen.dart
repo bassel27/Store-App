@@ -25,15 +25,15 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   Widget build(BuildContext context) {
     var screenToBottomNavBarItem = {
       AccountScreen(): const BottomNavigationBarItem(
-        icon: Icon(Icons.person),
+        icon: Icon(Icons.person_outline),
         label: 'Account',
       ),
       const ProductsGridScreen(true): const BottomNavigationBarItem(
-        icon: Icon(Icons.favorite),
+        icon: Icon(Icons.favorite_outline),
         label: 'Favorites',
       ),
       const ProductsGridScreen(false): const BottomNavigationBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(Icons.home_outlined),
         label: 'Home',
       ),
       const CategoriesScreen(): const BottomNavigationBarItem(
@@ -42,9 +42,9 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       ),
       const CartScreen(): BottomNavigationBarItem(
         icon: Badge(
-          badgeColor: kSecondaryColor,
+          badgeColor: Theme.of(context).colorScheme.background,
           badgeContent: Text(cartNotifier.cartItemsCount.toString()),
-          child: const Icon(Icons.shopping_cart),
+          child: const Icon(Icons.shopping_cart_outlined),
         ),
         label: 'Cart',
       ),

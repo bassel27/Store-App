@@ -25,12 +25,12 @@ class ProductsGridScreen extends StatelessWidget {
           centerTitle: true,
           title:
               Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
-            Icon(Icons.location_on_sharp),
+            Icon(Icons.location_on_outlined),
             Text(" Delivering to ......."),
             Icon(Icons.keyboard_arrow_down_sharp),
           ]),
           bottom: AppBar(title: const _SearchBar(), actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.sort))
+            IconButton(onPressed: () {}, icon: const Icon(Icons.sort_outlined))
           ]),
         ),
         SliverToBoxAdapter(
