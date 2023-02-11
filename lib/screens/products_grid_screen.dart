@@ -42,7 +42,7 @@ class _ScaffoldBody extends StatelessWidget {
     return Center(
         child: products.isNotEmpty
             ? GridView.builder(
-                // padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 itemCount: products.length,
                 gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(

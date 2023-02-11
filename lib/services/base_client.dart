@@ -35,6 +35,7 @@ class BaseClient {
 
   /// Returns the decoded reponse's body.
   static Future<dynamic> put(String url, Map payloadInput,
+      // TODO: remove timeout optional parameter
       {int timeOutDuration = kDefaultTimeOutDuation}) async {
     return await _tryProcessResponseAndCatchForm(() async {
       return await http

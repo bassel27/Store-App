@@ -23,8 +23,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   Future<void> lol() {
-    return Provider.of<OrdersNotifier>(context, listen: false)
-        .getAndSetOrders();
+    OrdersNotifier ordersProvider =
+        Provider.of<OrdersNotifier>(context, listen: false);
+    if (!ordersProvider.areOrdersFetched) {
+      return ordersProvider.getAndSetOrders();
+    } else {
+      return Future.delayed(Duration.zero);
+    }
   }
 
   @override
