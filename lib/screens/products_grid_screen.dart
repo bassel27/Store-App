@@ -52,7 +52,7 @@ class _SearchBar extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: Colors.white,
+            color: Colors.black,
           ),
           borderRadius: BorderRadius.circular(20)),
       width: double.infinity,
