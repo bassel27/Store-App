@@ -22,7 +22,9 @@ class CurrencyAndPriceText extends StatelessWidget {
           const TextSpan(text: "$kCurrency "),
           TextSpan(
               text: price.toString(),
-              style: Theme.of(context).textTheme.bodyText2),
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w500,
+                  )),
         ],
       ),
     );

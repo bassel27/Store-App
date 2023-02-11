@@ -2,7 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/my_theme.dart';
 import '../providers/cart_notifier.dart';
 import '../screens/cart_screen.dart';
 import '../screens/products_grid_screen.dart';
@@ -42,8 +41,11 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       ),
       const CartScreen(): BottomNavigationBarItem(
         icon: Badge(
-          badgeColor: Theme.of(context).colorScheme.primary,
-          badgeContent: Text(cartNotifier.cartItemsCount.toString()),
+          badgeColor: Theme.of(context).colorScheme.secondary,
+          badgeContent: Text(
+            cartNotifier.cartItemsCount.toString(),
+            style: const TextStyle(color: Colors.white),
+          ),
           child: const Icon(Icons.shopping_cart_outlined),
         ),
         label: 'Cart',
@@ -53,9 +55,6 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     return Scaffold(
       body: screenToBottomNavBarItem.keys.toList()[_selectedIndex],
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-            color: Colors.green,
-            border: Border(top: BorderSide(color: Colors.black))),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           elevation: 0,

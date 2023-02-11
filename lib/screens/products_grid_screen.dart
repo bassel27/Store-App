@@ -56,10 +56,18 @@ class _SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 2),
+              blurRadius: 2,
+              spreadRadius: 2,
+              color: Colors.black26,
+            ),
+          ],
           color: Colors.white,
-          border: Border.all(
-            color: Colors.black,
-          ),
+          // border: Border.all(
+          //   color: Colors.black,
+          // ),
           borderRadius: BorderRadius.circular(20)),
       width: double.infinity,
       height: 40,
@@ -67,7 +75,7 @@ class _SearchBar extends StatelessWidget {
         child: TextField(
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: 'Search for something',
+            hintText: 'Search',
             prefixIcon: Icon(Icons.search),
           ),
         ),
@@ -100,7 +108,7 @@ class _ScaffoldBody extends StatelessWidget {
                 gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                   crossAxisCount: 2,
-                  height: 350,
+                  height: 390,
                 ),
                 itemBuilder: (context, i) {
                   return ProductGridTile(products[i]);

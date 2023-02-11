@@ -39,13 +39,18 @@ class MyTheme {
         primary: kPrimaryColor,
         secondary: kSecondaryColor,
         tertiary: kAccentColor,
-        onPrimary: Colors.black,
         onBackground: Colors.black,
+        onPrimary: Colors.black,
+        onSecondary: Colors.white,
         onTertiary: Colors.white),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(backgroundColor: kAccentColor)),
     textTheme: TextTheme(
-        bodyText1: kBodyText1Style.copyWith(color: Colors.black),
+        bodyText2: kBodyText1Style.copyWith(
+            color: Colors.black,
+            fontWeight: FontWeight
+                .w500), // controls price, title and currency witth each copying with
+        
         button: TextStyle(color: kPrimaryColor)),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: kPrimaryColor,

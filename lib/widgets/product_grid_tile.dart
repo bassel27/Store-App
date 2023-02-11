@@ -9,8 +9,8 @@ import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 import 'currency_and_price_text.dart';
 
-double kPaddingValue = 50;
-double kRoundedEdgeRadius = 22;
+const double kRoundedEdgeRadius = 22;
+const double kPhotoPadding = 9;
 
 class ProductGridTile extends StatelessWidget {
   final Product product;
@@ -46,7 +46,8 @@ class ProductGridTile extends StatelessWidget {
                       child: AutoSizeText(
                         product.title,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w700, fontSize: 18),
                       ))),
               const SizedBox(height: 2),
               Padding(
@@ -89,12 +90,12 @@ class _ImageAndFavoriteStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double padding = 12;
     return Stack(
       alignment: Alignment.topRight,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: padding, left: padding, right: padding),
+          padding: const EdgeInsets.only(
+              top: kPhotoPadding, left: kPhotoPadding, right: kPhotoPadding),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
             child: SizedBox(
@@ -185,7 +186,8 @@ class _MyFloatingActionButton extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiary, width: 0.5),
         shape: BoxShape.circle,
       ),
-      margin: const EdgeInsets.only(top: 6, right: 7),
+      margin: const EdgeInsets.only(
+          top: kPhotoPadding + 9, right: kPhotoPadding + 7),
       width: 25,
       height: 25,
       child: RawMaterialButton(
