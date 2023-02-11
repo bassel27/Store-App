@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/theme_notifier.dart';
+import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class AccountScreen extends StatefulWidget {
   static const route = "/settings";
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<AccountScreen> createState() => _AccountScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _AccountScreenState extends State<AccountScreen> {
   late var theme = Provider.of<ThemeNotifier>(context, listen: false);
   late bool _switchValue = theme.isDarkMode;
 
@@ -41,6 +42,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: const ListTile(
             leading: Icon(Icons.edit),
             title: Text("Products Manager"),
+          ),
+        ),
+        const Divider(),
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, OrdersScreen.route);
+          },
+          child: const ListTile(
+            leading: Icon(Icons.list_alt_rounded),
+            title: Text("Orders"),
           ),
         ),
         const Divider(),

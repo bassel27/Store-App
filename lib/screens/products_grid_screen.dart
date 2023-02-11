@@ -16,12 +16,46 @@ class ProductsGridScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: showFavoritesOnly
-              ? const Text("Favorites")
-              : const Text("Pharmastore")),
-      body: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
-    );
+        body: CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          floating: true,
+          snap: false,
+          centerTitle: true,
+          pinned: true,
+          leading: const Icon(Icons.menu),
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
+            Icon(Icons.location_on_sharp),
+            Text(" Deliver to ......."),
+            Icon(Icons.keyboard_arrow_down_sharp),
+          ]),
+          bottom: AppBar(
+            title: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(20)),
+              width: double.infinity,
+              height: 40,
+              child: const Center(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search for something',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
+        )
+      ],
+    ));
   }
 }
 
@@ -42,6 +76,8 @@ class _ScaffoldBody extends StatelessWidget {
     return Center(
         child: products.isNotEmpty
             ? GridView.builder(
+                primary: false,
+                shrinkWrap: true,
                 padding: const EdgeInsets.only(top: 10),
                 itemCount: products.length,
                 gridDelegate:

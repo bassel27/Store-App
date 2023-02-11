@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               OrdersScreen.route: (ctx) => const OrdersScreen(),
               ProductsManagerScreen.route: (ctx) =>
                   const ProductsManagerScreen(),
-              SettingsScreen.route: (ctx) => SettingsScreen(),
+              AccountScreen.route: (ctx) => AccountScreen(),
               EditProductScreen.route: (ctx) => EditProductScreen(),
             },
             title: 'Flutter Demo',
