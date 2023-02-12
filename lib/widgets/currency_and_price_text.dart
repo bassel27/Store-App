@@ -17,7 +17,7 @@ class CurrencyAndPriceText extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(fontWeight: FontWeight.w300, fontSize: 13),
+            .copyWith(fontWeight: FontWeight.w300),
         children: [
           const TextSpan(text: "$kCurrency "),
           TextSpan(

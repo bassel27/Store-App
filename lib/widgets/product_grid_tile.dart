@@ -33,7 +33,6 @@ class ProductGridTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
           ),
           color: Theme.of(context).colorScheme.primary,
-          elevation: 5,
           child: Column(
             children: [
               _ImageAndFavoriteStack(
@@ -45,7 +44,7 @@ class ProductGridTile extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: AutoSizeText(
                         product.title,
-                        maxLines: 2,
+                        maxLines: 1,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.w700, fontSize: 18),
                       ))),

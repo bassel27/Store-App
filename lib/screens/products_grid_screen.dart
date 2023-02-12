@@ -58,9 +58,9 @@ class _SearchBar extends StatelessWidget {
       decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(
-              offset: Offset(0, 2),
-              blurRadius: 2,
-              spreadRadius: 2,
+              offset: Offset(0, 0.5),
+              blurRadius: 0.5,
+              spreadRadius: 0.5,
               color: Colors.black26,
             ),
           ],
@@ -68,7 +68,7 @@ class _SearchBar extends StatelessWidget {
           // border: Border.all(
           //   color: Colors.black,
           // ),
-          borderRadius: BorderRadius.circular(20)),
+          borderRadius: BorderRadius.circular(5)),
       width: double.infinity,
       height: 40,
       child: const Center(
@@ -76,7 +76,7 @@ class _SearchBar extends StatelessWidget {
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: 'Search',
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: Icon(Icons.search_sharp),
           ),
         ),
       ),
