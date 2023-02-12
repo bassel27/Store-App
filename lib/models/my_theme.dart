@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // primaryColor2 over primaryColor
-var kBackgroundColor = const Color(0xFFF8F8F8);
+var kBackgroundColor = const Color.fromARGB(255, 235, 234, 234);
 var kPrimaryColor = Colors.white;
 var kSecondaryColor = const Color(0xFF8B8B94);
 var kAccentColor = const Color(0xFFF39D1A);
@@ -11,6 +11,7 @@ const TextStyle kBodyText1Style =
 
 class MyTheme {
   static final lightTheme = ThemeData(
+    scaffoldBackgroundColor: kBackgroundColor,
     iconTheme: IconThemeData(color: kAccentColor),
     floatingActionButtonTheme:
         FloatingActionButtonThemeData(backgroundColor: kSecondaryColor),
@@ -50,7 +51,7 @@ class MyTheme {
             color: Colors.black,
             fontWeight: FontWeight
                 .w500), // controls price, title and currency witth each copying with
-        
+
         button: TextStyle(color: kPrimaryColor)),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: kPrimaryColor,

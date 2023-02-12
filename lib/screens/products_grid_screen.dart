@@ -17,33 +17,33 @@ class ProductsGridScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
         body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              pinned: true,
-              centerTitle: true,
-              title:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(
-                  Icons.location_on_outlined,
-                  color: kTextColor,
-                ),
-                const Text(" Delivering to ......."),
-                const Icon(Icons.keyboard_arrow_down_sharp),
-              ]),
-              bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.sort_outlined))
-              ]),
+      slivers: [
+        SliverAppBar(
+          floating: true,
+          snap: true,
+          pinned: true,
+          centerTitle: true,
+          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(
+              Icons.location_on_outlined,
+              color: kTextColor,
             ),
-            SliverToBoxAdapter(
-              child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
-            )
-          ],
-        ));
+            const Text(
+              " Delivering to .......",
+              style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400),
+            ),
+            const Icon(Icons.keyboard_arrow_down_sharp),
+          ]),
+          bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.sort_outlined))
+          ]),
+        ),
+        SliverToBoxAdapter(
+          child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
+        )
+      ],
+    ));
   }
 }
 
