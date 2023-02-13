@@ -18,7 +18,7 @@ class MyTheme {
     scaffoldBackgroundColor: kBackgroundColor,
     iconTheme: const IconThemeData(color: kAccentColor),
     floatingActionButtonTheme:
-        const FloatingActionButtonThemeData(backgroundColor: kSecondaryColor),
+        const FloatingActionButtonThemeData(backgroundColor: kAccentColor),
     appBarTheme: const AppBarTheme(
       color: kBackgroundColor,
       iconTheme: IconThemeData(color: kAccentColor),

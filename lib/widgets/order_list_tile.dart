@@ -30,7 +30,7 @@ class _OrderListTileState extends State<OrderListTile> {
           ],
         ),
       ),
-    );  
+    );
   }
 
   Material mainContainer() {
@@ -84,7 +84,7 @@ class _dropDownContainer extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      height: min(widget.order.numberOfProducts * 16.0 + 20, 80),
+      height: min(widget.order.numberOfProducts * 16.0 + 30, 80),
       child: ListView(
           children: widget.order.cartItems
               .map(

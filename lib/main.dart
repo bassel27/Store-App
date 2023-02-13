@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
@@ -22,6 +23,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    removeShadowAboveAppBar();
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -56,4 +58,10 @@ class MyApp extends StatelessWidget {
             home: child),
         child: const SplashScreen());
   }
+}
+
+void removeShadowAboveAppBar() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
 }

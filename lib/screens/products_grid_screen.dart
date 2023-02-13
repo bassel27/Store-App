@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/settings_screen.dart';
 
 import '../models/product/product.dart';
@@ -31,18 +30,36 @@ class ProductsGridScreen extends StatelessWidget {
           snap: true,
           pinned: true,
           centerTitle: true,
-          title:
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
-            Icon(
-              Icons.location_on_outlined,
-              color: kTextColor,
+          title: Container(
+            padding: const EdgeInsets.all(7),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.tertiary,
+                // border: Border.all(
+                //   color: Colors.red,
+                // ),
+                borderRadius: const BorderRadius.all(Radius.circular(20))),
+            child: FittedBox(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      " Delivering to .......",
+                      style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_down_sharp,
+                      color: Colors.white,
+                    ),
+                  ]),
             ),
-            Text(
-              " Delivering to .......",
-              style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400),
-            ),
-            Icon(Icons.keyboard_arrow_down_sharp),
-          ]),
+          ),
           bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
           ]),

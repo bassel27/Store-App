@@ -18,7 +18,7 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Account"),
+        title: const Text("My Account"),
       ),
       body: ListView(children: [
         const SizedBox(
@@ -33,6 +33,14 @@ class _AccountScreenState extends State<AccountScreen> {
             size: circleAvatarRadius + 40,
           ),
         ),
+        const SizedBox(
+          height: 15,
+        ),
+        const Center(
+            child: Text(
+          "Bassel Attia",
+          style: TextStyle(fontSize: 22),
+        )),
         const SizedBox(
           height: 20,
         ),
