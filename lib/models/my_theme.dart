@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
 
 // primaryColor2 over primaryColor
-var kBackgroundColor = const Color.fromARGB(255, 235, 234, 234);
-var kPrimaryColor = Colors.white;
-var kSecondaryColor = const Color(0xFF8B8B94);
-var kAccentColor = const Color(0xFFF39D1A);
-var kTextColor = Colors.black;
+const kBackgroundColor = Color(0xFFF2F2F3);
+const kPrimaryColor = Colors.white;
+const kSecondaryColor = Color(0xFF8B8B94);
+const kAccentColor = Color(0xFFF39D1A);
+const kTextColor = Colors.black;
 const TextStyle kBodyText1Style =
     TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
+const kInactiveColor = kSecondaryColor;
+const kActiveColor = kAccentColor;
 
 class MyTheme {
   static final lightTheme = ThemeData(
+    progressIndicatorTheme:
+        const ProgressIndicatorThemeData(color: kAccentColor),
     scaffoldBackgroundColor: kBackgroundColor,
-    iconTheme: IconThemeData(color: kAccentColor),
+    iconTheme: const IconThemeData(color: kAccentColor),
     floatingActionButtonTheme:
-        FloatingActionButtonThemeData(backgroundColor: kSecondaryColor),
-    appBarTheme: AppBarTheme(
+        const FloatingActionButtonThemeData(backgroundColor: kSecondaryColor),
+    appBarTheme: const AppBarTheme(
       color: kBackgroundColor,
       iconTheme: IconThemeData(color: kAccentColor),
     ),
     // for text firelds
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: kAccentColor),
       ),
       labelStyle: TextStyle(color: kTextColor),
     ),
-    textSelectionTheme: TextSelectionThemeData(
+    textSelectionTheme: const TextSelectionThemeData(
       cursorColor: kAccentColor,
       selectionColor: kAccentColor,
       selectionHandleColor: kAccentColor,
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: kBackgroundColor,
         selectedItemColor: kAccentColor,
         unselectedItemColor: kSecondaryColor),
@@ -52,8 +56,8 @@ class MyTheme {
             fontWeight: FontWeight
                 .w500), // controls price, title and currency witth each copying with
 
-        button: TextStyle(color: kPrimaryColor)),
-    snackBarTheme: SnackBarThemeData(
+        button: const TextStyle(color: kPrimaryColor)),
+    snackBarTheme: const SnackBarThemeData(
       backgroundColor: kPrimaryColor,
       actionTextColor: kAccentColor,
     ),

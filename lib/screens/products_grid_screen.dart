@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
+import 'package:store_app/screens/settings_screen.dart';
 
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
@@ -20,23 +21,30 @@ class ProductsGridScreen extends StatelessWidget {
         body: CustomScrollView(
       slivers: [
         SliverAppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () {
+              Navigator.pushNamed(context, AccountScreen.route);
+            },
+          ),
           floating: true,
           snap: true,
           pinned: true,
           centerTitle: true,
-          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
             Icon(
               Icons.location_on_outlined,
               color: kTextColor,
             ),
-            const Text(
+            Text(
               " Delivering to .......",
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400),
             ),
-            const Icon(Icons.keyboard_arrow_down_sharp),
+            Icon(Icons.keyboard_arrow_down_sharp),
           ]),
           bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.sort_outlined))
+            IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
           ]),
         ),
         SliverToBoxAdapter(

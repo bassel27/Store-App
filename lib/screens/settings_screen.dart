@@ -13,14 +13,29 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   late var theme = Provider.of<ThemeNotifier>(context, listen: false);
   late bool _switchValue = theme.isDarkMode;
-
+  double circleAvatarRadius = 60;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: const Text("Account"),
       ),
       body: ListView(children: [
+        const SizedBox(
+          height: 20,
+        ),
+        CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          radius: circleAvatarRadius,
+          child: Icon(
+            Icons.person,
+            color: Theme.of(context).colorScheme.primary,
+            size: circleAvatarRadius + 40,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
         ListTile(
           leading: const Icon(Icons.dark_mode_outlined),
           title: const Text("Dark Mode"),
@@ -34,7 +49,7 @@ class _AccountScreenState extends State<AccountScreen> {
             },
           ),
         ),
-        const Divider(),
+        // const Divider(),
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ProductsManagerScreen.route);
@@ -44,7 +59,7 @@ class _AccountScreenState extends State<AccountScreen> {
             title: Text("Products Manager"),
           ),
         ),
-        const Divider(),
+        // const Divider(),
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, OrdersScreen.route);
@@ -54,7 +69,7 @@ class _AccountScreenState extends State<AccountScreen> {
             title: Text("Orders"),
           ),
         ),
-        const Divider(),
+        // const Divider(),
       ]),
     );
   }
