@@ -24,7 +24,6 @@ class OrdersNotifier with ChangeNotifier, ErrorHandler {
   /// Throws exception if fails.
   Future<void> getAndSetOrders() async {
     _orders = await _ordersController.get();
-    _orders = _orders.reversed.toList();
     areOrdersFetched = true;
     notifyListeners();
   }

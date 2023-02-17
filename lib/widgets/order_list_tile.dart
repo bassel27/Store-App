@@ -84,14 +84,14 @@ class _dropDownContainer extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      height: min(widget.order.numberOfProducts * 16.0 + 30, 80),
+      height: min(widget.order.numberOfProducts * 16.0 + 40, 80),
       child: ListView(
           children: widget.order.cartItems
               .map(
                 (cartItem) => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(cartItem.product.title),
+                    Expanded(child: Text(cartItem.product.title)),
                     Text("${cartItem.quantity}x ${cartItem.product.price}"),
                   ],
                 ),
