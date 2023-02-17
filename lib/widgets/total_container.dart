@@ -60,7 +60,7 @@ class _OrderButtonState extends State<_OrderButton> {
                 await Provider.of<OrdersNotifier>(context, listen: false)
                     .addOrder(cartProvider.items, cartProvider.total);
                 await cartProvider.clear();
-              } catch (e) {}
+              } catch (e) {}// TODO: remove empty catch block
               setState(() {
                 _isLoading = false;
               });
@@ -73,7 +73,7 @@ class _OrderButtonState extends State<_OrderButton> {
                   child: CircularProgressIndicator(
                 strokeWidth: 3,
               )))
-          : Text(
+          :  Text(
               "Order Now",
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
             ),
