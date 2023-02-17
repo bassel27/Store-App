@@ -73,7 +73,10 @@ class _OrderButtonState extends State<_OrderButton> {
                   child: CircularProgressIndicator(
                 strokeWidth: 3,
               )))
-          : const Text("Order Now"),
+          : Text(
+              "Order Now",
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+            ),
     );
   }
 }
