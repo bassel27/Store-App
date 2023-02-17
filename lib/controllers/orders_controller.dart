@@ -17,6 +17,8 @@ class OrdersController with ErrorHandler {
         orders.add(Order.fromJson(orderData));
       });
     }
+    orders
+        .sort((a, b) => a.dateTime.toString().compareTo(b.dateTime.toString()));
     return orders.reversed.toList(); // newest first
   }
 

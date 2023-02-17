@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/constants.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/cart_item/cart_item.dart';
@@ -28,7 +29,7 @@ class CartTile extends StatelessWidget {
         child: ListTile(
           title: Text(cartItem.product.title),
           subtitle: Text(
-              "Total: \$${(cartItem.product.price * cartItem.quantity).toStringAsFixed(2)}"),
+              "Total: $kCurrency ${(cartItem.product.price * cartItem.quantity).toStringAsFixed(2)}"),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           trailing: Text("${cartItem.quantity}x"),

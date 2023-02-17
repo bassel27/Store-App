@@ -44,6 +44,16 @@ class _AccountScreenState extends State<AccountScreen> {
         const SizedBox(
           height: 20,
         ),
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, OrdersScreen.route);
+          },
+          child: const ListTile(
+            leading: Icon(Icons.list_alt_rounded),
+            title: Text("Orders"),
+          ),
+        ),
+        // const Divider(),
         ListTile(
           leading: const Icon(Icons.dark_mode_outlined),
           title: const Text("Dark Mode"),
@@ -65,16 +75,6 @@ class _AccountScreenState extends State<AccountScreen> {
           child: const ListTile(
             leading: Icon(Icons.edit),
             title: Text("Products Manager"),
-          ),
-        ),
-        // const Divider(),
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, OrdersScreen.route);
-          },
-          child: const ListTile(
-            leading: Icon(Icons.list_alt_rounded),
-            title: Text("Orders"),
           ),
         ),
         // const Divider(),

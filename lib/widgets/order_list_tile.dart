@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:store_app/models/constants.dart';
 
 import '../models/order/order.dart';
 
@@ -45,7 +46,7 @@ class _OrderListTileState extends State<OrderListTile> {
           ),
         ),
         child: ListTile(
-          title: Text("\$ ${widget.order.total.toStringAsFixed(2)}"),
+          title: Text("$kCurrency ${widget.order.total.toStringAsFixed(2)}"),
           subtitle: Text(
             DateFormat("dd/MM/yyyy, hh:mm a").format(widget.order.dateTime),
           ),
