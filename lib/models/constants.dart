@@ -25,3 +25,5 @@ const String kErrorMessage =
 const int kDefaultTimeOutDuation = 5;
 const kSignUpUrl =
     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCijND-gjHHDpFCYjm0_IVhn0hWBQqAQrM";
+const kLoginUrl =
+    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCijND-gjHHDpFCYjm0_IVhn0hWBQqAQrM";

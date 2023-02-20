@@ -7,7 +7,11 @@ class Auth with ChangeNotifier {
   // DateTime _expiryDate;
   // String _userId;
 
-  Future<void> signup(String email, String password) async{
+  Future<void> signup(String email, String password) async {
     await authControler.signup(email, password);
+  }
+
+  Future<void> login(String email, String password) async {
+    await authControler.login(email, password);
   }
 }
