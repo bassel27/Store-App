@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/providers/auth.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
+import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
-import 'package:store_app/screens/splash_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (_) => OrdersNotifier(),
-          )
+          ),
+          ChangeNotifierProvider(create: (_) => Auth()),
         ],
         // TODO: use materialapp
         builder: (context, child) => GetMaterialApp(
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
             },
             title: 'Flutter Demo',
             home: child),
-        child: const SplashScreen());
+        child: AuthScreen());
   }
 }
 

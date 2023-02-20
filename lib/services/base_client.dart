@@ -13,7 +13,8 @@ class BaseClient {
     try {
       var response = await sendHttpRequest();
       return _processResponse(response);
-    } on SocketException {
+    } on SocketException catch (e) {
+      print(e);
       throw FetchDataException(kErrorMessage, url);
     } on TimeoutException {
       throw ApiNotRespondingException(kErrorMessage);
