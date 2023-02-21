@@ -1,15 +1,17 @@
 import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/mixins/add_token_to_url.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../services/base_client.dart';
 
-class CartController {
-  String authToken;
-  CartController(this.authToken);
+class CartController with AddTokenToUrl {
+  String token;
+  CartController(this.token);
+
   Future<List<CartItem>> get() async {
     Map<String, dynamic>? cartItemMaps = await BaseClient.get(
-        "$kCartUrl?auth=$authToken"); // map of cartItem maps.
+        getTokenedUrl(url: kCartUrl, token: token)); // map of cartItem maps.
     List<CartItem> cartItems = [];
     if (cartItemMaps != null) {
       // if cart not empty
@@ -26,7 +28,7 @@ class CartController {
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
       await BaseClient.put(
-        _cartUrlWithId(cartItem.id),
+        getTokenedUrl(url: _cartUrlWithId(cartItem.id), token: token),
         cartItem.toJson(),
       );
     });
@@ -38,7 +40,7 @@ class CartController {
   Future<void> incrementQuantity(CartItem cartItem) async {
     await httpRequestTemplate(() async {
       await BaseClient.patch(
-        _cartUrlWithId(cartItem.id),
+        getTokenedUrl(url: _cartUrlWithId(cartItem.id), token: token),
         cartItem.copyWith(quantity: cartItem.quantity + 1).toJson(),
       );
     });
@@ -50,9 +52,11 @@ class CartController {
   Future<void> decrementQuantity(CartItem cartItem) async {
     await httpRequestTemplate(() async {
       await BaseClient.patch(
-        _cartUrlWithId(
-          cartItem.id,
-        ),
+        getTokenedUrl(
+            url: _cartUrlWithId(
+              cartItem.id,
+            ),
+            token: token),
         cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
       );
     });
@@ -62,7 +66,7 @@ class CartController {
   Future<void> delete(CartItem cartItem, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
       await BaseClient.delete(
-        "$kCartBaseUrl/${cartItem.id}.json",
+        getTokenedUrl(url: "$kCartBaseUrl/${cartItem.id}.json", token: token),
       );
     }, showLoading: showLoading);
   }

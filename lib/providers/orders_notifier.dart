@@ -10,20 +10,23 @@ import '../models/order/order.dart';
 
 class OrdersNotifier with ChangeNotifier, ErrorHandler {
   /// List of all order sorted by recency.
-  List<Order> _orders = [];
+  // TODO: make private
+  List<Order> ordersList;
+  String authToken;
+  OrdersNotifier(this.authToken, this.ordersList);
 
-  final OrdersController _ordersController = OrdersController();
-  List<Order> get orders => UnmodifiableListView(_orders);
+  late final OrdersController _ordersController = OrdersController(authToken);
+  List<Order> get orders => UnmodifiableListView(ordersList);
   set orders(List<Order> orders) {
-    _orders = orders;
+    ordersList = orders;
   }
 
-  int get numberOfOrders => _orders.length;
+  int get numberOfOrders => ordersList.length;
   bool areOrdersFetched = false;
 
   /// Throws exception if fails.
   Future<void> getAndSetOrders() async {
-    _orders = await _ordersController.get();
+    ordersList = await _ordersController.get();
     areOrdersFetched = true;
     notifyListeners();
   }
@@ -38,7 +41,7 @@ class OrdersNotifier with ChangeNotifier, ErrorHandler {
     );
     await _ordersController
         .create(newOrder)
-        .then((_) => _orders.insert(
+        .then((_) => ordersList.insert(
               0,
               newOrder,
             ))

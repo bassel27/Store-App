@@ -40,16 +40,23 @@ class MyApp extends StatelessWidget {
             create: (context) => ProductsNotifier(
                 Provider.of<AuthNotifier>(context, listen: false).token!, [])),
         ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
-          update: (context, auth, previousProduct) => CartNotifier(auth.token!,
-              previousProduct == null ? [] : previousProduct.cartItems),
+          update: (context, auth, previousCart) => CartNotifier(
+              auth.token!, previousCart == null ? [] : previousCart.cartItems),
           create: (context) => CartNotifier(
               Provider.of<AuthNotifier>(context, listen: false).token!, []),
         ),
+        ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
+          update: (context, auth, previousOrdersProvider) => OrdersNotifier(
+              auth.token!,
+              previousOrdersProvider == null
+                  ? []
+                  : previousOrdersProvider.orders),
+          create: (context) => OrdersNotifier(
+              Provider.of<AuthNotifier>(context, listen: false).token!, []),
+        ),
+
         ChangeNotifierProvider(
           create: (_) => ThemeNotifier(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => OrdersNotifier(),
         ),
       ],
       // TODO: use materialapp

@@ -1,16 +1,22 @@
 import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/mixins/add_token_to_url.dart';
 import 'package:store_app/models/constants.dart';
 
 import '../models/order/order.dart';
 import '../services/base_client.dart';
 
-class OrdersController with ErrorHandler {
+class OrdersController with ErrorHandler, AddTokenToUrl {
+  String token;
+  OrdersController(this.token);
+
   /// Returns fetched orders.
   ///
   /// Throws an exception if operation fails.
   Future<List<Order>> get() async {
     final List<Order> orders = [];
-    Map<String, dynamic>? ordersMaps = await BaseClient.get(kOrdersUrl);
+    Map<String, dynamic>? ordersMaps =
+        await BaseClient.get(getTokenedUrl(url: kOrdersUrl, token: token));
+
     if (ordersMaps != null) {
       // if there are orders.
       ordersMaps.forEach((_, orderData) {
@@ -26,7 +32,9 @@ class OrdersController with ErrorHandler {
   ///
   /// Throws exception if operation not successful.
   Future<void> create(Order newOrder) async {
-    await BaseClient.put(ordersUrlWithId(newOrder.id), newOrder.toJson());
+    await BaseClient.put(
+        getTokenedUrl(url: ordersUrlWithId(newOrder.id), token: token),
+        newOrder.toJson());
   }
 
   String ordersUrlWithId(String id) {
