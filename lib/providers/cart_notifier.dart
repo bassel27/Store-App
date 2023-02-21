@@ -9,6 +9,7 @@ import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 class CartNotifier with ChangeNotifier, ErrorHandler {
+  
   /// Delete an item from the cart using this item's id.
   void deleteItem(CartItem cartItemInput) {
     _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);

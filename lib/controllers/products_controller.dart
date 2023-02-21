@@ -7,12 +7,15 @@ import '../services/base_client.dart';
 
 // TODO: use tojson and from json. send my id
 class ProductsController with ErrorHandler {
+  String authToken;
+  ProductsController(this.authToken);
+
   /// Returns list of products.
   ///
   /// Throws excpetion if operation fails.
   Future<List<Product>> get() async {
     Map<String, dynamic>? extracedData;
-    extracedData = await BaseClient.get(kProductsUrl);
+    extracedData = await BaseClient.get("$kProductsUrl?auth=$authToken");
     List<Product>? loadedProducts = [];
     if (extracedData != null) {
       // if fetching succeeded but there are no products

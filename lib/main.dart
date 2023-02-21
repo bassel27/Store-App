@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/auth.dart';
+import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
@@ -12,6 +12,7 @@ import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
+import 'package:store_app/screens/splash_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
@@ -26,25 +27,32 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     removeShadowAboveAppBar();
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
+      providers: [
+        ChangeNotifierProvider(
             // here you're not using the .value because Products() object is created inside the changenotifierprovider
             create: (_) =>
-                ProductsNotifier(), // the object you wanna keep track of
-          ),
-          ChangeNotifierProvider(
-            create: (_) => CartNotifier(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => ThemeNotifier(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => OrdersNotifier(),
-          ),
-          ChangeNotifierProvider(create: (_) => Auth()),
-        ],
-        // TODO: use materialapp
-        builder: (context, child) => GetMaterialApp(
+                AuthNotifier()), // the object you wanna keep track of
+        ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
+          // this provider will be rebuilt when Auth changes
+          update: (context, auth, previousProduct) => ProductsNotifier(
+              auth.token!,
+              previousProduct == null ? [] : previousProduct.items),
+          create: (context) => ProductsNotifier(
+              Provider.of<AuthNotifier>(context, listen: false).token!, []),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ThemeNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrdersNotifier(),
+        ),
+      ],
+      // TODO: use materialapp
+      builder: (context, child) => Consumer<AuthNotifier>(
+        builder: (context, auth, _) => GetMaterialApp(
             themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
             theme: MyTheme.lightTheme,
             darkTheme: MyTheme.darkTheme,
@@ -57,8 +65,9 @@ class MyApp extends StatelessWidget {
               EditProductScreen.route: (ctx) => EditProductScreen(),
             },
             title: 'Flutter Demo',
-            home: child),
-        child: AuthScreen());
+            home: auth.isAuth ? const SplashScreen() : AuthScreen()),
+      ),
+    );
   }
 }
 

@@ -7,7 +7,10 @@ import '../services/app_exception.dart';
 
 class ProductsNotifier with ChangeNotifier, ErrorHandler {
   bool areProductsFetched = false;
-  final ProductsController _productsController = ProductsController();
+  final String authToken;
+  ProductsNotifier(this.authToken, this.items);
+  late final ProductsController _productsController =
+      ProductsController(authToken);
   Product editedProduct =
       const Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
@@ -19,39 +22,39 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
   }
 
   List<Product> get products {
-    return [..._products];
+    return [...items];
   }
 
   // Returns a copy so that the only way to add a
   // product is through our method which calls notifyListeners().
   // If you added to the returned original list, notifyListeners won't be called.
   List<Product> get favoriteProducts {
-    return [..._products].where((product) => product.isFavorite).toList();
+    return [...items].where((product) => product.isFavorite).toList();
   }
 
   Future<void> toggleFavoriteStatus(Product product) async {
-    int index = _products.indexOf(product);
+    int index = items.indexOf(product);
     if (index != -1) {
       bool oldStatus = product.isFavorite;
-      _products[index] = product.copyWith(isFavorite: !product.isFavorite);
+      items[index] = product.copyWith(isFavorite: !product.isFavorite);
       notifyListeners();
       _productsController.toggleFavoriteStatus(product).catchError((e) {
         handleError(e);
-        _products[index] = product.copyWith(isFavorite: oldStatus);
+        items[index] = product.copyWith(isFavorite: oldStatus);
         notifyListeners();
       });
     }
   }
 
   Future<void> getAndSetProducts() async {
-    _products = await _productsController.get();
+    items = await _productsController.get();
     areProductsFetched = true;
     notifyListeners();
   }
 
   /// Adds the new product to the end of the list of products.
   Future<void> addProduct(Product newProduct) {
-    return addProductByIndex(newProduct, _products.length);
+    return addProductByIndex(newProduct, items.length);
   }
 
   /// Inserts the new product at a specific index in the list of products.
@@ -59,17 +62,16 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
   /// Throws an excpetion if operation fails.
   Future<void> addProductByIndex(Product newProduct, int index) async {
     await _productsController.create(newProduct);
-    _products.insert(index, newProduct);
+    items.insert(index, newProduct);
     notifyListeners();
   }
 
   Future<void> updateProduct(Product newProduct) async {
     //TODO: find the obejct itself
-    final index =
-        _products.indexWhere((element) => element.id == newProduct.id);
+    final index = items.indexWhere((element) => element.id == newProduct.id);
     if (index >= 0) {
       await _productsController.updateProduct(newProduct);
-      _products[index] = newProduct;
+      items[index] = newProduct;
       notifyListeners();
     }
   }
@@ -78,13 +80,13 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
   Future<int> deleteProduct(String productId) async {
     await _productsController.delete(productId);
     int index = -1;
-    for (int i = 0; i < _products.length; i++) {
-      if (_products[i].id == productId) {
+    for (int i = 0; i < items.length; i++) {
+      if (items[i].id == productId) {
         index = i;
       }
     }
     if (index != -1) {
-      _products.removeAt(index);
+      items.removeAt(index);
       notifyListeners();
     } else {
       // product not found in list
@@ -94,5 +96,6 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
     return index;
   }
 
-  List<Product> _products = [];
+  // TODO: make it private
+  List<Product> items = [];
 }
