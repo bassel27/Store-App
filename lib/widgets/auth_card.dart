@@ -43,7 +43,8 @@ class _AuthCardState extends State<AuthCard> with ErrorHandler {
                 _EmailTextFormField(authData: _authData),
                 _PasswordTextFormField(
                     passwordController: _passwordController,
-                    authData: _authData),
+                    authData: _authData,
+                    submitFunction: _submit),
                 if (_authMode == AuthMode.SIGNUP)
                   _ReenterPasswordTextFormField(
                       authMode: _authMode,
@@ -148,22 +149,29 @@ class _ReenterPasswordTextFormField extends StatelessWidget {
 }
 
 class _PasswordTextFormField extends StatelessWidget {
-  const _PasswordTextFormField({
-    Key? key,
-    required TextEditingController passwordController,
-    required Map<String, String> authData,
-  })  : _passwordController = passwordController,
+  const _PasswordTextFormField(
+      {Key? key,
+      required TextEditingController passwordController,
+      required Map<String, String> authData,
+      required Function submitFunction})
+      : _passwordController = passwordController,
         _authData = authData,
+        _submitFunction = submitFunction,
         super(key: key);
 
   final TextEditingController _passwordController;
   final Map<String, String> _authData;
+  final Function _submitFunction;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       decoration: const InputDecoration(labelText: 'Password'),
       obscureText: true,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (value) {
+        _submitFunction();
+      },
       controller: _passwordController,
       validator: (value) {
         if (value == null || value.isEmpty || value.length < 5) {
