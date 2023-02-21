@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
@@ -155,9 +156,13 @@ void onProductDelete(Product product, BuildContext context) async {
       .hideCurrentSnackBar(); // to hide the previous snackbar if exists
   // TODO: latest: on undo, show loading screen
   scaffoldMessenger.showSnackBar(SnackBar(
-    content: const Text("Product deleted"),
+    content: const Text(
+      "Product deleted",
+      style: TextStyle(color: Colors.black),
+    ),
     padding: const EdgeInsets.symmetric(horizontal: 15),
     action: SnackBarAction(
+        textColor: kTextColor,
         label: 'UNDO',
         onPressed: () {
           try {

@@ -11,12 +11,12 @@ import '../models/order/order.dart';
 class OrdersNotifier with ChangeNotifier, ErrorHandler {
   /// List of all order sorted by recency.
   // TODO: make private
-  List<Order> ordersList;
+  List<Order> ordersList ;
   String authToken;
   OrdersNotifier(this.authToken, this.ordersList);
 
   late final OrdersController _ordersController = OrdersController(authToken);
-  List<Order> get orders => UnmodifiableListView(ordersList);
+  List<Order> get orders => [...ordersList];
   set orders(List<Order> orders) {
     ordersList = orders;
   }

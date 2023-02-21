@@ -59,7 +59,7 @@ class MyTheme {
         button: const TextStyle(color: kPrimaryColor)),
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: kPrimaryColor,
-      actionTextColor: kAccentColor,
+      actionTextColor: kTextColor,
     ),
   );
 

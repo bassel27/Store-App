@@ -8,6 +8,7 @@ import '../services/app_exception.dart';
 
 enum AuthMode { Signup, Login }
 
+// TODO: handle connection errros
 // TODO: refactor
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -114,7 +115,7 @@ class _AuthCardState extends State<AuthCard> {
     'password': '',
   };
   var _isLoading = false;
-  final _passwordController = TextEditingController();
+  final _passwordController = TextEditingController(text: "qwerty");
 
   void _submit() async {
     if (!_formKey.currentState!.validate()) {
@@ -195,6 +196,7 @@ class _AuthCardState extends State<AuthCard> {
             child: Column(
               children: <Widget>[
                 TextFormField(
+                  initialValue: "bassel@hotmail.com",
                   decoration: const InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {

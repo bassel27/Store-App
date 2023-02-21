@@ -8,7 +8,8 @@ class ErrorHandler {
     DialogHelper.hideCurrentDialog(); // If loading dialog was open
     if (error is BadRequestException ||
         error is FetchDataException ||
-        error is ApiNotRespondingException) {
+        error is ApiNotRespondingException ||
+        error is HttpException) {
       DialogHelper.showErroDialog(description: error.message);
     } else {
       DialogHelper.showErroDialog(

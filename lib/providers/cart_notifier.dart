@@ -12,19 +12,13 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
   String authToken;
   List<CartItem> cartItems;
   CartNotifier(this.authToken, this.cartItems);
-
-  /// Delete an item from the cart using this item's id.
-  void deleteItem(CartItem cartItemInput) {
-    cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
-    notifyListeners();
-  }
-
+  late final CartController _cartController = CartController(authToken);
   bool isCartFetched = false;
+
   //TODO: remove productID if not used and convert it to a list
   // TODO: make items private
   /// Key is productId and value is cartItem.
 
-  late final CartController _cartController = CartController(authToken);
   // A list of all products placed in cart.
   List<CartItem> get items {
     return UnmodifiableListView(cartItems);
@@ -45,22 +39,6 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     return total;
   }
 
-  Future<bool> optimisticUpdate(
-      {Function? function1,
-      required Function mayFailFunction,
-      required Function onFailure}) async {
-    if (function1 != null) function1();
-    notifyListeners();
-    try {
-      await mayFailFunction();
-      return true;
-    } catch (e) {
-      onFailure();
-      notifyListeners();
-      return false;
-    }
-  }
-
   CartItem? getCartItem(Product product) {
     for (CartItem cartItem in cartItems) {
       if (cartItem.product.id == product.id) {
@@ -75,6 +53,14 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     cartItems = items;
     notifyListeners();
     isCartFetched = true;
+  }
+
+  /// Delete an item from the cart using this item's id.
+  void deleteItem(CartItem cartItemInput) async {
+    await _cartController.delete(cartItemInput).then((value) {
+      cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
+      notifyListeners();
+    }).catchError(handleError);
   }
 
   // Increments the quantity of the CartItem if it exists in cart.
@@ -148,3 +134,6 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     notifyListeners();
   }
 }
+
+
+// TODO:  Here's what I would do. You're having foo1 handle the error and show an error dialog and it's caused you this pain. Instead of doing that, create a function for showing error dialogs. Add a try/catch block wherever execution must stop due to this error. Maybe it's the foo1, foo2 call, maybe it's even higher up in the call stack. (preferably higher up) Create a custom error called DialogableException Catch DialogableException and execute the function that creates the error dialog. DialogableException can be constructed with the error message to display. With this design you can halt for any error and the framework is in place for you to simply create error dialogs for the user by throwing an exception whenever you fail to handle something for the user. By having a custom exception you don't catch asserts or other real errors that may happen. I believe this scales better than the bool, but if you don't need this kind of framework because you don't expect to have to show dialogs for other stuff then a simple bool is okay.
