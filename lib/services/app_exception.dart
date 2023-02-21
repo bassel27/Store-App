@@ -33,8 +33,9 @@ class UnAuthorizedException extends AppException {
 class ProductUnavailableException implements Exception {
   final String message;
   ProductUnavailableException(this.message);
-  @override
-  String toString() {
-    return message;
-  }
+}
+
+class HttpException implements Exception {
+  final String message;
+  HttpException(this.message);
 }
