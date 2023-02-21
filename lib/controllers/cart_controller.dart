@@ -5,9 +5,11 @@ import '../models/cart_item/cart_item.dart';
 import '../services/base_client.dart';
 
 class CartController {
+  String authToken;
+  CartController(this.authToken);
   Future<List<CartItem>> get() async {
-    Map<String, dynamic>? cartItemMaps =
-        await BaseClient.get(kCartUrl); // map of cartItem maps.
+    Map<String, dynamic>? cartItemMaps = await BaseClient.get(
+        "$kCartUrl?auth=$authToken"); // map of cartItem maps.
     List<CartItem> cartItems = [];
     if (cartItemMaps != null) {
       // if cart not empty

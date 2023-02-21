@@ -33,15 +33,17 @@ class MyApp extends StatelessWidget {
             create: (_) =>
                 AuthNotifier()), // the object you wanna keep track of
         ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
-          // this provider will be rebuilt when Auth changes
-          update: (context, auth, previousProduct) => ProductsNotifier(
-              auth.token!,
-              previousProduct == null ? [] : previousProduct.items),
-          create: (context) => ProductsNotifier(
+            // this provider will be rebuilt when Auth changes
+            update: (context, auth, previousProduct) => ProductsNotifier(
+                auth.token!,
+                previousProduct == null ? [] : previousProduct.items),
+            create: (context) => ProductsNotifier(
+                Provider.of<AuthNotifier>(context, listen: false).token!, [])),
+        ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
+          update: (context, auth, previousProduct) => CartNotifier(auth.token!,
+              previousProduct == null ? [] : previousProduct.cartItems),
+          create: (context) => CartNotifier(
               Provider.of<AuthNotifier>(context, listen: false).token!, []),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => CartNotifier(),
         ),
         ChangeNotifierProvider(
           create: (_) => ThemeNotifier(),

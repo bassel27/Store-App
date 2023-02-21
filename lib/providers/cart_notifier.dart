@@ -9,32 +9,36 @@ import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 class CartNotifier with ChangeNotifier, ErrorHandler {
-  
+  String authToken;
+  List<CartItem> cartItems;
+  CartNotifier(this.authToken, this.cartItems);
+
   /// Delete an item from the cart using this item's id.
   void deleteItem(CartItem cartItemInput) {
-    _items.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
+    cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
     notifyListeners();
   }
 
   bool isCartFetched = false;
   //TODO: remove productID if not used and convert it to a list
+  // TODO: make items private
   /// Key is productId and value is cartItem.
-  late List<CartItem> _items = [];
-  final CartController _cartController = CartController();
+
+  late final CartController _cartController = CartController(authToken);
   // A list of all products placed in cart.
   List<CartItem> get items {
-    return UnmodifiableListView(_items);
+    return UnmodifiableListView(cartItems);
   }
 
   /// Number of products placed in cart.
   get cartItemsCount {
-    return _items.length;
+    return cartItems.length;
   }
 
   /// Cart total amount.
   double get total {
     double total = 0.00;
-    for (var cartItem in _items) {
+    for (var cartItem in cartItems) {
       total += cartItem.product.price * cartItem.quantity;
     }
 
@@ -58,7 +62,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
   }
 
   CartItem? getCartItem(Product product) {
-    for (CartItem cartItem in _items) {
+    for (CartItem cartItem in cartItems) {
       if (cartItem.product.id == product.id) {
         return cartItem;
       }
@@ -68,34 +72,34 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
 
   Future<void> getAndSetCart() async {
     List<CartItem>? items = await _cartController.get();
-    _items = items;
+    cartItems = items;
     notifyListeners();
     isCartFetched = true;
   }
 
   // Increments the quantity of the CartItem if it exists in cart.
   void increment(CartItem cartItem) {
-    int index = _items.indexOf(cartItem);
+    int index = cartItems.indexOf(cartItem);
     if (index != -1) {
-      _items[index] = cartItem.copyWith(quantity: cartItem.quantity + 1);
+      cartItems[index] = cartItem.copyWith(quantity: cartItem.quantity + 1);
     }
   }
 
   // Decrements the quantity of the CartItem if it exists in cart.
   void decrement(CartItem cartItem) {
-    int index = _items.indexOf(cartItem);
+    int index = cartItems.indexOf(cartItem);
     if (index != -1) {
-      _items[index] = cartItem.copyWith(quantity: cartItem.quantity - 1);
+      cartItems[index] = cartItem.copyWith(quantity: cartItem.quantity - 1);
     }
   }
 
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product) async {
-    for (int i = 0; i < _items.length; i++) {
-      if (_items[i].product.id == product.id) {
+    for (int i = 0; i < cartItems.length; i++) {
+      if (cartItems[i].product.id == product.id) {
         await _cartController
-            .incrementQuantity(_items[i])
-            .then((value) => increment(_items[i]))
+            .incrementQuantity(cartItems[i])
+            .then((value) => increment(cartItems[i]))
             .catchError(handleError);
         notifyListeners();
 
@@ -108,26 +112,26 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
 
     await _cartController
         .create(newCartItem)
-        .then((_) => _items.add(newCartItem))
+        .then((_) => cartItems.add(newCartItem))
         .catchError(handleError);
     notifyListeners();
   }
 
   /// Subtracts one from the quantity of that item or removes the item totally if called while quantity was 1.
   void decrementQuantity(CartItem cartItemInput) async {
-    for (int i = 0; i < _items.length; i++) {
-      if (_items[i].id == cartItemInput.id) {
-        if (_items[i].quantity == 1) {
-          CartItem removedProduct = _items[i];
+    for (int i = 0; i < cartItems.length; i++) {
+      if (cartItems[i].id == cartItemInput.id) {
+        if (cartItems[i].quantity == 1) {
+          CartItem removedProduct = cartItems[i];
           await _cartController
               .delete(removedProduct)
-              .then((_) => _items
+              .then((_) => cartItems
                   .removeWhere((cartItem) => cartItem.id == cartItemInput.id))
               .catchError(handleError);
           notifyListeners();
         } else {
           await _cartController.decrementQuantity(cartItemInput).then((_) {
-            decrement(_items[i]);
+            decrement(cartItems[i]);
           }).catchError(handleError);
           notifyListeners();
         }
@@ -139,8 +143,8 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
 
   /// Removes all items from the cart.
   Future<void> clear() async {
-    await _cartController.clearCart(_items);
-    _items = [];
+    await _cartController.clearCart(cartItems);
+    cartItems = [];
     notifyListeners();
   }
 }
