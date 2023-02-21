@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
@@ -10,17 +9,8 @@ import 'app_exception.dart';
 class BaseClient {
   static Future<dynamic> _tryProcessResponseAndCatchForm(
       Function sendHttpRequest, String url) async {
-    try {
-      var response = await sendHttpRequest();
-      return _processResponse(response);
-    } on SocketException catch (e) {
-      print(e);
-      throw FetchDataException(kErrorMessage, url);
-    } on TimeoutException {
-      throw ApiNotRespondingException(kErrorMessage);
-    } catch (e) {
-      throw Exception();
-    }
+    var response = await sendHttpRequest();
+    return _processResponse(response);
   }
 
   /// Returns the decoded reponse's body.
@@ -86,6 +76,21 @@ class BaseClient {
         return responseJsonBody;
 
       case 400:
+        var responseMap = json.decode(response.body);
+        if (responseMap['error'] != null) {
+          String error = responseMap['error']['message'];
+          if (error.toString().contains('EMAIL_EXISTS')) {
+            throw EmailAlreadyExistsException();
+          } else if (error.toString().contains('INVALID_EMAIL')) {
+            throw InvalidEmailException();
+          } else if (error.toString().contains('WEAK_PASSWORD')) {
+            throw WeakPasswordException();
+          } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+            throw EmailNotFound();
+          } else if (error.toString().contains('INVALID_PASSWORD')) {
+            throw InvalidPasswordException();
+          }
+        }
         throw BadRequestException(
             "${json.decode(response.body)}, ${response.request!.url}");
       case 401:

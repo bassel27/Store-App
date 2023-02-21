@@ -23,8 +23,20 @@ class AuthController {
   }
 
   void checkIfAuthenticatedCorrectly(Map<dynamic, dynamic> responseMap) {
+    // only for firebase
     if (responseMap['error'] != null) {
-      throw HttpException(responseMap['error']['message']);
+      String error = responseMap['error']['message'];
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        throw EmailAlreadyExistsException();
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        throw InvalidEmailException();
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        throw WeakPasswordException();
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        throw EmailNotFound();
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        throw InvalidPasswordException();
+      }
     }
   }
 }
