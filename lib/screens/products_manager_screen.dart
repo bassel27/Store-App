@@ -33,7 +33,7 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
     return ScaffoldFutureBuilder(
-      getAndSetProductsFuture: _fetchAndSetProductsFuture,
+      future: _fetchAndSetProductsFuture,
       onSuccessWidget: _SuccessfulScaffoldBody(
           productsProvider: productsProvider, products: products),
       appBar: AppBar(

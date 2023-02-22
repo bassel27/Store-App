@@ -60,21 +60,35 @@ class MyApp extends StatelessWidget {
       ],
       // TODO: use materialapp
       builder: (context, child) => Consumer<AuthNotifier>(
-        builder: (context, auth, _) => GetMaterialApp(
-            themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
-            theme: MyTheme.lightTheme,
-            darkTheme: MyTheme.darkTheme,
-            routes: {
-              ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
-              OrdersScreen.route: (ctx) => const OrdersScreen(),
-              ProductsManagerScreen.route: (ctx) =>
-                  const ProductsManagerScreen(),
-              AccountScreen.route: (ctx) => AccountScreen(),
-              EditProductScreen.route: (ctx) => EditProductScreen(),
-            },
-            title: 'Flutter Demo',
-            home: auth.isAuth ? const SplashScreen() : AuthScreen()),
-      ),
+          builder: (context, auth, _) => GetMaterialApp(
+              themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
+              theme: MyTheme.lightTheme,
+              darkTheme: MyTheme.darkTheme,
+              routes: {
+                ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
+                OrdersScreen.route: (ctx) => const OrdersScreen(),
+                ProductsManagerScreen.route: (ctx) =>
+                    const ProductsManagerScreen(),
+                AccountScreen.route: (ctx) => AccountScreen(),
+                EditProductScreen.route: (ctx) => EditProductScreen(),
+              },
+              title: 'Flutter Demo',
+              home: auth.isAuth
+                  ? const SplashScreen()
+                  : FutureBuilder(
+                      future: auth.tryAutoLogin(),
+                      builder: (context, snapshot) =>
+                          snapshot.connectionState == ConnectionState.waiting
+                              ? const CircularProgressIndicator()
+                              : AuthScreen(),
+                    ))
+
+          // ScaffoldFutureBuilder(
+          //     future: auth.tryAutoLogin(),
+          //     onFailureWidget: AuthScreen(),
+          //     onSuccessWidget: const SplashScreen(),
+          //   )),
+          ),
     );
   }
 }

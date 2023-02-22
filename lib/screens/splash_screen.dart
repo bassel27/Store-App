@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 
 import '../providers/products_notifier.dart';
@@ -14,7 +13,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldFutureBuilder(
-      getAndSetProductsFuture: Future.wait([
+      future: Future.wait([
         context.read<CartNotifier>().getAndSetCart(),
         context.read<ProductsNotifier>().getAndSetProducts()
       ]),
@@ -22,10 +21,9 @@ class SplashScreen extends StatelessWidget {
       onLoadingWidget: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: Center(
-          child: Lottie.asset(
-            'assets/animations/pharmacy.json',
-            width: MediaQuery.of(context).size.width * 0.8,
-          ),
+          child: Lottie.asset('assets/animations/shopping2.json',
+              width: MediaQuery.of(context).size.width * 0.7,
+              fit: BoxFit.cover),
         ),
       ),
     );

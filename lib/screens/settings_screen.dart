@@ -76,9 +76,11 @@ class _AccountScreenState extends State<AccountScreen> {
         ),
         _ClickableListTile(
           icon: Icons.logout,
-          onTap: () {
-            Navigator.pop(context);
-            Provider.of<AuthNotifier>(context, listen: false).logout();
+          onTap: () async{
+            // Navigator.pop(context);
+            await Provider.of<AuthNotifier>(context, listen: false).logout();
+            Navigator.of(context).pushReplacementNamed(
+                '/'); // to go to the home screen (authentication)
           },
           title: "Logout",
         ),

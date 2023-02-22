@@ -36,7 +36,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return ScaffoldFutureBuilder(
       appBar: AppBar(title: const Text("Cart")),
-      getAndSetProductsFuture: _future,
+      future: _future,
       onSuccessWidget: const _SuccessfulScaffoldBody(),
     );
   }
