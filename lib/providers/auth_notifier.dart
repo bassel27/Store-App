@@ -36,4 +36,11 @@ class AuthNotifier with ChangeNotifier {
         .add(Duration(seconds: int.parse(decodedResponse['expiresIn'])));
     notifyListeners();
   }
+
+  void logout() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
+  }
 }

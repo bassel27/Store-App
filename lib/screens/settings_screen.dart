@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
@@ -44,14 +45,12 @@ class _AccountScreenState extends State<AccountScreen> {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
+        _ClickableListTile(
+          icon: Icons.list_alt_rounded,
           onTap: () {
             Navigator.pushNamed(context, OrdersScreen.route);
           },
-          child: const ListTile(
-            leading: Icon(Icons.list_alt_rounded),
-            title: Text("Orders"),
-          ),
+          title: "Orders",
         ),
         // const Divider(),
         ListTile(
@@ -68,17 +67,46 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ),
         // const Divider(),
-        GestureDetector(
+        _ClickableListTile(
+          icon: Icons.edit,
           onTap: () {
             Navigator.pushNamed(context, ProductsManagerScreen.route);
           },
-          child: const ListTile(
-            leading: Icon(Icons.edit),
-            title: Text("Products Manager"),
-          ),
+          title: "Products Manager",
+        ),
+        _ClickableListTile(
+          icon: Icons.logout,
+          onTap: () {
+            Navigator.pop(context);
+            Provider.of<AuthNotifier>(context, listen: false).logout();
+          },
+          title: "Logout",
         ),
         // const Divider(),
       ]),
+    );
+  }
+}
+
+class _ClickableListTile extends StatelessWidget {
+  final VoidCallback onTap;
+  final String title;
+  final IconData icon;
+  const _ClickableListTile({
+    required this.onTap,
+    required this.title,
+    required this.icon,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: Icon(icon),
+        title: Text(title),
+      ),
     );
   }
 }
