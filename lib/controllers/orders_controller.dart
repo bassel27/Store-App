@@ -15,8 +15,9 @@ class OrdersController with ErrorHandler, AddTokenToUrl {
   /// Throws an exception if operation fails.
   Future<List<Order>> get() async {
     final List<Order> orders = [];
-    Map<String, dynamic>? ordersMaps =
-        await BaseClient.get(getTokenedUrl(url: kOrdersUrl, token: authProvider.token!));
+    Map<String, dynamic>? ordersMaps = await BaseClient.get(getTokenedUrl(
+        url: "$kOrdersBaseUrl/${authProvider.userId}.json",
+        token: authProvider.token!));
 
     if (ordersMaps != null) {
       // if there are orders.
@@ -34,11 +35,9 @@ class OrdersController with ErrorHandler, AddTokenToUrl {
   /// Throws exception if operation not successful.
   Future<void> create(Order newOrder) async {
     await BaseClient.put(
-        getTokenedUrl(url: ordersUrlWithId(newOrder.id), token: authProvider.token!),
+        getTokenedUrl(
+            url: "$kOrdersBaseUrl/${authProvider.userId}/${newOrder.id}.json",
+            token: authProvider.token!),
         newOrder.toJson());
-  }
-
-  String ordersUrlWithId(String id) {
-    return "$kOrdersBaseUrl/$id.json";
   }
 }
