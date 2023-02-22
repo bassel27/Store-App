@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget {
                 Provider.of<AuthNotifier>(context, listen: false), [])),
         ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
           update: (context, auth, previousCart) => CartNotifier(
-              auth.token!, previousCart == null ? [] : previousCart.cartItems),
+              auth, previousCart == null ? [] : previousCart.cartItems),
           create: (context) => CartNotifier(
-              Provider.of<AuthNotifier>(context, listen: false).token!, []),
+              Provider.of<AuthNotifier>(context, listen: false), []),
         ),
         ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
           update: (context, auth, previousOrdersProvider) => OrdersNotifier(

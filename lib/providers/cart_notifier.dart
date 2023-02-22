@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/cart_controller.dart';
+import 'package:store_app/providers/auth_notifier.dart';
 import 'package:uuid/uuid.dart';
 
 import '../controllers/error_handler.dart';
@@ -9,10 +10,10 @@ import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 class CartNotifier with ChangeNotifier, ErrorHandler {
-  String authToken;
+  AuthNotifier authProvider;
   List<CartItem> cartItems;
-  CartNotifier(this.authToken, this.cartItems);
-  late final CartController _cartController = CartController(authToken);
+  CartNotifier(this.authProvider, this.cartItems);
+  late final CartController _cartController = CartController(authProvider);
   bool isCartFetched = false;
 
   //TODO: remove productID if not used and convert it to a list
