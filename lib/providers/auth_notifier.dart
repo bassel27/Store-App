@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/auth_controller.dart';
 
@@ -6,6 +8,7 @@ class AuthNotifier with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
+  Timer? _authTimer;
   bool get isAuth {
     return token != null;
   }
@@ -34,6 +37,7 @@ class AuthNotifier with ChangeNotifier {
     _userId = decodedResponse['localId'];
     _expiryDate = DateTime.now()
         .add(Duration(seconds: int.parse(decodedResponse['expiresIn'])));
+    autoLogout();
     notifyListeners();
   }
 
@@ -41,6 +45,18 @@ class AuthNotifier with ChangeNotifier {
     _token = null;
     _userId = null;
     _expiryDate = null;
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+      _authTimer = null;
+    }
     notifyListeners();
+  }
+
+  void autoLogout() {
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    final timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
+    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }
