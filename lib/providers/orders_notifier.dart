@@ -7,15 +7,16 @@ import 'package:uuid/uuid.dart';
 import '../controllers/orders_controller.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/order/order.dart';
+import 'auth_notifier.dart';
 
 class OrdersNotifier with ChangeNotifier, ErrorHandler {
   /// List of all order sorted by recency.
   // TODO: make private
   List<Order> ordersList ;
-  String authToken;
-  OrdersNotifier(this.authToken, this.ordersList);
+  AuthNotifier authProvider;
+  OrdersNotifier(this.authProvider, this.ordersList);
 
-  late final OrdersController _ordersController = OrdersController(authToken);
+  late final OrdersController _ordersController = OrdersController(authProvider);
   List<Order> get orders => [...ordersList];
   set orders(List<Order> orders) {
     ordersList = orders;
