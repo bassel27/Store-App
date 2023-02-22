@@ -6,26 +6,20 @@ const TextStyle kErrorTextStyle =
 // TODO: put constant urls in the files where they are used.
 const String kCurrency = 'EGP';
 const kBaseUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
-
-const kProductsUrl =
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json';
-const kOrdersUrl =
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/orders.json';
-const String kCartUrl =
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/cart.json';
-const String kCartBaseUrl =
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/cart';
-const kOrdersBaseUrl =
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/orders';
+const kProductsUrl = '$kBaseUrl/products.json';
+const kOrdersUrl = '$kBaseUrl/orders.json';
+const String kCartUrl = '$kBaseUrl/cart.json';
+const String kCartBaseUrl = '$kBaseUrl/cart';
+const kOrdersBaseUrl = '$kBaseUrl/orders';
 const kUserFavoritesBaseUrl = "$kBaseUrl/userFavorites";
-const kProductsBaseUrl =
-    'https://shop-app-f7639-default-rtdb.firebaseio.com/products';
+const kProductsBaseUrl = '$kBaseUrl/products';
 const String kErrorMessage =
     "Oops! Something went wrong. Check your internet connection and try again.";
 
 /// Default timeout duration for http requests in seconds.
 const int kDefaultTimeOutDuation = 5;
+const kWebApiKey = "AIzaSyCijND-gjHHDpFCYjm0_IVhn0hWBQqAQrM";
 const kSignUpUrl =
-    "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCijND-gjHHDpFCYjm0_IVhn0hWBQqAQrM";
+    "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$kWebApiKey";
 const kLoginUrl =
-    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCijND-gjHHDpFCYjm0_IVhn0hWBQqAQrM";
+    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$kWebApiKey";
