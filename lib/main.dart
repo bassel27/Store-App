@@ -77,10 +77,11 @@ class MyApp extends StatelessWidget {
                   ? const SplashScreen()
                   : FutureBuilder(
                       future: auth.tryAutoLogin(),
-                      builder: (context, snapshot) =>
-                          snapshot.connectionState == ConnectionState.waiting
-                              ? const CircularProgressIndicator()
-                              : AuthScreen(),
+                      builder: (context, snapshot) => snapshot
+                                  .connectionState ==
+                              ConnectionState.waiting
+                          ? const CircularProgressIndicator()
+                          : AuthScreen(), // on future finished, if notifylisteners called, then splashscreen is displayed. If not, authscreen will be displayed
                     ))
 
           // ScaffoldFutureBuilder(

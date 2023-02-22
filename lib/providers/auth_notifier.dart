@@ -83,6 +83,10 @@ class AuthNotifier with ChangeNotifier {
       _authTimer = null;
     }
     notifyListeners();
+    await removeUserDataFromMemory(); // so that no autologin occurs
+  }
+
+  Future<void> removeUserDataFromMemory() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('userData');
   }
