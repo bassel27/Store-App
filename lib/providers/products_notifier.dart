@@ -4,13 +4,14 @@ import 'package:store_app/controllers/products_controller.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
+import 'auth_notifier.dart';
 
 class ProductsNotifier with ChangeNotifier, ErrorHandler {
   bool areProductsFetched = false;
-  final String authToken;
-  ProductsNotifier(this.authToken, this.items);
+  final AuthNotifier authProvider;
+  ProductsNotifier(this.authProvider, this.items);
   late final ProductsController _productsController =
-      ProductsController(authToken);
+      ProductsController(authProvider.token!);
   Product editedProduct =
       const Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
@@ -32,22 +33,22 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
     return [...items].where((product) => product.isFavorite).toList();
   }
 
-  Future<void> toggleFavoriteStatus(Product product) async {
+  Future<void> determineFavoriteStatus(Product product) async {
     int index = items.indexOf(product);
     if (index != -1) {
-      bool oldStatus = product.isFavorite;
-      items[index] = product.copyWith(isFavorite: !product.isFavorite);
-      notifyListeners();
-      _productsController.toggleFavoriteStatus(product).catchError((e) {
-        handleError(e);
-        items[index] = product.copyWith(isFavorite: oldStatus);
+      try {
+        await _productsController.determineFavoriteStatus(
+            product.id, !product.isFavorite, authProvider.userId);
+        items[index] = product.copyWith(isFavorite: !product.isFavorite);
         notifyListeners();
-      });
+      } catch (e) {
+        handleError(e);
+      }
     }
   }
 
   Future<void> getAndSetProducts() async {
-    items = await _productsController.get();
+    items = await _productsController.getProducts();
     areProductsFetched = true;
     notifyListeners();
   }

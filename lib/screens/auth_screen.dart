@@ -1,16 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:store_app/controllers/error_handler.dart';
 
-import '../providers/auth_notifier.dart';
-import '../services/app_exception.dart';
 import '../widgets/auth_card.dart';
 
-
-
-// TODO: handle connection errros
+// TODO: handle connection errros and use future builder
 // TODO: refactor
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -87,4 +81,3 @@ class AuthScreen extends StatelessWidget {
     );
   }
 }
-

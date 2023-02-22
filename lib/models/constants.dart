@@ -6,6 +6,7 @@ const TextStyle kErrorTextStyle =
 // TODO: put constant urls in the files where they are used.
 const String kCurrency = 'EGP';
 const kBaseUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
+
 const kProductsUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/products.json';
 const kOrdersUrl =
@@ -16,6 +17,7 @@ const String kCartBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/cart';
 const kOrdersBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/orders';
+const kUserFavoritesBaseUrl = "$kBaseUrl/userFavorites/";
 const kProductsBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/products';
 const String kErrorMessage =

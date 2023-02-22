@@ -11,7 +11,11 @@ class AppException implements Exception {
 }
 
 class BadRequestException extends AppException {
-  BadRequestException(String message, [String? url]) : super(message, url);
+  BadRequestException(
+      [String message =
+          "Bad request error. Please contact system administrator",
+      String? url])
+      : super(message, url);
 }
 
 class FetchDataException extends AppException {
@@ -58,5 +62,13 @@ class EmailNotFound extends BadRequestException {
 
 class InvalidPasswordException extends BadRequestException {
   InvalidPasswordException([String message = "Invalid password.", String? url])
+      : super(message, url);
+}
+
+class TooManyAttemptsException extends BadRequestException {
+  TooManyAttemptsException(
+      [String message =
+          "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+      String? url])
       : super(message, url);
 }

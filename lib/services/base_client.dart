@@ -89,10 +89,13 @@ class BaseClient {
             throw EmailNotFound();
           } else if (error.toString().contains('INVALID_PASSWORD')) {
             throw InvalidPasswordException();
+          } else if (error.toString().contains('TOO_MANY_ATTEMPTS_TRY_LATER')) {
+            throw TooManyAttemptsException();
           }
         }
-        throw BadRequestException(
-            "${json.decode(response.body)}, ${response.request!.url}");
+        // throw BadRequestException(
+        //     "${json.decode(response.body)}, ${response.request!.url}");
+        throw BadRequestException();
       case 401:
       case 403:
         throw UnAuthorizedException(

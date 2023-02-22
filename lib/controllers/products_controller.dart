@@ -14,10 +14,12 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
   /// Returns list of products.
   ///
   /// Throws excpetion if operation fails.
-  Future<List<Product>> get() async {
+  Future<List<Product>> getProducts() async {
     Map<String, dynamic>? extracedData;
     extracedData = await BaseClient.get(
         getTokenedUrl(url: kProductsUrl, token: authToken));
+    // var productToIsFavoriteDict = await BaseClient.get(
+    //     getTokenedUrl(url: kUserFavoritesBaseUrl, token: authToken));
     List<Product>? loadedProducts = [];
     if (extracedData != null) {
       // if fetching succeeded but there are no products
@@ -29,18 +31,29 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
     return loadedProducts;
   }
 
+  Future<List<Product>> getFavorites() async {
+    Map<String, dynamic>? productToIsFavoriteDict;
+
+    if (productToIsFavoriteDict != null) {
+      // if fetching succeeded but there are no products
+      productToIsFavoriteDict.forEach((prodId, isFavorite) {});
+    }
+  }
+
   /// Throws an error if operation fails.
-  Future<void> toggleFavoriteStatus(Product product) async {
-    var productUrl = "$kBaseUrl/products/${product.id}.json";
-    await BaseClient.patch(
+  Future<void> determineFavoriteStatus(
+      String productId, bool isFavorite, String userId) async {
+    DialogHelper.showLoading();
+    var url = "$kUserFavoritesBaseUrl$userId.json";
+    await BaseClient.put(
         getTokenedUrl(
-            url: productUrl,
+            url: url,
             token:
                 authToken), // delete, patch and put don't throw their own errors
         {
-          "isFavorite": product.isFavorite,
-        },
-        timeOutDuration: 1);
+          productId: isFavorite,
+        });
+    DialogHelper.hideCurrentDialog();
   }
 
   /// Throws an exception if operation fails.
