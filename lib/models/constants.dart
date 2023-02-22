@@ -17,7 +17,7 @@ const String kCartBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/cart';
 const kOrdersBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/orders';
-const kUserFavoritesBaseUrl = "$kBaseUrl/userFavorites/";
+const kUserFavoritesBaseUrl = "$kBaseUrl/userFavorites";
 const kProductsBaseUrl =
     'https://shop-app-f7639-default-rtdb.firebaseio.com/products';
 const String kErrorMessage =
