@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/my_theme.dart';
 
 import '../controllers/error_handler.dart';
 import '../providers/auth_notifier.dart';
 
 enum AuthMode { SIGNUP, LOGIN }
 
-class AuthCard extends StatefulWidget {
+class AuthContainer extends StatefulWidget {
   @override
-  _AuthCardState createState() => _AuthCardState();
+  _AuthContainerState createState() => _AuthContainerState();
 }
 
-class _AuthCardState extends State<AuthCard> with ErrorHandler {
+class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.LOGIN;
   final Map<String, String> _authData = {
@@ -24,50 +25,54 @@ class _AuthCardState extends State<AuthCard> with ErrorHandler {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(40),
+          topLeft: Radius.circular(40),
+        ),
       ),
-      elevation: 8.0,
-      child: Container(
-        height: _authMode == AuthMode.SIGNUP ? 320 : 260,
-        constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.SIGNUP ? 320 : 260),
-        width: deviceSize.width * 0.75,
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                _EmailTextFormField(authData: _authData),
-                _PasswordTextFormField(
-                    passwordController: _passwordController,
-                    authData: _authData,
-                    submitFunction: _submit),
-                if (_authMode == AuthMode.SIGNUP)
-                  _ReenterPasswordTextFormField(
-                      authMode: _authMode,
-                      passwordController: _passwordController),
-                const SizedBox(
-                  height: 20,
-                ),
-                if (_isLoading)
-                  const CircularProgressIndicator()
-                else
-                  ElevatedButton(
-                    onPressed: _submit,
-                    child:
-                        Text(_authMode == AuthMode.LOGIN ? 'LOGIN' : 'SIGN UP'),
-                  ),
-                TextButton(
+      // height: _authMode == AuthMode.SIGNUP ? 320 : 260,
+      // constraints:
+      //     BoxConstraints(minHeight: _authMode == AuthMode.SIGNUP ? 320 : 260),
+      // width: deviceSize.width * 0.75,
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _EmailTextFormField(authData: _authData),
+              _PasswordTextFormField(
+                  passwordController: _passwordController,
+                  authData: _authData,
+                  submitFunction: _submit),
+              if (_authMode == AuthMode.SIGNUP)
+                _ReenterPasswordTextFormField(
+                    authMode: _authMode,
+                    passwordController: _passwordController),
+              const SizedBox(
+                height: 20,
+              ),
+              if (_isLoading)
+                const CircularProgressIndicator()
+              else
+                ElevatedButton(
                   style: TextButton.styleFrom(backgroundColor: Colors.orange),
-                  onPressed: _switchAuthMode,
+                  onPressed: _submit,
                   child: Text(
-                      '${_authMode == AuthMode.LOGIN ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                    _authMode == AuthMode.LOGIN ? 'LOGIN' : 'SIGN UP',
+                    style: const TextStyle(color: kTextLightColor),
+                  ),
                 ),
-              ],
-            ),
+              TextButton(
+                style: TextButton.styleFrom(backgroundColor: Colors.orange),
+                onPressed: _switchAuthMode,
+                child: Text(
+                    '${_authMode == AuthMode.LOGIN ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+              ),
+            ],
           ),
         ),
       ),

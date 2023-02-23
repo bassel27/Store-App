@@ -162,7 +162,7 @@ void onProductDelete(Product product, BuildContext context) async {
     ),
     padding: const EdgeInsets.symmetric(horizontal: 15),
     action: SnackBarAction(
-        textColor: kTextColor,
+        textColor: kTextDarkColor,
         label: 'UNDO',
         onPressed: () {
           try {

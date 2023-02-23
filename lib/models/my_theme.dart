@@ -5,7 +5,8 @@ const kBackgroundColor = Color(0xFFF2F2F3);
 const kPrimaryColor = Colors.white;
 const kSecondaryColor = Color(0xFF8B8B94);
 const kAccentColor = Color(0xFFF39D1A);
-const kTextColor = Colors.black;
+const kTextDarkColor = Colors.black;
+const kTextLightColor = Colors.white;
 const TextStyle kBodyText1Style =
     TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
 const kInactiveColor = kSecondaryColor;
@@ -28,7 +29,7 @@ class MyTheme {
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: kAccentColor),
       ),
-      labelStyle: TextStyle(color: kTextColor),
+      labelStyle: TextStyle(color: kTextDarkColor),
     ),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: kAccentColor,
@@ -59,7 +60,7 @@ class MyTheme {
         button: const TextStyle(color: kPrimaryColor)),
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: kPrimaryColor,
-      actionTextColor: kTextColor,
+      actionTextColor: kTextDarkColor,
     ),
   );
 

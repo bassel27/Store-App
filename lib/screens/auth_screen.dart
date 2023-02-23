@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:store_app/models/my_theme.dart';
 
 import '../widgets/auth_card.dart';
 
@@ -19,16 +18,8 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                  const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0, 1],
-              ),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 130, 196, 227),
             ),
           ),
           SingleChildScrollView(
@@ -39,44 +30,40 @@ class AuthScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Flexible(
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 20.0),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 94.0),
-                      transform: Matrix4.rotationZ(-8 * pi / 180)
-                        ..translate(-10.0),
-                      // ..translate(-10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.deepOrange.shade900,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 8,
-                            color: Colors.black26,
-                            offset: Offset(0, 2),
-                          )
-                        ],
-                      ),
-                      child: const Text(
-                        'MyShop',
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontFamily: 'Anton',
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
-                    child: AuthCard(),
-                  ),
+                  const _BrandName(),
+                  Expanded(child: AuthContainer()),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _BrandName extends StatelessWidget {
+  const _BrandName({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(40),
+        ),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 50),
+      child: const Center(
+        child: Text(
+          "Brandatak Store",
+          style: TextStyle(
+              color: kTextLightColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 30),
+        ),
       ),
     );
   }
