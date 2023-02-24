@@ -108,9 +108,10 @@ class _ImageAndFavoriteStack extends StatelessWidget {
             child: SizedBox(
               height: constraints.maxHeight * 0.7,
               width: double.infinity,
-              child: Image.network(
-                product.imageUrl,
+              child: FadeInImage.assetNetwork(
+                placeholder: "assets/gifs/placeholder.gif",
                 fit: BoxFit.cover,
+                image: product.imageUrl,
               ),
             ),
           ),
