@@ -50,7 +50,8 @@ class MyTheme {
         onSecondary: Colors.white,
         onTertiary: Colors.white),
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(backgroundColor: kAccentColor)),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: kAccentColor, foregroundColor: Colors.white)),
     textTheme: TextTheme(
         bodyText2: kBodyText1Style.copyWith(
             color: Colors.black,

@@ -19,7 +19,7 @@ class AuthScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 130, 196, 227),
+              color: Colors.orange,
             ),
           ),
           SingleChildScrollView(
@@ -56,13 +56,28 @@ class _BrandName extends StatelessWidget {
         ),
       ),
       margin: const EdgeInsets.symmetric(vertical: 50),
-      child: const Center(
-        child: Text(
-          "Brandatak Store",
-          style: TextStyle(
-              color: kTextLightColor,
-              fontWeight: FontWeight.w500,
-              fontSize: 30),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Image.asset(
+                "assets/images/shopping.png",
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text(
+              "Brandatak",
+              style: TextStyle(
+                  color: kTextLightColor,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 40),
+            ),
+          ],
         ),
       ),
     );
