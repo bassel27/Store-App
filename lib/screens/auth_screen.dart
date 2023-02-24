@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:store_app/models/my_theme.dart';
 
 import '../widgets/auth_card.dart';
@@ -55,7 +56,7 @@ class _BrandName extends StatelessWidget {
           topRight: Radius.circular(40),
         ),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 50),
+      margin: const EdgeInsets.only(top: 50, bottom: 40),
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,12 +71,27 @@ class _BrandName extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            const Text(
-              "Brandatak",
-              style: TextStyle(
-                  color: kTextLightColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 40),
+            RichText(
+              text: TextSpan(
+                //sourceSerif4
+                style: GoogleFonts.sourceSerif4(
+                  textStyle: const TextStyle(
+                    color: kTextLightColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 40,
+                  ),
+                ),
+                children: <TextSpan>[
+                  const TextSpan(text: 'BRAND'),
+                  TextSpan(
+                      text: 'atak',
+                      style: GoogleFonts.sourceSerif4(
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.w300,
+                        ),
+                      )),
+                ],
+              ),
             ),
           ],
         ),

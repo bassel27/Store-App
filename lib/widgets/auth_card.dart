@@ -259,9 +259,9 @@ InputDecoration inputDecoration(
 }
 
 class _MyButton extends StatelessWidget {
-  String child;
-  VoidCallback onPressed;
-  _MyButton({required this.child, required this.onPressed});
+  final String child;
+  final VoidCallback onPressed;
+  const _MyButton({required this.child, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
