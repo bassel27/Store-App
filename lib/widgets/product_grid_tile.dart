@@ -15,12 +15,12 @@ const double kPhotoPadding = 9;
 class ProductGridTile extends StatelessWidget {
   final Product product;
   const ProductGridTile(this.product);
-
   @override
   Widget build(BuildContext context) {
     final CartNotifier cartProvider = Provider.of<CartNotifier>(
         context); // you only add to the cart in this widget so there's no need to lsiten
     CartItem? cartItem = cartProvider.getCartItem(product);
+    late StatelessWidget myAnimatedWidget;
 
     return LayoutBuilder(
       builder: (ctx, constraints) => GestureDetector(
@@ -57,14 +57,22 @@ class ProductGridTile extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: cartItem != null
-                    ? _ChangeQuantityRow(cartItem: cartItem, product: product)
-                    : _MyIconButton(
-                        Icons.shopping_cart_outlined,
-                        () {
-                          cartProvider.add(product);
-                        },
-                      ),
+                child: AnimatedSwitcher(
+                  transitionBuilder: (child, animation) =>
+                      ScaleTransition(scale: animation, child: child),
+                  duration: const Duration(milliseconds: 300),
+                  switchInCurve: Curves.decelerate,
+                  child: cartItem != null
+                      ? _ChangeQuantityRow(cartItem: cartItem, product: product)
+                      : Center(
+                          child: _MyIconButton(
+                            Icons.shopping_cart_outlined,
+                            () {
+                              cartProvider.add(product);
+                            },
+                          ),
+                        ),
+                ),
               ),
               const SizedBox(
                 height: 6,
