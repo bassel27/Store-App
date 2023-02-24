@@ -19,7 +19,9 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
     'password': '',
   };
   var _isLoading = false;
-  final _passwordController = TextEditingController(text: "qwerty");
+  final _passwordController = TextEditingController(
+      // text: "qwerty"
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,9 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
                 height: 17,
               ),
               _EmailTextFormField(authData: _authData),
+              const SizedBox(
+                height: 17,
+              ),
               _PasswordTextFormField(
                   passwordController: _passwordController,
                   authData: _authData,
@@ -178,7 +183,7 @@ class _PasswordTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: const InputDecoration(labelText: 'Password'),
+      decoration: inputDecoration(context, 'Password', Icons.password),
       obscureText: true,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) {
@@ -211,27 +216,8 @@ class _EmailTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var myBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(
-          color: Theme.of(context).colorScheme.secondary, width: 0.8),
-    );
     return TextFormField(
-      // initialValue: "bassel@hotmail.com",
-      decoration: InputDecoration(
-        hintText: 'Email',
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.background,
-        border: myBorder,
-        focusedBorder: myBorder,
-        prefixIcon: Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Icon(
-            Icons.email,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-      ),
+      decoration: inputDecoration(context, 'Email', Icons.email),
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         //TODO: email verification
@@ -247,6 +233,29 @@ class _EmailTextFormField extends StatelessWidget {
       },
     );
   }
+}
+
+InputDecoration inputDecoration(
+    BuildContext context, String hintText, IconData iconData) {
+  var myBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide:
+        BorderSide(color: Theme.of(context).colorScheme.secondary, width: 0.8),
+  );
+  return InputDecoration(
+    hintText: hintText,
+    filled: true,
+    fillColor: Theme.of(context).colorScheme.background,
+    border: myBorder,
+    focusedBorder: myBorder,
+    prefixIcon: Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Icon(
+        iconData,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+    ),
+  );
 }
 
 class _MyButton extends StatelessWidget {
