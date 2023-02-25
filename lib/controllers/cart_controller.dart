@@ -69,6 +69,20 @@ class CartController with AddTokenToUrl {
     });
   }
 
+  /// Set the quantity of an already existing CartItem.
+  ///
+  /// Throws an exception if operatoin fails.
+  Future<void> setQuantity(CartItem cartItem, int quantity) async {
+    await httpRequestTemplate(() async {
+      await BaseClient.patch(
+        getTokenedUrl(
+            url: _cartUrlWithUserIdAndCartId(authProvider.userId, cartItem.id),
+            token: authProvider.token!),
+        cartItem.copyWith(quantity: quantity).toJson(),
+      );
+    });
+  }
+
   /// Throws an exception if operatoin fails.
   Future<void> delete(CartItem cartItem, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
@@ -77,7 +91,7 @@ class CartController with AddTokenToUrl {
             url: _cartUrlWithUserIdAndCartId(
               authProvider.userId,
               cartItem.id,
-            ),  
+            ),
             token: authProvider.token!),
       );
     }, showLoading: showLoading);

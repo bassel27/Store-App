@@ -41,12 +41,12 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
   }
 
   CartItem? getCartItem(Product product) {
-    for (CartItem cartItem in cartItems) {
-      if (cartItem.product.id == product.id) {
-        return cartItem;
-      }
+    try {
+      return cartItems
+          .singleWhere((cartItem) => cartItem.product.id == product.id);
+    } on StateError {
+      return null;
     }
-    return null;
   }
 
   Future<void> getAndSetCart() async {
@@ -80,6 +80,28 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     }
   }
 
+  Future<void> setQuantity(Product product, int quantity) async {
+    for (int i = 0; i < cartItems.length; i++) {
+      // if already exists in cart
+      if (cartItems[i].product.id == product.id) {
+        await _cartController.setQuantity(cartItems[i], quantity).then((value) {
+          cartItems[i] = cartItems[i].copyWith(quantity: quantity);
+        }).catchError(handleError);
+        notifyListeners();
+        return;
+      }
+    }
+
+    CartItem newCartItem =
+        CartItem(id: const Uuid().v4(), product: product, quantity: quantity);
+
+    await _cartController
+        .create(newCartItem)
+        .then((_) => cartItems.add(newCartItem))
+        .catchError(handleError);
+    notifyListeners();
+  }
+
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product) async {
     for (int i = 0; i < cartItems.length; i++) {
@@ -89,7 +111,6 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
             .then((value) => increment(cartItems[i]))
             .catchError(handleError);
         notifyListeners();
-
         return;
       }
     }
