@@ -7,28 +7,14 @@ import 'package:store_app/widgets/currency_and_price_text.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends StatelessWidget {
   static const route = 'productDetail';
-
-  @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
-}
-
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
   // TODO: max quantity of product not 10
-  final List<int> quantityList = List<int>.generate(10, (i) => i + 1);
-  late Product product = ModalRoute.of(context)!.settings.arguments as Product;
-  late CartNotifier cartProvider =
-      Provider.of<CartNotifier>(context, listen: false);
-  late CartItem? cartItem = cartProvider.getCartItem(product);
-  late String dropdownValue = cartItem == null
-      ? quantityList.first.toString()
-      : cartItem!.quantity.toString();
 
   @override
   Widget build(BuildContext context) {
-    late CartNotifier cartProvider =
-        Provider.of<CartNotifier>(context, listen: false);
+    late Product product =
+        ModalRoute.of(context)!.settings.arguments as Product;
     // TODO: use provider
     return Scaffold(
       appBar: AppBar(title: Text(product.title)),
@@ -54,30 +40,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               width: double.infinity,
               child: Row(
                 children: [
-                  DropdownButton(
-                    value: dropdownValue,
-                    elevation: 16,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary),
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                    items: quantityList
-                        .map(
-                          (quantityNumber) => DropdownMenuItem<String>(
-                            value: quantityNumber.toString(),
-                            child: Text(quantityNumber.toString()),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        dropdownValue = value!;
-                        cartProvider.setQuantity(product, int.parse(value));
-                      });
-                    },
-                  ),
+                  _DropdownMenu(product),
                   const SizedBox(
                     width: 14,
                   ),
@@ -90,10 +53,49 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
     );
   }
+}
+
+class _DropdownMenu extends StatefulWidget {
+  final Product product;
+  const _DropdownMenu(this.product);
 
   @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
+  State<_DropdownMenu> createState() => _DropdownMenuState();
+}
+
+class _DropdownMenuState extends State<_DropdownMenu> {
+  final List<int> quantityList = List<int>.generate(100, (i) => i + 1);
+  late CartItem? cartItem = Provider.of<CartNotifier>(context, listen: false)
+      .getCartItem(widget.product);
+  late String dropdownValue = cartItem == null
+      ? quantityList.first.toString()
+      : cartItem!.quantity.toString();
+
+  @override
+  Widget build(BuildContext context) {
+    final CartNotifier cartProvider = Provider.of<CartNotifier>(context);
+    return DropdownButton(
+      value: dropdownValue,
+      elevation: 16,
+      style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+      underline: Container(
+        height: 2,
+        color: Theme.of(context).colorScheme.tertiary,
+      ),
+      items: quantityList
+          .map(
+            (quantityNumber) => DropdownMenuItem<String>(
+              value: quantityNumber.toString(),
+              child: Text(quantityNumber.toString()),
+            ),
+          )
+          .toList(),
+      onChanged: (value) {
+        dropdownValue = value!;
+        cartProvider.setQuantity(widget.product, int.parse(value));
+      },
+    );
+  }
 }
 
 class _AddToCartButton extends StatelessWidget {
