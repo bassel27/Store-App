@@ -68,26 +68,56 @@ class _DropdownMenu extends StatelessWidget {
         ? quantityList.first.toString()
         : cartItem.quantity.toString();
 
-    return DropdownButton(
-      value: dropdownValue,
-      elevation: 16,
-      style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-      underline: Container(
-        height: 2,
-        color: Theme.of(context).colorScheme.tertiary,
+    return Container(
+      padding: const EdgeInsets.only(left: 4),
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.tertiary,
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
+      height: 40,
+      margin: EdgeInsets.zero,
+      child: DropdownButton(
+        // iconEnabledColor: Theme.of(context).colorScheme.tertiary,
+        value: dropdownValue,
+        menuMaxHeight: 250,
+        icon: const Icon(
+          Icons.arrow_drop_up,
+          color: kTextLightColor,
+        ),
+        elevation: 16,
+        selectedItemBuilder: (BuildContext ctxt) {
+          return quantityList
+              .map(
+                (quantityNumber) => DropdownMenuItem<String>(
+                  value: quantityNumber.toString(),
+                  child: Text(
+                    quantityNumber.toString(),
+                  ),
+                ),
+              )
+              .toList();
+        },
+        style: const TextStyle(color: kTextLightColor),
+        // underline: Container(
+        //   height: 2,
+        //   color: Theme.of(context).colorScheme.tertiary,
+        // ),
+        items: quantityList
+            .map(
+              (quantityNumber) => DropdownMenuItem<String>(
+                value: quantityNumber.toString(),
+                child: Text(
+                  quantityNumber.toString(),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.tertiary),
+                ),
+              ),
+            )
+            .toList(),
+        onChanged: (value) {
+          dropdownValue = value!;
+          cartProvider.setQuantity(product, int.parse(value));
+        },
       ),
-      items: quantityList
-          .map(
-            (quantityNumber) => DropdownMenuItem<String>(
-              value: quantityNumber.toString(),
-              child: Text(quantityNumber.toString()),
-            ),
-          )
-          .toList(),
-      onChanged: (value) {
-        dropdownValue = value!;
-        cartProvider.setQuantity(product, int.parse(value));
-      },
     );
   }
 }
@@ -99,18 +129,22 @@ class _AddToCartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: kAccentColor,
-        ),
-        onPressed: () {},
-        child: const Text(
-          "ADD TO CART",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.w500, color: kTextLightColor),
-        ));
+    return SizedBox(
+      height: 40,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: kAccentColor,
+          ),
+          onPressed: () {},
+          child: const Text(
+            "ADD TO CART",
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontWeight: FontWeight.w500, color: kTextLightColor),
+          )),
+    );
   }
 }
 
