@@ -58,7 +58,7 @@ class _SuccessfulScaffoldBody extends StatelessWidget {
               itemBuilder: (context, i) {
                 //TODO: better way than searching to find id
                 CartItem cartItem = cartProvider.items[i];
-                return CartTile(cartItem, cartItem.product.id);
+                return CartTile(cartItem);
               },
             ),
           ),

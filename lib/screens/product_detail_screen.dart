@@ -27,8 +27,8 @@ class ProductDetailScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                CurrencyAndPriceText(price: product.price),
-                Text("Descripton: ${product.description}"),
+                CurrencyAndPriceText(price: product.price), 
+                // Text("Descripton: ${product.description}"),
               ],
             ),
           ),
