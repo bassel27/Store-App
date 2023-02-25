@@ -9,6 +9,7 @@ import '../controllers/error_handler.dart';
 import '../models/product/product.dart';
 import '../widgets/empty_screen_text.dart';
 import '../widgets/my_future_builder.dart';
+import '../widgets/product_circle_avatar.dart';
 
 class ProductsManagerScreen extends StatefulWidget {
   const ProductsManagerScreen({super.key});
@@ -107,11 +108,7 @@ class _ProductListTile extends StatelessWidget {
 
     List<Product> products = productsProvider.products;
     return ListTile(
-      leading: Expanded(
-        child: CircleAvatar(
-          backgroundImage: NetworkImage(product.imageUrl),
-        ),
-      ),
+      leading: ProductCircleAvatar(product: product),
       title: Text(product.title),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
@@ -139,6 +136,7 @@ class _ProductListTile extends StatelessWidget {
     );
   }
 }
+
 
 void onProductDelete(Product product, BuildContext context) async {
   var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);

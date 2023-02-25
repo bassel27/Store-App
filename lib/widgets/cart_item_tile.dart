@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
+import 'package:store_app/widgets/product_circle_avatar.dart';
 
 import '../models/cart_item/cart_item.dart';
 
@@ -16,10 +17,8 @@ class CartItemTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage(cartItem.product.imageUrl),
-          ),
+          leading: ProductCircleAvatar(product: cartItem.product,),
+          
           title: Text(
             cartItem.product.title,
             style: Theme.of(context)
