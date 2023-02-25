@@ -18,7 +18,7 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(product.title)),
       body: Padding(
-        padding: const EdgeInsets.only(top: 5, left: 5, bottom: 5),
+        padding: const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 5),
         child: Column(
           children: [
             Expanded(
@@ -35,13 +35,13 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
               width: double.infinity,
               child: Row(
                 children: [
                   _DropdownMenu(product),
                   const SizedBox(
-                    width: 14,
+                    width: 10,
                   ),
                   const Expanded(child: _AddToCartButton()),
                 ],
@@ -69,7 +69,7 @@ class _DropdownMenu extends StatelessWidget {
         : cartItem.quantity.toString();
 
     return Container(
-      padding: const EdgeInsets.only(left: 4),
+      padding: const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.tertiary,
           borderRadius: const BorderRadius.all(Radius.circular(10))),
