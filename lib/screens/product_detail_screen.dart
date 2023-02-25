@@ -9,7 +9,6 @@ import '../models/product/product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const route = 'productDetail';
-  // TODO: max quantity of product not 10
 
   @override
   Widget build(BuildContext context) {
@@ -55,25 +54,20 @@ class ProductDetailScreen extends StatelessWidget {
   }
 }
 
-class _DropdownMenu extends StatefulWidget {
-  final Product product;
-  const _DropdownMenu(this.product);
-
-  @override
-  State<_DropdownMenu> createState() => _DropdownMenuState();
-}
-
-class _DropdownMenuState extends State<_DropdownMenu> {
+class _DropdownMenu extends StatelessWidget {
+  // TODO: max quantity of product not 10
   final List<int> quantityList = List<int>.generate(100, (i) => i + 1);
-  late CartItem? cartItem = Provider.of<CartNotifier>(context, listen: false)
-      .getCartItem(widget.product);
-  late String dropdownValue = cartItem == null
-      ? quantityList.first.toString()
-      : cartItem!.quantity.toString();
-
+  String? dropdownValue;
+  final Product product;
+  _DropdownMenu(this.product);
   @override
   Widget build(BuildContext context) {
-    final CartNotifier cartProvider = Provider.of<CartNotifier>(context);
+    final CartNotifier cartProvider = context.watch<CartNotifier>();
+    CartItem? cartItem = cartProvider.getCartItem(product);
+    dropdownValue ??= cartItem == null
+        ? quantityList.first.toString()
+        : cartItem.quantity.toString();
+
     return DropdownButton(
       value: dropdownValue,
       elevation: 16,
@@ -92,7 +86,7 @@ class _DropdownMenuState extends State<_DropdownMenu> {
           .toList(),
       onChanged: (value) {
         dropdownValue = value!;
-        cartProvider.setQuantity(widget.product, int.parse(value));
+        cartProvider.setQuantity(product, int.parse(value));
       },
     );
   }
