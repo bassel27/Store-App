@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:store_app/models/constants.dart';
+import 'package:store_app/widgets/cart_item_tile.dart';
 
 import '../models/order/order.dart';
 
@@ -85,18 +86,10 @@ class _dropDownContainer extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      height: min(widget.order.numberOfProducts * 16.0 + 40, 80),
+      height: min(widget.order.numberOfProducts * 60 + 40, 230),
       child: ListView(
           children: widget.order.cartItems
-              .map(
-                (cartItem) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Text(cartItem.product.title)),
-                    Text("${cartItem.quantity}x ${cartItem.product.price}"),
-                  ],
-                ),
-              )
+              .map((cartItem) => CartItemTile(cartItem: cartItem))
               .toList()),
     );
   }

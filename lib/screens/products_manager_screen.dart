@@ -107,8 +107,10 @@ class _ProductListTile extends StatelessWidget {
 
     List<Product> products = productsProvider.products;
     return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(product.imageUrl),
+      leading: Expanded(
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(product.imageUrl),
+        ),
       ),
       title: Text(product.title),
       trailing: Row(
