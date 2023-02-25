@@ -52,7 +52,7 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
                 ),
               ),
               const SizedBox(
-                height: 17,
+                height: 25,
               ),
               _EmailTextFormField(authData: _authData),
               const SizedBox(
