@@ -23,41 +23,38 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  var providers = [
+    ChangeNotifierProvider(
+        // here you're not using the .value because Products() object is created inside the changenotifierprovider
+        create: (_) => AuthNotifier()), // the object you wanna keep track of
+    ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
+        // this provider will be rebuilt when Auth changes
+        update: (context, auth, previousProduct) => ProductsNotifier(
+            auth, previousProduct == null ? [] : previousProduct.items),
+        create: (context) => ProductsNotifier(
+            Provider.of<AuthNotifier>(context, listen: false), [])),
+    ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
+      update: (context, auth, previousCart) => CartNotifier(
+          auth, previousCart == null ? [] : previousCart.cartItems),
+      create: (context) =>
+          CartNotifier(Provider.of<AuthNotifier>(context, listen: false), []),
+    ),
+    ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
+      update: (context, auth, previousOrdersProvider) => OrdersNotifier(auth,
+          previousOrdersProvider == null ? [] : previousOrdersProvider.orders),
+      create: (context) =>
+          OrdersNotifier(Provider.of<AuthNotifier>(context, listen: false), []),
+    ),
+
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     removeShadowAboveAppBar();
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-            // here you're not using the .value because Products() object is created inside the changenotifierprovider
-            create: (_) =>
-                AuthNotifier()), // the object you wanna keep track of
-        ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
-            // this provider will be rebuilt when Auth changes
-            update: (context, auth, previousProduct) => ProductsNotifier(
-                auth, previousProduct == null ? [] : previousProduct.items),
-            create: (context) => ProductsNotifier(
-                Provider.of<AuthNotifier>(context, listen: false), [])),
-        ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
-          update: (context, auth, previousCart) => CartNotifier(
-              auth, previousCart == null ? [] : previousCart.cartItems),
-          create: (context) => CartNotifier(
-              Provider.of<AuthNotifier>(context, listen: false), []),
-        ),
-        ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
-          update: (context, auth, previousOrdersProvider) => OrdersNotifier(
-              auth,
-              previousOrdersProvider == null
-                  ? []
-                  : previousOrdersProvider.orders),
-          create: (context) => OrdersNotifier(
-              Provider.of<AuthNotifier>(context, listen: false), []),
-        ),
-
-        ChangeNotifierProvider(
-          create: (_) => ThemeNotifier(),
-        ),
-      ],
+      providers: providers,
       // TODO: use materialapp
       builder: (context, child) => Consumer<AuthNotifier>(
           builder: (context, auth, _) => GetMaterialApp(
@@ -82,14 +79,7 @@ class MyApp extends StatelessWidget {
                               ConnectionState.waiting
                           ? const CircularProgressIndicator()
                           : AuthScreen(), // on future finished, if notifylisteners called, then splashscreen is displayed. If not, authscreen will be displayed
-                    ))
-
-          // ScaffoldFutureBuilder(
-          //     future: auth.tryAutoLogin(),
-          //     onFailureWidget: AuthScreen(),
-          //     onSuccessWidget: const SplashScreen(),
-          //   )),
-          ),
+                    ))),
     );
   }
 }

@@ -17,38 +17,43 @@ class ProductDetailScreen extends StatelessWidget {
     // TODO: use provider
     return Scaffold(
       appBar: AppBar(title: Text(product.title)),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 5),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                children: [
-                  _ImageContainer(product: product),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CurrencyAndPriceText(price: product.price),
-                  Text("Descripton: ${product.description}"),
-                ],
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.only(left: 10, bottom: 5, right: 5),
+              children: [
+                _ImageContainer(product: product),
+                const SizedBox(
+                  height: 15,
+                ),
+                CurrencyAndPriceText(price: product.price),
+                Text("Descripton: ${product.description}"),
+              ],
+            ),
+          ),
+          SizedBox(
+            // margin: const EdgeInsets.symmetric(horizontal: 5),
+            width: double.infinity,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              width: double.infinity,
+              color: Theme.of(context).colorScheme.background,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  children: [
+                    _DropdownMenu(product),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Expanded(child: _AddToCartButton()),
+                  ],
+                ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-              width: double.infinity,
-              child: Row(
-                children: [
-                  _DropdownMenu(product),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Expanded(child: _AddToCartButton()),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -75,48 +80,51 @@ class _DropdownMenu extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       height: 40,
       margin: EdgeInsets.zero,
-      child: DropdownButton(
-        // iconEnabledColor: Theme.of(context).colorScheme.tertiary,
-        value: dropdownValue,
-        menuMaxHeight: 250,
-        icon: const Icon(
-          Icons.arrow_drop_up,
-          color: kTextLightColor,
-        ),
-        elevation: 16,
-        selectedItemBuilder: (BuildContext ctxt) {
-          return quantityList
+      child: ButtonTheme(
+        alignedDropdown: true,
+        child: DropdownButton(
+          // iconEnabledColor: Theme.of(context).colorScheme.tertiary,
+          value: dropdownValue,
+          menuMaxHeight: 250,
+          icon: const Icon(
+            Icons.arrow_drop_up,
+            color: kTextLightColor,
+          ),
+          elevation: 16,
+          selectedItemBuilder: (BuildContext ctxt) {
+            return quantityList
+                .map(
+                  (quantityNumber) => DropdownMenuItem<String>(
+                    value: quantityNumber.toString(),
+                    child: Text(
+                      quantityNumber.toString(),
+                    ),
+                  ),
+                )
+                .toList();
+          },
+          style: const TextStyle(color: kTextLightColor),
+          // underline: Container(
+          //   height: 2,
+          //   color: Theme.of(context).colorScheme.tertiary,
+          // ),
+          items: quantityList
               .map(
                 (quantityNumber) => DropdownMenuItem<String>(
                   value: quantityNumber.toString(),
                   child: Text(
                     quantityNumber.toString(),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary),
                   ),
                 ),
               )
-              .toList();
-        },
-        style: const TextStyle(color: kTextLightColor),
-        // underline: Container(
-        //   height: 2,
-        //   color: Theme.of(context).colorScheme.tertiary,
-        // ),
-        items: quantityList
-            .map(
-              (quantityNumber) => DropdownMenuItem<String>(
-                value: quantityNumber.toString(),
-                child: Text(
-                  quantityNumber.toString(),
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.tertiary),
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (value) {
-          dropdownValue = value!;
-          cartProvider.setQuantity(product, int.parse(value));
-        },
+              .toList(),
+          onChanged: (value) {
+            dropdownValue = value!;
+            cartProvider.setQuantity(product, int.parse(value));
+          },
+        ),
       ),
     );
   }
@@ -129,6 +137,7 @@ class _AddToCartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CartNotifier cartProvider = context.read<CartNotifier>();
     return SizedBox(
       height: 40,
       child: ElevatedButton(
