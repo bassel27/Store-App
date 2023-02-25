@@ -40,17 +40,8 @@ class ProductDetailScreen extends StatelessWidget {
               width: double.infinity,
               color: Theme.of(context).colorScheme.background,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  children: [
-                    _DropdownMenu(product),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Expanded(child: _AddToCartButton()),
-                  ],
-                ),
-              ),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: _BottomRow(product)),
             ),
           )
         ],
@@ -59,20 +50,54 @@ class ProductDetailScreen extends StatelessWidget {
   }
 }
 
-class _DropdownMenu extends StatelessWidget {
-  // TODO: max quantity of product not 10
-  final List<int> quantityList = List<int>.generate(100, (i) => i + 1);
-  String? dropdownValue;
+class _BottomRow extends StatefulWidget {
   final Product product;
-  _DropdownMenu(this.product);
+  const _BottomRow(this.product);
+
+  @override
+  State<_BottomRow> createState() => _BottomRowState();
+}
+
+class _BottomRowState extends State<_BottomRow> {
+  final List<int> quantityList = List<int>.generate(100, (i) => i + 1);
+
+  late final CartNotifier cartProvider = context.read<CartNotifier>();
+  late CartItem? cartItem = cartProvider.getCartItem(widget.product);
+  late String dropdownValue = cartItem == null
+      ? quantityList.first.toString()
+      : cartItem!.quantity.toString();
   @override
   Widget build(BuildContext context) {
-    final CartNotifier cartProvider = context.watch<CartNotifier>();
-    CartItem? cartItem = cartProvider.getCartItem(product);
-    dropdownValue ??= cartItem == null
-        ? quantityList.first.toString()
-        : cartItem.quantity.toString();
+    return Row(
+      children: [
+        dropdownMenu(context),
+        const SizedBox(width: 6),
+        Expanded(
+          child: SizedBox(
+            height: 40,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  backgroundColor: kAccentColor,
+                ),
+                onPressed: () {
+                  cartProvider.setQuantity(
+                      widget.product, int.parse(dropdownValue));
+                },
+                child: const Text(
+                  "ADD TO CART",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: kTextLightColor),
+                )),
+          ),
+        ),
+      ],
+    );
+  }
 
+  Container dropdownMenu(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
@@ -104,10 +129,6 @@ class _DropdownMenu extends StatelessWidget {
                 .toList();
           },
           style: const TextStyle(color: kTextLightColor),
-          // underline: Container(
-          //   height: 2,
-          //   color: Theme.of(context).colorScheme.tertiary,
-          // ),
           items: quantityList
               .map(
                 (quantityNumber) => DropdownMenuItem<String>(
@@ -121,38 +142,12 @@ class _DropdownMenu extends StatelessWidget {
               )
               .toList(),
           onChanged: (value) {
-            dropdownValue = value!;
-            cartProvider.setQuantity(product, int.parse(value));
+            setState(() {
+              dropdownValue = value!;
+            });
           },
         ),
       ),
-    );
-  }
-}
-
-class _AddToCartButton extends StatelessWidget {
-  const _AddToCartButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    CartNotifier cartProvider = context.read<CartNotifier>();
-    return SizedBox(
-      height: 40,
-      child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            backgroundColor: kAccentColor,
-          ),
-          onPressed: () {},
-          child: const Text(
-            "ADD TO CART",
-            textAlign: TextAlign.center,
-            style:
-                TextStyle(fontWeight: FontWeight.w500, color: kTextLightColor),
-          )),
     );
   }
 }
