@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -107,13 +109,10 @@ class _EditProductScreenState extends State<EditProductScreen>
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 5,
                       ),
                       const Text("Or"),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      _TakePhotoButton(accentColor: accentColor),
+                      TwoPhotoButtonsColumn(accentColor: accentColor),
                     ],
                   ),
                 ],
@@ -203,31 +202,62 @@ class _EditProductScreenState extends State<EditProductScreen>
   }
 }
 
-class _TakePhotoButton extends StatelessWidget {
-  const _TakePhotoButton({
+class TwoPhotoButtonsColumn extends StatelessWidget {
+  const TwoPhotoButtonsColumn({
     Key? key,
     required this.accentColor,
   }) : super(key: key);
 
   final Color accentColor;
   Future<void> _takePicture() async {
-    final imageFile = await ImagePicker() // TODO: config for ios check doccumentaoin
-        .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
+    final imageFile =
+        await ImagePicker() // TODO: config for ios check doccumentaoin
+            .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
+    if (imageFile != null) {
+      File(imageFile.path);
+    }
+  }
+
+  Future<void> _chooseFromGallery() async {
+    final imageFile =
+        await ImagePicker() // TODO: config for ios check doccumentaoin
+            .pickImage(
+                source: ImageSource.gallery, maxWidth: 600); // resolution
   }
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      style: OutlinedButton.styleFrom(),
-      icon: Icon(
-        Icons.camera_alt,
-        color: accentColor,
-      ),
-      onPressed: _takePicture,
-      label: Text(
-        "Take a photo",
-        style: TextStyle(color: accentColor),
-      ),
+    return Column(
+      children: [
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(),
+          icon: Icon(
+            Icons.photo_album,
+            color: accentColor,
+          ),
+          onPressed: _chooseFromGallery,
+          label: Text(
+            "Choose from Gallery",
+            style: TextStyle(color: accentColor),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        const Text("Or"),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(),
+          icon: Icon(
+            Icons.camera_alt,
+            color: accentColor,
+          ),
+          onPressed: _takePicture,
+          label: Text(
+            "Take a photo",
+            style: TextStyle(color: accentColor),
+          ),
+        ),
+      ],
     );
   }
 }
