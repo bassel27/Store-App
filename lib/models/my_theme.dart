@@ -49,6 +49,10 @@ class MyTheme {
         onPrimary: Colors.black,
         onSecondary: Colors.white,
         onTertiary: Colors.white),
+    textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+            backgroundColor: kBackgroundColor,
+            textStyle: const TextStyle(color: kAccentColor))),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
             backgroundColor: kAccentColor, foregroundColor: Colors.white)),
@@ -57,7 +61,6 @@ class MyTheme {
             color: Colors.black,
             fontWeight: FontWeight
                 .w500), // controls price, title and currency witth each copying with
-
         button: const TextStyle(color: kPrimaryColor)),
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: kPrimaryColor,

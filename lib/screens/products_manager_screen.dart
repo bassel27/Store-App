@@ -137,7 +137,6 @@ class _ProductListTile extends StatelessWidget {
   }
 }
 
-
 void onProductDelete(Product product, BuildContext context) async {
   var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);
   var scaffoldMessenger = ScaffoldMessenger.of(context);

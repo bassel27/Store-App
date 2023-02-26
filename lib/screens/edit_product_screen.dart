@@ -66,6 +66,7 @@ class _EditProductScreenState extends State<EditProductScreen>
 
   @override
   Widget build(BuildContext context) {
+    Color accentColor = Theme.of(context).colorScheme.tertiary;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -80,40 +81,59 @@ class _EditProductScreenState extends State<EditProductScreen>
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const NameTextFormField(),
-                PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
-                DescriptionTextFormField(_descriptionFocusNode),
-                mySizedBox,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _imageContainer(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: ImageUrlTextFormField(
-                        imageUrlFocusNode: _imageUrlFocusNode,
-                        imageUrlController: _imageUrlController,
-                        saveFormFunction: _saveForm,
-                      ),
-                    ),
-                  ],
-                ),
-                mySizedBox,
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                  onPressed: _onSaveButtonPressed,
-                  child: Text(
-                    "Save",
-                    style: Theme.of(context).textTheme.button,
+          child: ListView(
+            children: [
+              const NameTextFormField(),
+              PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
+              DescriptionTextFormField(_descriptionFocusNode),
+              mySizedBox,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(child: _imageContainer()),
+                  const SizedBox(
+                    width: 10,
                   ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 230,
+                        child: ImageUrlTextFormField(
+                          imageUrlFocusNode: _imageUrlFocusNode,
+                          imageUrlController: _imageUrlController,
+                          saveFormFunction: _saveForm,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(),
+                        icon: Icon(
+                          Icons.camera_alt,
+                          color: accentColor,
+                        ),
+                        onPressed: () {},
+                        label: Text(
+                          "Take a photo",
+                          style: TextStyle(color: accentColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              mySizedBox,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                onPressed: _onSaveButtonPressed,
+                child: Text(
+                  "Save",
+                  style: Theme.of(context).textTheme.button,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -122,8 +142,6 @@ class _EditProductScreenState extends State<EditProductScreen>
 
   Container _imageContainer() {
     return Container(
-      height: 70,
-      width: 70,
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
