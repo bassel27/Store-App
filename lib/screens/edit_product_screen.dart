@@ -67,6 +67,19 @@ class _EditProductScreenState extends State<EditProductScreen>
     _imageUrlController.dispose();
   }
 
+  Image? _image;
+  Image? get imageToDisplay {
+    if (_image != null) {
+      return _image;
+    } else if (_image == null &&
+        _imageUrlController.text.isNotEmpty &&
+        validateImageUrl(_imageUrlController.text) == null) {
+      _image = Image.network(_imageUrlController.text, fit: BoxFit.cover);
+      return Image.network(_imageUrlController.text, fit: BoxFit.cover);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     Color accentColor = Theme.of(context).colorScheme.tertiary;
@@ -97,24 +110,7 @@ class _EditProductScreenState extends State<EditProductScreen>
                   const SizedBox(
                     width: 10,
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: 210,
-                        child: ImageUrlTextFormField(
-                          imageUrlFocusNode: _imageUrlFocusNode,
-                          imageUrlController: _imageUrlController,
-                          saveFormFunction: _saveForm,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const Text("Or"),
-                      TwoPhotoButtonsColumn(accentColor: accentColor),
-                    ],
-                  ),
+                  _photoInputColumn(accentColor),
                 ],
               ),
               mySizedBox,
@@ -133,14 +129,87 @@ class _EditProductScreenState extends State<EditProductScreen>
     );
   }
 
+  Column _photoInputColumn(Color accentColor) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 210,
+          child: ImageUrlTextFormField(
+            imageUrlFocusNode: _imageUrlFocusNode,
+            imageUrlController: _imageUrlController,
+            saveFormFunction: _saveForm,
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        const Text("Or"),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(),
+          icon: Icon(
+            Icons.photo_album,
+            color: accentColor,
+          ),
+          onPressed: _chooseFromGallery,
+          label: Text(
+            "Choose from Gallery",
+            style: TextStyle(color: accentColor),
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        const Text("Or"),
+        OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(),
+          icon: Icon(
+            Icons.camera_alt,
+            color: accentColor,
+          ),
+          onPressed: _takePicture,
+          label: Text(
+            "Take a photo",
+            style: TextStyle(color: accentColor),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _takePicture() async {
+    final imageFile =
+        await ImagePicker() // TODO: config for ios check doccumentaoin
+            .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
+    modifyImage(imageFile);
+  }
+
+  Future<void> _chooseFromGallery() async {
+    final imageFile =
+        await ImagePicker() // TODO: config for ios check doccumentaoin
+            .pickImage(
+                source: ImageSource.gallery, maxWidth: 600); // resolution
+    modifyImage(imageFile);
+  }
+
+  void modifyImage(imageFile) {
+    if (imageFile != null) {
+      setState(() {
+        _image = Image.file(File(imageFile.path));
+      });
+      _imageUrlController.clear();
+    }
+  }
+
   Container _imageContainer() {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
-      child: _imageUrlController.text.isEmpty
-          ? const FittedBox(child: Text("Enter a URL"))
-          : Image.network(_imageUrlController.text, fit: BoxFit.cover),
+      child: Expanded(
+        child: imageToDisplay ??
+            const Text("Enter a URL\nor take a photo\n or choose from gallery"),
+      ),
     );
   }
 
@@ -152,7 +221,9 @@ class _EditProductScreenState extends State<EditProductScreen>
     if (!_imageUrlFocusNode.hasFocus &&
         (_imageUrlController.text.isEmpty ||
             validateImageUrl(_imageUrlController.text) == null)) {
-      setState(() {});
+      setState(() {
+        _image = Image.network(_imageUrlController.text, fit: BoxFit.cover);
+      });
     }
   }
 
@@ -199,65 +270,5 @@ class _EditProductScreenState extends State<EditProductScreen>
   Future<void> addNewProduct(ProductsNotifier productProvider,
       Product editedProduct, BuildContext context) async {
     await productProvider.addProduct(editedProduct);
-  }
-}
-
-class TwoPhotoButtonsColumn extends StatelessWidget {
-  const TwoPhotoButtonsColumn({
-    Key? key,
-    required this.accentColor,
-  }) : super(key: key);
-
-  final Color accentColor;
-  Future<void> _takePicture() async {
-    final imageFile =
-        await ImagePicker() // TODO: config for ios check doccumentaoin
-            .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
-    if (imageFile != null) {
-      File(imageFile.path);
-    }
-  }
-
-  Future<void> _chooseFromGallery() async {
-    final imageFile =
-        await ImagePicker() // TODO: config for ios check doccumentaoin
-            .pickImage(
-                source: ImageSource.gallery, maxWidth: 600); // resolution
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        OutlinedButton.icon(
-          style: OutlinedButton.styleFrom(),
-          icon: Icon(
-            Icons.photo_album,
-            color: accentColor,
-          ),
-          onPressed: _chooseFromGallery,
-          label: Text(
-            "Choose from Gallery",
-            style: TextStyle(color: accentColor),
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        const Text("Or"),
-        OutlinedButton.icon(
-          style: OutlinedButton.styleFrom(),
-          icon: Icon(
-            Icons.camera_alt,
-            color: accentColor,
-          ),
-          onPressed: _takePicture,
-          label: Text(
-            "Take a photo",
-            style: TextStyle(color: accentColor),
-          ),
-        ),
-      ],
-    );
   }
 }
