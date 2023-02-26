@@ -27,7 +27,7 @@ class ProductDetailScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                CurrencyAndPriceText(price: product.price), 
+                CurrencyAndPriceText(price: product.price),
                 // Text("Descripton: ${product.description}"),
               ],
             ),
@@ -166,8 +166,11 @@ class _ImageContainer extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(),
       height: MediaQuery.of(context).size.height * 0.5,
-      child: Image.network(
-        product.imageUrl,
+      child: Hero(
+        tag: product.id,
+        child: Image.network(
+          product.imageUrl,
+        ),
       ),
     );
   }

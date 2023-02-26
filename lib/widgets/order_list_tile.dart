@@ -27,8 +27,11 @@ class _OrderListTileState extends State<OrderListTile> {
         child: Column(
           children: [
             mainContainer(),
-            if (isExpanded)
-              _dropDownContainer(myBorderSide: myBorderSide, widget: widget),
+            _dropDownContainer(
+              myBorderSide: myBorderSide,
+              widget: widget,
+              isExpanded: isExpanded,
+            ),
           ],
         ),
       ),
@@ -70,14 +73,18 @@ class _dropDownContainer extends StatelessWidget {
     Key? key,
     required this.myBorderSide,
     required this.widget,
+    required this.isExpanded,
   }) : super(key: key);
-
+  final bool isExpanded;
   final BorderSide myBorderSide;
   final OrderListTile widget;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height:
+          isExpanded ? min(widget.order.numberOfProducts * 75 + 40, 230) : 0,
       decoration: BoxDecoration(
         border: Border(
           right: myBorderSide,
@@ -86,7 +93,6 @@ class _dropDownContainer extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      height: min(widget.order.numberOfProducts * 60 + 40, 230),
       child: ListView(
           children: widget.order.cartItems
               .map((cartItem) => CartItemTile(cartItem: cartItem))
