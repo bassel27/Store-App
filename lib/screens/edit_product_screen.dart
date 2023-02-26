@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -98,7 +99,7 @@ class _EditProductScreenState extends State<EditProductScreen>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        width: 230,
+                        width: 210,
                         child: ImageUrlTextFormField(
                           imageUrlFocusNode: _imageUrlFocusNode,
                           imageUrlController: _imageUrlController,
@@ -108,18 +109,11 @@ class _EditProductScreenState extends State<EditProductScreen>
                       const SizedBox(
                         height: 20,
                       ),
-                      OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(),
-                        icon: Icon(
-                          Icons.camera_alt,
-                          color: accentColor,
-                        ),
-                        onPressed: () {},
-                        label: Text(
-                          "Take a photo",
-                          style: TextStyle(color: accentColor),
-                        ),
+                      const Text("Or"),
+                      const SizedBox(
+                        height: 10,
                       ),
+                      _TakePhotoButton(accentColor: accentColor),
                     ],
                   ),
                 ],
@@ -206,5 +200,34 @@ class _EditProductScreenState extends State<EditProductScreen>
   Future<void> addNewProduct(ProductsNotifier productProvider,
       Product editedProduct, BuildContext context) async {
     await productProvider.addProduct(editedProduct);
+  }
+}
+
+class _TakePhotoButton extends StatelessWidget {
+  const _TakePhotoButton({
+    Key? key,
+    required this.accentColor,
+  }) : super(key: key);
+
+  final Color accentColor;
+  Future<void> _takePicture() async {
+    final imageFile = await ImagePicker() // TODO: config for ios check doccumentaoin
+        .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      style: OutlinedButton.styleFrom(),
+      icon: Icon(
+        Icons.camera_alt,
+        color: accentColor,
+      ),
+      onPressed: _takePicture,
+      label: Text(
+        "Take a photo",
+        style: TextStyle(color: accentColor),
+      ),
+    );
   }
 }
