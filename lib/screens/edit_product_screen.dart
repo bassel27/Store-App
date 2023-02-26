@@ -52,6 +52,9 @@ class _EditProductScreenState extends State<EditProductScreen>
         Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
             ModalRoute.of(context)?.settings.arguments as Product;
       }
+      if (_imageUrlController.text.isNotEmpty) {
+        _image = Image.network(_imageUrlController.text, fit: BoxFit.cover);
+      }
       _firstTime = false;
     }
     super.didChangeDependencies();
@@ -68,17 +71,6 @@ class _EditProductScreenState extends State<EditProductScreen>
   }
 
   Image? _image;
-  Image? get imageToDisplay {
-    if (_image != null) {
-      return _image;
-    } else if (_image == null &&
-        _imageUrlController.text.isNotEmpty &&
-        validateImageUrl(_imageUrlController.text) == null) {
-      _image = Image.network(_imageUrlController.text, fit: BoxFit.cover);
-      return Image.network(_imageUrlController.text, fit: BoxFit.cover);
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +131,7 @@ class _EditProductScreenState extends State<EditProductScreen>
             imageUrlFocusNode: _imageUrlFocusNode,
             imageUrlController: _imageUrlController,
             saveFormFunction: _saveForm,
+            image: _image
           ),
         ),
         const SizedBox(
@@ -207,8 +200,8 @@ class _EditProductScreenState extends State<EditProductScreen>
         border: Border.all(width: 2, color: Colors.grey),
       ),
       child: Expanded(
-        child: imageToDisplay ??
-            const Text("Enter a URL\nor take a photo\n or choose from gallery"),
+        child: _image ??
+            const Text("Enter a URL\nor take a photo\nor choose from gallery"),
       ),
     );
   }
@@ -220,7 +213,7 @@ class _EditProductScreenState extends State<EditProductScreen>
     // if the form field became out of focus and (it's empty or has valid url)
     if (!_imageUrlFocusNode.hasFocus &&
         (_imageUrlController.text.isEmpty ||
-            validateImageUrl(_imageUrlController.text) == null)) {
+            validateImageUrl(_imageUrlController.text, _image) == null)) {
       setState(() {
         _image = Image.network(_imageUrlController.text, fit: BoxFit.cover);
       });
