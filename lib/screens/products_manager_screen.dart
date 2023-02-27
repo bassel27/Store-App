@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
+import 'package:store_app/providers/product_image.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
@@ -41,11 +42,7 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
         title: const Text("Products Manager"),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, EditProductScreen.route).then(
-                    (_) => productsProvider
-                        .resetEditedProduct()); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
-              },
+              onPressed: () => pushEditProductScreen(context),
               icon: const Icon(Icons.add)),
         ],
       ),
@@ -114,11 +111,7 @@ class _ProductListTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, EditProductScreen.route,
-                      arguments: product)
-                  .then((_) => productsProvider.resetEditedProduct());
-            },
+            onPressed: () => pushEditProductScreen(context, product),
             icon: Icon(
               Icons.edit,
               color: Theme.of(context).colorScheme.tertiary,
@@ -171,4 +164,16 @@ void onProductDelete(Product product, BuildContext context) async {
           }
         }),
   ));
+}
+
+void pushEditProductScreen(BuildContext context, [Product? product]) {
+  Navigator.of(context)
+      .push(MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+                create: (context) => ProductImageNotifier(),
+                builder: (context, child) => EditProductScreen(product),
+              )))
+      .then((_) {
+    Provider.of<ProductsNotifier>(context, listen: false).resetEditedProduct();
+  }); // in case you used edited product and wanna use it again (entered editscreen -> got out -> entered again)
 }

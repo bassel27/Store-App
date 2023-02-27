@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
+import 'package:store_app/providers/product_image.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
@@ -45,7 +46,9 @@ class MyApp extends StatelessWidget {
       create: (context) =>
           OrdersNotifier(Provider.of<AuthNotifier>(context, listen: false), []),
     ),
-
+    ChangeNotifierProvider(
+      create: (_) => ProductImageNotifier(),
+    ),
     ChangeNotifierProvider(
       create: (_) => ThemeNotifier(),
     ),
@@ -67,7 +70,7 @@ class MyApp extends StatelessWidget {
                 ProductsManagerScreen.route: (ctx) =>
                     const ProductsManagerScreen(),
                 AccountScreen.route: (ctx) => AccountScreen(),
-                EditProductScreen.route: (ctx) => EditProductScreen(),
+                EditProductScreen.route: (ctx) => EditProductScreen(null),
               },
               title: 'Flutter Demo',
               home: auth.isAuth
