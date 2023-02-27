@@ -9,11 +9,11 @@ mixin ValidateImageUrl {
     if (image == null &&
         (imageUrlTextFormFieldValue == null ||
             imageUrlTextFormFieldValue.isEmpty)) {
-      return 'Please provide an image url.';
+      return 'Image is missing.';
     } else if (imageUrlTextFormFieldValue != null &&
         !imageUrlTextFormFieldValue.startsWith('http') &&
         !imageUrlTextFormFieldValue.startsWith('https')) {
-      return 'Please provide a valid image url.';
+      return 'Provide a valid image url.';
     }
     // else if (!value.endsWith('.png') &&
     //     !value.endsWith('.jpg') &&
