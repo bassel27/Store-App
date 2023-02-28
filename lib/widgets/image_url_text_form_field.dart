@@ -28,7 +28,7 @@ class ImageUrlTextFormField extends StatelessWidget with ValidateImageUrl {
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.url,
       decoration: const InputDecoration(
-          labelText: "Image URL", errorStyle: kErrorTextStyle),
+          labelText: "Image URL"),
       controller: imageUrlController,
       focusNode: imageUrlFocusNode,
       onFieldSubmitted: (_) {

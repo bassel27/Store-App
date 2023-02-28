@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/providers/product_image.dart';
+import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:uuid/uuid.dart';
 
 import '../controllers/error_handler.dart';
@@ -29,6 +29,7 @@ class _EditProductScreenState extends State<EditProductScreen>
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
   bool _firstTime = true;
+  Color imageContainerTextColor = Colors.black;
 
   /// Key for accessing all the validators and savers of all TextFormFields.
   final _formKey = GlobalKey<FormState>();
@@ -56,9 +57,13 @@ class _EditProductScreenState extends State<EditProductScreen>
             widget.product!;
       }
       if (_imageUrlController.text.isNotEmpty) {
-        Future.delayed(Duration.zero).then((value) =>
-            Provider.of<ProductImageNotifier>(context, listen: false).image =
-                Image.network(_imageUrlController.text, fit: BoxFit.cover));
+        Future.delayed(Duration.zero).then((value) {
+          ProductImageNotifier imageProvider =
+              Provider.of<ProductImageNotifier>(context, listen: false);
+          imageProvider.image =
+              Image.network(_imageUrlController.text, fit: BoxFit.cover);
+          imageProvider.imageSource = ImageSrc.textfield;
+        });
       }
       _firstTime = false;
     }
@@ -99,7 +104,8 @@ class _EditProductScreenState extends State<EditProductScreen>
               PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
               DescriptionTextFormField(_descriptionFocusNode),
               mySizedBox,
-              _ImageRow(_saveForm, _imageUrlFocusNode, _imageUrlController),
+              _ImageRow(_saveForm, _imageUrlFocusNode, _imageUrlController,
+                  imageContainerTextColor),
               mySizedBox,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
@@ -123,27 +129,55 @@ class _EditProductScreenState extends State<EditProductScreen>
     ProductImageNotifier? imageProvider =
         Provider.of<ProductImageNotifier>(context, listen: false);
     // if the form field became out of focus and (it's empty or has valid url)
-    if (!_imageUrlFocusNode.hasFocus) {
-      if (_imageUrlController.text.isEmpty) {
+    bool imageUrlFocusNodeWentOutOfFocus = !_imageUrlFocusNode.hasFocus;
+    if (imageUrlFocusNodeWentOutOfFocus) {
+      if (_imageUrlController.text.isEmpty &&
+          imageProvider.imageSource == ImageSrc.textfield) {
         imageProvider.image = null;
-      } else if (validateImageUrl(
-              _imageUrlController.text, imageProvider.image) ==
-          null) {
+        imageProvider.imageSource = null;
+      } else if (_imageUrlController.text.isNotEmpty &&
+          validateImageUrl(_imageUrlController.text, imageProvider.image) ==
+              null) {
         imageProvider.image =
             Image.network(_imageUrlController.text, fit: BoxFit.cover);
+        imageProvider.imageSource = ImageSrc.textfield;
       }
     }
   }
 
   void _onSaveButtonPressed() {
-    //TODO: display image after pressing save (imageurl textfield doesn't go out of foxus on save press)
+    ProductImageNotifier? imageProvider =
+        Provider.of<ProductImageNotifier>(context, listen: false);
+    if (_imageUrlController.text.isNotEmpty &&
+        validateImageUrl(_imageUrlController.text, imageProvider.image) ==
+            null) {
+      imageProvider.image =
+          Image.network(_imageUrlController.text, fit: BoxFit.cover);
+      imageProvider.imageSource = ImageSrc.textfield;
+    }
     _saveForm();
+  }
+
+  bool validateFormFieldsAndImage() {
+    if (context.read<ProductImageNotifier>().image == null) {
+      // invalid
+      setState(() {
+        imageContainerTextColor = Theme.of(context).colorScheme.error;
+      });
+      _formKey.currentState!.validate();
+      return false;
+    } // valid
+    if (_formKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /// Runs all the validators and all the savers when the save button is pressed
   /// or the keyboard's done button is pressed in the image URL text field.
   void _saveForm() async {
-    if (_formKey.currentState!.validate()) {
+    if (validateFormFieldsAndImage()) {
       dismissKeyboard();
       // this runs all the validators
       _formKey.currentState!.save(); // this runs all the savers
@@ -175,15 +209,16 @@ class _EditProductScreenState extends State<EditProductScreen>
 }
 
 class _ImageRow extends StatelessWidget {
-  const _ImageRow(
-      this.saveForm, this.imageUrlFocusNode, this.imageUrlController);
+  const _ImageRow(this.saveForm, this.imageUrlFocusNode,
+      this.imageUrlController, this.imageContainerTextColor);
   final VoidCallback saveForm;
   final FocusNode imageUrlFocusNode;
   final imageUrlController;
+  final Color imageContainerTextColor;
   @override
   Widget build(BuildContext context) {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Expanded(child: _ImageContainer()),
+      Expanded(child: _ImageContainer(imageContainerTextColor)),
       const SizedBox(
         width: 10,
       ),
@@ -210,9 +245,10 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
   final ProductImageNotifier imageProvider;
 
   /// Checks if image file isn't null first.
-  void modifyImageContainer(XFile? imageFile) {
+  void modifyImageContainer(XFile? imageFile, ImageSrc imageSource) {
     if (imageFile != null) {
       imageProvider.image = Image.file(File(imageFile.path));
+      imageProvider.imageSource = imageSource;
       imageUrlController.clear();
     }
   }
@@ -221,7 +257,7 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
     final imageFile =
         await ImagePicker() // TODO: config for ios check doccumentaoin
             .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
-    modifyImageContainer(imageFile);
+    modifyImageContainer(imageFile, ImageSrc.camera);
   }
 
   Future<void> _chooseFromGallery() async {
@@ -229,7 +265,7 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
         await ImagePicker() // TODO: config for ios check doccumentaoin
             .pickImage(
                 source: ImageSource.gallery, maxWidth: 600); // resolution
-    modifyImageContainer(imageFile);
+    modifyImageContainer(imageFile, ImageSrc.gallery);
   }
 
   @override
@@ -275,8 +311,8 @@ class _PhotoTextButton extends StatelessWidget {
 }
 
 class _ImageContainer extends StatelessWidget {
-  const _ImageContainer();
-
+  const _ImageContainer(this.imageContainerTextColor);
+  final Color imageContainerTextColor;
   @override
   Widget build(BuildContext context) {
     Image? image = Provider.of<ProductImageNotifier>(context).image;
@@ -285,9 +321,10 @@ class _ImageContainer extends StatelessWidget {
         border: Border.all(width: 2, color: Colors.grey),
       ),
       child: image ??
-          const Text(
+          Text(
             "Enter a URL\nor\nTake a photo\nor\nChoose from gallery",
             textAlign: TextAlign.center,
+            style: TextStyle(color: imageContainerTextColor),
           ),
     );
   }

@@ -16,7 +16,7 @@ class DescriptionTextFormField extends StatelessWidget {
         maxLines: 3,
         keyboardType: TextInputType.multiline,
         decoration: const InputDecoration(
-            labelText: "Description", errorStyle: kErrorTextStyle),
+            labelText: "Description"),
         focusNode: _descriptionFocusNode,
         onSaved: (value) {
           productsProvider.editedProduct =

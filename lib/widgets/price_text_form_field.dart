@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/constants.dart';
 import '../providers/products_notifier.dart';
 
 class PriceTextFormField extends StatelessWidget {
@@ -16,8 +15,7 @@ class PriceTextFormField extends StatelessWidget {
       initialValue: productsProvider.editedProduct.price == 0
           ? null
           : productsProvider.editedProduct.price.toStringAsFixed(2),
-      decoration: const InputDecoration(
-          labelText: "Price", errorStyle: kErrorTextStyle),
+      decoration: const InputDecoration(labelText: "Price"),
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.number,
       focusNode: priceFocusNode,

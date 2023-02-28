@@ -11,6 +11,7 @@ const TextStyle kBodyText1Style =
     TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
 const kInactiveColor = kSecondaryColor;
 const kActiveColor = kAccentColor;
+const Color kErrorColor = Color(0xFFb30c2b);
 
 class MyTheme {
   static final lightTheme = ThemeData(
@@ -26,6 +27,8 @@ class MyTheme {
     ),
     // for text firelds
     inputDecorationTheme: const InputDecorationTheme(
+      
+      errorStyle: TextStyle(fontWeight: FontWeight.w400, color: kErrorColor),
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: kAccentColor),
       ),

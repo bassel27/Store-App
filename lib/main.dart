@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
-import 'package:store_app/providers/product_image.dart';
+import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';

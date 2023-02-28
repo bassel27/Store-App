@@ -60,8 +60,9 @@ class ProductsGridScreen extends StatelessWidget {
                   ]),
             ),
           ),
-          bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
+          bottom:
+              AppBar(elevation: 0, title: const _SearchBar(), actions: const [
+            // IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
           ]),
         ),
         SliverToBoxAdapter(

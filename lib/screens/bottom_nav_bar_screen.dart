@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../providers/cart_notifier.dart';
 import '../screens/cart_screen.dart';
 import '../screens/products_grid_screen.dart';
-import 'categories_screen.dart';
 
 //TODO: replace with persistent nav bar
 class BottomNavBarScreen extends StatefulWidget {
@@ -16,24 +15,24 @@ class BottomNavBarScreen extends StatefulWidget {
 }
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   late final CartNotifier cartNotifier = Provider.of<CartNotifier>(context);
 
   @override
   Widget build(BuildContext context) {
     var screenToBottomNavBarItem = {
-      const ProductsGridScreen(false): const BottomNavigationBarItem(
-        icon: Icon(Icons.home_outlined),
-        label: 'Home',
-      ),
       const ProductsGridScreen(true): const BottomNavigationBarItem(
         icon: Icon(Icons.favorite_outline),
         label: 'Favorites',
       ),
-      const CategoriesScreen(): const BottomNavigationBarItem(
-        icon: Icon(Icons.category_outlined),
-        label: 'Categories',
+      const ProductsGridScreen(false): const BottomNavigationBarItem(
+        icon: Icon(Icons.home_outlined),
+        label: 'Home',
       ),
+      // const CategoriesScreen(): const BottomNavigationBarItem(
+      //   icon: Icon(Icons.category_outlined),
+      //   label: 'Categories',
+      // ),
       const CartScreen(): BottomNavigationBarItem(
         icon: Badge(
           badgeStyle: BadgeStyle(
