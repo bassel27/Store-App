@@ -208,7 +208,9 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
       this.imageUrlController, this.imageProvider);
   final imageUrlController;
   final ProductImageNotifier imageProvider;
-  void modifyImage(imageFile) {
+
+  /// Checks if image file isn't null first.
+  void modifyImageContainer(XFile? imageFile) {
     if (imageFile != null) {
       imageProvider.image = Image.file(File(imageFile.path));
       imageUrlController.clear();
@@ -219,15 +221,15 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
     final imageFile =
         await ImagePicker() // TODO: config for ios check doccumentaoin
             .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
-    modifyImage(imageFile);
+    modifyImageContainer(imageFile);
   }
 
   Future<void> _chooseFromGallery() async {
-    final imageFile =
+    final XFile? imageFile =
         await ImagePicker() // TODO: config for ios check doccumentaoin
             .pickImage(
                 source: ImageSource.gallery, maxWidth: 600); // resolution
-    modifyImage(imageFile);
+    modifyImageContainer(imageFile);
   }
 
   @override
