@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/constants.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
 
@@ -111,7 +112,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
               child: Hero(
                 tag: product.id,
                 child: FadeInImage.assetNetwork(
-                  placeholder: "assets/gifs/placeholder.gif",
+                  placeholder: kPlaceHolder,
                   fit: BoxFit.cover,
                   image: product.imageUrl,
                 ),

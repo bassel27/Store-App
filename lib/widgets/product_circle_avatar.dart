@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/models/constants.dart';
 
 import '../models/product/product.dart';
 
@@ -13,9 +14,13 @@ class ProductCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (ctx, constraints) {
-      return CircleAvatar(
-        radius: constraints.maxHeight / 2,
-        backgroundImage: NetworkImage(product.imageUrl),
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(25.0),
+        child: FadeInImage.assetNetwork(
+          placeholder: kPlaceHolder,
+          fit: BoxFit.cover,
+          image: product.imageUrl,
+        ),
       );
     });
   }

@@ -23,3 +23,4 @@ const kSignUpUrl =
     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$kWebApiKey";
 const kLoginUrl =
     "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$kWebApiKey";
+const String kPlaceHolder = "assets/gifs/placeholder.gif";
