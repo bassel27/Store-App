@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
+import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 
@@ -75,8 +76,14 @@ class _AccountScreenState extends State<AccountScreen> {
           title: "Products Manager",
         ),
         _ClickableListTile(
+            onTap: () {
+              Navigator.pushNamed(context, ChatScreen.route);
+            },
+            title: 'Help',
+            icon: Icons.help),
+        _ClickableListTile(
           icon: Icons.logout,
-          onTap: () async{
+          onTap: () async {
             // Navigator.pop(context);
             await Provider.of<AuthNotifier>(context, listen: false).logout();
             Navigator.of(context).pushReplacementNamed(

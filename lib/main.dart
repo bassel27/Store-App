@@ -8,6 +8,7 @@ import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/auth_screen.dart';
+import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_detail_screen.dart';
@@ -70,7 +71,8 @@ class MyApp extends StatelessWidget {
                 ProductsManagerScreen.route: (ctx) =>
                     const ProductsManagerScreen(),
                 AccountScreen.route: (ctx) => AccountScreen(),
-                EditProductScreen.route: (ctx) => EditProductScreen(null),
+                EditProductScreen.route: (ctx) => const EditProductScreen(null),
+                ChatScreen.route: (ctx) => const ChatScreen(),
               },
               title: 'Flutter Demo',
               home: auth.isAuth
