@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/screens/settings_screen.dart';
@@ -60,8 +62,18 @@ class ProductsGridScreen extends StatelessWidget {
                   ]),
             ),
           ),
-          bottom:
-              AppBar(elevation: 0, title: const _SearchBar(), actions: const [
+          bottom: AppBar(elevation: 0, title: const _SearchBar(), actions: [
+            IconButton(
+                onPressed: () async {
+                  await Firebase.initializeApp();
+                  FirebaseFirestore.instance
+                      .collection('/chats/cNvZUC4up60TY1ODLYV9/messages')
+                      .snapshots()
+                      .listen((event) {
+                    print(event);
+                  });
+                },
+                icon: const Icon(Icons.abc)),
             // IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
           ]),
         ),
