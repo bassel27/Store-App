@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 // TODO: put constant urls in the files where they are used.
 const String kCurrency = 'EGP';
 const kBaseUrl = 'https://shop-app-f7639-default-rtdb.firebaseio.com';
@@ -12,6 +10,8 @@ const kUserFavoritesBaseUrl = "$kBaseUrl/userFavorites";
 const kProductsBaseUrl = '$kBaseUrl/products';
 const String kErrorMessage =
     "Oops! Something went wrong. Check your internet connection and try again.";
+const String kMessagesCollectionAddress =
+    '/chats/cNvZUC4up60TY1ODLYV9/messages';
 
 /// Default timeout duration for http requests in seconds.
 const int kDefaultTimeOutDuation = 5;

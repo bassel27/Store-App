@@ -79,8 +79,8 @@ class _AccountScreenState extends State<AccountScreen> {
             onTap: () {
               Navigator.pushNamed(context, ChatScreen.route);
             },
-            title: 'Help',
-            icon: Icons.help),
+            title: 'Chat Support',
+            icon: Icons.chat),
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
