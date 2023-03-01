@@ -70,7 +70,9 @@ class ProductsGridScreen extends StatelessWidget {
                       .collection('/chats/cNvZUC4up60TY1ODLYV9/messages')
                       .snapshots()
                       .listen((event) {
-                    print(event);
+                    for (var doc in event.docs) {
+                      print(doc['text']);
+                    }
                   });
                 },
                 icon: const Icon(Icons.abc)),
