@@ -1,25 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/mixins/add_token_to_url.dart';
-import 'package:store_app/models/constants.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 
 import '../models/cart_item/cart_item.dart';
-import '../services/base_client.dart';
 
 class CartController with AddTokenToUrl {
   AuthNotifier authProvider;
   CartController(this.authProvider);
-
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  final String kCartCollection = 'cart';
   Future<List<CartItem>> get() async {
-    Map<String, dynamic>? cartItemMaps = await BaseClient.get(getTokenedUrl(
-        url: "$kCartBaseUrl/${authProvider.userId}.json",
-        token: authProvider.token!)); // map of cartItem maps.
     List<CartItem> cartItems = [];
-    if (cartItemMaps != null) {
-      // if cart not empty
-      cartItemMaps.forEach((cartItemId, cartItemData) {
-        cartItems.add(CartItem.fromJson(cartItemData));
-      });
+    QuerySnapshot snapshot = await db.collection(kCartCollection).get();
+    for (var docSnapshot in snapshot.docs) {
+      cartItems
+          .add(CartItem.fromJson(docSnapshot.data() as Map<String, dynamic>));
     }
     return cartItems;
   }
@@ -29,12 +25,11 @@ class CartController with AddTokenToUrl {
   /// Throws an exception if operatoin fails.
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await BaseClient.put(
-        getTokenedUrl(
-            url: _cartUrlWithUserIdAndCartId(authProvider.userId, cartItem.id),
-            token: authProvider.token!),
-        cartItem.toJson(),
-      );
+      print(cartItem.toJson());
+      await db
+          .collection(kCartCollection)
+          .doc(cartItem.id)
+          .set(cartItem.toJson());
     });
   }
 
@@ -43,12 +38,9 @@ class CartController with AddTokenToUrl {
   /// Throws an exception if operatoin fails.
   Future<void> incrementQuantity(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await BaseClient.patch(
-        getTokenedUrl(
-            url: _cartUrlWithUserIdAndCartId(authProvider.userId, cartItem.id),
-            token: authProvider.token!),
-        cartItem.copyWith(quantity: cartItem.quantity + 1).toJson(),
-      );
+      await db.collection(kCartCollection).doc(cartItem.id).set(
+          cartItem.copyWith(quantity: cartItem.quantity + 1).toJson(),
+          SetOptions(merge: true));
     });
   }
 
@@ -57,15 +49,9 @@ class CartController with AddTokenToUrl {
   /// Throws an exception if operatoin fails.
   Future<void> decrementQuantity(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await BaseClient.patch(
-        getTokenedUrl(
-            url: _cartUrlWithUserIdAndCartId(
-              authProvider.userId,
-              cartItem.id,
-            ),
-            token: authProvider.token!),
-        cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
-      );
+      await db.collection(kCartCollection).doc(cartItem.id).set(
+          cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
+          SetOptions(merge: true));
     });
   }
 
@@ -74,31 +60,17 @@ class CartController with AddTokenToUrl {
   /// Throws an exception if operatoin fails.
   Future<void> setQuantity(CartItem cartItem, int quantity) async {
     await httpRequestTemplate(() async {
-      await BaseClient.patch(
-        getTokenedUrl(
-            url: _cartUrlWithUserIdAndCartId(authProvider.userId, cartItem.id),
-            token: authProvider.token!),
-        cartItem.copyWith(quantity: quantity).toJson(),
-      );
+      await db.collection(kCartCollection).doc(cartItem.id).set(
+          cartItem.copyWith(quantity: quantity).toJson(),
+          SetOptions(merge: true));
     });
   }
 
   /// Throws an exception if operatoin fails.
-  Future<void> delete(CartItem cartItem, {bool showLoading = true}) async {
+  Future<void> delete(String cartItemId, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
-      await BaseClient.delete(
-        getTokenedUrl(
-            url: _cartUrlWithUserIdAndCartId(
-              authProvider.userId,
-              cartItem.id,
-            ),
-            token: authProvider.token!),
-      );
+      await db.collection(kCartCollection).doc(cartItemId).delete();
     }, showLoading: showLoading);
-  }
-
-  String _cartUrlWithUserIdAndCartId(String userId, String cartId) {
-    return "$kCartBaseUrl/$userId/$cartId.json";
   }
 
   Future<void> httpRequestTemplate(Function foo,
@@ -110,7 +82,7 @@ class CartController with AddTokenToUrl {
 
   Future<void> clearCart(List<CartItem> cartItems) async {
     for (var cartItem in cartItems) {
-      await delete(cartItem, showLoading: false);
+      await delete(cartItem.id, showLoading: false);
     }
   }
 }

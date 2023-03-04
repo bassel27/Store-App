@@ -58,7 +58,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
 
   /// Delete an item from the cart using this item's id.
   void deleteItem(CartItem cartItemInput) async {
-    await _cartController.delete(cartItemInput).then((value) {
+    await _cartController.delete(cartItemInput.id).then((value) {
       cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
       notifyListeners();
     }).catchError(handleError);
@@ -132,7 +132,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
         if (cartItems[i].quantity == 1) {
           CartItem removedProduct = cartItems[i];
           await _cartController
-              .delete(removedProduct)
+              .delete(removedProduct.id)
               .then((_) => cartItems
                   .removeWhere((cartItem) => cartItem.id == cartItemInput.id))
               .catchError(handleError);

@@ -26,6 +26,16 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
     return products;
   }
 
+  /// Throws an exception if operation fails.
+  Future<void> create(Product newProduct) async {
+    DialogHelper.showLoading();
+    await db
+        .collection(kProductsCollection)
+        .doc(newProduct.id)
+        .set(newProduct.toJson());
+    DialogHelper.hideCurrentDialog();
+  }
+
   /// Throws an error if operation fails.
   Future<void> determineFavoriteStatus(
       String productId, bool isFavorite, String userId) async {
@@ -34,16 +44,6 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
         .collection(kProductsCollection)
         .doc(productId)
         .set({'isFavorite': isFavorite}, SetOptions(merge: true));
-    DialogHelper.hideCurrentDialog();
-  }
-
-  /// Throws an exception if operation fails.
-  Future<void> create(Product newProduct) async {
-    DialogHelper.showLoading();
-    await db
-        .collection(kProductsCollection)
-        .doc(newProduct.id)
-        .set(newProduct.toJson());
     DialogHelper.hideCurrentDialog();
   }
 
