@@ -2,15 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/mixins/add_token_to_url.dart';
-import 'package:store_app/providers/auth_notifier.dart';
 
 import '../models/product/product.dart';
 
 // TODO: use tojson and from json. send my id
 class ProductsController with ErrorHandler, AddTokenToUrl {
   FirebaseFirestore db = FirebaseFirestore.instance;
-  AuthNotifier authProvider;
-  ProductsController(this.authProvider);
   final String kProductsCollection = 'products';
 
   /// Returns list of products.

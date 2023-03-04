@@ -11,7 +11,7 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
   final AuthNotifier authProvider;
   ProductsNotifier(this.authProvider, this.items);
   late final ProductsController _productsController =
-      ProductsController(authProvider);
+      ProductsController();
   Product editedProduct =
       const Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 

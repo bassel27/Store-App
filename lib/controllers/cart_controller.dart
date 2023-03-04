@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/mixins/add_token_to_url.dart';
-import 'package:store_app/providers/auth_notifier.dart';
 
 import '../models/cart_item/cart_item.dart';
 
 class CartController with AddTokenToUrl {
-  AuthNotifier authProvider;
-  CartController(this.authProvider);
+  CartController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kCartCollection = 'cart';
   Future<List<CartItem>> get() async {
