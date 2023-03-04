@@ -5,7 +5,7 @@ import 'package:store_app/providers/cart_notifier.dart';
 import '.././widgets/total_container.dart';
 import '../models/cart_item/cart_item.dart';
 import '../widgets/cart_tile.dart';
-import '../widgets/my_future_builder.dart';
+import '../widgets/error_scaffold_body.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -34,10 +34,26 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldFutureBuilder(
+    return Scaffold(
       appBar: AppBar(title: const Text("Cart")),
-      future: _future,
-      onSuccessWidget: const _SuccessfulScaffoldBody(),
+      body: Center(
+        child: FutureBuilder(
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return ErrorScaffoldBody(snapshot.error as Exception);
+              } else {
+                return const _SuccessfulScaffoldBody();
+              }
+            } else {
+              return Text('State: ${snapshot.connectionState}');
+            }
+          },
+        ),
+      ),
     );
   }
 }
