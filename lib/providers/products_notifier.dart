@@ -4,14 +4,12 @@ import 'package:store_app/controllers/products_controller.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
-import 'auth_notifier.dart';
 
 class ProductsNotifier with ChangeNotifier, ErrorHandler {
   bool areProductsFetched = false;
-  final AuthNotifier authProvider;
-  ProductsNotifier(this.authProvider, this.items);
-  late final ProductsController _productsController =
-      ProductsController();
+
+  ProductsNotifier(this.items);
+  late final ProductsController _productsController = ProductsController();
   Product editedProduct =
       const Product(id: '', title: '', description: '', price: 0, imageUrl: '');
 
@@ -38,7 +36,7 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
     if (index != -1) {
       try {
         await _productsController.determineFavoriteStatus(
-            product.id, !product.isFavorite, authProvider.userId);
+            product.id, !product.isFavorite);
         items[index] = product.copyWith(isFavorite: !product.isFavorite);
         notifyListeners();
       } catch (e) {

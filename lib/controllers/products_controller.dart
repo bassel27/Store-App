@@ -35,7 +35,7 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
 
   /// Throws an error if operation fails.
   Future<void> determineFavoriteStatus(
-      String productId, bool isFavorite, String userId) async {
+      String productId, bool isFavorite) async {
     DialogHelper.showLoading();
     await db
         .collection(kProductsCollection)

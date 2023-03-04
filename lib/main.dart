@@ -36,9 +36,8 @@ class MyApp extends StatelessWidget {
     ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
         // this provider will be rebuilt when Auth changes
         update: (context, auth, previousProduct) => ProductsNotifier(
-            auth, previousProduct == null ? [] : previousProduct.items),
-        create: (context) => ProductsNotifier(
-            Provider.of<AuthNotifier>(context, listen: false), [])),
+            previousProduct == null ? [] : previousProduct.items),
+        create: (context) => ProductsNotifier([])),
     ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
       update: (context, auth, previousCart) =>
           CartNotifier(previousCart == null ? [] : previousCart.cartItems),
