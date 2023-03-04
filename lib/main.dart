@@ -16,7 +16,6 @@ import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
-import 'package:store_app/screens/splash_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
@@ -62,31 +61,23 @@ class MyApp extends StatelessWidget {
       providers: providers,
       // TODO: use materialapp
       builder: (context, child) => Consumer<AuthNotifier>(
-          builder: (context, auth, _) => GetMaterialApp(
-              themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
-              theme: MyTheme.lightTheme,
-              darkTheme: MyTheme.darkTheme,
-              routes: {
-                BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
-                ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
-                OrdersScreen.route: (ctx) => const OrdersScreen(),
-                ProductsManagerScreen.route: (ctx) =>
-                    const ProductsManagerScreen(),
-                AccountScreen.route: (ctx) => AccountScreen(),
-                EditProductScreen.route: (ctx) => const EditProductScreen(null),
-                ChatScreen.route: (ctx) => const ChatScreen(),
-              },
-              title: 'Flutter Demo',
-              home: auth.isAuth
-                  ? const SplashScreen()
-                  : FutureBuilder(
-                      future: auth.tryAutoLogin(),
-                      builder: (context, snapshot) => snapshot
-                                  .connectionState ==
-                              ConnectionState.waiting
-                          ? const CircularProgressIndicator()
-                          : AuthScreen(), // on future finished, if notifylisteners called, then splashscreen is displayed. If not, authscreen will be displayed
-                    ))),
+        builder: (context, auth, _) => GetMaterialApp(
+          themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
+          theme: MyTheme.lightTheme,
+          darkTheme: MyTheme.darkTheme,
+          routes: {
+            BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
+            ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
+            OrdersScreen.route: (ctx) => const OrdersScreen(),
+            ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
+            AccountScreen.route: (ctx) => AccountScreen(),
+            EditProductScreen.route: (ctx) => const EditProductScreen(null),
+            ChatScreen.route: (ctx) => const ChatScreen(),
+          },
+          title: 'Flutter Demo',
+          home: AuthScreen(),
+        ),
+      ),
     );
   }
 }
