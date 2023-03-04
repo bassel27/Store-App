@@ -9,6 +9,7 @@ import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/auth_screen.dart';
+import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
               theme: MyTheme.lightTheme,
               darkTheme: MyTheme.darkTheme,
               routes: {
+                BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
                 ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
                 OrdersScreen.route: (ctx) => const OrdersScreen(),
                 ProductsManagerScreen.route: (ctx) =>

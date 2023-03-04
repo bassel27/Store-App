@@ -8,7 +8,7 @@ import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  static const route = 'productDetail';
+  static const route = '/bottom_nav_bar/productDetail';
 
   @override
   Widget build(BuildContext context) {

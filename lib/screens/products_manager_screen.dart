@@ -13,12 +13,11 @@ import '../widgets/product_circle_avatar.dart';
 
 class ProductsManagerScreen extends StatelessWidget {
   const ProductsManagerScreen({super.key});
-  static const route = "/product_manager_screen";
+  static const route = "/bottom_nav_bar/product_manager_screen";
   @override
   Widget build(BuildContext context) {
     var productsProvider = Provider.of<ProductsNotifier>(context);
-
-    List<Product> products = Provider.of<ProductsNotifier>(context).products;
+    List<Product> products = productsProvider.products;
 
     return Scaffold(
       appBar: AppBar(
@@ -29,28 +28,31 @@ class ProductsManagerScreen extends StatelessWidget {
               icon: const Icon(Icons.add)),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => productsProvider.getAndSetProducts(),
-        child: products.isEmpty
-            ? const EmptyScreenText("No products.\n\nAdd some to get started!")
-            : ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (_, i) {
-                  return Column(
-                    key: ValueKey(products[i].id),
-                    children: [
-                      MyDismissible(
-                        valueKeyId: products[i].id,
-                        onDismissed: (_) =>
-                            onProductDelete(products[i], context),
-                        child: _ProductListTile(products[i]),
-                      ),
-                      const Divider(),
-                    ],
-                  );
-                },
-              ),
-      ),
+      body:
+          //  RefreshIndicator(
+          // onRefresh: () => productsProvider.getAndSetProducts(),
+          // child:
+          products.isEmpty
+              ? const EmptyScreenText(
+                  "No products.\n\nAdd some to get started!")
+              : ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (_, i) {
+                    return Column(
+                      key: ValueKey(products[i].id),
+                      children: [
+                        MyDismissible(
+                          valueKeyId: products[i].id,
+                          onDismissed: (_) =>
+                              onProductDelete(products[i], context),
+                          child: _ProductListTile(products[i]),
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                ),
+      // ),
     );
   }
 }
@@ -60,9 +62,6 @@ class _ProductListTile extends StatelessWidget {
   const _ProductListTile(this.product);
   @override
   Widget build(BuildContext context) {
-    var productsProvider = Provider.of<ProductsNotifier>(context);
-
-    List<Product> products = productsProvider.products;
     return ListTile(
       leading: ProductCircleAvatar(product: product),
       title: Text(product.title),

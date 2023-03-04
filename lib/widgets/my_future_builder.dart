@@ -14,6 +14,7 @@ class ScaffoldFutureBuilder extends StatelessWidget {
   });
 
   final Future future;
+  /// Shouldn't be a screen.
   final Widget onSuccessWidget;
   final Widget onLoadingWidget;
   final AppBar? appBar;

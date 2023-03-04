@@ -9,7 +9,7 @@ import '../screens/products_grid_screen.dart';
 //TODO: replace with persistent nav bar
 class BottomNavBarScreen extends StatefulWidget {
   const BottomNavBarScreen({super.key});
-
+  static const route = '/bottom_nav_bar';
   @override
   State<BottomNavBarScreen> createState() => _BottomNavBarScreenState();
 }
