@@ -104,8 +104,8 @@ class _EditProductScreenState extends State<EditProductScreen>
               PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
               DescriptionTextFormField(_descriptionFocusNode),
               mySizedBox,
-              _ImageRow(_saveForm, _imageUrlFocusNode, _imageUrlController,
-                  imageContainerTextColor),
+              _ImageRow(_onSaveButtonPressed, _imageUrlFocusNode,
+                  _imageUrlController, imageContainerTextColor),
               mySizedBox,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
@@ -145,6 +145,7 @@ class _EditProductScreenState extends State<EditProductScreen>
     }
   }
 
+  /// Updates image first then calls _saveform
   void _onSaveButtonPressed() {
     ProductImageNotifier? imageProvider =
         Provider.of<ProductImageNotifier>(context, listen: false);
@@ -209,9 +210,9 @@ class _EditProductScreenState extends State<EditProductScreen>
 }
 
 class _ImageRow extends StatelessWidget {
-  const _ImageRow(this.saveForm, this.imageUrlFocusNode,
+  const _ImageRow(this.onSaveButtonPressed, this.imageUrlFocusNode,
       this.imageUrlController, this.imageContainerTextColor);
-  final VoidCallback saveForm;
+  final VoidCallback onSaveButtonPressed;
   final FocusNode imageUrlFocusNode;
   final imageUrlController;
   final Color imageContainerTextColor;
@@ -228,7 +229,7 @@ class _ImageRow extends StatelessWidget {
           child: ImageUrlTextFormField(
               imageUrlFocusNode: imageUrlFocusNode,
               imageUrlController: imageUrlController,
-              saveFormFunction: saveForm,
+              saveFormFunction: onSaveButtonPressed,
               image: context.watch<ProductImageNotifier>().image),
         ),
         _PhotoInputFromDeviceColumn(imageUrlController,

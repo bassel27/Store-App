@@ -14,12 +14,16 @@ class ProductCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (ctx, constraints) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(25.0),
-        child: FadeInImage.assetNetwork(
-          placeholder: kPlaceHolder,
-          fit: BoxFit.cover,
-          image: product.imageUrl,
+      return SizedBox(
+        height: constraints.maxHeight,
+        width: constraints.maxHeight,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(25.0),
+          child: FadeInImage.assetNetwork(
+            placeholder: kPlaceHolder,
+            fit: BoxFit.cover,
+            image: product.imageUrl,
+          ),
         ),
       );
     });
