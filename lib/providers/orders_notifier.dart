@@ -14,7 +14,9 @@ class OrdersNotifier with ChangeNotifier, ErrorHandler {
   OrdersNotifier(this.ordersList);
 
   late final OrdersController _ordersController = OrdersController();
-  List<Order> get orders => [...ordersList];
+  List<Order> get orders => [...ordersList]..sort((a, b) {
+      return b.dateTime.compareTo(a.dateTime);
+    });
   set orders(List<Order> orders) {
     ordersList = orders;
   }
