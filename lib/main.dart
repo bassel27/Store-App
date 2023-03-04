@@ -13,7 +13,7 @@ import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
-import 'package:store_app/screens/product_detail_screen.dart';
+import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:store_app/screens/splash_screen.dart';
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
               darkTheme: MyTheme.darkTheme,
               routes: {
                 BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
-                ProductDetailScreen.route: (ctx) => ProductDetailScreen(),
+                ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
                 OrdersScreen.route: (ctx) => const OrdersScreen(),
                 ProductsManagerScreen.route: (ctx) =>
                     const ProductsManagerScreen(),

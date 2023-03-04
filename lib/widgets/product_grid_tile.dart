@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/constants.dart';
 import 'package:store_app/providers/cart_notifier.dart';
-import 'package:store_app/screens/product_detail_screen.dart';
+import 'package:store_app/screens/product_details_screen.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -22,7 +22,7 @@ class ProductGridTile extends StatelessWidget {
       builder: (ctx, constraints) => GestureDetector(
         onTap: () {
           Navigator.of(context)
-              .pushNamed(ProductDetailScreen.route, arguments: product);
+              .pushNamed(ProductDetailsScreen.route, arguments: product);
         },
         child: Card(
           shape: RoundedRectangleBorder(

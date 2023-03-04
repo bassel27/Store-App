@@ -7,7 +7,7 @@ import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 
 class AccountScreen extends StatefulWidget {
-  static const route = "/settings";
+  static const route = "/bottom_nav_bar/my_account";
   @override
   State<AccountScreen> createState() => _AccountScreenState();
 }

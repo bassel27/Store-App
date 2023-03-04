@@ -8,7 +8,7 @@ import '../widgets/empty_screen_text.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
-  static const route = "/bottom_nav_bar/my_account/order_screen";
+  static const route = "/bottom_nav_bar/my_account/orders_screen";
 
   @override
   State<OrdersScreen> createState() => _OrdersScreenState();

@@ -7,8 +7,8 @@ import 'package:store_app/widgets/currency_and_price_text.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  static const route = '/bottom_nav_bar/productDetail';
+class ProductDetailsScreen extends StatelessWidget {
+  static const route = '/bottom_nav_bar/product_details';
 
   @override
   Widget build(BuildContext context) {

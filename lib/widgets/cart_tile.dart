@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/screens/product_detail_screen.dart';
+import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
 import '../models/cart_item/cart_item.dart';
@@ -22,7 +22,7 @@ class CartTile extends StatelessWidget {
       },
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, ProductDetailScreen.route,
+          Navigator.pushNamed(context, ProductDetailsScreen.route,
               arguments: cartItem.product);
         },
         child: CartItemTile(cartItem: cartItem),

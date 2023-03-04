@@ -13,7 +13,7 @@ import '../widgets/product_circle_avatar.dart';
 
 class ProductsManagerScreen extends StatelessWidget {
   const ProductsManagerScreen({super.key});
-  static const route = "/bottom_nav_bar/product_manager_screen";
+  static const route = "/bottom_nav_bar/my_account/product_manager_screen";
   @override
   Widget build(BuildContext context) {
     var productsProvider = Provider.of<ProductsNotifier>(context);

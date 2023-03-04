@@ -5,7 +5,7 @@ import 'package:store_app/widgets/error_scaffold_body.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
-  static const route = '/settings/chat_screen';
+  static const route = '/bottom_nav_bar/my_account/chat_screen';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -16,7 +16,7 @@ import '../widgets/name_text_form_field.dart';
 import '../widgets/price_text_form_field.dart';
 
 class EditProductScreen extends StatefulWidget {
-  static const route = "/settings/edit_products_screen";
+  static const route = "/bottom_nav_bar/my_account/edit_products_screen";
   final Product? product;
   const EditProductScreen(this.product);
   @override
