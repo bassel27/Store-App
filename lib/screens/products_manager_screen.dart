@@ -9,35 +9,18 @@ import 'package:store_app/widgets/my_dismissble.dart';
 import '../controllers/error_handler.dart';
 import '../models/product/product.dart';
 import '../widgets/empty_screen_text.dart';
-import '../widgets/my_future_builder.dart';
 import '../widgets/product_circle_avatar.dart';
 
-class ProductsManagerScreen extends StatefulWidget {
+class ProductsManagerScreen extends StatelessWidget {
   const ProductsManagerScreen({super.key});
   static const route = "/product_manager_screen";
-
-  @override
-  State<ProductsManagerScreen> createState() => _ProductsManagerScreenState();
-}
-
-class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
-  late Future _fetchAndSetProductsFuture;
-  @override
-  void initState() {
-    super.initState();
-    _fetchAndSetProductsFuture = getAndSetProducts();
-  }
-
   @override
   Widget build(BuildContext context) {
     var productsProvider = Provider.of<ProductsNotifier>(context);
 
     List<Product> products = Provider.of<ProductsNotifier>(context).products;
 
-    return ScaffoldFutureBuilder(
-      future: _fetchAndSetProductsFuture,
-      onSuccessWidget: _SuccessfulScaffoldBody(
-          productsProvider: productsProvider, products: products),
+    return Scaffold(
       appBar: AppBar(
         title: const Text("Products Manager"),
         actions: [
@@ -46,52 +29,28 @@ class _ProductsManagerScreenState extends State<ProductsManagerScreen> {
               icon: const Icon(Icons.add)),
         ],
       ),
-    );
-  }
-
-  Future<void> getAndSetProducts() {
-    ProductsNotifier productsProvider =
-        Provider.of<ProductsNotifier>(context, listen: false);
-    if (!productsProvider.areProductsFetched) {
-      return productsProvider.getAndSetProducts();
-    } else {
-      return Future.delayed(Duration.zero);
-    }
-  }
-}
-
-class _SuccessfulScaffoldBody extends StatelessWidget {
-  const _SuccessfulScaffoldBody({
-    Key? key,
-    required this.productsProvider,
-    required this.products,
-  }) : super(key: key);
-
-  final ProductsNotifier productsProvider;
-  final List<Product> products;
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () => productsProvider.getAndSetProducts(),
-      child: products.isEmpty
-          ? const EmptyScreenText("No products.\n\nAdd some to get started!")
-          : ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (_, i) {
-                return Column(
-                  key: ValueKey(products[i].id),
-                  children: [
-                    MyDismissible(
-                      valueKeyId: products[i].id,
-                      onDismissed: (_) => onProductDelete(products[i], context),
-                      child: _ProductListTile(products[i]),
-                    ),
-                    const Divider(),
-                  ],
-                );
-              },
-            ),
+      body: RefreshIndicator(
+        onRefresh: () => productsProvider.getAndSetProducts(),
+        child: products.isEmpty
+            ? const EmptyScreenText("No products.\n\nAdd some to get started!")
+            : ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (_, i) {
+                  return Column(
+                    key: ValueKey(products[i].id),
+                    children: [
+                      MyDismissible(
+                        valueKeyId: products[i].id,
+                        onDismissed: (_) =>
+                            onProductDelete(products[i], context),
+                        child: _ProductListTile(products[i]),
+                      ),
+                      const Divider(),
+                    ],
+                  );
+                },
+              ),
+      ),
     );
   }
 }
