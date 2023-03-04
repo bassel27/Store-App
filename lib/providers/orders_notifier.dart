@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/error_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -7,16 +5,15 @@ import 'package:uuid/uuid.dart';
 import '../controllers/orders_controller.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/order/order.dart';
-import 'auth_notifier.dart';
 
 class OrdersNotifier with ChangeNotifier, ErrorHandler {
   /// List of all order sorted by recency.
   // TODO: make private
-  List<Order> ordersList ;
-  AuthNotifier authProvider;
-  OrdersNotifier(this.authProvider, this.ordersList);
+  List<Order> ordersList;
 
-  late final OrdersController _ordersController = OrdersController(authProvider);
+  OrdersNotifier(this.ordersList);
+
+  late final OrdersController _ordersController = OrdersController();
   List<Order> get orders => [...ordersList];
   set orders(List<Order> orders) {
     ordersList = orders;
