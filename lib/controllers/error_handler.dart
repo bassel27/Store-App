@@ -9,8 +9,6 @@ class ErrorHandler {
     //     error is ApiNotRespondingException) {
     //   DialogHelper.showErroDialog(description: error.message);
     // } else {
-    print(error.message + "and " + error.toString());
-    print(error.runtimeType);
     DialogHelper.showErroDialog(description: error.message ?? error.toString());
     // }
   }

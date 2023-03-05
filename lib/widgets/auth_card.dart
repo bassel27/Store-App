@@ -1,5 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/mixins/input_decration.dart';
+import 'package:store_app/models/my_theme.dart';
+import 'package:store_app/screens/signup_screen.dart';
+import 'package:store_app/widgets/auth_button.dart';
 
 import '../controllers/error_handler.dart';
 import '../providers/auth_notifier.dart';
@@ -61,7 +66,7 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
               _PasswordTextFormField(
                   passwordController: _passwordController,
                   authData: _authData,
-                  submitFunction: _submit),
+                  submitFunction: _submitForm),
               if (_authMode == AuthMode.SIGNUP)
                 _ReenterPasswordTextFormField(
                     authMode: _authMode,
@@ -72,18 +77,14 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
               if (_isLoading)
                 const CircularProgressIndicator()
               else
-                _MyButton(
-                  onPressed: _submit,
+                AuthButton(
+                  onPressed: _submitForm,
                   child: _authMode == AuthMode.LOGIN ? 'LOGIN' : 'SIGN UP',
                 ),
               const SizedBox(
-                height: 10,
+                height: 30,
               ),
-              _MyButton(
-                onPressed: _switchAuthMode,
-                child:
-                    '${_authMode == AuthMode.LOGIN ? 'SIGNUP' : 'LOGIN'} INSTEAD',
-              ),
+              const _NoAccountText(),
             ],
           ),
         ),
@@ -91,7 +92,7 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
     );
   }
 
-  void _submit() async {
+  void _submitForm() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -101,19 +102,11 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
       _isLoading = true;
     });
 
-    if (_authMode == AuthMode.LOGIN) {
-      // Log user in
-      await Provider.of<AuthNotifier>(context, listen: false).login(
-        _authData['email']!,
-        _authData['password']!,
-      );
-    } else {
-      // Sign user up
-      await Provider.of<AuthNotifier>(context, listen: false).signup(
-        _authData['email']!,
-        _authData['password']!,
-      );
-    }
+    // Log user in
+    await Provider.of<AuthNotifier>(context, listen: false).login(
+      _authData['email']!,
+      _authData['password']!,
+    );
 
     setState(() {
       _isLoading = false;
@@ -163,7 +156,32 @@ class _ReenterPasswordTextFormField extends StatelessWidget {
   }
 }
 
-class _PasswordTextFormField extends StatelessWidget {
+class _NoAccountText extends StatelessWidget {
+  const _NoAccountText();
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+          text: "Don't have an account? ",
+          style: const TextStyle(color: kTextDarkColor, fontSize: 15),
+          children: [
+            TextSpan(
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SignupScreen()));
+                  },
+                text: "Register Now",
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    fontWeight: FontWeight.w600))
+          ]),
+    );
+  }
+}
+
+class _PasswordTextFormField extends StatelessWidget with MyInputDecoration {
   const _PasswordTextFormField(
       {Key? key,
       required TextEditingController passwordController,
@@ -203,7 +221,7 @@ class _PasswordTextFormField extends StatelessWidget {
   }
 }
 
-class _EmailTextFormField extends StatelessWidget {
+class _EmailTextFormField extends StatelessWidget with MyInputDecoration {
   const _EmailTextFormField({
     Key? key,
     required Map<String, String> authData,
@@ -229,51 +247,6 @@ class _EmailTextFormField extends StatelessWidget {
           _authData['email'] = value;
         }
       },
-    );
-  }
-}
-
-InputDecoration inputDecoration(
-    BuildContext context, String hintText, IconData iconData) {
-  var myBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10),
-    borderSide:
-        BorderSide(color: Theme.of(context).colorScheme.secondary, width: 0.8),
-  );
-  return InputDecoration(
-    hintText: hintText,
-    filled: true,
-    fillColor: Theme.of(context).colorScheme.background,
-    border: myBorder,
-    focusedBorder: myBorder,
-    prefixIcon: Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: Icon(
-        iconData,
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-    ),
-  );
-}
-
-class _MyButton extends StatelessWidget {
-  final String child;
-  final VoidCallback onPressed;
-  const _MyButton({required this.child, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 45,
-      child: ElevatedButton(
-          onPressed: onPressed,
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ))),
-          child: Text(child)),
     );
   }
 }
