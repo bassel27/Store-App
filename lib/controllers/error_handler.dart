@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 
 class ErrorHandler {
@@ -10,9 +9,9 @@ class ErrorHandler {
     //     error is ApiNotRespondingException) {
     //   DialogHelper.showErroDialog(description: error.message);
     // } else {
-    DialogHelper.showErroDialog(
-        description:
-            error is PlatformException ? error.message : error.toString());
+    print(error.message + "and " + error.toString());
+    print(error.runtimeType);
+    DialogHelper.showErroDialog(description: error.message ?? error.toString());
     // }
   }
 }

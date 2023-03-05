@@ -100,23 +100,21 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
     setState(() {
       _isLoading = true;
     });
-    try {
-      if (_authMode == AuthMode.LOGIN) {
-        // Log user in
-        await Provider.of<AuthNotifier>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      } else {
-        // Sign user up
-        await Provider.of<AuthNotifier>(context, listen: false).signup(
-          _authData['email']!,
-          _authData['password']!,
-        );
-      }
-    } catch (error) {
-      handleError(error);
+
+    if (_authMode == AuthMode.LOGIN) {
+      // Log user in
+      await Provider.of<AuthNotifier>(context, listen: false).login(
+        _authData['email']!,
+        _authData['password']!,
+      );
+    } else {
+      // Sign user up
+      await Provider.of<AuthNotifier>(context, listen: false).signup(
+        _authData['email']!,
+        _authData['password']!,
+      );
     }
+
     setState(() {
       _isLoading = false;
     });

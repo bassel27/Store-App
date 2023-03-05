@@ -47,37 +47,4 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
       handleError(e);
     }
   }
-  // /// Returns true if user succesfully logged in.
-  // Future<bool> tryAutoLogin() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   if (!prefs.containsKey('userData')) {
-  //     return false;
-  //   }
-  //   final extracteduserData = json.decode(prefs.getString('userData')!);
-  //   final expiryDate =
-  //       DateTime.parse(extracteduserData['expiryDate'] as String);
-  //   if (!isDateNotReached(expiryDate)) {
-  //     return false;
-  //   }
-  //   _token = extracteduserData['token'];
-  //   _userId = extracteduserData['userId'];
-  //   _expiryDate = expiryDate;
-  //   autoLogoutAfterExpiryDate();
-  //   notifyListeners();
-  //   return true;
-  // }
-
-  // Future<void> removeUserDataFromMemory() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   prefs.remove('userData');
-  // }
-
-  // /// Automatically log out after token expires.
-  // void autoLogoutAfterExpiryDate() {
-  //   if (_authTimer != null) {
-  //     _authTimer!.cancel();
-  //   }
-  //   final timeToExpiry = _expiryDate!.difference(DateTime.now()).inSeconds;
-  //   _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
-  // }
 }
