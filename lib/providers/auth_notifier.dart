@@ -22,6 +22,26 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
     return date.isAfter(DateTime.now());
   }
 
+  void _wrapInTryCatch(Function foo, [showLoading = false]) async {
+    if (showLoading) {
+      DialogHelper.showLoading();
+    }
+    try {
+      await foo();
+      if (showLoading) {
+        DialogHelper.hideCurrentDialog();
+      }
+    } on PlatformException catch (e) {
+      handleError(e);
+    } on FirebaseAuthException catch (e) {
+      handleError(e);
+    }
+  }
+
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email.trim());
+  }
+
   Future<void> signup(User user) async {
     DialogHelper.showLoading();
     UserCredential authResult = await _auth.createUserWithEmailAndPassword(

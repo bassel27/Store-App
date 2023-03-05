@@ -1,8 +1,10 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/mixins/input_decration.dart';
 import 'package:store_app/models/my_theme.dart';
+import 'package:store_app/screens/forgot_password_screen.dart';
 import 'package:store_app/screens/signup_screen.dart';
 import 'package:store_app/widgets/auth_button.dart';
 
@@ -54,7 +56,25 @@ class AuthContainer extends StatelessWidget {
               _PasswordTextFormField(
                   authData: _authData, submitFunction: _submitForm),
               const SizedBox(
-                height: 20,
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>  ForgotPasswordScreen(),
+                  )),
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.tertiary),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
               ),
               AuthButton(
                 onPressed: () {
@@ -96,7 +116,8 @@ class _NoAccountText extends StatelessWidget {
     return RichText(
       text: TextSpan(
           text: "Don't have an account? ",
-          style: const TextStyle(color: kTextDarkColor, fontSize: 15),
+          style: const TextStyle(
+              color: kTextDarkColor, fontSize: 15, fontWeight: FontWeight.w400),
           children: [
             TextSpan(
                 recognizer: TapGestureRecognizer()
@@ -165,7 +186,7 @@ class _EmailTextFormField extends StatelessWidget with MyInputDecoration {
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         //TODO: email verification
-        if (value == null || value.isEmpty) {
+        if (value == null || value.isEmpty || !EmailValidator.validate(value)) {
           return 'Enter your email!';
         }
         return null;

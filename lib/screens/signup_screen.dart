@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 
 import '../mixins/input_decration.dart';
 import '../providers/auth_notifier.dart';
-
+import 'package:email_validator/email_validator.dart';
 class SignupScreen extends StatelessWidget
     with MyInputDecoration, ErrorHandler {
   SignupScreen({super.key});
@@ -75,8 +75,7 @@ class SignupScreen extends StatelessWidget
                 initialValue: "bassel_sabour@hotmail.com",
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  //TODO: email verification
-                  if (value == null || value.isEmpty || !value.contains('@')) {
+                  if (value == null || value.isEmpty || !EmailValidator.validate(value)) {
                     return 'Invalid email!';
                   }
                   return null;
