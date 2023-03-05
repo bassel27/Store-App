@@ -73,6 +73,7 @@ class SignupScreen extends StatelessWidget
               TextFormField(
                 decoration: inputDecoration(context, "Email", Icons.email),
                 initialValue: "bassel_sabour@hotmail.com",
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   //TODO: email verification
                   if (value == null || value.isEmpty || !value.contains('@')) {

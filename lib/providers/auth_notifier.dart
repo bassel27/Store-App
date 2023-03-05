@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException, UserCredential;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/controllers/auth_controller.dart';
 import 'package:store_app/controllers/error_handler.dart';
@@ -33,9 +34,11 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
   }
 
   Future<void> login(String email, String password) async {
+    DialogHelper.showLoading();
     try {
       UserCredential authResult = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
+      DialogHelper.hideCurrentDialog();
     } on PlatformException catch (e) {
       handleError(e);
     } on FirebaseAuthException catch (e) {

@@ -6,27 +6,15 @@ import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/signup_screen.dart';
 import 'package:store_app/widgets/auth_button.dart';
 
-import '../controllers/error_handler.dart';
 import '../providers/auth_notifier.dart';
 
-enum AuthMode { SIGNUP, LOGIN }
+final GlobalKey<FormState> _formKey = GlobalKey();
 
-class AuthContainer extends StatefulWidget {
-  @override
-  _AuthContainerState createState() => _AuthContainerState();
-}
-
-class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  AuthMode _authMode = AuthMode.LOGIN;
+class AuthContainer extends StatelessWidget {
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
-  var _isLoading = false;
-  final _passwordController = TextEditingController(
-      // text: "qwerty"
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -64,23 +52,16 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
                 height: 17,
               ),
               _PasswordTextFormField(
-                  passwordController: _passwordController,
-                  authData: _authData,
-                  submitFunction: _submitForm),
-              if (_authMode == AuthMode.SIGNUP)
-                _ReenterPasswordTextFormField(
-                    authMode: _authMode,
-                    passwordController: _passwordController),
+                  authData: _authData, submitFunction: _submitForm),
               const SizedBox(
                 height: 20,
               ),
-              if (_isLoading)
-                const CircularProgressIndicator()
-              else
-                AuthButton(
-                  onPressed: _submitForm,
-                  child: _authMode == AuthMode.LOGIN ? 'LOGIN' : 'SIGN UP',
-                ),
+              AuthButton(
+                onPressed: () {
+                  _submitForm(context);
+                },
+                child: 'LOGIN',
+              ),
               const SizedBox(
                 height: 30,
               ),
@@ -92,66 +73,17 @@ class _AuthContainerState extends State<AuthContainer> with ErrorHandler {
     );
   }
 
-  void _submitForm() async {
+  void _submitForm(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     }
     _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
 
     // Log user in
     await Provider.of<AuthNotifier>(context, listen: false).login(
       _authData['email']!,
       _authData['password']!,
-    );
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  void _switchAuthMode() {
-    if (_authMode == AuthMode.LOGIN) {
-      setState(() {
-        _authMode = AuthMode.SIGNUP;
-      });
-    } else {
-      setState(() {
-        _authMode = AuthMode.LOGIN;
-      });
-    }
-  }
-}
-
-class _ReenterPasswordTextFormField extends StatelessWidget {
-  const _ReenterPasswordTextFormField({
-    Key? key,
-    required AuthMode authMode,
-    required TextEditingController passwordController,
-  })  : _authMode = authMode,
-        _passwordController = passwordController,
-        super(key: key);
-
-  final AuthMode _authMode;
-  final TextEditingController _passwordController;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      enabled: _authMode == AuthMode.SIGNUP,
-      decoration: const InputDecoration(labelText: 'Confirm Password'),
-      obscureText: true,
-      validator: _authMode == AuthMode.SIGNUP
-          ? (value) {
-              if (value != _passwordController.text) {
-                return 'Passwords do not match!';
-              }
-              return null;
-            }
-          : null,
     );
   }
 }
@@ -184,15 +116,12 @@ class _NoAccountText extends StatelessWidget {
 class _PasswordTextFormField extends StatelessWidget with MyInputDecoration {
   const _PasswordTextFormField(
       {Key? key,
-      required TextEditingController passwordController,
       required Map<String, String> authData,
       required Function submitFunction})
-      : _passwordController = passwordController,
-        _authData = authData,
+      : _authData = authData,
         _submitFunction = submitFunction,
         super(key: key);
 
-  final TextEditingController _passwordController;
   final Map<String, String> _authData;
   final Function _submitFunction;
 
@@ -203,12 +132,11 @@ class _PasswordTextFormField extends StatelessWidget with MyInputDecoration {
       obscureText: true,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) {
-        _submitFunction();
+        _submitFunction(context);
       },
-      controller: _passwordController,
       validator: (value) {
-        if (value == null || value.isEmpty || value.length < 5) {
-          return 'Password is too short!';
+        if (value == null || value.isEmpty) {
+          return 'Enter your password';
         }
         return null;
       },
@@ -237,8 +165,8 @@ class _EmailTextFormField extends StatelessWidget with MyInputDecoration {
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         //TODO: email verification
-        if (value == null || value.isEmpty || !value.contains('@')) {
-          return 'Invalid email!';
+        if (value == null || value.isEmpty) {
+          return 'Enter your email!';
         }
         return null;
       },
