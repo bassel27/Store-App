@@ -64,29 +64,21 @@ class MyApp extends StatelessWidget {
       // TODO: use materialapp
       builder: (context, child) => Consumer<AuthNotifier>(
         builder: (context, auth, _) => GetMaterialApp(
-            themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
-            theme: MyTheme.lightTheme,
-            darkTheme: MyTheme.darkTheme,
-            routes: {
-              BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
-              ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
-              OrdersScreen.route: (ctx) => const OrdersScreen(),
-              ProductsManagerScreen.route: (ctx) =>
-                  const ProductsManagerScreen(),
-              AccountScreen.route: (ctx) => AccountScreen(),
-              EditProductScreen.route: (ctx) => const EditProductScreen(null),
-              ChatScreen.route: (ctx) => const ChatScreen(),
-            },
-            title: 'Flutter Demo',
-            home: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return const SplashScreen();
-                }
-                return AuthScreen();
-              },
-            )),
+          themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
+          theme: MyTheme.lightTheme,
+          darkTheme: MyTheme.darkTheme,
+          routes: {
+            BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
+            ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
+            OrdersScreen.route: (ctx) => const OrdersScreen(),
+            ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
+            AccountScreen.route: (ctx) => AccountScreen(),
+            EditProductScreen.route: (ctx) => const EditProductScreen(null),
+            ChatScreen.route: (ctx) => const ChatScreen(),
+          },
+          title: 'Flutter Demo',
+          home: const LandingPage(),
+        ),
       ),
     );
   }
@@ -96,4 +88,21 @@ void removeShadowAboveAppBar() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
+}
+
+class LandingPage extends StatelessWidget {
+  const LandingPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return const SplashScreen();
+        }
+        return AuthScreen();
+      },
+    );
+  }
 }
