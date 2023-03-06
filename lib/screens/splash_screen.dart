@@ -26,8 +26,8 @@ class SplashScreen extends StatelessWidget {
                 return ErrorScaffoldBody(snapshot.error as Exception);
               } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Navigator.of(context)
-                      .pushReplacementNamed(BottomNavBarScreen.route);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      BottomNavBarScreen.route, (route) => false);
                 });
               }
             }

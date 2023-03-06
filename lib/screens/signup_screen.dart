@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,7 @@ import 'package:uuid/uuid.dart';
 
 import '../mixins/input_decration.dart';
 import '../providers/auth_notifier.dart';
-import 'package:email_validator/email_validator.dart';
+
 class SignupScreen extends StatelessWidget
     with MyInputDecoration, ErrorHandler {
   SignupScreen({super.key});
@@ -75,7 +76,9 @@ class SignupScreen extends StatelessWidget
                 initialValue: "bassel_sabour@hotmail.com",
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  if (value == null || value.isEmpty || !EmailValidator.validate(value)) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !EmailValidator.validate(value)) {
                     return 'Invalid email!';
                   }
                   return null;
@@ -142,7 +145,6 @@ class SignupScreen extends StatelessWidget
     }
     _formKey.currentState!.save();
     await Provider.of<AuthNotifier>(context, listen: false).signup(editedUser);
-    Navigator.pop(context);
   }
 
   String capitalize(String string) {
