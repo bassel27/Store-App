@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/models/user/user.dart';
+import 'package:store_app/screens/verifyEmailScreen.dart';
 import 'package:store_app/widgets/auth_button.dart';
 import 'package:uuid/uuid.dart';
 
@@ -144,7 +145,18 @@ class SignupScreen extends StatelessWidget
       return;
     }
     _formKey.currentState!.save();
-    await Provider.of<AuthNotifier>(context, listen: false).signup(editedUser);
+    try {
+      await Provider.of<AuthNotifier>(context, listen: false)
+          .signup(editedUser);
+      Navigator.pushReplacementNamed(
+        context,
+        VerifyEmailPage.route,
+      );
+    } on PlatformException catch (e) {
+      handleError(e);
+    } on FirebaseAuthException catch (e) {
+      handleError(e);
+    }
   }
 
   String capitalize(String string) {

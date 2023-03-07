@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
   final String child;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   const AuthButton({required this.child, required this.onPressed});
 
   @override

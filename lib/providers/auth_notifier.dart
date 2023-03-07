@@ -41,7 +41,9 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }
-
+  Future<void> sendVerificationEmail()async{
+    await _auth.currentUser!.sendEmailVerification();
+  }
   Future<void> signup(User user) async {
     DialogHelper.showLoading();
     UserCredential authResult = await _auth.createUserWithEmailAndPassword(

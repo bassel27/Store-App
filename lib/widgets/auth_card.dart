@@ -62,7 +62,7 @@ class AuthContainer extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>  ForgotPasswordScreen(),
+                    builder: (context) => ForgotPasswordScreen(),
                   )),
                   child: Text(
                     "Forgot Password?",
@@ -149,6 +149,7 @@ class _PasswordTextFormField extends StatelessWidget with MyInputDecoration {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: 'qwerty',
       decoration: inputDecoration(context, 'Password', Icons.password),
       obscureText: true,
       textInputAction: TextInputAction.done,
@@ -182,6 +183,7 @@ class _EmailTextFormField extends StatelessWidget with MyInputDecoration {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: 'bassel_sabour@hotmail.com',
       decoration: inputDecoration(context, 'Email', Icons.email),
       keyboardType: TextInputType.emailAddress,
       validator: (value) {

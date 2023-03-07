@@ -18,6 +18,7 @@ import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:store_app/screens/splash_screen.dart';
+import 'package:store_app/screens/verifyEmailScreen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
             AccountScreen.route: (ctx) => AccountScreen(),
             EditProductScreen.route: (ctx) => const EditProductScreen(null),
             ChatScreen.route: (ctx) => const ChatScreen(),
+            VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
           },
           title: 'Flutter Demo',
           home: const LandingPage(),
@@ -99,7 +101,7 @@ class LandingPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const SplashScreen();
+          return const VerifyEmailPage();
         }
         return AuthScreen();
       },
