@@ -37,6 +37,7 @@ class SignupScreen extends StatelessWidget
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
             children: [
               TextFormField(
+                textInputAction: TextInputAction.next,
                 decoration:
                     inputDecoration(context, "First Name", Icons.person),
                 initialValue: "bassel",
@@ -55,6 +56,7 @@ class SignupScreen extends StatelessWidget
               ),
               mySizedBox,
               TextFormField(
+                textInputAction: TextInputAction.next,
                 decoration:
                     inputDecoration(context, "Last Name", Icons.person_add),
                 initialValue: "attia",
@@ -73,6 +75,7 @@ class SignupScreen extends StatelessWidget
               ),
               mySizedBox,
               TextFormField(
+                textInputAction: TextInputAction.next,
                 decoration: inputDecoration(context, "Email", Icons.email),
                 initialValue: "bassel_sabour@hotmail.com",
                 keyboardType: TextInputType.emailAddress,
@@ -92,6 +95,7 @@ class SignupScreen extends StatelessWidget
               ),
               mySizedBox,
               TextFormField(
+                textInputAction: TextInputAction.next,
                 obscureText: true,
                 controller: _passwordController,
                 decoration:
@@ -107,6 +111,7 @@ class SignupScreen extends StatelessWidget
               ),
               mySizedBox,
               TextFormField(
+                textInputAction: TextInputAction.done,
                 obscureText: true,
                 decoration: inputDecoration(
                     context, "Confirm password", Icons.password),
@@ -148,6 +153,7 @@ class SignupScreen extends StatelessWidget
     try {
       await Provider.of<AuthNotifier>(context, listen: false)
           .signup(editedUser);
+
       Navigator.pushReplacementNamed(
         context,
         VerifyEmailPage.route,

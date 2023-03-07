@@ -186,6 +186,7 @@ class _EmailTextFormField extends StatelessWidget with MyInputDecoration {
       initialValue: 'bassel_sabour@hotmail.com',
       decoration: inputDecoration(context, 'Email', Icons.email),
       keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
       validator: (value) {
         //TODO: email verification
         if (value == null || value.isEmpty || !EmailValidator.validate(value)) {

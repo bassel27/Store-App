@@ -48,7 +48,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   }
 
   Future sendVerificationEmail() async {
-    final User user = FirebaseAuth.instance.currentUser!;
     await context.read<AuthNotifier>().sendVerificationEmail();
   }
 
