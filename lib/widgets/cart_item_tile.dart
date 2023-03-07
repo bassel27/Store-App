@@ -17,8 +17,11 @@ class CartItemTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: ProductCircleAvatar(product: cartItem.product,),
-          
+          leading: Hero(
+              tag: cartItem.product.id,
+              child: ProductCircleAvatar(
+                product: cartItem.product,
+              )),
           title: Text(
             cartItem.product.title,
             style: Theme.of(context)

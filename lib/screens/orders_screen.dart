@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/orders_notifier.dart';
-import 'package:store_app/widgets/error_scaffold_body.dart';
+import 'package:store_app/widgets/exception_scaffold_body.dart';
 import 'package:store_app/widgets/order_list_tile.dart';
 
 import '../widgets/empty_screen_text.dart';
@@ -46,7 +46,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 return const CircularProgressIndicator();
               } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
-                  return ErrorScaffoldBody(snapshot.error as Exception);
+                  return ExceptionScaffoldBody(snapshot.error as Exception);
                 } else {
                   return _SuccessfulScaffoldBody();
                 }

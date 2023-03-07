@@ -32,18 +32,20 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
         DialogHelper.hideCurrentDialog();
       }
     } on PlatformException catch (e) {
-      handleError(e);
+      handleException(e);
     } on FirebaseAuthException catch (e) {
-      handleError(e);
+      handleException(e);
     }
   }
 
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }
-  Future<void> sendVerificationEmail()async{
+
+  Future<void> sendVerificationEmail() async {
     await _auth.currentUser!.sendEmailVerification();
   }
+
   Future<void> signup(User user) async {
     DialogHelper.showLoading();
     UserCredential authResult = await _auth.createUserWithEmailAndPassword(
@@ -62,9 +64,9 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
           email: email.trim(), password: password);
       DialogHelper.hideCurrentDialog();
     } on PlatformException catch (e) {
-      handleError(e);
+      handleException(e);
     } on FirebaseAuthException catch (e) {
-      handleError(e);
+      handleException(e);
     }
   }
 
@@ -72,9 +74,9 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
     try {
       await _auth.signOut();
     } on PlatformException catch (e) {
-      handleError(e);
+      handleException(e);
     } on FirebaseAuthException catch (e) {
-      handleError(e);
+      handleException(e);
     }
   }
 }

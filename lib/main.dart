@@ -8,7 +8,6 @@ import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
-import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
@@ -17,8 +16,7 @@ import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
-import 'package:store_app/screens/splash_screen.dart';
-import 'package:store_app/screens/verifyEmailScreen.dart';
+import 'package:store_app/screens/verify_email_screen.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
@@ -53,9 +51,9 @@ class MyApp extends StatelessWidget {
     ChangeNotifierProvider(
       create: (_) => ProductImageNotifier(),
     ),
-    ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
-    ),
+    // ChangeNotifierProvider(
+    //   create: (_) => ThemeNotifier(),
+    // ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -65,9 +63,9 @@ class MyApp extends StatelessWidget {
       // TODO: use materialapp
       builder: (context, child) => Consumer<AuthNotifier>(
         builder: (context, auth, _) => GetMaterialApp(
-          themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
+          // themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
           theme: MyTheme.lightTheme,
-          darkTheme: MyTheme.darkTheme,
+          // darkTheme: MyTheme.darkTheme,
           routes: {
             BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
             ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
@@ -76,7 +74,7 @@ class MyApp extends StatelessWidget {
             AccountScreen.route: (ctx) => AccountScreen(),
             EditProductScreen.route: (ctx) => const EditProductScreen(null),
             ChatScreen.route: (ctx) => const ChatScreen(),
-            VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
+            VerifyEmailPage.route: (ctx) => const VerifyEmailPage(), 
           },
           title: 'Flutter Demo',
           home: const LandingPage(),

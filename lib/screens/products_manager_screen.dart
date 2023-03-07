@@ -118,7 +118,7 @@ void onProductDelete(Product product, BuildContext context) async {
           try {
             productsProvider.addProductByIndex(product, productOldIndex);
           } catch (e) {
-            ErrorHandler().handleError(e);
+            ErrorHandler().handleException(e);
           }
         }),
   ));

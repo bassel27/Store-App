@@ -5,7 +5,7 @@ import 'package:store_app/providers/cart_notifier.dart';
 import '.././widgets/total_container.dart';
 import '../models/cart_item/cart_item.dart';
 import '../widgets/cart_tile.dart';
-import '../widgets/error_scaffold_body.dart';
+import '../widgets/exception_scaffold_body.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -44,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
               return const CircularProgressIndicator();
             } else if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
-                return ErrorScaffoldBody(snapshot.error as Exception);
+                return ExceptionScaffoldBody(snapshot.error as Exception);
               } else {
                 return const _SuccessfulScaffoldBody();
               }

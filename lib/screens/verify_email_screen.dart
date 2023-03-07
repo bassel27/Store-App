@@ -17,6 +17,7 @@ class VerifyEmailPage extends StatefulWidget {
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool isEmailVerified = false;
+  bool canResendEmail = false;
   Timer? timer;
   @override
   void initState() {
@@ -49,6 +50,13 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
   Future sendVerificationEmail() async {
     await context.read<AuthNotifier>().sendVerificationEmail();
+    setState(() {
+      canResendEmail = false;
+    });
+    await Future.delayed(const Duration(seconds: 5));
+    setState(() {
+      canResendEmail = true;
+    });
   }
 
   @override
@@ -59,30 +67,35 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             appBar: AppBar(title: const Text("Verify Email")),
             body: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       "Check your inbox for a verification email to complete your account setup.",
+                      style: TextStyle(fontSize: 22),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
                     AuthButton(
                         child: "Ok",
                         onPressed: () async {
                           await context.read<AuthNotifier>().logout();
+                          if (mounted) {
+                            Navigator.popUntil(
+                                context, ModalRoute.withName("/"));
+                          }
                         }),
                     const SizedBox(
                       height: 20,
                     ),
                     AuthButton(
                         child: "Resend Email",
-                        onPressed: () {
-                          sendVerificationEmail();
-                        })
+                        onPressed:
+                            canResendEmail ? sendVerificationEmail : null)
                   ],
                 ),
               ),

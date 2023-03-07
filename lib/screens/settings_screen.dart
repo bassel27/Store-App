@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
-import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
@@ -13,8 +12,8 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  late var theme = Provider.of<ThemeNotifier>(context, listen: false);
-  late bool _switchValue = theme.isDarkMode;
+  // late var theme = Provider.of<ThemeNotifier>(context, listen: false);
+  // late bool _switchValue = theme.isDarkMode;
   double circleAvatarRadius = 60;
   @override
   Widget build(BuildContext context) {
@@ -54,19 +53,19 @@ class _AccountScreenState extends State<AccountScreen> {
           title: "Orders",
         ),
         // const Divider(),
-        ListTile(
-          leading: const Icon(Icons.dark_mode_outlined),
-          title: const Text("Dark Mode"),
-          trailing: Switch(
-            value: _switchValue,
-            onChanged: (value) {
-              theme.toggleThemeMode(value);
-              setState(() {
-                _switchValue = !_switchValue;
-              });
-            },
-          ),
-        ),
+        // ListTile(
+        //   leading: const Icon(Icons.dark_mode_outlined),
+        //   title: const Text("Dark Mode"),
+        //   trailing: Switch(
+        //     value: _switchValue,
+        //     onChanged: (value) {
+        //       theme.toggleThemeMode(value);
+        //       setState(() {
+        //         _switchValue = !_switchValue;
+        //       });
+        //     },
+        //   ),
+        // ),
         // const Divider(),
         _ClickableListTile(
           icon: Icons.edit,

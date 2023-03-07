@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 
 import '../providers/products_notifier.dart';
-import '../widgets/error_scaffold_body.dart';
+import '../widgets/exception_scaffold_body.dart';
 import 'bottom_nav_bar_screen.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {
-                return ErrorScaffoldBody(snapshot.error as Exception);
+                return ExceptionScaffoldBody(snapshot.error as Exception);
               } else {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   Navigator.of(context).pushNamedAndRemoveUntil(

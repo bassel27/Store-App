@@ -59,7 +59,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     await _cartController.delete(cartItemInput.id).then((value) {
       cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
       notifyListeners();
-    }).catchError(handleError);
+    }).catchError(handleException);
   }
 
   // Increments the quantity of the CartItem if it exists in cart.
@@ -84,7 +84,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
       if (cartItems[i].product.id == product.id) {
         await _cartController.setQuantity(cartItems[i], quantity).then((value) {
           cartItems[i] = cartItems[i].copyWith(quantity: quantity);
-        }).catchError(handleError);
+        }).catchError(handleException);
         notifyListeners();
         return;
       }
@@ -96,7 +96,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     await _cartController
         .create(newCartItem)
         .then((_) => cartItems.add(newCartItem))
-        .catchError(handleError);
+        .catchError(handleException);
     notifyListeners();
   }
 
@@ -107,7 +107,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
         await _cartController
             .incrementQuantity(cartItems[i])
             .then((value) => increment(cartItems[i]))
-            .catchError(handleError);
+            .catchError(handleException);
         notifyListeners();
         return;
       }
@@ -119,7 +119,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     await _cartController
         .create(newCartItem)
         .then((_) => cartItems.add(newCartItem))
-        .catchError(handleError);
+        .catchError(handleException);
     notifyListeners();
   }
 
@@ -133,12 +133,12 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
               .delete(removedProduct.id)
               .then((_) => cartItems
                   .removeWhere((cartItem) => cartItem.id == cartItemInput.id))
-              .catchError(handleError);
+              .catchError(handleException);
           notifyListeners();
         } else {
           await _cartController.decrementQuantity(cartItemInput).then((_) {
             decrement(cartItems[i]);
-          }).catchError(handleError);
+          }).catchError(handleException);
           notifyListeners();
         }
         break;

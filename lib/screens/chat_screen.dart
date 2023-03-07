@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
-import 'package:store_app/widgets/error_scaffold_body.dart';
+import 'package:store_app/widgets/exception_scaffold_body.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -21,7 +21,7 @@ class ChatScreen extends StatelessWidget {
             case ConnectionState.active:
             case ConnectionState.done:
               if (snapshot.hasError) {
-                return ErrorScaffoldBody(snapshot.error as Exception);
+                return ExceptionScaffoldBody(snapshot.error as Exception);
               } else if (snapshot.hasData) {
                 var docs = snapshot.data!.docs;
                 return ListView.builder(

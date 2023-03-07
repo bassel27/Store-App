@@ -45,7 +45,7 @@ class OrdersNotifier with ChangeNotifier, ErrorHandler {
               0,
               newOrder,
             ))
-        .catchError(handleError);
+        .catchError(handleException);
 
     notifyListeners();
   }

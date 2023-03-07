@@ -40,7 +40,7 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
         items[index] = product.copyWith(isFavorite: !product.isFavorite);
         notifyListeners();
       } catch (e) {
-        handleError(e);
+        handleException(e);
       }
     }
   }

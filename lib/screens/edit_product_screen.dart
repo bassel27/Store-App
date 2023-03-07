@@ -196,7 +196,7 @@ class _EditProductScreenState extends State<EditProductScreen>
           Navigator.of(context).pop(); // pop EditProductScreen
         }
       } catch (e) {
-        ErrorHandler().handleError(e);
+        ErrorHandler().handleException(e);
       }
     }
   }

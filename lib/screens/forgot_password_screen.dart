@@ -30,9 +30,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
     return Scaffold(
       appBar: AppBar(title: const Text("Forgot Password")),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
               "Receive an email to\nreset your password.",
@@ -70,9 +69,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                     DialogHelper.hideCurrentDialog();
                     showSuccessDialog();
                   } on PlatformException catch (e) {
-                    handleError(e);
+                    handleException(e);
                   } on FirebaseAuthException catch (e) {
-                    handleError(e);
+                    handleException(e);
                   }
                 }),
           ],
