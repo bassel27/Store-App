@@ -125,23 +125,31 @@ class _ScaffoldBody extends StatelessWidget {
         ? productsNotifier.favoriteProducts
         : productsNotifier.products;
     return Center(
-        child: products.isNotEmpty
-            ? GridView.builder(
-                primary: false,
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(top: 10),
-                itemCount: products.length,
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                  crossAxisCount: 2,
-                  height: 390,
+      child: products.isNotEmpty
+          ? GridView.builder(
+              primary: false,
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(top: 10),
+              itemCount: products.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                crossAxisCount: 2,
+                height: 390,
+              ),
+              itemBuilder: (context, i) {
+                return ProductGridTile(products[i]);
+              },
+            )
+          : Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 3,
                 ),
-                itemBuilder: (context, i) {
-                  return ProductGridTile(products[i]);
-                },
-              )
-            : (showFavoritesOnly
-                ? const EmptyScreenText("No favorite products")
-                : const EmptyScreenText("No Products")));
+                (showFavoritesOnly
+                    ? const EmptyScreenText("No favorite products")
+                    : const EmptyScreenText("No Products")),
+              ],
+            ),
+    );
   }
 }
