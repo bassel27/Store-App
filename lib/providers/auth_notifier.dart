@@ -11,7 +11,9 @@ import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/user/user.dart';
 
-class AuthNotifier with ChangeNotifier, ErrorHandler {
+import '../mixins/try_catch_firebase.dart';
+
+class AuthNotifier with ChangeNotifier, ErrorHandler, TryCatchFirebaseWrapper {
   final authControler = AuthController();
 
   DateTime? _expiryDate;
@@ -22,21 +24,7 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
     return date.isAfter(DateTime.now());
   }
 
-  void _wrapInTryCatch(Function foo, [showLoading = false]) async {
-    if (showLoading) {
-      DialogHelper.showLoading();
-    }
-    try {
-      await foo();
-      if (showLoading) {
-        DialogHelper.hideCurrentDialog();
-      }
-    } on PlatformException catch (e) {
-      handleException(e);
-    } on FirebaseAuthException catch (e) {
-      handleException(e);
-    }
-  }
+  
 
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
@@ -60,7 +48,7 @@ class AuthNotifier with ChangeNotifier, ErrorHandler {
   Future<void> login(String email, String password) async {
     DialogHelper.showLoading();
     try {
-      UserCredential authResult = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
       DialogHelper.hideCurrentDialog();
     } on PlatformException catch (e) {

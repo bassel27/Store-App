@@ -10,8 +10,7 @@ const kUserFavoritesBaseUrl = "$kBaseUrl/userFavorites";
 const kProductsBaseUrl = '$kBaseUrl/products';
 const String kErrorMessage =
     "Oops! Something went wrong. Check your internet connection and try again.";
-const String kMessagesCollectionAddress =
-    '/chats/cNvZUC4up60TY1ODLYV9/messages';
+
 
 /// Default timeout duration for http requests in seconds.
 const int kDefaultTimeOutDuation = 5;
