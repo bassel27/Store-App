@@ -49,7 +49,7 @@ class _Messages extends StatelessWidget {
                   reverse: true,
                   itemCount: docs.length,
                   itemBuilder: (context, index) =>
-                      MessageBubble(docs[index]['text'], BubbleNip.rightTop));
+                      MessageBubble(docs[index]['text']));
             }
             return const Center(child: Text("No Messages"));
           default:
