@@ -5,11 +5,7 @@ This app is designed for an online clothes store. The app allows customers to ea
 The app is built using Flutter and Firebase. Firebase Authentication is used for user authentication, while Firestore is used for storing chats, products, orders, and cart items.
 
 ## Features and Functionalities
-1. User Authentication
-   a. Log in
-   b. Sign up
-   c. Forgot Password
-   d. Log out
+1. User Authentication: log in, sign up, forgot Password and log out
 2. Shows all available products
 4. Add products to cart and specify quantity
 5. Make orders
@@ -17,6 +13,10 @@ The app is built using Flutter and Firebase. Firebase Authentication is used for
 7. View past orders
 8. Chat with customer service
 9. Manage products (add, delete, or edit) (only for admins)
+
+## Design:
+
+The UI/UX design for this project was taken from a free Figma community file available under the Creative Commons Attribution 4.0 International License. The original design was created by Mohsin Jutt and can be found at the following link: [here](https://www.figma.com/community/file/1154144837103334243).
 
 ## Screens
 
