@@ -20,7 +20,7 @@ The UI/UX design for this project was taken from a free Figma community file ava
 
 ## App Demonstration Video
 
-https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share_link
+https://drive.google.com/file/d/10tj0rmah6i6M8tQS_EU7qKeScB4XKWk2/view?usp=share_link
 
 ## Screens
 
