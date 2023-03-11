@@ -26,17 +26,11 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
 <div style="overflow-x:auto;">
   <table>
     <tr>
-      
-      
       <th>Cart</th>
-      
       <th>Chat Support</th>
     </tr>
     <tr>
-      
-      
       <td><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" width="250"></td>
-      
       <td><img src="https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png" width="250"></td>
     </tr>
   </table>
