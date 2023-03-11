@@ -1,4 +1,4 @@
-Store App
+# Store App
 This store app is designed specifically for [Brand Name], an online clothes store that offers a wide range of products. The app allows customers to easily browse and purchase items from the store using their mobile devices.
 
 Features
