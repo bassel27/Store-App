@@ -22,6 +22,8 @@ The UI/UX design for this project was taken from a free Figma community file ava
 
 https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share_link
 
+## Screens
+
 <div style="overflow-x:auto;">
   <table style="height: 400px;">
     <tr>
@@ -38,6 +40,7 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
     </tr>
   </table>
 </div>
+
 
 <div style="overflow-x:auto;">
   <table style="height: 400px;">
@@ -61,7 +64,7 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
 
 
 
-## Screens
+
 
 1. Authentication
 
