@@ -2,7 +2,7 @@
 This app is designed for an online clothes store. The app allows customers to easily browse and purchase items from the store using their mobile devices.
 
 ## Technologies Used
-The app is built using Flutter and Firebase. Firebase Authentication is used for user authentication, while Firestore is used for storing chats, products, orders, and cart items.
+The cross-platform app is built using Flutter and Firebase. Firebase Authentication is used for user authentication, while Firestore is used for storing chats, products, orders, and cart items.
 
 ## Features and Functionalities
 1. User Authentication: log in, sign up, forgot Password and log out
@@ -13,6 +13,9 @@ The app is built using Flutter and Firebase. Firebase Authentication is used for
 7. View past orders
 8. Chat with customer service
 9. Manage products (add, delete, or edit) (only for admins)
+10. Animations
+11. Use of Provider for state management
+12. Error handling
 
 ## Design:
 
