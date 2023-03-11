@@ -8,8 +8,9 @@ class CartItemTile extends StatelessWidget {
   const CartItemTile({
     Key? key,
     required this.cartItem,
+    this.isHeroAnimationOn = false,
   }) : super(key: key);
-
+  final bool isHeroAnimationOn;
   final CartItem cartItem;
 
   @override
@@ -17,11 +18,15 @@ class CartItemTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: Hero(
-              tag: cartItem.product.id,
-              child: ProductCircleAvatar(
-                product: cartItem.product,
-              )),
+          leading: isHeroAnimationOn
+              ? Hero(
+                  tag: cartItem.product.id,
+                  child: ProductCircleAvatar(
+                    product: cartItem.product,
+                  ))
+              : ProductCircleAvatar(
+                  product: cartItem.product,
+                ),
           title: Text(
             cartItem.product.title,
             style: Theme.of(context)
