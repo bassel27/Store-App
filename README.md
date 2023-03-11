@@ -24,6 +24,10 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
 
 ## Screens
 
+Screenshots	Preview	List Screen	Detail Screen	Cart Screen
+<img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png"  height="500">	 <img src="https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png"  height="500">	<img src="link to detail screen image" height="250">	<img src="link to cart screen image" height="250">
+
+
 1. Authentication
 
    <img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png"  height="500">
