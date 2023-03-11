@@ -22,18 +22,8 @@ The UI/UX design for this project was taken from a free Figma community file ava
 
 https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share_link
 
-<div style="width: 100%; overflow-x: auto;">
-  <table style="width: 2000px;">
-    <colgroup>
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-      <col style="width: 250px;">
-    </colgroup>
+<div style="overflow-x: auto;">
+  <table>
     <tr>
       <th>Authentication</th>
       <th>Home</th>
@@ -45,16 +35,17 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
       <th>Chat Support</th>
     </tr>
     <tr>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224509686-9bcd8516-4671-458f-90c4-29ec923f5c74.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224509704-2693ae01-40e9-40f0-84a9-0d687e3c54c0.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224509728-6813ce33-350d-48e2-8d14-def74963effe.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224509748-ba526718-de2f-4763-b747-7bb80cb51452.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224509755-7f205f39-bf54-4199-8a42-971a4bb0cfe4.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224509764-71ca03ef-fd70-4e8d-8841-473fe7537628.png" style="width: 100%; height: auto;"></td>
-      <td style="padding: 0;"><img src="https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png" style="width: 100%; height: auto;"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224509686-9bcd8516-4671-458f-90c4-29ec923f5c74.png" width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224509704-2693ae01-40e9-40f0-84a9-0d687e3c54c0.png" width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224509728-6813ce33-350d-48e2-8d14-def74963effe.png" width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224509748-ba526718-de2f-4763-b747-7bb80cb51452.png" width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224509755-7f205f39-bf54-4199-8a42-971a4bb0cfe4.png"  width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224509764-71ca03ef-fd70-4e8d-8841-473fe7537628.png" width="250"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png" width="250"></td>
     </tr>
-
+  </table>
+</div>
 
 
 
