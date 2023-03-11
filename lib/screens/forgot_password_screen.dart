@@ -52,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                   }
                   return null;
                 },
-                decoration: inputDecoration(context, 'Email', Icons.email),
+                decoration: inputDecoration(context:context, hintText:'Email', icon:Icon(Icons.email)),
               ),
             ),
             const SizedBox(

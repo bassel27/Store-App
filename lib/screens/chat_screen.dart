@@ -1,6 +1,9 @@
+import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:store_app/models/constants.dart';
 import 'package:store_app/widgets/exception_scaffold_body.dart';
+import 'package:store_app/widgets/message_bubble.dart';
 import 'package:store_app/widgets/message_text_field.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -24,13 +27,13 @@ class ChatScreen extends StatelessWidget {
 
 class _Messages extends StatelessWidget {
   const _Messages();
-  final String kMessagesCollectionAddress =
-      '/chats/cNvZUC4up60TY1ODLYV9/messages';
+  final String kMessagesCollectionAddress = '/chats/$kMyChatId/messages';
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection(kMessagesCollectionAddress)
+          .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
@@ -43,11 +46,10 @@ class _Messages extends StatelessWidget {
             } else if (snapshot.hasData) {
               var docs = snapshot.data!.docs;
               return ListView.builder(
-                reverse: true,
+                  reverse: true,
                   itemCount: docs.length,
-                  itemBuilder: (context, index) => Text(
-                        docs[index]['text'],
-                      ));
+                  itemBuilder: (context, index) =>
+                      MessageBubble(docs[index]['text'], BubbleNip.rightTop));
             }
             return const Center(child: Text("No Messages"));
           default:

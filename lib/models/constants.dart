@@ -11,7 +11,6 @@ const kProductsBaseUrl = '$kBaseUrl/products';
 const String kErrorMessage =
     "Oops! Something went wrong. Check your internet connection and try again.";
 
-
 /// Default timeout duration for http requests in seconds.
 const int kDefaultTimeOutDuation = 5;
 const kWebApiKey = "AIzaSyCijND-gjHHDpFCYjm0_IVhn0hWBQqAQrM";
@@ -20,3 +19,4 @@ const kSignUpUrl =
 const kLoginUrl =
     "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$kWebApiKey";
 const String kPlaceHolder = "assets/gifs/placeholder.gif";
+const String kMyChatId = "NPk9JESVRMmRf533mww8";

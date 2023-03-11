@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/models/my_theme.dart';
 
 mixin MyInputDecoration {
   InputDecoration inputDecoration(
-      BuildContext context, String hintText, IconData iconData) {
-    var myBorder = OutlineInputBorder(
+      {required BuildContext context,
+      required String hintText,
+      Icon? icon,
+      isDense = false,
+      OutlineInputBorder? outlineInputBorder,
+      isBorderSideOn = false}) {
+    var defaultOutlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(
-          color: Theme.of(context).colorScheme.secondary, width: 0.8),
+      borderSide:
+          BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 2.7),
     );
+    var myBorder = outlineInputBorder ?? defaultOutlineInputBorder;
     return InputDecoration(
-      // labelStyle: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-      // labelText: hintText,
-      hintStyle: const TextStyle(color: kTextDarkColor),
+      hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
       hintText: hintText,
+      isDense: isDense,
+      contentPadding: const EdgeInsets.all(15),
       filled: true,
       fillColor: Theme.of(context).colorScheme.background,
       border: myBorder,
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.tertiary, width: 2.7),
-      ),
-      prefixIcon: Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: Icon(
-          iconData,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
+      focusedBorder: outlineInputBorder ?? defaultOutlineInputBorder,
+      prefixIcon: icon == null
+          ? null
+          : Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: icon,
+            ),
     );
   }
 }

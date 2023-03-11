@@ -17,21 +17,42 @@ class _MessageTextFieldState extends State<MessageTextField>
   void _sendMessage() async {
     // TODO: add loading and delivered on chat
     FocusScope.of(context).unfocus();
-    await wrapInTryCatch(
-        () => ChatController().sendMessage(_enteredMessage), true);
+    await wrapInTryCatch(() async {
+      await ChatController().sendMessage(_enteredMessage);
+      _messageController.clear();
+    }, true);
   }
 
+  final TextEditingController _messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 1.0,
+          ),
+        ),
+      ),
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Expanded(
               child: TextField(
-            decoration:
-                inputDecoration(context, 'Send a message...', Icons.message),
+            controller: _messageController,
+            decoration: inputDecoration(
+                outlineInputBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      width: 2.7),
+                ),
+                context: context,
+                hintText: 'Send a message...',
+                icon: null,
+                isDense: true),
             onChanged: (value) => setState(() {
               _enteredMessage = value;
             }),

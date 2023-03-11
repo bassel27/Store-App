@@ -38,8 +38,8 @@ class SignupScreen extends StatelessWidget
             children: [
               TextFormField(
                 textInputAction: TextInputAction.next,
-                decoration:
-                    inputDecoration(context, "First Name", Icons.person),
+                decoration: inputDecoration(
+                    context:context, hintText:"First Name", icon:const Icon(Icons.person)),
                 initialValue: "bassel",
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -57,8 +57,8 @@ class SignupScreen extends StatelessWidget
               mySizedBox,
               TextFormField(
                 textInputAction: TextInputAction.next,
-                decoration:
-                    inputDecoration(context, "Last Name", Icons.person_add),
+                decoration: inputDecoration(
+                    context:context, hintText:"Last Name", icon:const Icon(Icons.person_add)),
                 initialValue: "attia",
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
@@ -76,7 +76,8 @@ class SignupScreen extends StatelessWidget
               mySizedBox,
               TextFormField(
                 textInputAction: TextInputAction.next,
-                decoration: inputDecoration(context, "Email", Icons.email),
+                decoration:
+                    inputDecoration(context:context, hintText:"Email", icon:const Icon(Icons.email)),
                 initialValue: "bassel_sabour@hotmail.com",
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -98,8 +99,8 @@ class SignupScreen extends StatelessWidget
                 textInputAction: TextInputAction.next,
                 obscureText: true,
                 controller: _passwordController,
-                decoration:
-                    inputDecoration(context, "Password", Icons.password),
+                decoration: inputDecoration(
+                    context:context, hintText: "Password", icon: const Icon(Icons.password)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "No password entered";
@@ -114,7 +115,7 @@ class SignupScreen extends StatelessWidget
                 textInputAction: TextInputAction.done,
                 obscureText: true,
                 decoration: inputDecoration(
-                    context, "Confirm password", Icons.password),
+                    context: context,hintText: "Confirm password", icon:const Icon(Icons.password)),
                 initialValue: "qwerty",
                 validator: (value) {
                   if (value != _passwordController.text) {
