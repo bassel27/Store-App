@@ -29,11 +29,11 @@ This app is designed for an online clothes store. The app allows customers to ea
 
 7. Chat Support
 
-  ![Screenshot_1678560448](https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png)
+  ![Screenshot_1678560448](https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png) width="300" height="500">
   
 8. Cart
 
- <img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" width="200" height="400">
+ <img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" width="300" height="500">
 
 
   
