@@ -59,18 +59,3 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
   </table>
 </div>
 
-
-  
-6. Products Manager
-
-    <img src="https://user-images.githubusercontent.com/40627412/224505940-fa3b2b63-edce-4c04-9bdf-0ec2146a6ccf.png"  height="500">
-  
-7. Edit Product 
-
-    <img src="https://user-images.githubusercontent.com/40627412/224505960-ac6bb8f4-614a-4e82-bc8d-2fb3488eee41.png"  height="500">
-
-8. Chat Support
-
-    <img src="https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png" height="500">
-
-
