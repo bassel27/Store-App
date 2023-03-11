@@ -26,12 +26,12 @@ https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share
   <tr>
     <td> <img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png"  height="500"></td>
 
-    <td><img src="img2.png" alt="2" width = 360px height = 640px></td>
+    <td><img src="https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png"  height="500"></td>
    </tr> 
    <tr>
-      <td><img src="./Scshot/cab_arrived.png" alt="3" width = 360px height = 640px></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png"  height="500"></td>
 
-      <td><img src="./Scshot/trip_end.png" align="right" alt="4" width = 360px height = 640px>
+      <td><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png"  height="500">
   </td>
   </tr>
 </table>
