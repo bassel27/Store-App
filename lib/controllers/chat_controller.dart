@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/models/constants.dart';
 
@@ -9,6 +10,10 @@ class ChatController with ErrorHandler {
         .collection('chats')
         .doc(kMyChatId)
         .collection('messages')
-        .add({'text': message, 'createdAt': Timestamp.now()});
+        .add({
+      'text': message,
+      'createdAt': Timestamp.now(),
+      'userId': FirebaseAuth.instance.currentUser!.uid
+    });
   }
 }

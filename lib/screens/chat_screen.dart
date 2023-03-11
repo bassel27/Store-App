@@ -1,7 +1,8 @@
-import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
+import 'package:store_app/widgets/empty_screen_text.dart';
 import 'package:store_app/widgets/exception_scaffold_body.dart';
 import 'package:store_app/widgets/message_bubble.dart';
 import 'package:store_app/widgets/message_text_field.dart';
@@ -45,11 +46,18 @@ class _Messages extends StatelessWidget {
               return ExceptionScaffoldBody(snapshot.error as Exception);
             } else if (snapshot.hasData) {
               var docs = snapshot.data!.docs;
-              return ListView.builder(
-                  reverse: true,
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) =>
-                      MessageBubble(docs[index]['text']));
+              if (docs.isNotEmpty) {
+                return ListView.builder(
+                    reverse: true,
+                    itemCount: docs.length,
+                    itemBuilder: (context, index) => MessageBubble(
+                        docs[index]['text'],
+                        docs[index]['userId'] ==
+                            FirebaseAuth.instance.currentUser!.uid,
+                        key: ValueKey(docs[index].id)));
+              } else {
+                return const EmptyScreenText("No Messages");
+              }
             }
             return const Center(child: Text("No Messages"));
           default:
