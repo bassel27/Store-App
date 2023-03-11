@@ -1,15 +1,22 @@
 # Store App
-This store app is designed specifically for [Brand Name], an online clothes store that offers a wide range of products. The app allows customers to easily browse and purchase items from the store using their mobile devices.
+This app is designed for an online clothes store. The app allows customers to easily browse and purchase items from the store using their mobile devices.
 
-## Features
-The [Brand Name] Store App offers the following features:
+## Screens
 
-User Authentication
-Log in
-Sign up
-Forgot Password
-Log out
-Home Screen
+1. Authentication
+  ![image](https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png)
+2. Home
+  ![image](https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png)
+3. My Account
+  ![image](https://user-images.githubusercontent.com/40627412/224505870-7cbcd26e-297c-4438-97a0-802f15157146.png)
+
+4. Orders
+  ![image](https://user-images.githubusercontent.com/40627412/224505910-8ae913ca-6cb9-4006-b429-171f7bd13690.png)
+5. Products Manager
+  ![image](https://user-images.githubusercontent.com/40627412/224505940-fa3b2b63-edce-4c04-9bdf-0ec2146a6ccf.png)
+6. Edit Product 
+  ![image](https://user-images.githubusercontent.com/40627412/224505960-ac6bb8f4-614a-4e82-bc8d-2fb3488eee41.png)
+
 Shows all available products
 Products can be filtered by category or search by keyword
 Add products to cart or favorites
@@ -18,8 +25,14 @@ Chat with customer service
 Admin Features
 Manage products (add, delete, or edit)
 View customer orders
-Technology Used
+
+## Technology Used
 The app is built using Flutter and Firebase. Firebase Authentication is used for user authentication, while Firestore is used for storing products, orders, and cart items.
+ Functionalities:
+    a. Log in
+    b. Sign up
+    c. Forgot Password
+    d. Log out
 
 ## Getting Started
 To get started with the app, you will need to have the following:
