@@ -18,6 +18,10 @@ The app is built using Flutter and Firebase. Firebase Authentication is used for
 
 The UI/UX design for this project was taken from a free Figma community file available under the Creative Commons Attribution 4.0 International License. The original design was created by Mohsin Jutt and can be found at the following link: [here](https://www.figma.com/community/file/1154144837103334243).
 
+## App Demonstration Video
+
+https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share_link
+
 ## Screens
 
 1. Authentication
