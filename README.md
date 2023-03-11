@@ -23,7 +23,7 @@ The UI/UX design for this project was taken from a free Figma community file ava
 https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share_link
  Authentication | Home| Cart | My Account | Orders | #6 | #7 | #8 | #9 | #10 | #11
  --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
-<img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png" width="200" height="500"> |  <img src="https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png"  width="200" height="500"> | <img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" width="200" height="500"> | <img src="https://user-images.githubusercontent.com/40627412/224505870-7cbcd26e-297c-4438-97a0-802f15157146.png" width="200" height="500"> | <img src="https://user-images.githubusercontent.com/40627412/224505910-8ae913ca-6cb9-4006-b429-171f7bd13690.png" width="200" height="500"> | 285 | 287 | 287 | 272 | 276 | 269
+<img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png" > |  <img src="https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png" > | <img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png" > | <img src="https://user-images.githubusercontent.com/40627412/224505870-7cbcd26e-297c-4438-97a0-802f15157146.png" > | <img src="https://user-images.githubusercontent.com/40627412/224505910-8ae913ca-6cb9-4006-b429-171f7bd13690.png" > | 285 | 287 | 287 | 272 | 276 | 269
 
 ## Screens
 
