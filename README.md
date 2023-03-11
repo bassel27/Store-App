@@ -21,20 +21,9 @@ The UI/UX design for this project was taken from a free Figma community file ava
 ## App Demonstration Video
 
 https://drive.google.com/file/d/1rGZjd0259Q00DL55OETKCWZuq_ZqSIX2/view?usp=share_link
-
-<table>
-  <tr>
-    <td> <img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png"  height="500"></td>
-
-    <td><img src="https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png"  height="500"></td>
-   </tr> 
-   <tr>
-      <td><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png"  height="500"></td>
-
-      <td><img src="https://user-images.githubusercontent.com/40627412/224506281-b9c53e58-9332-4625-877d-171a453eb462.png"  height="500">
-  </td>
-  </tr>
-</table>
+Attempt | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 | #10 | #11
+--- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+Seconds | <img src="https://user-images.githubusercontent.com/40627412/224505810-4e946e3e-514f-48d2-8663-611527305c68.png"  height="500"> |  <img src="https://user-images.githubusercontent.com/40627412/224505793-cf161551-6a1a-4a9e-824f-a1f3f6d416fe.png"  height="500"> | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
 
 ## Screens
 
