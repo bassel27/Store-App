@@ -11,7 +11,6 @@ import '../mixins/validate_image_mixin.dart';
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';
-import '../widgets/image_url_text_form_field.dart';
 import '../widgets/name_text_form_field.dart';
 import '../widgets/price_text_form_field.dart';
 
@@ -27,7 +26,6 @@ class _EditProductScreenState extends State<EditProductScreen>
     with ValidateImageUrl {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
-  final _imageUrlFocusNode = FocusNode();
   bool _firstTime = true;
   Color imageContainerTextColor = Colors.black;
 
@@ -35,39 +33,29 @@ class _EditProductScreenState extends State<EditProductScreen>
   final _formKey = GlobalKey<FormState>();
 
   /// Controller to access the input display image preview before submission.
-  late final _imageUrlController = TextEditingController(
-      text: Provider.of<ProductsNotifier>(context, listen: false)
-          .editedProduct
-          .imageUrl);
+
   final mySizedBox = const SizedBox(
     height: 25,
   );
 
   @override
-  void initState() {
-    super.initState();
-    _imageUrlFocusNode.addListener(_updateImageUrl);
-  }
-
-  @override
   void didChangeDependencies() {
     if (_firstTime) {
       if (widget.product != null) {
-        Provider.of<ProductsNotifier>(context, listen: false).editedProduct =
-            widget.product!;
-      }
-      if (_imageUrlController.text.isNotEmpty) {
+        ProductsNotifier productsProvider =
+            Provider.of<ProductsNotifier>(context, listen: false);
+        productsProvider.editedProduct = widget.product!;
         Future.delayed(Duration.zero).then((value) {
           ProductImageNotifier imageProvider =
               Provider.of<ProductImageNotifier>(context, listen: false);
-          imageProvider.image =
-              Image.network(_imageUrlController.text, fit: BoxFit.cover);
-          imageProvider.imageSource = ImageSrc.textfield;
+          imageProvider.image = Image.network(
+              productsProvider.editedProduct.imageUrl,
+              fit: BoxFit.cover);
         });
+        _firstTime = false;
       }
-      _firstTime = false;
+      super.didChangeDependencies();
     }
-    super.didChangeDependencies();
   }
 
   @override
@@ -75,9 +63,6 @@ class _EditProductScreenState extends State<EditProductScreen>
     super.dispose();
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
-    _imageUrlFocusNode.dispose();
-    _imageUrlFocusNode.removeListener(_updateImageUrl);
-    _imageUrlController.dispose();
   }
 
   @override
@@ -88,7 +73,7 @@ class _EditProductScreenState extends State<EditProductScreen>
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: _onSaveButtonPressed,
+            onPressed: _saveForm,
             icon: const Icon(Icons.save),
           ),
         ],
@@ -104,12 +89,11 @@ class _EditProductScreenState extends State<EditProductScreen>
               PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
               DescriptionTextFormField(_descriptionFocusNode),
               mySizedBox,
-              _ImageRow(_onSaveButtonPressed, _imageUrlFocusNode,
-                  _imageUrlController, imageContainerTextColor),
+              _ImageRow(_saveForm, imageContainerTextColor),
               mySizedBox,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                onPressed: _onSaveButtonPressed,
+                onPressed: _saveForm,
                 child: Text(
                   "Save",
                   style: Theme.of(context).textTheme.button,
@@ -120,43 +104,6 @@ class _EditProductScreenState extends State<EditProductScreen>
         ),
       ),
     );
-  }
-
-  /// Sets state to update image container content when image url formfield
-  ///  goes out of focus and also when the done key is pressed (because
-  /// formfield goes out of focus).
-  void _updateImageUrl() {
-    ProductImageNotifier? imageProvider =
-        Provider.of<ProductImageNotifier>(context, listen: false);
-    // if the form field became out of focus and (it's empty or has valid url)
-    bool imageUrlFocusNodeWentOutOfFocus = !_imageUrlFocusNode.hasFocus;
-    if (imageUrlFocusNodeWentOutOfFocus) {
-      if (_imageUrlController.text.isEmpty &&
-          imageProvider.imageSource == ImageSrc.textfield) {
-        imageProvider.image = null;
-        imageProvider.imageSource = null;
-      } else if (_imageUrlController.text.isNotEmpty &&
-          validateImageUrl(_imageUrlController.text, imageProvider.image) ==
-              null) {
-        imageProvider.image =
-            Image.network(_imageUrlController.text, fit: BoxFit.cover);
-        imageProvider.imageSource = ImageSrc.textfield;
-      }
-    }
-  }
-
-  /// Updates image first then calls _saveform
-  void _onSaveButtonPressed() {
-    ProductImageNotifier? imageProvider =
-        Provider.of<ProductImageNotifier>(context, listen: false);
-    if (_imageUrlController.text.isNotEmpty &&
-        validateImageUrl(_imageUrlController.text, imageProvider.image) ==
-            null) {
-      imageProvider.image =
-          Image.network(_imageUrlController.text, fit: BoxFit.cover);
-      imageProvider.imageSource = ImageSrc.textfield;
-    }
-    _saveForm();
   }
 
   bool validateFormFieldsAndImage() {
@@ -210,11 +157,9 @@ class _EditProductScreenState extends State<EditProductScreen>
 }
 
 class _ImageRow extends StatelessWidget {
-  const _ImageRow(this.onSaveButtonPressed, this.imageUrlFocusNode,
-      this.imageUrlController, this.imageContainerTextColor);
+  const _ImageRow(this.onSaveButtonPressed, this.imageContainerTextColor);
   final VoidCallback onSaveButtonPressed;
-  final FocusNode imageUrlFocusNode;
-  final imageUrlController;
+
   final Color imageContainerTextColor;
   @override
   Widget build(BuildContext context) {
@@ -224,15 +169,7 @@ class _ImageRow extends StatelessWidget {
         width: 10,
       ),
       Column(mainAxisSize: MainAxisSize.min, children: [
-        SizedBox(
-          width: 210,
-          child: ImageUrlTextFormField(
-              imageUrlFocusNode: imageUrlFocusNode,
-              imageUrlController: imageUrlController,
-              saveFormFunction: onSaveButtonPressed,
-              image: context.watch<ProductImageNotifier>().image),
-        ),
-        _PhotoInputFromDeviceColumn(imageUrlController,
+        _PhotoInputFromDeviceColumn(
             Provider.of<ProductImageNotifier>(context, listen: false)),
       ])
     ]);
@@ -240,17 +177,16 @@ class _ImageRow extends StatelessWidget {
 }
 
 class _PhotoInputFromDeviceColumn extends StatelessWidget {
-  const _PhotoInputFromDeviceColumn(
-      this.imageUrlController, this.imageProvider);
-  final imageUrlController;
+  const _PhotoInputFromDeviceColumn(this.imageProvider);
+
   final ProductImageNotifier imageProvider;
 
   /// Checks if image file isn't null first.
-  void modifyImageContainer(XFile? imageFile, ImageSrc imageSource) {
+  void modifyImageContainer(
+    XFile? imageFile,
+  ) {
     if (imageFile != null) {
       imageProvider.image = Image.file(File(imageFile.path));
-      imageProvider.imageSource = imageSource;
-      imageUrlController.clear();
     }
   }
 
@@ -258,7 +194,7 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
     final imageFile =
         await ImagePicker() // TODO: config for ios check doccumentaoin
             .pickImage(source: ImageSource.camera, maxWidth: 600); // resolution
-    modifyImageContainer(imageFile, ImageSrc.camera);
+    modifyImageContainer(imageFile);
   }
 
   Future<void> _chooseFromGallery() async {
@@ -266,7 +202,7 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
         await ImagePicker() // TODO: config for ios check doccumentaoin
             .pickImage(
                 source: ImageSource.gallery, maxWidth: 600); // resolution
-    modifyImageContainer(imageFile, ImageSrc.gallery);
+    modifyImageContainer(imageFile);
   }
 
   @override
@@ -323,7 +259,7 @@ class _ImageContainer extends StatelessWidget {
       ),
       child: image ??
           Text(
-            "Enter a URL\nor\nTake a photo\nor\nChoose from gallery",
+            "Take a photo\nor\nChoose from gallery",
             textAlign: TextAlign.center,
             style: TextStyle(color: imageContainerTextColor),
           ),
