@@ -20,12 +20,12 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Product {
-  String get imageUrl => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,12 +38,12 @@ abstract class $ProductCopyWith<$Res> {
       _$ProductCopyWithImpl<$Res, Product>;
   @useResult
   $Res call(
-      {String imageUrl,
-      String title,
+      {String title,
       String? description,
       String id,
       double price,
-      bool isFavorite});
+      bool isFavorite,
+      String? imageUrl});
 }
 
 /// @nodoc
@@ -59,18 +59,14 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imageUrl = null,
     Object? title = null,
     Object? description = freezed,
     Object? id = null,
     Object? price = null,
     Object? isFavorite = null,
+    Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -91,6 +87,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -103,12 +103,12 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String imageUrl,
-      String title,
+      {String title,
       String? description,
       String id,
       double price,
-      bool isFavorite});
+      bool isFavorite,
+      String? imageUrl});
 }
 
 /// @nodoc
@@ -121,18 +121,14 @@ class __$$_ProductCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? imageUrl = null,
     Object? title = null,
     Object? description = freezed,
     Object? id = null,
     Object? price = null,
     Object? isFavorite = null,
+    Object? imageUrl = freezed,
   }) {
     return _then(_$_Product(
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -153,6 +149,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
               as bool,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -161,18 +161,16 @@ class __$$_ProductCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Product implements _Product {
   const _$_Product(
-      {required this.imageUrl,
-      required this.title,
+      {required this.title,
       required this.description,
       required this.id,
       required this.price,
-      this.isFavorite = false});
+      this.isFavorite = false,
+      this.imageUrl});
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
 
-  @override
-  final String imageUrl;
   @override
   final String title;
   @override
@@ -184,10 +182,12 @@ class _$_Product implements _Product {
   @override
   @JsonKey()
   final bool isFavorite;
+  @override
+  final String? imageUrl;
 
   @override
   String toString() {
-    return 'Product(imageUrl: $imageUrl, title: $title, description: $description, id: $id, price: $price, isFavorite: $isFavorite)';
+    return 'Product(title: $title, description: $description, id: $id, price: $price, isFavorite: $isFavorite, imageUrl: $imageUrl)';
   }
 
   @override
@@ -195,21 +195,21 @@ class _$_Product implements _Product {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Product &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.isFavorite, isFavorite) ||
-                other.isFavorite == isFavorite));
+                other.isFavorite == isFavorite) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, imageUrl, title, description, id, price, isFavorite);
+      runtimeType, title, description, id, price, isFavorite, imageUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -227,17 +227,15 @@ class _$_Product implements _Product {
 
 abstract class _Product implements Product {
   const factory _Product(
-      {required final String imageUrl,
-      required final String title,
+      {required final String title,
       required final String? description,
       required final String id,
       required final double price,
-      final bool isFavorite}) = _$_Product;
+      final bool isFavorite,
+      final String? imageUrl}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
-  @override
-  String get imageUrl;
   @override
   String get title;
   @override
@@ -248,6 +246,8 @@ abstract class _Product implements Product {
   double get price;
   @override
   bool get isFavorite;
+  @override
+  String? get imageUrl;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

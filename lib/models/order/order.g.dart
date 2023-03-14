@@ -18,7 +18,6 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
 Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'id': instance.id,
       'total': instance.total,
-      'cartItems':
-          instance.cartItems.map((cartItem) => cartItem.toJson()).toList(),
+      'cartItems': instance.cartItems,
       'dateTime': instance.dateTime.toIso8601String(),
     };

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
@@ -102,26 +104,27 @@ void onProductDelete(Product product, BuildContext context) async {
     return;
   }
 
-  scaffoldMessenger
-      .hideCurrentSnackBar(); // to hide the previous snackbar if exists
-  // TODO: latest: on undo, show loading screen
-  scaffoldMessenger.showSnackBar(SnackBar(
-    content: const Text(
-      "Product deleted",
-      style: TextStyle(color: Colors.black),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    action: SnackBarAction(
-        textColor: kTextDarkColor,
-        label: 'UNDO',
-        onPressed: () {
-          try {
-            productsProvider.addProductByIndex(product, productOldIndex);
-          } catch (e) {
-            ErrorHandler().handleException(e);
-          }
-        }),
-  ));
+  // scaffoldMessenger
+  //     .hideCurrentSnackBar(); // to hide the previous snackbar if exists
+  // // TODO: latest: on undo, show loading screen
+  // scaffoldMessenger.showSnackBar(SnackBar(
+  //   content: const Text(
+  //     "Product deleted",
+  //     style: TextStyle(color: Colors.black),
+  //   ),
+  //   padding: const EdgeInsets.symmetric(horizontal: 15),
+  //   action: SnackBarAction(
+  //       textColor: kTextDarkColor,
+  //       label: 'UNDO',
+  //       onPressed: () {
+  //         try {
+  //           productsProvider.addProductByIndex(product, productOldIndex,
+  //               );
+  //         } catch (e) {
+  //           ErrorHandler().handleException(e);
+  //         }
+  //       }),
+  // ));
 }
 
 void pushEditProductScreen(BuildContext context, [Product? product]) {

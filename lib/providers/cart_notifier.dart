@@ -39,10 +39,17 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
   }
 
   CartItem? getCartItem(Product product) {
-    try {
-      return cartItems
-          .singleWhere((cartItem) => cartItem.product.id == product.id);
-    } on StateError {
+    int c = 0;
+    CartItem? retVal;
+    for (CartItem cartItem in cartItems) {
+      if (cartItem.product.id == product.id) {
+        retVal = cartItem;
+        c++;
+      }
+    }
+    if (c == 1) {
+      return retVal;
+    } else {
       return null;
     }
   }

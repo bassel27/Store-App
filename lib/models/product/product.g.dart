@@ -5,22 +5,22 @@ part of 'product.dart';
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
-/// Has everything except isFavorite
+
 _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
-      imageUrl: json['imageUrl'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
       id: json['id'] as String,
       price: (json['price'] as num).toDouble(),
-      // isFavorite: json['isFavorite'] as bool? ?? false,
+      isFavorite: json['isFavorite'] as bool? ?? false,
+      imageUrl: json['imageUrl'] as String?,
     );
-/// Has everything except isFavorite
+
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
     <String, dynamic>{
-      'imageUrl': instance.imageUrl,
       'title': instance.title,
       'description': instance.description,
       'id': instance.id,
       'price': instance.price,
-      // 'isFavorite': instance.isFavorite,
+      'isFavorite': instance.isFavorite,
+      'imageUrl': instance.imageUrl,
     };

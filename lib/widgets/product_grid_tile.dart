@@ -114,7 +114,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
                 child: FadeInImage.assetNetwork(
                   placeholder: kPlaceHolder,
                   fit: BoxFit.cover,
-                  image: product.imageUrl,
+                  image: product.imageUrl!,
                 ),
               ),
             ),

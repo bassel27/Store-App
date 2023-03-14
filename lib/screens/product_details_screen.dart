@@ -169,7 +169,7 @@ class _ImageContainer extends StatelessWidget {
       child: Hero(
         tag: product.id,
         child: Image.network(
-          product.imageUrl,
+          product.imageUrl!,
         ),
       ),
     );

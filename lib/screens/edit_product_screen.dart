@@ -49,7 +49,7 @@ class _EditProductScreenState extends State<EditProductScreen>
           ProductImageNotifier imageProvider =
               Provider.of<ProductImageNotifier>(context, listen: false);
           imageProvider.image = Image.network(
-              productsProvider.editedProduct.imageUrl,
+              productsProvider.editedProduct.imageUrl!,
               fit: BoxFit.cover);
         });
         _firstTime = false;
@@ -67,8 +67,6 @@ class _EditProductScreenState extends State<EditProductScreen>
 
   @override
   Widget build(BuildContext context) {
-    Image? image =
-        Provider.of<ProductImageNotifier>(context, listen: false).image;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -89,7 +87,17 @@ class _EditProductScreenState extends State<EditProductScreen>
               PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
               DescriptionTextFormField(_descriptionFocusNode),
               mySizedBox,
-              _ImageRow(_saveForm, imageContainerTextColor),
+              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Expanded(child: _ImageContainer(imageContainerTextColor)),
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(mainAxisSize: MainAxisSize.min, children: [
+                  _PhotoInputFromDeviceColumn(Provider.of<ProductImageNotifier>(
+                      context,
+                      listen: false)),
+                ])
+              ]),
               mySizedBox,
               ElevatedButton(
                 style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
@@ -132,10 +140,12 @@ class _EditProductScreenState extends State<EditProductScreen>
       var productsProvider =
           Provider.of<ProductsNotifier>(context, listen: false);
       var editedProduct = productsProvider.editedProduct;
+      File imageFile =
+          Provider.of<ProductImageNotifier>(context, listen: false).imageFile!;
       try {
         if (editedProduct.id.isEmpty) {
-          await productsProvider
-              .addProduct(editedProduct.copyWith(id: const Uuid().v4()));
+          await productsProvider.addProduct(
+              editedProduct.copyWith(id: const Uuid().v4()), imageFile);
         } else {
           await productsProvider.updateProduct(editedProduct);
         }
@@ -156,26 +166,6 @@ class _EditProductScreenState extends State<EditProductScreen>
   }
 }
 
-class _ImageRow extends StatelessWidget {
-  const _ImageRow(this.onSaveButtonPressed, this.imageContainerTextColor);
-  final VoidCallback onSaveButtonPressed;
-
-  final Color imageContainerTextColor;
-  @override
-  Widget build(BuildContext context) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Expanded(child: _ImageContainer(imageContainerTextColor)),
-      const SizedBox(
-        width: 10,
-      ),
-      Column(mainAxisSize: MainAxisSize.min, children: [
-        _PhotoInputFromDeviceColumn(
-            Provider.of<ProductImageNotifier>(context, listen: false)),
-      ])
-    ]);
-  }
-}
-
 class _PhotoInputFromDeviceColumn extends StatelessWidget {
   const _PhotoInputFromDeviceColumn(this.imageProvider);
 
@@ -183,10 +173,12 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
 
   /// Checks if image file isn't null first.
   void modifyImageContainer(
-    XFile? imageFile,
+    XFile? imageXFile,
   ) {
-    if (imageFile != null) {
-      imageProvider.image = Image.file(File(imageFile.path));
+    if (imageXFile != null) {
+      File imageFile = File(imageXFile.path);
+      imageProvider.imageFile = imageFile;
+      imageProvider.image = Image.file(imageFile);
     }
   }
 

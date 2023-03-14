@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/controllers/products_controller.dart';
@@ -10,13 +12,13 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
 
   ProductsNotifier(this.items);
   late final ProductsController _productsController = ProductsController();
-  Product editedProduct =
-      const Product(id: '', title: '', description: '', price: 0, imageUrl: '');
+  Product editedProduct = const Product(
+      id: '', title: '', description: '', price: 0, imageUrl: null);
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
     editedProduct = const Product(
-        id: '', title: '', description: '', price: 0, imageUrl: '');
+        id: '', title: '', description: '', price: 0, imageUrl: null);
     notifyListeners();
   }
 
@@ -52,16 +54,18 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
   }
 
   /// Adds the new product to the end of the list of products.
-  Future<void> addProduct(Product newProduct) {
-    return addProductByIndex(newProduct, items.length);
+  Future<void> addProduct(Product newProduct, File imageFile) {
+    return addProductByIndex(newProduct, items.length, imageFile);
   }
 
   /// Inserts the new product at a specific index in the list of products.
   ///
   /// Throws an excpetion if operation fails.
-  Future<void> addProductByIndex(Product newProduct, int index) async {
-    await _productsController.create(newProduct);
-    items.insert(index, newProduct);
+  Future<void> addProductByIndex(
+      Product newProduct, int index, File imageFile) async {
+    Product newpProductWithImageUrl =
+        await _productsController.create(newProduct, imageFile);
+    items.insert(index, newpProductWithImageUrl);
     notifyListeners();
   }
 

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:store_app/controllers/error_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/mixins/add_token_to_url.dart';
@@ -24,13 +27,27 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
   }
 
   /// Throws an exception if operation fails.
-  Future<void> create(Product newProduct) async {
+  Future<Product> create(Product newProduct, File imageFile) async {
     DialogHelper.showLoading();
-    await db
-        .collection(kProductsCollection)
-        .doc(newProduct.id)
-        .set(newProduct.toJson());
+    final Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('product_image')
+        .child(newProduct.id);
+
+    // Use a transaction to ensure that both the image and the product information are uploaded successfully
+    Product newProductWithImageUrl =
+        await FirebaseFirestore.instance.runTransaction((transaction) async {
+      await ref.putFile(imageFile).whenComplete(() => null);
+      Product newProductWithImageUrl =
+          newProduct.copyWith(imageUrl: await ref.getDownloadURL());
+      transaction.set(
+        db.collection(kProductsCollection).doc(newProduct.id),
+        newProductWithImageUrl.toJson(),
+      );
+      return newProductWithImageUrl;
+    });
     DialogHelper.hideCurrentDialog();
+    return newProductWithImageUrl;
   }
 
   /// Throws an error if operation fails.
@@ -58,5 +75,11 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
     DialogHelper.showLoading();
     await db.collection(kProductsCollection).doc(productId).delete();
     DialogHelper.hideCurrentDialog();
+  }
+
+  Future<void> deleteImageFile(String productId) async {
+    final desertRef =
+        FirebaseStorage.instance.ref().child('product_image').child(productId);
+    await desertRef.delete();
   }
 }
