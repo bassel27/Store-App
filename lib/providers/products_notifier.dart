@@ -69,12 +69,13 @@ class ProductsNotifier with ChangeNotifier, ErrorHandler {
     notifyListeners();
   }
 
-  Future<void> updateProduct(Product newProduct) async {
+  Future<void> updateProduct(Product newProduct, File? imageFile) async {
     //TODO: find the obejct itself
     final index = items.indexWhere((element) => element.id == newProduct.id);
     if (index >= 0) {
-      await _productsController.updateProduct(newProduct);
-      items[index] = newProduct;
+      Product product =
+          await _productsController.updateProduct(newProduct, imageFile);
+      items[index] = product;
       notifyListeners();
     }
   }

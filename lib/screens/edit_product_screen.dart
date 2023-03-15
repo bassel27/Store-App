@@ -150,7 +150,7 @@ class _EditProductScreenState extends State<EditProductScreen>
           File? imageFile =
               Provider.of<ProductImageNotifier>(context, listen: false)
                   .imageFile;
-          await productsProvider.updateProduct(editedProduct);
+          await productsProvider.updateProduct(editedProduct, imageFile);
         }
         if (mounted) {
           Navigator.of(context).pop(); // pop EditProductScreen

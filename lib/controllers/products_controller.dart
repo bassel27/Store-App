@@ -62,17 +62,40 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
   }
 
   /// Throws an exception if operation fails.
-  Future<void> updateProduct(Product newProduct) async {
+  Future<Product> updateProduct(Product newProduct, File? imageFile) async {
     DialogHelper.showLoading();
-    await db
-        .collection(kProductsCollection)
-        .doc(newProduct.id)
-        .set(newProduct.toJson(), SetOptions(merge: true));
+    Product newProductWithImageUrl = newProduct;
+    if (imageFile == null) {
+      // use old image
+      await db
+          .collection(kProductsCollection)
+          .doc(newProduct.id)
+          .set(newProduct.toJson(), SetOptions(merge: true));
+    } else {
+      final Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('product_image')
+          .child(newProduct.id);
+      newProductWithImageUrl =
+          await FirebaseFirestore.instance.runTransaction((transaction) async {
+        await deleteImageFile(newProduct.id);
+        await ref.putFile(imageFile).whenComplete(() => null);
+        Product newProductWithImageUrl =
+            newProduct.copyWith(imageUrl: await ref.getDownloadURL());
+        transaction.set(
+          db.collection(kProductsCollection).doc(newProduct.id),
+          newProductWithImageUrl.toJson(),
+        );
+        return newProductWithImageUrl;
+      });
+    }
     DialogHelper.hideCurrentDialog();
+    return newProductWithImageUrl;
   }
 
   Future<void> delete(String productId) async {
     DialogHelper.showLoading();
+    await deleteImageFile(productId);
     await db.collection(kProductsCollection).doc(productId).delete();
     DialogHelper.hideCurrentDialog();
   }
