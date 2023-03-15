@@ -202,16 +202,15 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          height: 5,
+          height: 15,
         ),
-        const Text("Or"),
-        _PhotoTextButton(
-            _chooseFromGallery, "Choose from Gallery", Icons.photo_album),
+        _PhotoTextButton(_takePicture, "Take a photo", Icons.camera_alt),
         const SizedBox(
           width: 10,
         ),
         const Text("Or"),
-        _PhotoTextButton(_takePicture, "Take a photo", Icons.camera_alt)
+        _PhotoTextButton(
+            _chooseFromGallery, "Choose from Gallery", Icons.photo_album),
       ],
     );
   }
@@ -252,15 +251,15 @@ class _ImageContainer extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        child: image ??
-            Text(
+      child: image ??
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Text(
               "Take a photo\nor\nChoose from gallery",
               textAlign: TextAlign.center,
               style: TextStyle(color: imageContainerTextColor),
             ),
-      ),
+          ),
     );
   }
 }
