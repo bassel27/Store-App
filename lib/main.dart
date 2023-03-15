@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
           previousOrdersProvider == null ? [] : previousOrdersProvider.orders),
       create: (context) => OrdersNotifier([]),
     ),
-    ChangeNotifierProvider(
-      create: (_) => ProductImageNotifier(),
-    ),
+   
     // ChangeNotifierProvider(
     //   create: (_) => ThemeNotifier(),
     // ),

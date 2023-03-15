@@ -46,11 +46,9 @@ class _EditProductScreenState extends State<EditProductScreen>
             Provider.of<ProductsNotifier>(context, listen: false);
         productsProvider.editedProduct = widget.product!;
         Future.delayed(Duration.zero).then((value) {
-          ProductImageNotifier imageProvider =
-              Provider.of<ProductImageNotifier>(context, listen: false);
-          imageProvider.image = Image.network(
-              productsProvider.editedProduct.imageUrl!,
-              fit: BoxFit.cover);
+          Provider.of<ProductImageNotifier>(context, listen: false).image =
+              Image.network(productsProvider.editedProduct.imageUrl!,
+                  fit: BoxFit.cover);
         });
         _firstTime = false;
       }
@@ -139,14 +137,19 @@ class _EditProductScreenState extends State<EditProductScreen>
       _formKey.currentState!.save(); // this runs all the savers
       var productsProvider =
           Provider.of<ProductsNotifier>(context, listen: false);
-      var editedProduct = productsProvider.editedProduct;
-      File imageFile =
-          Provider.of<ProductImageNotifier>(context, listen: false).imageFile!;
+      Product editedProduct = productsProvider.editedProduct;
+
       try {
         if (editedProduct.id.isEmpty) {
+          File imageFile =
+              Provider.of<ProductImageNotifier>(context, listen: false)
+                  .imageFile!;
           await productsProvider.addProduct(
               editedProduct.copyWith(id: const Uuid().v4()), imageFile);
         } else {
+          File? imageFile =
+              Provider.of<ProductImageNotifier>(context, listen: false)
+                  .imageFile;
           await productsProvider.updateProduct(editedProduct);
         }
         if (mounted) {
