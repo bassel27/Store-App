@@ -1,14 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/widgets/my_dismissble.dart';
 
-import '../controllers/error_handler.dart';
 import '../models/product/product.dart';
 import '../widgets/empty_screen_text.dart';
 import '../widgets/product_circle_avatar.dart';
@@ -47,7 +43,11 @@ class ProductsManagerScreen extends StatelessWidget {
                           valueKeyId: products[i].id,
                           onDismissed: (_) =>
                               onProductDelete(products[i], context),
-                          child: _ProductListTile(products[i]),
+                          child: GestureDetector(
+                              onTap: () {
+                                pushEditProductScreen(context, products[i]);
+                              },
+                              child: _ProductListTile(products[i])),
                         ),
                         const Divider(),
                       ],
