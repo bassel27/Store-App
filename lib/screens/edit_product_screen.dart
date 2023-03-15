@@ -224,16 +224,19 @@ class _PhotoTextButton extends StatelessWidget {
   final IconData iconData;
   @override
   Widget build(BuildContext context) {
+    Color buttonColor = Theme.of(context).colorScheme.tertiary;
     return OutlinedButton.icon(
-      style: OutlinedButton.styleFrom(),
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(width: 1.4, color: buttonColor),
+      ),
       icon: Icon(
         iconData,
-        color: Theme.of(context).colorScheme.secondary,
+        color: buttonColor,
       ),
       onPressed: onPressed,
       label: Text(
         text,
-        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+        style: TextStyle(color: buttonColor),
       ),
     );
   }
@@ -249,12 +252,15 @@ class _ImageContainer extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
-      child: image ??
-          Text(
-            "Take a photo\nor\nChoose from gallery",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: imageContainerTextColor),
-          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        child: image ??
+            Text(
+              "Take a photo\nor\nChoose from gallery",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: imageContainerTextColor),
+            ),
+      ),
     );
   }
 }
