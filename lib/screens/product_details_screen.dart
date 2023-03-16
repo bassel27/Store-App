@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
+import 'package:store_app/widgets/my_cached_network_image.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -168,9 +169,7 @@ class _ImageContainer extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.5,
       child: Hero(
         tag: product.id,
-        child: Image.network(
-          product.imageUrl!,
-        ),
+        child: MyCachedNetworkImage(product.imageUrl!),
       ),
     );
   }

@@ -4,13 +4,8 @@ import 'package:store_app/widgets/exception_scaffold_body.dart';
 
 class ErrorHandler {
   /// Handles exceptions and shows error dialog.
-  Widget? handleException( exception, [returnScaffold = false]) {
+  Widget? handleException(exception, [returnScaffold = false]) {
     DialogHelper.hideCurrentDialog(); // If loading dialog was open
-    // if (error is BadRequestException ||
-    //     error is FetchDataException ||
-    //     error is ApiNotRespondingException) {
-    //   DialogHelper.showErroDialog(description: error.message);
-    // } else {
     if (returnScaffold) {
       return ExceptionScaffoldBody(exception);
     } else {
@@ -18,6 +13,5 @@ class ErrorHandler {
           description: exception.message ?? exception.toString());
     }
     return null;
-    // }
   }
 }

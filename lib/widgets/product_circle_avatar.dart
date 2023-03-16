@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
+import 'package:store_app/widgets/my_cached_network_image.dart';
 
 import '../models/product/product.dart';
 
@@ -19,11 +20,7 @@ class ProductCircleAvatar extends StatelessWidget {
         width: constraints.maxHeight,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(25.0),
-          child: FadeInImage.assetNetwork(
-            placeholder: kPlaceHolder,
-            fit: BoxFit.cover,
-            image: product.imageUrl!,
-          ),
+          child: MyCachedNetworkImage(product.imageUrl!),
         ),
       );
     });

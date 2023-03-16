@@ -1,9 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/models/constants.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_details_screen.dart';
+import 'package:store_app/widgets/my_cached_network_image.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -111,11 +111,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
               width: double.infinity,
               child: Hero(
                 tag: product.id,
-                child: FadeInImage.assetNetwork(
-                  placeholder: kPlaceHolder,
-                  fit: BoxFit.cover,
-                  image: product.imageUrl!,
-                ),
+                child: MyCachedNetworkImage(product.imageUrl!),
               ),
             ),
           ),
