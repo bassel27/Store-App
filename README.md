@@ -12,10 +12,11 @@ The cross-platform app is built using Flutter and Firebase. Firebase Authenticat
 6. Favorite products
 7. View past orders
 8. Chat with customer service
-9. Manage products (add, delete, or edit) (only for admins)
-10. Animations
-11. Use of Provider for state management
-12. Error handling
+9. Push notifications
+10. Manage products (add, delete, or edit) (only for admins)
+11. Animations
+12. Use of Provider for state management
+13. Error handling
 
 ## Design:
 
