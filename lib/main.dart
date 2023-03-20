@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
-import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
@@ -21,8 +21,17 @@ import 'package:store_app/screens/verify_email_screen.dart';
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
 //TODO: use something else except double for monetary values
 Future<void> main() async {
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -48,7 +57,7 @@ class MyApp extends StatelessWidget {
           previousOrdersProvider == null ? [] : previousOrdersProvider.orders),
       create: (context) => OrdersNotifier([]),
     ),
-   
+
     // ChangeNotifierProvider(
     //   create: (_) => ThemeNotifier(),
     // ),
@@ -71,7 +80,7 @@ class MyApp extends StatelessWidget {
             ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
             AccountScreen.route: (ctx) => AccountScreen(),
             EditProductScreen.route: (ctx) => const EditProductScreen(null),
-            ChatScreen.route: (ctx) => ChatScreen(),
+            ChatScreen.route: (ctx) => const ChatScreen(),
             VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
           },
           title: 'Flutter Demo',

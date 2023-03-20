@@ -33,19 +33,13 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
         .ref()
         .child('product_image')
         .child(newProduct.id);
-
-    // Use a transaction to ensure that both the image and the product information are uploaded successfully
+    await ref.putFile(imageFile).whenComplete(() => null);
     Product newProductWithImageUrl =
-        await FirebaseFirestore.instance.runTransaction((transaction) async {
-      await ref.putFile(imageFile).whenComplete(() => null);
-      Product newProductWithImageUrl =
-          newProduct.copyWith(imageUrl: await ref.getDownloadURL());
-      transaction.set(
-        db.collection(kProductsCollection).doc(newProduct.id),
-        newProductWithImageUrl.toJson(),
-      );
-      return newProductWithImageUrl;
-    });
+        newProduct.copyWith(imageUrl: await ref.getDownloadURL());
+    db
+        .collection(kProductsCollection)
+        .doc(newProduct.id)
+        .set(newProductWithImageUrl.toJson());
     DialogHelper.hideCurrentDialog();
     return newProductWithImageUrl;
   }
@@ -76,18 +70,15 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
           .ref()
           .child('product_image')
           .child(newProduct.id);
+      await deleteImageFile(newProduct.id);
+      await ref.putFile(imageFile).whenComplete(() => null);
       newProductWithImageUrl =
-          await FirebaseFirestore.instance.runTransaction((transaction) async {
-        await deleteImageFile(newProduct.id);
-        await ref.putFile(imageFile).whenComplete(() => null);
-        Product newProductWithImageUrl =
-            newProduct.copyWith(imageUrl: await ref.getDownloadURL());
-        transaction.set(
-          db.collection(kProductsCollection).doc(newProduct.id),
-          newProductWithImageUrl.toJson(),
-        );
-        return newProductWithImageUrl;
-      });
+          newProduct.copyWith(imageUrl: await ref.getDownloadURL());
+
+      db
+          .collection(kProductsCollection)
+          .doc(newProduct.id)
+          .set(newProductWithImageUrl.toJson());
     }
     DialogHelper.hideCurrentDialog();
     return newProductWithImageUrl;

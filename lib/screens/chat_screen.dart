@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
 import 'package:store_app/widgets/empty_screen_text.dart';
@@ -7,10 +8,28 @@ import 'package:store_app/widgets/exception_scaffold_body.dart';
 import 'package:store_app/widgets/message_bubble.dart';
 import 'package:store_app/widgets/message_text_field.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   static const route = '/bottom_nav_bar/my_account/chat_screen';
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message: $message');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
