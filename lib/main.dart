@@ -21,19 +21,11 @@ import 'package:store_app/screens/verify_email_screen.dart';
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
-}
-
 //TODO: use something else except double for monetary values
 Future<void> main() async {
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.getToken();
   runApp(MyApp());
 }
 

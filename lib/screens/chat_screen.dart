@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
@@ -18,18 +19,55 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message: $message');
 
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+    FirebaseMessaging.instance.getInitialMessage().then((value) {
+      print("lol");
+      if (value != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const ChatScreen();
+            },
+            settings: RouteSettings(
+              arguments: value.data,
+            ),
+          ),
+        );
       }
     });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("lol");
+      if (message.notification != null) {
+        print(message.data);
+        print('Message on Foreground: ${message.notification}');
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print(message.data);
+      print("lol");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) {
+              return const ChatScreen();
+            },
+            settings: RouteSettings(
+              arguments: message.data,
+            )),
+      );
+    });
+
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,4 +123,11 @@ class _Messages extends StatelessWidget {
       },
     );
   }
+}
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  print("Handling a background message :-): ${message.data}");
+  //Here you can do what you want with the message :-)
 }
