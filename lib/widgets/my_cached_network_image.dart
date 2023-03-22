@@ -11,7 +11,10 @@ class MyCachedNetworkImage extends StatelessWidget with ErrorHandler {
     return CachedNetworkImage(
       fit: BoxFit.cover,
       imageUrl: imageUrl,
-      placeholder: (context, url) => Image.asset(kPlaceHolder),
+      placeholder: (context, url) => Image.asset(
+        kPlaceHolder,
+        fit: BoxFit.cover,
+      ),
       errorWidget: (context, url, error) {
         handleException(error);
         return const Icon(Icons.error);
