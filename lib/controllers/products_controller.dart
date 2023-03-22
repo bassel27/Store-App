@@ -59,11 +59,11 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
     var usersCollection = db.collection('users');
     if (isFavorite) {
       await usersCollection.doc(userId).update({
-        'favorite_products': FieldValue.arrayUnion([productId]),
+        'favoriteProducts': FieldValue.arrayUnion([productId]),
       });
     } else {
       await usersCollection.doc(userId).update({
-        'favorite_products': FieldValue.arrayRemove([productId]),
+        'favoriteProducts': FieldValue.arrayRemove([productId]),
       });
     }
     DialogHelper.hideCurrentDialog();
@@ -72,7 +72,7 @@ class ProductsController with ErrorHandler, AddTokenToUrl {
   Future<void> _setFavoriteProductsIds() async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     final userDoc = await db.collection('users').doc(userId).get();
-    _favoriteProductIds = List<String>.from(userDoc['favorite_products']);
+    _favoriteProductIds = List<String>.from(userDoc['favoriteProducts']);
   }
 
   bool isProductFavorite(String productId) {

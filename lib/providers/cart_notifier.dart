@@ -112,7 +112,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     for (int i = 0; i < cartItems.length; i++) {
       if (cartItems[i].product.id == product.id) {
         await _cartController
-            .incrementQuantity(cartItems[i])
+            .incrementQuantity(cartItems[i].id)
             .then((value) => increment(cartItems[i]))
             .catchError(handleException);
         notifyListeners();
