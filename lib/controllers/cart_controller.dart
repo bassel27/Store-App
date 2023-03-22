@@ -23,8 +23,7 @@ class CartController with AddTokenToUrl {
   /// Throws an exception if operatoin fails.
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      var cartItemDict = cartItem.toJson();
-      await db.collection(kCartCollection).doc(cartItem.id).set(cartItemDict);
+      await db.collection(kCartCollection).doc(cartItem.id).set(cartItem.toJson());
     });
   }
 

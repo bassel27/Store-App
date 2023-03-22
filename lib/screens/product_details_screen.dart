@@ -166,7 +166,6 @@ class _ImageContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(),
-      height: MediaQuery.of(context).size.height * 0.5,
       child: Hero(
         tag: product.id,
         child: MyCachedNetworkImage(product.imageUrl!),
