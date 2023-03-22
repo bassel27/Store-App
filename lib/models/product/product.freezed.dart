@@ -21,9 +21,11 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   String get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  String? get description =>
+      throw _privateConstructorUsedError; // TODO: remove required
   String get id => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   bool get isFavorite => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
 
@@ -42,7 +44,7 @@ abstract class $ProductCopyWith<$Res> {
       String? description,
       String id,
       double price,
-      bool isFavorite,
+      @JsonKey(ignore: true) bool isFavorite,
       String? imageUrl});
 }
 
@@ -107,7 +109,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? description,
       String id,
       double price,
-      bool isFavorite,
+      @JsonKey(ignore: true) bool isFavorite,
       String? imageUrl});
 }
 
@@ -165,7 +167,7 @@ class _$_Product implements _Product {
       required this.description,
       required this.id,
       required this.price,
-      this.isFavorite = false,
+      @JsonKey(ignore: true) this.isFavorite = false,
       this.imageUrl});
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
@@ -175,12 +177,13 @@ class _$_Product implements _Product {
   final String title;
   @override
   final String? description;
+// TODO: remove required
   @override
   final String id;
   @override
   final double price;
   @override
-  @JsonKey()
+  @JsonKey(ignore: true)
   final bool isFavorite;
   @override
   final String? imageUrl;
@@ -231,7 +234,7 @@ abstract class _Product implements Product {
       required final String? description,
       required final String id,
       required final double price,
-      final bool isFavorite,
+      @JsonKey(ignore: true) final bool isFavorite,
       final String? imageUrl}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
@@ -240,11 +243,12 @@ abstract class _Product implements Product {
   String get title;
   @override
   String? get description;
-  @override
+  @override // TODO: remove required
   String get id;
   @override
   double get price;
   @override
+  @JsonKey(ignore: true)
   bool get isFavorite;
   @override
   String? get imageUrl;

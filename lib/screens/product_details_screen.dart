@@ -160,7 +160,6 @@ class _ImageContainer extends StatelessWidget {
   }) : super(key: key);
 
   final Product product;
-
   @override
   Widget build(BuildContext context) {
     return Container(

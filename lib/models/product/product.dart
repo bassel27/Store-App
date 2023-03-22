@@ -9,13 +9,13 @@ part 'product.g.dart';
 class Product with _$Product {
   const factory Product({
     required String title,
-    required String? description,
+    required String? description, // TODO: remove required
     required String id,
     required double price,
-    @Default(false) bool isFavorite,
-    String? imageUrl, // Add imageUrl attribute
+    @Default(false) @JsonKey(ignore: true) bool isFavorite,
+    String? imageUrl, 
   }) = _Product;
-
+  
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
 }
