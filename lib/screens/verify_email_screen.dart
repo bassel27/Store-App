@@ -54,9 +54,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       canResendEmail = false;
     });
     await Future.delayed(const Duration(seconds: 5));
-    setState(() {
-      canResendEmail = true;
-    });
+    if (mounted) {
+      setState(() {
+        canResendEmail = true;
+      });
+    }
   }
 
   @override
