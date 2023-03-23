@@ -7,13 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/controllers/auth_controller.dart';
-import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/models/user/user.dart';
 
 import '../mixins/try_catch_firebase.dart';
 
-class AuthNotifier with ChangeNotifier, ErrorHandler, TryCatchFirebaseWrapper {
+class AuthNotifier
+    with ChangeNotifier, ExceptionHandler, TryCatchFirebaseWrapper {
   final authControler = AuthController();
 
   DateTime? _expiryDate;
@@ -24,14 +25,16 @@ class AuthNotifier with ChangeNotifier, ErrorHandler, TryCatchFirebaseWrapper {
     return date.isAfter(DateTime.now());
   }
 
-  
-
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }
 
   Future<void> sendVerificationEmail() async {
-    await _auth.currentUser!.sendEmailVerification();
+    try {
+      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+    } catch (e) {
+      handleException(e);
+    }
   }
 
   Future<void> signup(User user) async {
