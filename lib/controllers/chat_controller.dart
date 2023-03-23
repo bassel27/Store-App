@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/models/constants.dart';
 
-class ChatController with ErrorHandler {
+class ChatController with ExceptionHandler {
   FirebaseFirestore firestoreInstance = FirebaseFirestore.instance;
   Future<void> sendMessage(String message) async {
     await firestoreInstance

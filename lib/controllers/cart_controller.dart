@@ -8,8 +8,9 @@ import '../models/cart_item/cart_item.dart';
 class CartController with AddTokenToUrl {
   CartController();
   FirebaseFirestore db = FirebaseFirestore.instance;
-  late final DocumentReference _userDoc =
-      db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+  get _userDoc {
+    return db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+  }
 
   Future<List<CartItem>> get() async {
     List<CartItem> cartItems = [];
@@ -25,68 +26,55 @@ class CartController with AddTokenToUrl {
   /// Throws an exception if operatoin fails.
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await _userDoc.update({
+      await _userDoc.set({
         'cartItems': FieldValue.arrayUnion([cartItem.toJson()]),
-      });
+      }, SetOptions(merge: true));
     });
   }
 
   /// Increments the quantity of an already existing CartItem using its id.
   ///
   /// Throws an exception if operatoin fails.
-  Future<void> incrementQuantity(String cartItemId) async {
-    await httpRequestTemplate(() async {
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser == null) {
-        throw Exception("User is not authenticated");
-      }
-      final userDocRef =
-          FirebaseFirestore.instance.collection("users").doc(currentUser.uid);
-      final userDocSnapshot = await userDocRef.get();
-      if (!userDocSnapshot.exists) {
-        throw Exception("User document does not exist");
-      }
-      final cartItemsDicts =
-          List<Map<String, dynamic>>.from(userDocSnapshot.get("cartItems"));
-      List<CartItem> cartItems =
-          cartItemsDicts.map((e) => CartItem.fromJson(e)).toList();
-      CartItem newCartItem =
-          cartItems.firstWhere((element) => element.id == cartItemId);
-      newCartItem = newCartItem.copyWith(quantity: newCartItem.quantity + 1);
-      cartItems.removeWhere((element) => element.id == newCartItem.id);
-      cartItems.add(newCartItem);
-      await userDocRef.update({"cartItems": cartItems.map((e) => e.toJson())});
-    });
+  Future<void> incrementQuantity(CartItem cartItem) async {
+    await setQuantity(cartItem.id, cartItem.quantity + 1);
   }
 
   ///Decrements quantity of cart item by one.
   ///
   /// Throws an exception if operatoin fails.
   Future<void> decrementQuantity(CartItem cartItem) async {
-    await httpRequestTemplate(() async {
-      await _userDoc.set(
-          cartItem.copyWith(quantity: cartItem.quantity - 1).toJson(),
-          SetOptions(merge: true));
-    });
+    await setQuantity(cartItem.id, cartItem.quantity - 1);
   }
 
   /// Set the quantity of an already existing CartItem.
   ///
   /// Throws an exception if operatoin fails.
-  Future<void> setQuantity(CartItem cartItem, int quantity) async {
+  Future<void> setQuantity(String cartItemId, int quantity) async {
     await httpRequestTemplate(() async {
-      await _userDoc.set(cartItem.copyWith(quantity: quantity).toJson(),
+      final userDocSnapshot = await _userDoc.get();
+      final cartItemsDicts =
+          List<Map<String, dynamic>>.from(userDocSnapshot.get("cartItems"));
+      List<CartItem> cartItems =
+          cartItemsDicts.map((e) => CartItem.fromJson(e)).toList();
+      CartItem newCartItem =
+          cartItems.firstWhere((element) => element.id == cartItemId);
+      newCartItem = newCartItem.copyWith(quantity: quantity);
+      for (int i = 0; i < cartItems.length; i++) {
+        if (cartItems[i].id == newCartItem.id) {
+          cartItems[i] = newCartItem;
+          break;
+        }
+      }
+      await _userDoc.set({"cartItems": cartItems.map((e) => e.toJson())},
           SetOptions(merge: true));
     });
   }
 
   /// Throws an exception if operatoin fails.
-  Future<void> delete(String cartItemId, {bool showLoading = true}) async {
+  Future<void> delete(CartItem cartItem, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
       await _userDoc.update({
-        'cartItems': FieldValue.arrayRemove([
-          {'id': cartItemId}
-        ])
+        'cartItems': FieldValue.arrayRemove([cartItem.toJson()])
       });
     }, showLoading: showLoading);
   }
@@ -100,7 +88,7 @@ class CartController with AddTokenToUrl {
 
   Future<void> clearCart(List<CartItem> cartItems) async {
     for (var cartItem in cartItems) {
-      await delete(cartItem.id, showLoading: false);
+      await delete(cartItem, showLoading: false);
     }
   }
 }

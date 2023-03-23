@@ -3,17 +3,17 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/mixins/add_token_to_url.dart';
 
 import '../models/product/product.dart';
 
 // TODO: use tojson and from json. send my id
-class ProductsController with ErrorHandler, AddTokenToUrl {
+class ProductsController with ExceptionHandler, AddTokenToUrl {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kProductsCollection = 'products';
-  late final List<String> _favoriteProductIds;
+  late List<String> _favoriteProductIds;
 
   /// Returns list of products.
   ///

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:uuid/uuid.dart';
 
-import '../controllers/error_handler.dart';
+import '../controllers/excpetion_handler.dart';
 import '../mixins/validate_image_mixin.dart';
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
@@ -156,7 +156,7 @@ class _EditProductScreenState extends State<EditProductScreen>
           Navigator.of(context).pop(); // pop EditProductScreen
         }
       } catch (e) {
-        ErrorHandler().handleException(e);
+        ExceptionHandler().handleException(e);
       }
     }
   }

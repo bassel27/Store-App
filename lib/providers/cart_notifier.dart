@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/cart_controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../controllers/error_handler.dart';
+import '../controllers/excpetion_handler.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
-class CartNotifier with ChangeNotifier, ErrorHandler {
+class CartNotifier with ChangeNotifier, ExceptionHandler {
   List<CartItem> cartItems;
   CartNotifier(this.cartItems);
   late final CartController _cartController = CartController();
@@ -63,7 +63,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
 
   /// Delete an item from the cart using this item's id.
   void deleteItem(CartItem cartItemInput) async {
-    await _cartController.delete(cartItemInput.id).then((value) {
+    await _cartController.delete(cartItemInput).then((value) {
       cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
       notifyListeners();
     }).catchError(handleException);
@@ -89,7 +89,9 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     for (int i = 0; i < cartItems.length; i++) {
       // if already exists in cart
       if (cartItems[i].product.id == product.id) {
-        await _cartController.setQuantity(cartItems[i], quantity).then((value) {
+        await _cartController
+            .setQuantity(cartItems[i].id, quantity)
+            .then((value) {
           cartItems[i] = cartItems[i].copyWith(quantity: quantity);
         }).catchError(handleException);
         notifyListeners();
@@ -112,7 +114,7 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     for (int i = 0; i < cartItems.length; i++) {
       if (cartItems[i].product.id == product.id) {
         await _cartController
-            .incrementQuantity(cartItems[i].id)
+            .incrementQuantity(cartItems[i])
             .then((value) => increment(cartItems[i]))
             .catchError(handleException);
         notifyListeners();
@@ -135,9 +137,9 @@ class CartNotifier with ChangeNotifier, ErrorHandler {
     for (int i = 0; i < cartItems.length; i++) {
       if (cartItems[i].id == cartItemInput.id) {
         if (cartItems[i].quantity == 1) {
-          CartItem removedProduct = cartItems[i];
+          CartItem removedCartItem = cartItems[i];
           await _cartController
-              .delete(removedProduct.id)
+              .delete(removedCartItem)
               .then((_) => cartItems
                   .removeWhere((cartItem) => cartItem.id == cartItemInput.id))
               .catchError(handleException);

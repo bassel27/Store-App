@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/products_controller.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
 
-class ProductsNotifier with ChangeNotifier, ErrorHandler {
+class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   bool areProductsFetched = false;
 
   ProductsNotifier(this.items);

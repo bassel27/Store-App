@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:uuid/uuid.dart';
 
 import '../controllers/orders_controller.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/order/order.dart';
 
-class OrdersNotifier with ChangeNotifier, ErrorHandler {
+class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   /// List of all order sorted by recency.
   // TODO: make private
   List<Order> ordersList;

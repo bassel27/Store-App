@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/controllers/error_handler.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/mixins/input_decration.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/widgets/auth_button.dart';
@@ -16,7 +16,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
-    with MyInputDecoration, ErrorHandler {
+    with MyInputDecoration, ExceptionHandler {
   final emailController = TextEditingController();
   //TODO: add dispose for all controllers used in the app
   @override
@@ -52,7 +52,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                   }
                   return null;
                 },
-                decoration: inputDecoration(context:context, hintText:'Email', icon:Icon(Icons.email)),
+                decoration: inputDecoration(
+                    context: context,
+                    hintText: 'Email',
+                    icon: const Icon(Icons.email)),
               ),
             ),
             const SizedBox(
