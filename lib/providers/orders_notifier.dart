@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -34,11 +35,11 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   /// Throws an exception if operation not successful.
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final Order newOrder = Order(
-      id: const Uuid().v4(),
-      total: total,
-      cartItems: cartProducts,
-      dateTime: DateTime.now(),
-    );
+        id: const Uuid().v4(),
+        total: total,
+        cartItems: cartProducts,
+        dateTime: DateTime.now(),
+        userId: FirebaseAuth.instance.currentUser!.uid);
     await _ordersController
         .create(newOrder)
         .then((_) => ordersList.insert(

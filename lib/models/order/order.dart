@@ -12,6 +12,7 @@ class Order with _$Order {
       {required String id,
       required double total,
       required List<CartItem> cartItems,
+      required String userId,
       required DateTime dateTime}) = _Order;
   int get numberOfProducts {
     return cartItems.length;
