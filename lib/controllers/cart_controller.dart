@@ -7,13 +7,16 @@ import '../models/cart_item/cart_item.dart';
 class CartController {
   CartController();
   FirebaseFirestore db = FirebaseFirestore.instance;
-  DocumentReference get _userDoc {
-    return db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+  CollectionReference get cartItemsCollection {
+    return db
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('cartItems');
   }
 
   Future<List<CartItem>> get() async {
     List<CartItem> cartItems = [];
-    QuerySnapshot docSnapshot = await _userDoc.collection('cartItems').get();
+    QuerySnapshot docSnapshot = await cartItemsCollection.get();
     for (var docSnapshot in docSnapshot.docs) {
       cartItems
           .add(CartItem.fromJson(docSnapshot.data() as Map<String, dynamic>));
@@ -26,10 +29,7 @@ class CartController {
   /// Throws an exception if operatoin fails.
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await _userDoc
-          .collection('cartItems')
-          .doc(cartItem.id)
-          .set(cartItem.toJson());
+      await cartItemsCollection.doc(cartItem.id).set(cartItem.toJson());
     });
   }
 
@@ -52,7 +52,7 @@ class CartController {
   /// Throws an exception if operatoin fails.
   Future<void> setQuantity(CartItem cartItem, int quantity) async {
     await httpRequestTemplate(() async {
-      await _userDoc.collection('cartItems').doc(cartItem.id).set(
+      await cartItemsCollection.doc(cartItem.id).set(
           cartItem.copyWith(quantity: quantity).toJson(),
           SetOptions(merge: true));
     });
@@ -61,7 +61,7 @@ class CartController {
   /// Throws an exception if operatoin fails.
   Future<void> delete(String cartItemId, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
-      await _userDoc.collection('cartItems').doc(cartItemId).delete();
+      await cartItemsCollection.doc(cartItemId).delete();
     }, showLoading: showLoading);
   }
 
