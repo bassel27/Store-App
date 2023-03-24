@@ -14,7 +14,7 @@ import '../providers/auth_notifier.dart';
 // TODO: handle connection errros and use future builder
 // TODO: refactor
 class AuthScreen extends StatelessWidget {
-  static const routeName = '/auth';
+  static const route = '/auth';
 
   @override
   Widget build(BuildContext context) {

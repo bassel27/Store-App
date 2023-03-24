@@ -9,7 +9,7 @@ import 'package:store_app/helper/dialog_helper.dart';
 import '../models/product/product.dart';
 
 // TODO: use tojson and from json. send my id
-class ProductsController with ExceptionHandler {
+class ProductController with ExceptionHandler {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kProductsCollection = 'products';
   late List<String> _favoriteProductIds;

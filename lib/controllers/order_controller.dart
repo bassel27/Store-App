@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, QuerySnapshot;
 import 'package:store_app/controllers/excpetion_handler.dart';
 
-
 import '../models/order/order.dart';
 
-class OrdersController with ExceptionHandler {
-  OrdersController();
+class OrderController with ExceptionHandler {
+  OrderController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kOrdersCollection = 'orders';
 

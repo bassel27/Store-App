@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
-import 'package:store_app/controllers/products_controller.dart';
+import 'package:store_app/controllers/product_controller.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
@@ -11,7 +11,7 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   bool areProductsFetched = false;
 
   ProductsNotifier(this.items);
-  late final ProductsController _productsController = ProductsController();
+  late final ProductController _productsController = ProductController();
   Product editedProduct = const Product(
       id: '', title: '', description: '', price: 0, imageUrl: null);
 
