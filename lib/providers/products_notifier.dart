@@ -37,7 +37,7 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     int index = items.indexOf(product);
     if (index != -1) {
       try {
-        await _productsController.determineFavoriteStatus(
+        await _productsController.updateProductFavoriteStatus(
             product.id, !product.isFavorite);
         items[index] = product.copyWith(isFavorite: !product.isFavorite);
         notifyListeners();

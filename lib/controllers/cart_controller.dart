@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:store_app/helper/dialog_helper.dart';
-import 'package:store_app/mixins/add_token_to_url.dart';
+
 
 import '../models/cart_item/cart_item.dart';
 
-class CartController with AddTokenToUrl {
+class CartController  {
   CartController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   get _userDoc {

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FirebaseFirestore, QuerySnapshot;
 import 'package:store_app/controllers/excpetion_handler.dart';
-import 'package:store_app/mixins/add_token_to_url.dart';
+
 
 import '../models/order/order.dart';
 
-class OrdersController with ExceptionHandler, AddTokenToUrl {
+class OrdersController with ExceptionHandler {
   OrdersController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kOrdersCollection = 'orders';

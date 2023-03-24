@@ -5,12 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
-import 'package:store_app/mixins/add_token_to_url.dart';
 
 import '../models/product/product.dart';
 
 // TODO: use tojson and from json. send my id
-class ProductsController with ExceptionHandler, AddTokenToUrl {
+class ProductsController with ExceptionHandler {
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kProductsCollection = 'products';
   late List<String> _favoriteProductIds;
@@ -52,7 +51,7 @@ class ProductsController with ExceptionHandler, AddTokenToUrl {
   }
 
   /// Throws an error if operation fails.
-  Future<void> determineFavoriteStatus(
+  Future<void> updateProductFavoriteStatus(
       String productId, bool isFavorite) async {
     DialogHelper.showLoading();
     String userId = FirebaseAuth.instance.currentUser!.uid;
