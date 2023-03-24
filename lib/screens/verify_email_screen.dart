@@ -87,8 +87,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         onPressed: () async {
                           await context.read<AuthNotifier>().logout();
                           if (mounted) {
-                            Navigator.popUntil(
-                                context, ModalRoute.withName("/"));
+                            // Navigator.popUntil(
+                            //     context, ModalRoute.withName("/"));
+                            Navigator.pop(context);
                           }
                         }),
                     const SizedBox(

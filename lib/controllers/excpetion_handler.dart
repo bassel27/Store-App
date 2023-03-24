@@ -12,7 +12,7 @@ class ExceptionHandler {
     } else {
       if (exception is FirebaseAuthException &&
           exception.code == "too-many-requests") {
-            // ignore
+        // ignore
         return null;
       }
       DialogHelper.showErroDialog(

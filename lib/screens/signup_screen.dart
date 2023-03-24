@@ -162,10 +162,11 @@ class SignupScreen extends StatelessWidget
     }
     _formKey.currentState!.save();
     try {
-      await Provider.of<AuthNotifier>(context, listen: false)
-          .signup(editedUser);
-      FocusScope.of(context).requestFocus(FocusNode()); // dismiss keyboard
       Navigator.pop(context);
+      await Provider.of<AuthNotifier>(context, listen: false)
+          .signup(editedUser);  
+      // FocusScope.of(context).requestFocus(FocusNode()); // dismiss keyboard
+
     } on PlatformException catch (e) {
       handleException(e);
     } on FirebaseAuthException catch (e) {
