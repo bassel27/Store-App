@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
+import 'package:store_app/widgets/my_cached_network_image.dart';
 import 'package:uuid/uuid.dart';
 
 import '../controllers/excpetion_handler.dart';
@@ -47,8 +48,7 @@ class _EditProductScreenState extends State<EditProductScreen>
         productsProvider.editedProduct = widget.product!;
         Future.delayed(Duration.zero).then((value) {
           Provider.of<ProductImageNotifier>(context, listen: false).image =
-              Image.network(productsProvider.editedProduct.imageUrl!,
-                  fit: BoxFit.cover);
+              MyCachedNetworkImage(productsProvider.editedProduct.imageUrl!);
         });
         _firstTime = false;
       }
@@ -85,16 +85,13 @@ class _EditProductScreenState extends State<EditProductScreen>
               PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
               DescriptionTextFormField(_descriptionFocusNode),
               mySizedBox,
-              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(child: _ImageContainer(imageContainerTextColor)),
                 const SizedBox(
                   width: 10,
                 ),
-                Column(mainAxisSize: MainAxisSize.min, children: [
-                  _PhotoInputFromDeviceColumn(Provider.of<ProductImageNotifier>(
-                      context,
-                      listen: false)),
-                ])
+                _PhotoInputFromDeviceColumn(
+                    Provider.of<ProductImageNotifier>(context, listen: false)),
               ]),
               mySizedBox,
               ElevatedButton(
@@ -202,19 +199,17 @@ class _PhotoInputFromDeviceColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 15,
-        ),
-        _PhotoTextButton(_takePicture, "Take a photo", Icons.camera_alt),
-        const SizedBox(
-          width: 10,
-        ),
-        const Text("Or"),
-        _PhotoTextButton(
-            _chooseFromGallery, "Choose from Gallery", Icons.photo_album),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _PhotoTextButton(_takePicture, "Take a photo", Icons.camera_alt),
+          const Text("Or"),
+          _PhotoTextButton(
+              _chooseFromGallery, "Choose from Gallery", Icons.photo_album),
+        ],
+      ),
     );
   }
 }
@@ -249,14 +244,14 @@ class _ImageContainer extends StatelessWidget {
   final Color imageContainerTextColor;
   @override
   Widget build(BuildContext context) {
-    Image? image = Provider.of<ProductImageNotifier>(context).image;
+    dynamic image = Provider.of<ProductImageNotifier>(context).image;
     return Container(
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: Colors.grey),
       ),
       child: image ??
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+            padding: const EdgeInsets.symmetric(vertical: 70),
             child: Text(
               "Take a photo\nor\nChoose from gallery",
               textAlign: TextAlign.center,

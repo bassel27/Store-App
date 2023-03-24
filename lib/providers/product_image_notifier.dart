@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 /// For EditProductScreen
 class ProductImageNotifier with ChangeNotifier {
   File? imageFile;
-  Image? _image;
-  set image(Image? image) {
+  dynamic _image;
+  set image(dynamic image) {
     _image = image;
     notifyListeners();
   }
 
-  Image? get image {
+  dynamic get image {
     return _image;
   }
 }
