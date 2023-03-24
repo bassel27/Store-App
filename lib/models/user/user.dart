@@ -14,7 +14,6 @@ class User with _$User {
     required String lastName,
     required String id,
     required String password,
-    @Default([]) List<CartItem> cartItems,
     @Default([]) List<CartItem> favoriteProducts,
   }) = _User;
 

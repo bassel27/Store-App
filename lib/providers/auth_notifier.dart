@@ -24,7 +24,7 @@ class AuthNotifier
   bool isDateNotReached(DateTime date) {
     return date.isAfter(DateTime.now());
   }
-
+  
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }

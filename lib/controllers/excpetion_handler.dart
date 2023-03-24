@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/widgets/exception_scaffold_body.dart';
 
@@ -10,8 +10,9 @@ class ExceptionHandler {
     if (returnScaffold) {
       return ExceptionScaffoldBody(exception);
     } else {
-      if (exception is PlatformException &&
+      if (exception is FirebaseAuthException &&
           exception.code == "too-many-requests") {
+            // ignore
         return null;
       }
       DialogHelper.showErroDialog(

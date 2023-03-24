@@ -25,7 +25,6 @@ mixin _$User {
   String get lastName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
-  List<CartItem> get cartItems => throw _privateConstructorUsedError;
   List<CartItem> get favoriteProducts => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,7 +43,6 @@ abstract class $UserCopyWith<$Res> {
       String lastName,
       String id,
       String password,
-      List<CartItem> cartItems,
       List<CartItem> favoriteProducts});
 }
 
@@ -66,7 +64,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? lastName = null,
     Object? id = null,
     Object? password = null,
-    Object? cartItems = null,
     Object? favoriteProducts = null,
   }) {
     return _then(_value.copyWith(
@@ -90,10 +87,6 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      cartItems: null == cartItems
-          ? _value.cartItems
-          : cartItems // ignore: cast_nullable_to_non_nullable
-              as List<CartItem>,
       favoriteProducts: null == favoriteProducts
           ? _value.favoriteProducts
           : favoriteProducts // ignore: cast_nullable_to_non_nullable
@@ -114,7 +107,6 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String lastName,
       String id,
       String password,
-      List<CartItem> cartItems,
       List<CartItem> favoriteProducts});
 }
 
@@ -132,7 +124,6 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? lastName = null,
     Object? id = null,
     Object? password = null,
-    Object? cartItems = null,
     Object? favoriteProducts = null,
   }) {
     return _then(_$_User(
@@ -156,10 +147,6 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      cartItems: null == cartItems
-          ? _value._cartItems
-          : cartItems // ignore: cast_nullable_to_non_nullable
-              as List<CartItem>,
       favoriteProducts: null == favoriteProducts
           ? _value._favoriteProducts
           : favoriteProducts // ignore: cast_nullable_to_non_nullable
@@ -177,10 +164,8 @@ class _$_User implements _User {
       required this.lastName,
       required this.id,
       required this.password,
-      final List<CartItem> cartItems = const [],
       final List<CartItem> favoriteProducts = const []})
-      : _cartItems = cartItems,
-        _favoriteProducts = favoriteProducts;
+      : _favoriteProducts = favoriteProducts;
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
@@ -194,15 +179,6 @@ class _$_User implements _User {
   final String id;
   @override
   final String password;
-  final List<CartItem> _cartItems;
-  @override
-  @JsonKey()
-  List<CartItem> get cartItems {
-    if (_cartItems is EqualUnmodifiableListView) return _cartItems;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_cartItems);
-  }
-
   final List<CartItem> _favoriteProducts;
   @override
   @JsonKey()
@@ -215,7 +191,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, password: $password, cartItems: $cartItems, favoriteProducts: $favoriteProducts)';
+    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, password: $password, favoriteProducts: $favoriteProducts)';
   }
 
   @override
@@ -232,22 +208,13 @@ class _$_User implements _User {
             (identical(other.password, password) ||
                 other.password == password) &&
             const DeepCollectionEquality()
-                .equals(other._cartItems, _cartItems) &&
-            const DeepCollectionEquality()
                 .equals(other._favoriteProducts, _favoriteProducts));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      email,
-      firstName,
-      lastName,
-      id,
-      password,
-      const DeepCollectionEquality().hash(_cartItems),
-      const DeepCollectionEquality().hash(_favoriteProducts));
+  int get hashCode => Object.hash(runtimeType, email, firstName, lastName, id,
+      password, const DeepCollectionEquality().hash(_favoriteProducts));
 
   @JsonKey(ignore: true)
   @override
@@ -270,7 +237,6 @@ abstract class _User implements User {
       required final String lastName,
       required final String id,
       required final String password,
-      final List<CartItem> cartItems,
       final List<CartItem> favoriteProducts}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -285,8 +251,6 @@ abstract class _User implements User {
   String get id;
   @override
   String get password;
-  @override
-  List<CartItem> get cartItems;
   @override
   List<CartItem> get favoriteProducts;
   @override
