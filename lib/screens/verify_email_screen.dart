@@ -85,12 +85,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     AuthButton(
                         child: "Ok",
                         onPressed: () async {
-                          await context.read<AuthNotifier>().logout();
-                          if (mounted) {
-                            // Navigator.popUntil(
-                            //     context, ModalRoute.withName("/"));
-                            Navigator.pop(context);
-                          }
+                          await context
+                              .read<AuthNotifier>()
+                              .logout(); // this returns authscreen
                         }),
                     const SizedBox(
                       height: 20,

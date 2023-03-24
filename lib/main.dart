@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
             EditProductScreen.route: (ctx) => const EditProductScreen(null),
             ChatScreen.route: (ctx) => const ChatScreen(),
             VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
+            AuthScreen.route: (ctx) => AuthScreen(),
           },
           title: 'Flutter Demo',
           home: const LandingPage(),

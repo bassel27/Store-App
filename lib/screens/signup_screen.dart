@@ -182,3 +182,5 @@ class SignupScreen extends StatelessWidget
     return string[0].toUpperCase() + string.substring(1);
   }
 }
+
+
