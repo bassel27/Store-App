@@ -63,7 +63,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
 
   /// Delete an item from the cart using this item's id.
   void deleteItem(CartItem cartItemInput) async {
-    await _cartController.delete(cartItemInput).then((value) {
+    await _cartController.delete(cartItemInput.id).then((value) {
       cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
       notifyListeners();
     }).catchError(handleException);
@@ -90,7 +90,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       // if already exists in cart
       if (cartItems[i].product.id == product.id) {
         await _cartController
-            .setQuantity(cartItems[i].id, quantity)
+            .setQuantity(cartItems[i], quantity)
             .then((value) {
           cartItems[i] = cartItems[i].copyWith(quantity: quantity);
         }).catchError(handleException);
@@ -139,7 +139,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
         if (cartItems[i].quantity == 1) {
           CartItem removedCartItem = cartItems[i];
           await _cartController
-              .delete(removedCartItem)
+              .delete(removedCartItem.id)
               .then((_) => cartItems
                   .removeWhere((cartItem) => cartItem.id == cartItemInput.id))
               .catchError(handleException);

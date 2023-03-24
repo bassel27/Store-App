@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 
-
 import '../models/cart_item/cart_item.dart';
 
-class CartController  {
+class CartController {
   CartController();
   FirebaseFirestore db = FirebaseFirestore.instance;
-  get _userDoc {
+  DocumentReference get _userDoc {
     return db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
   }
 
   Future<List<CartItem>> get() async {
     List<CartItem> cartItems = [];
-    var userDoc = await _userDoc.get();
-    for (var cartItemDict in userDoc['cartItems']) {
-      cartItems.add(CartItem.fromJson(cartItemDict));
+    QuerySnapshot docSnapshot = await _userDoc.collection('cartItems').get();
+    for (var docSnapshot in docSnapshot.docs) {
+      cartItems
+          .add(CartItem.fromJson(docSnapshot.data() as Map<String, dynamic>));
     }
     return cartItems;
   }
@@ -26,9 +26,10 @@ class CartController  {
   /// Throws an exception if operatoin fails.
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await _userDoc.set({
-        'cartItems': FieldValue.arrayUnion([cartItem.toJson()]),
-      }, SetOptions(merge: true));
+      await _userDoc
+          .collection('cartItems')
+          .doc(cartItem.id)
+          .set(cartItem.toJson());
     });
   }
 
@@ -36,46 +37,31 @@ class CartController  {
   ///
   /// Throws an exception if operatoin fails.
   Future<void> incrementQuantity(CartItem cartItem) async {
-    await setQuantity(cartItem.id, cartItem.quantity + 1);
+    await setQuantity(cartItem, cartItem.quantity + 1);
   }
 
   ///Decrements quantity of cart item by one.
   ///
   /// Throws an exception if operatoin fails.
   Future<void> decrementQuantity(CartItem cartItem) async {
-    await setQuantity(cartItem.id, cartItem.quantity - 1);
+    await setQuantity(cartItem, cartItem.quantity - 1);
   }
 
   /// Set the quantity of an already existing CartItem.
   ///
   /// Throws an exception if operatoin fails.
-  Future<void> setQuantity(String cartItemId, int quantity) async {
+  Future<void> setQuantity(CartItem cartItem, int quantity) async {
     await httpRequestTemplate(() async {
-      final userDocSnapshot = await _userDoc.get();
-      final cartItemsDicts =
-          List<Map<String, dynamic>>.from(userDocSnapshot.get("cartItems"));
-      List<CartItem> cartItems =
-          cartItemsDicts.map((e) => CartItem.fromJson(e)).toList();
-      CartItem newCartItem =
-          cartItems.firstWhere((element) => element.id == cartItemId);
-      newCartItem = newCartItem.copyWith(quantity: quantity);
-      for (int i = 0; i < cartItems.length; i++) {
-        if (cartItems[i].id == newCartItem.id) {
-          cartItems[i] = newCartItem;
-          break;
-        }
-      }
-      await _userDoc.set({"cartItems": cartItems.map((e) => e.toJson())},
+      await _userDoc.collection('cartItems').doc(cartItem.id).set(
+          cartItem.copyWith(quantity: quantity).toJson(),
           SetOptions(merge: true));
     });
   }
 
   /// Throws an exception if operatoin fails.
-  Future<void> delete(CartItem cartItem, {bool showLoading = true}) async {
+  Future<void> delete(String cartItemId, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
-      await _userDoc.update({
-        'cartItems': FieldValue.arrayRemove([cartItem.toJson()])
-      });
+      await _userDoc.collection('cartItems').doc(cartItemId).delete();
     }, showLoading: showLoading);
   }
 
@@ -88,7 +74,7 @@ class CartController  {
 
   Future<void> clearCart(List<CartItem> cartItems) async {
     for (var cartItem in cartItems) {
-      await delete(cartItem, showLoading: false);
+      await delete(cartItem.id, showLoading: false);
     }
   }
 }
