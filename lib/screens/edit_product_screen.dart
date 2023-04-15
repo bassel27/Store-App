@@ -384,85 +384,26 @@ class _SizeCardState extends State<_SizeCard> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Size',
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kTextDarkColor),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: theme.colorScheme.secondary),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 16,
-                      ),
-                    ),
-                    onSaved: (newValue) {
-                      if (newValue != null) size = newValue;
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please provide a value';
-                      }
-                      return null;
+                  _SizeTextFormField(
+                    theme: theme,
+                    onSaved: (String? newValue) {
+                      if (newValue != null) size = newValue.toUpperCase();
                     },
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'Quantity',
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: kTextDarkColor),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: theme.colorScheme.secondary),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 16,
-                      ),
-                    ),
+                  QuantityTextFormField(
+                    theme: theme,
                     onSaved: (newValue) {
                       if (newValue != null) quantity = int.parse(newValue);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please provide a value';
-                      }
-                      return null;
                     },
                   ),
                   const SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        child: const Text(
-                          'CANCEL',
-                          style: TextStyle(
-                            color: kTextDarkColor,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
+                      const CancelButton(),
                       const SizedBox(width: 8),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
+                      OkButton(
                         onPressed: () {
                           final form = formKey.currentState;
                           if (form!.validate()) {
@@ -471,12 +412,6 @@ class _SizeCardState extends State<_SizeCard> {
                             Navigator.of(context).pop();
                           }
                         },
-                        child: const Text(
-                          'OK',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -486,6 +421,132 @@ class _SizeCardState extends State<_SizeCard> {
           ),
         );
       },
+    );
+  }
+}
+
+class _SizeTextFormField extends StatelessWidget {
+  const _SizeTextFormField({
+    Key? key,
+    required this.theme,
+    required this.onSaved,
+  }) : super(key: key);
+  final Function(String?) onSaved;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+        hintText: 'Size',
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: kTextDarkColor),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: theme.colorScheme.secondary),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 16,
+        ),
+      ),
+      onSaved: onSaved,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please provide a value';
+        }
+        return null;
+      },
+    );
+  }
+}
+
+class QuantityTextFormField extends StatelessWidget {
+  const QuantityTextFormField({
+    Key? key,
+    required this.theme,
+    required this.onSaved,
+  }) : super(key: key);
+  final onSaved;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        hintText: 'Quantity',
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: kTextDarkColor),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: theme.colorScheme.secondary),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ),
+      ),
+      onSaved: onSaved,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please provide a value';
+        }
+        return null;
+      },
+    );
+  }
+}
+
+class CancelButton extends StatelessWidget {
+  const CancelButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'CANCEL',
+        style: TextStyle(
+          color: kTextDarkColor,
+        ),
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
+class OkButton extends StatelessWidget {
+  const OkButton({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      onPressed: onPressed,
+      child: const Text(
+        'OK',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
