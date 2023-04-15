@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 
 import '../controllers/excpetion_handler.dart';
 import '../mixins/validate_image_mixin.dart';
+import '../models/my_theme.dart';
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';
@@ -93,18 +94,28 @@ class _EditProductScreenState extends State<EditProductScreen>
                 _PhotoInputFromDeviceColumn(
                     Provider.of<ProductImageNotifier>(context, listen: false)),
               ]),
-              mySizedBox,
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                onPressed: _saveForm,
-                child: Text(
-                  "Save",
-                  style: Theme.of(context).textTheme.button,
-                ),
+              const SizedBox(
+                height: 12,
               ),
+              _SizeRow(),
+              const SizedBox(
+                height: 12,
+              ),
+              saveButton(context),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  ElevatedButton saveButton(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+      onPressed: _saveForm,
+      child: Text(
+        "Save",
+        style: Theme.of(context).textTheme.button,
       ),
     );
   }
@@ -258,6 +269,199 @@ class _ImageContainer extends StatelessWidget {
               style: TextStyle(color: imageContainerTextColor),
             ),
           ),
+    );
+  }
+}
+
+class _SizeRow extends StatefulWidget {
+  @override
+  State<_SizeRow> createState() => _SizeRowState();
+}
+
+class _SizeRowState extends State<_SizeRow> {
+  final List<_SizeCard> _sizeCards = [];
+  TextStyle sizeTextStyle = const TextStyle(color: kTextLightColor);
+  void addSizeCard(String size, int quantity) {
+    setState(() {
+      _sizeCards.add(_SizeCard([
+        Text(
+          size,
+          style: sizeTextStyle,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Text(
+          quantity.toString(),
+          style: sizeTextStyle,
+        )
+      ], addSizeCard));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(children: [
+          _SizeCard(const [
+            Icon(
+              Icons.add,
+              color: kTextLightColor,
+            )
+          ], addSizeCard),
+          ..._sizeCards
+        ]));
+  }
+}
+
+class _SizeCard extends StatefulWidget {
+  final List<Widget> children;
+  final Function(String, int) onAdd;
+  const _SizeCard(this.children, this.onAdd);
+
+  @override
+  State<_SizeCard> createState() => _SizeCardState();
+}
+
+class _SizeCardState extends State<_SizeCard> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showSizeQuantityDialog(context);
+      },
+      child: SizedBox(
+        height: 90,
+        width: 70,
+        child: Card(
+          color: Theme.of(context).colorScheme.tertiary,
+          elevation: 4,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.children,
+            //  widget.children ??
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showSizeQuantityDialog(BuildContext context) async {
+    final theme = Theme.of(context).copyWith(
+      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orange),
+    );
+
+    String size = '';
+    int quantity = 0;
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Enter Size and Quantity',
+                  style: TextStyle(
+                    color: kTextDarkColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Size',
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: kTextDarkColor),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: theme.colorScheme.secondary),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 16,
+                    ),
+                  ),
+                  onChanged: (value) {
+                    size = value;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'Quantity',
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: kTextDarkColor),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: theme.colorScheme.secondary),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 16,
+                    ),
+                  ),
+                  onChanged: (value) {
+                    quantity = int.parse(value);
+                  },
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child: const Text(
+                        'CANCEL',
+                        style: TextStyle(
+                          color: kTextDarkColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        widget.onAdd(size, quantity);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'OK',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
