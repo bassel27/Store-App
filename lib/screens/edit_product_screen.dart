@@ -283,19 +283,8 @@ class _SizeRowState extends State<_SizeRow> {
   TextStyle sizeTextStyle = const TextStyle(color: kTextLightColor);
   void addSizeCard(String size, int quantity) {
     setState(() {
-      _sizeCards.add(_SizeCard([
-        Text(
-          size,
-          style: sizeTextStyle,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Text(
-          quantity.toString(),
-          style: sizeTextStyle,
-        )
-      ], addSizeCard));
+      _sizeCards
+          .add(_SizeCard(size: size, quantity: quantity, onAdd: addSizeCard));
     });
   }
 
@@ -304,32 +293,33 @@ class _SizeRowState extends State<_SizeRow> {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(children: [
-          _SizeCard(const [
-            Icon(
-              Icons.add,
-              color: kTextLightColor,
-            )
-          ], addSizeCard),
+          _SizeCard(onAdd: addSizeCard, isAddCard: true),
           ..._sizeCards
         ]));
   }
 }
 
 class _SizeCard extends StatefulWidget {
-  final List<Widget> children;
+  final String? size;
+  final int? quantity;
+  final bool isAddCard;
   final Function(String, int) onAdd;
-  const _SizeCard(this.children, this.onAdd);
+  const _SizeCard(
+      {this.size, this.quantity, required this.onAdd, this.isAddCard = false});
 
   @override
   State<_SizeCard> createState() => _SizeCardState();
 }
 
 class _SizeCardState extends State<_SizeCard> {
+  TextStyle sizeTextStyle = const TextStyle(
+      color: kTextLightColor, fontWeight: FontWeight.bold, fontSize: 17);
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _showSizeQuantityDialog(context);
+        _showSizeQuantityDialog(widget.quantity, widget.size, context);
       },
       child: SizedBox(
         height: 90,
@@ -338,22 +328,37 @@ class _SizeCardState extends State<_SizeCard> {
           color: Theme.of(context).colorScheme.tertiary,
           elevation: 4,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.children,
-            //  widget.children ??
-          ),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: widget.isAddCard == true
+                  ? [
+                      const Icon(
+                        Icons.add,
+                        color: kTextLightColor,
+                      )
+                    ]
+                  : [
+                      Text(
+                        widget.size!,
+                        style: sizeTextStyle,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(widget.quantity.toString(), style: sizeTextStyle)
+                    ]),
         ),
       ),
     );
   }
 
-  void _showSizeQuantityDialog(BuildContext context) async {
+  void _showSizeQuantityDialog(
+      int? inputQuantity, String? inputSize, BuildContext context) async {
     final theme = Theme.of(context).copyWith(
       colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orange),
     );
 
-    String size = '';
-    int quantity = 0;
+    String size = inputSize ?? '';
+    int quantity = inputQuantity ?? 0;
 
     await showDialog(
       context: context,
@@ -364,100 +369,119 @@ class _SizeCardState extends State<_SizeCard> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Enter Size and Quantity',
-                  style: TextStyle(
-                    color: kTextDarkColor,
-                    fontWeight: FontWeight.bold,
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'Enter Size and Quantity',
+                    style: TextStyle(
+                      color: kTextDarkColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Size',
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: kTextDarkColor),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: theme.colorScheme.secondary),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 16,
-                    ),
-                  ),
-                  onChanged: (value) {
-                    size = value;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: 'Quantity',
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: kTextDarkColor),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: theme.colorScheme.secondary),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 16,
-                    ),
-                  ),
-                  onChanged: (value) {
-                    quantity = int.parse(value);
-                  },
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      child: const Text(
-                        'CANCEL',
-                        style: TextStyle(
-                          color: kTextDarkColor,
-                        ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Size',
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: kTextDarkColor),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colorScheme.secondary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: theme.colorScheme.secondary),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
-                      onPressed: () {
-                        widget.onAdd(size, quantity);
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        'OK',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 16,
                       ),
                     ),
-                  ],
-                ),
-              ],
+                    onSaved: (newValue) {
+                      if (newValue != null) size = newValue;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please provide a value';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: 'Quantity',
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: kTextDarkColor),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: theme.colorScheme.secondary),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                    ),
+                    onSaved: (newValue) {
+                      if (newValue != null) quantity = int.parse(newValue);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please provide a value';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            color: kTextDarkColor,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.secondary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          final form = formKey.currentState;
+                          if (form!.validate()) {
+                            form.save();
+                            widget.onAdd(size, quantity);
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: const Text(
+                          'OK',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
