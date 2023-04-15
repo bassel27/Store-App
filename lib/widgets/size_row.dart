@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:store_app/providers/products_notifier.dart';
 
 import '../models/my_theme.dart';
 
@@ -121,14 +123,12 @@ class _SizeCardState extends State<_SizeCard> {
                   ),
                   const SizedBox(height: 16),
                   _SizeTextFormField(
-                    theme: theme,
                     onSaved: (String? newValue) {
                       if (newValue != null) size = newValue.toUpperCase();
                     },
                   ),
                   const SizedBox(height: 16),
                   QuantityTextFormField(
-                    theme: theme,
                     onSaved: (newValue) {
                       if (newValue != null) quantity = int.parse(newValue);
                     },
@@ -145,6 +145,10 @@ class _SizeCardState extends State<_SizeCard> {
                           if (form!.validate()) {
                             form.save();
                             widget.onAdd(size, quantity);
+                            Provider.of<ProductsNotifier>(context,
+                                    listen: false)
+                                .editedProduct
+                                .sizeQuantity[size] = quantity;
                             Navigator.of(context).pop();
                           }
                         },
@@ -164,11 +168,9 @@ class _SizeCardState extends State<_SizeCard> {
 class _SizeTextFormField extends StatelessWidget {
   const _SizeTextFormField({
     Key? key,
-    required this.theme,
     required this.onSaved,
   }) : super(key: key);
   final Function(String?) onSaved;
-  final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +182,8 @@ class _SizeTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: theme.colorScheme.secondary),
+          borderSide:
+              BorderSide(color: Theme.of(context).colorScheme.secondary),
           borderRadius: BorderRadius.circular(5.0),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -202,11 +205,9 @@ class _SizeTextFormField extends StatelessWidget {
 class QuantityTextFormField extends StatelessWidget {
   const QuantityTextFormField({
     Key? key,
-    required this.theme,
     required this.onSaved,
   }) : super(key: key);
   final onSaved;
-  final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +220,8 @@ class QuantityTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: theme.colorScheme.secondary),
+          borderSide:
+              BorderSide(color: Theme.of(context).colorScheme.secondary),
           borderRadius: BorderRadius.circular(5.0),
         ),
         contentPadding: const EdgeInsets.symmetric(

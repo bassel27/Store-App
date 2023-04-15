@@ -28,6 +28,7 @@ mixin _$Product {
   @JsonKey(ignore: true)
   bool get isFavorite => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
+  Map<String, int> get sizeQuantity => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +46,8 @@ abstract class $ProductCopyWith<$Res> {
       String id,
       double price,
       @JsonKey(ignore: true) bool isFavorite,
-      String? imageUrl});
+      String? imageUrl,
+      Map<String, int> sizeQuantity});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? price = null,
     Object? isFavorite = null,
     Object? imageUrl = freezed,
+    Object? sizeQuantity = null,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -93,6 +96,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      sizeQuantity: null == sizeQuantity
+          ? _value.sizeQuantity
+          : sizeQuantity // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
     ) as $Val);
   }
 }
@@ -110,7 +117,8 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String id,
       double price,
       @JsonKey(ignore: true) bool isFavorite,
-      String? imageUrl});
+      String? imageUrl,
+      Map<String, int> sizeQuantity});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? price = null,
     Object? isFavorite = null,
     Object? imageUrl = freezed,
+    Object? sizeQuantity = null,
   }) {
     return _then(_$_Product(
       title: null == title
@@ -155,6 +164,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      sizeQuantity: null == sizeQuantity
+          ? _value._sizeQuantity
+          : sizeQuantity // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
     ));
   }
 }
@@ -168,7 +181,9 @@ class _$_Product implements _Product {
       required this.id,
       required this.price,
       @JsonKey(ignore: true) this.isFavorite = false,
-      this.imageUrl});
+      this.imageUrl,
+      final Map<String, int> sizeQuantity = const {}})
+      : _sizeQuantity = sizeQuantity;
 
   factory _$_Product.fromJson(Map<String, dynamic> json) =>
       _$$_ProductFromJson(json);
@@ -187,10 +202,18 @@ class _$_Product implements _Product {
   final bool isFavorite;
   @override
   final String? imageUrl;
+  final Map<String, int> _sizeQuantity;
+  @override
+  @JsonKey()
+  Map<String, int> get sizeQuantity {
+    if (_sizeQuantity is EqualUnmodifiableMapView) return _sizeQuantity;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_sizeQuantity);
+  }
 
   @override
   String toString() {
-    return 'Product(title: $title, description: $description, id: $id, price: $price, isFavorite: $isFavorite, imageUrl: $imageUrl)';
+    return 'Product(title: $title, description: $description, id: $id, price: $price, isFavorite: $isFavorite, imageUrl: $imageUrl, sizeQuantity: $sizeQuantity)';
   }
 
   @override
@@ -206,13 +229,15 @@ class _$_Product implements _Product {
             (identical(other.isFavorite, isFavorite) ||
                 other.isFavorite == isFavorite) &&
             (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl));
+                other.imageUrl == imageUrl) &&
+            const DeepCollectionEquality()
+                .equals(other._sizeQuantity, _sizeQuantity));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, title, description, id, price, isFavorite, imageUrl);
+  int get hashCode => Object.hash(runtimeType, title, description, id, price,
+      isFavorite, imageUrl, const DeepCollectionEquality().hash(_sizeQuantity));
 
   @JsonKey(ignore: true)
   @override
@@ -235,7 +260,8 @@ abstract class _Product implements Product {
       required final String id,
       required final double price,
       @JsonKey(ignore: true) final bool isFavorite,
-      final String? imageUrl}) = _$_Product;
+      final String? imageUrl,
+      final Map<String, int> sizeQuantity}) = _$_Product;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$_Product.fromJson;
 
@@ -252,6 +278,8 @@ abstract class _Product implements Product {
   bool get isFavorite;
   @override
   String? get imageUrl;
+  @override
+  Map<String, int> get sizeQuantity;
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

@@ -13,10 +13,10 @@ class Product with _$Product {
     required String id,
     required double price,
     @Default(false) @JsonKey(ignore: true) bool isFavorite,
-    String? imageUrl, 
+    String? imageUrl,
+    @Default({}) Map<String, int> sizeQuantity, // new property to store size and quantity data
   }) = _Product;
-  
+
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
 }
-
