@@ -4,6 +4,7 @@ import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
+import 'package:store_app/widgets/size_and_quantity_card.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -32,6 +33,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 product.description == null || product.description == ''
                     ? Container()
                     : Text("Descripton: ${product.description}"),
+                // product.sizeQuantity.map((key, value) => SizeAndQuantityCard(onAdd: onAdd))
               ],
             ),
           ),
