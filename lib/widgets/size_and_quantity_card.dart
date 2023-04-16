@@ -6,14 +6,11 @@ import 'package:store_app/providers/products_notifier.dart';
 import '../models/my_theme.dart';
 import '../models/product/product.dart';
 
-
 class SizeAndQuantityCard extends StatefulWidget {
   final String? size;
   final int? quantity;
   final bool isAddCard;
-  final Function(String, int) onAdd;
-  const SizeAndQuantityCard(
-      {this.size, this.quantity, required this.onAdd, this.isAddCard = false});
+  const SizeAndQuantityCard({this.size, this.quantity, this.isAddCard = false});
 
   @override
   State<SizeAndQuantityCard> createState() => _SizeAndQuantityCardState();
@@ -137,10 +134,10 @@ class _SizeAndQuantityCardState extends State<SizeAndQuantityCard> {
                           final form = formKey.currentState;
                           if (form!.validate()) {
                             form.save();
-                            widget.onAdd(size!, quantity!);
                             final ProductsNotifier productsProvider =
                                 Provider.of<ProductsNotifier>(context,
                                     listen: false);
+                            productsProvider.callNotifyListeners();
                             final editedProduct = Provider.of<ProductsNotifier>(
                                     context,
                                     listen: false)

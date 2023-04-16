@@ -1,11 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/widgets/size_and_quantity_card.dart';
 
 import '../models/my_theme.dart';
-import '../models/product/product.dart';
 
 class SizeRow extends StatefulWidget {
   @override
@@ -18,8 +16,8 @@ class _SizeRowState extends State<SizeRow> {
     final productsNotifier = Provider.of<ProductsNotifier>(context);
     return productsNotifier.editedProduct.sizeQuantity.entries
         .map(
-          (entry) => SizeAndQuantityCard(
-              size: entry.key, quantity: entry.value, onAdd: addSizeCard),
+          (entry) =>
+              SizeAndQuantityCard(size: entry.key, quantity: entry.value),
         )
         .toList();
   }
@@ -33,9 +31,8 @@ class _SizeRowState extends State<SizeRow> {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(children: [
-          SizeAndQuantityCard(onAdd: addSizeCard, isAddCard: true),
+          const SizeAndQuantityCard(isAddCard: true),
           ..._sizeCards
         ]));
   }
 }
-

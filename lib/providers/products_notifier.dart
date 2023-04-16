@@ -27,6 +27,10 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     notifyListeners();
   }
 
+  void callNotifyListeners() {
+    notifyListeners();
+  }
+
   List<Product> get products {
     return [...items];
   }
