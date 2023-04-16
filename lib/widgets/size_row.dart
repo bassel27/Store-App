@@ -11,12 +11,12 @@ class SizeRow extends StatefulWidget {
 }
 
 class _SizeRowState extends State<SizeRow> {
-  final List<_SizeCard> _sizeCards = [];
+  final List<_SizeAndQuantityCard> _sizeCards = [];
   TextStyle sizeTextStyle = const TextStyle(color: kTextLightColor);
   void addSizeCard(String size, int quantity) {
     setState(() {
-      _sizeCards
-          .add(_SizeCard(size: size, quantity: quantity, onAdd: addSizeCard));
+      _sizeCards.add(_SizeAndQuantityCard(
+          size: size, quantity: quantity, onAdd: addSizeCard));
     });
   }
 
@@ -25,25 +25,25 @@ class _SizeRowState extends State<SizeRow> {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(children: [
-          _SizeCard(onAdd: addSizeCard, isAddCard: true),
+          _SizeAndQuantityCard(onAdd: addSizeCard, isAddCard: true),
           ..._sizeCards
         ]));
   }
 }
 
-class _SizeCard extends StatefulWidget {
+class _SizeAndQuantityCard extends StatefulWidget {
   final String? size;
   final int? quantity;
   final bool isAddCard;
   final Function(String, int) onAdd;
-  const _SizeCard(
+  const _SizeAndQuantityCard(
       {this.size, this.quantity, required this.onAdd, this.isAddCard = false});
 
   @override
-  State<_SizeCard> createState() => _SizeCardState();
+  State<_SizeAndQuantityCard> createState() => _SizeAndQuantityCardState();
 }
 
-class _SizeCardState extends State<_SizeCard> {
+class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
   TextStyle sizeTextStyle = const TextStyle(
       color: kTextLightColor, fontWeight: FontWeight.bold, fontSize: 17);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -61,28 +61,38 @@ class _SizeCardState extends State<_SizeCard> {
           elevation: 4,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.isAddCard == true
+            children: (widget.size == null && widget.quantity == null)
                 ? [
                     const Icon(
                       Icons.add,
                       color: kTextLightColor,
                     )
                   ]
-                : [
-                    AutoSizeText(
-                      widget.size!,
-                      maxLines: 1,
-                      style: sizeTextStyle,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    AutoSizeText(
-                      widget.quantity.toString(),
-                      maxLines: 2,
-                      style: sizeTextStyle,
-                    ),
-                  ],
+                : (widget.size != null && widget.quantity != null)
+                    ? [
+                        AutoSizeText(
+                          widget.size!,
+                          maxLines: 1,
+                          style: sizeTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        AutoSizeText(
+                          widget.quantity.toString(),
+                          maxLines: 2,
+                          style: sizeTextStyle,
+                        ),
+                      ]
+                    : (widget.size != null && widget.quantity == null)
+                        ? [
+                            AutoSizeText(
+                              widget.size!,
+                              maxLines: 1,
+                              style: sizeTextStyle,
+                            ),
+                          ]
+                        : [],
           ),
         ),
       ),

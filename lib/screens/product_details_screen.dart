@@ -29,7 +29,9 @@ class ProductDetailsScreen extends StatelessWidget {
                   height: 15,
                 ),
                 CurrencyAndPriceText(price: product.price),
-                // Text("Descripton: ${product.description}"),
+                product.description == null || product.description == ''
+                    ? Container()
+                    : Text("Descripton: ${product.description}"),
               ],
             ),
           ),
@@ -77,21 +79,22 @@ class _BottomRowState extends State<_BottomRow> {
           child: SizedBox(
             height: 40,
             child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  backgroundColor: kAccentColor,
-                ),
-                onPressed: () {
-                  cartProvider.setQuantity(
-                      widget.product, int.parse(dropdownValue));
-                },
-                child: const Text(
-                  "ADD TO CART",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500, color: kTextLightColor),
-                )),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                backgroundColor: kAccentColor,
+              ),
+              onPressed: () {
+                cartProvider.setQuantity(
+                    widget.product, int.parse(dropdownValue));
+              },
+              child: const Text(
+                "ADD TO CART",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: kTextLightColor),
+              ),
+            ),
           ),
         ),
       ],
