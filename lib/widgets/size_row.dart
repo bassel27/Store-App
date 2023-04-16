@@ -71,7 +71,7 @@ class _SizeCardState extends State<_SizeCard> {
                 : [
                     AutoSizeText(
                       widget.size!,
-                      maxLines: 2,
+                      maxLines: 1,
                       style: sizeTextStyle,
                     ),
                     const SizedBox(
@@ -91,8 +91,8 @@ class _SizeCardState extends State<_SizeCard> {
 
   void _showSizeQuantityDialog(
       int? inputQuantity, String? inputSize, BuildContext context) async {
-    String size = inputSize ?? '';
-    int quantity = inputQuantity ?? 0;
+    String? size = inputSize;
+    int? quantity = inputQuantity;
 
     await showDialog(
       context: context,
@@ -120,12 +120,14 @@ class _SizeCardState extends State<_SizeCard> {
                   ),
                   const SizedBox(height: 16),
                   _SizeTextFormField(
+                    initialSize: size,
                     onSaved: (String? newValue) {
                       if (newValue != null) size = newValue.toUpperCase();
                     },
                   ),
                   const SizedBox(height: 16),
                   QuantityTextFormField(
+                    initialQuantity: quantity,
                     onSaved: (newValue) {
                       if (newValue != null) quantity = int.parse(newValue);
                     },
@@ -141,11 +143,20 @@ class _SizeCardState extends State<_SizeCard> {
                           final form = formKey.currentState;
                           if (form!.validate()) {
                             form.save();
-                            widget.onAdd(size, quantity);
+                            widget.onAdd(size!, quantity!);
+                            final editedProduct = Provider.of<ProductsNotifier>(
+                                    context,
+                                    listen: false)
+                                .editedProduct;
+                            final newProduct = editedProduct.copyWith(
+                              sizeQuantity: {
+                                ...editedProduct.sizeQuantity,
+                                size!: quantity!,
+                              },
+                            );
                             Provider.of<ProductsNotifier>(context,
                                     listen: false)
-                                .editedProduct
-                                .sizeQuantity[size] = quantity;
+                                .editedProduct = newProduct;
                             Navigator.of(context).pop();
                           }
                         },
@@ -166,12 +177,15 @@ class _SizeTextFormField extends StatelessWidget {
   const _SizeTextFormField({
     Key? key,
     required this.onSaved,
+    this.initialSize,
   }) : super(key: key);
   final Function(String?) onSaved;
+  final String? initialSize;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialSize,
       decoration: InputDecoration(
         hintText: 'Size',
         border: OutlineInputBorder(
@@ -200,15 +214,16 @@ class _SizeTextFormField extends StatelessWidget {
 }
 
 class QuantityTextFormField extends StatelessWidget {
-  const QuantityTextFormField({
-    Key? key,
-    required this.onSaved,
-  }) : super(key: key);
+  const QuantityTextFormField(
+      {Key? key, required this.onSaved, this.initialQuantity})
+      : super(key: key);
   final onSaved;
+  final int? initialQuantity;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialQuantity == null ? null : initialQuantity.toString(),
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         hintText: 'Quantity',
