@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/providers/products_notifier.dart';
 
 import '../models/my_theme.dart';
+import '../models/product/product.dart';
 
 class SizeRow extends StatefulWidget {
   @override
@@ -50,6 +51,10 @@ class _SizeAndQuantityCard extends StatefulWidget {
 }
 
 class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
+  late bool isAddCard = widget.size == null && widget.quantity == null;
+  late bool isSizeAndQuantityCard =
+      widget.size != null && widget.quantity != null;
+  late bool isSizeCard = widget.size != null && widget.quantity == null;
   TextStyle sizeTextStyle = const TextStyle(
       color: kTextLightColor, fontWeight: FontWeight.bold, fontSize: 17);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -57,7 +62,10 @@ class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _showSizeQuantityDialog(widget.quantity, widget.size, context);
+        if (isSizeCard) {
+        } else {
+          _showSizeQuantityDialog(widget.quantity, widget.size, context);
+        }
       },
       child: SizedBox(
         height: 70,
@@ -67,14 +75,14 @@ class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
           elevation: 4,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: (widget.size == null && widget.quantity == null)
+            children: (isAddCard)
                 ? [
                     const Icon(
                       Icons.add,
                       color: kTextLightColor,
                     )
                   ]
-                : (widget.size != null && widget.quantity != null)
+                : (isSizeAndQuantityCard)
                     ? [
                         AutoSizeText(
                           widget.size!,
@@ -90,7 +98,7 @@ class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
                           style: sizeTextStyle,
                         ),
                       ]
-                    : (widget.size != null && widget.quantity == null)
+                    : (isSizeCard)
                         ? [
                             AutoSizeText(
                               widget.size!,
@@ -109,6 +117,7 @@ class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
       int? inputQuantity, String? inputSize, BuildContext context) async {
     String? size = inputSize;
     int? quantity = inputQuantity;
+    bool isNewProduct = size == null && quantity == null;
 
     await showDialog(
       context: context,
@@ -160,19 +169,30 @@ class _SizeAndQuantityCardState extends State<_SizeAndQuantityCard> {
                           if (form!.validate()) {
                             form.save();
                             widget.onAdd(size!, quantity!);
+                            final ProductsNotifier productsProvider =
+                                Provider.of<ProductsNotifier>(context,
+                                    listen: false);
                             final editedProduct = Provider.of<ProductsNotifier>(
                                     context,
                                     listen: false)
                                 .editedProduct;
-                            final newProduct = editedProduct.copyWith(
-                              sizeQuantity: {
-                                ...editedProduct.sizeQuantity,
-                                size!: quantity!,
-                              },
-                            );
-                            Provider.of<ProductsNotifier>(context,
-                                    listen: false)
-                                .editedProduct = newProduct;
+                            Product newProduct;
+                            if (isNewProduct) {
+                              newProduct = editedProduct.copyWith(
+                                sizeQuantity: {
+                                  ...editedProduct.sizeQuantity,
+                                  size!: quantity!,
+                                },
+                              );
+                            } else {
+                              Map<String, int> newSizeQuantity =
+                                  Map<String, int>.from(productsProvider
+                                      .editedProduct.sizeQuantity);
+                              newSizeQuantity[size!] = quantity!;
+                              newProduct = productsProvider.editedProduct
+                                  .copyWith(sizeQuantity: newSizeQuantity);
+                            }
+                            productsProvider.editedProduct = newProduct;
                             Navigator.of(context).pop();
                           }
                         },
