@@ -4,7 +4,6 @@ import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
-import 'package:store_app/widgets/size_and_quantity_card.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -44,6 +43,9 @@ class ProductDetailsScreen extends StatelessWidget {
                                 .copyWith(
                                     fontWeight: FontWeight.w700, fontSize: 22),
                           ),
+                          const SizedBox(
+                            height: 5,
+                          ),
                           CurrencyAndPriceText(price: product.price),
                           product.description == null ||
                                   product.description == ''
@@ -56,8 +58,8 @@ class ProductDetailsScreen extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: product.sizeQuantity.keys
-                                  .map((String size) => SizeAndQuantityCard(
-                                        size: size,
+                                  .map((String size) => _SizeCard(
+                                        size,
                                       ))
                                   .toList(),
                             ),
@@ -206,6 +208,48 @@ class _ImageContainer extends StatelessWidget {
       child: Hero(
         tag: product.id,
         child: MyCachedNetworkImage(product.imageUrl!),
+      ),
+    );
+  }
+}
+
+class _SizeCard extends StatefulWidget {
+  final String size;
+
+  const _SizeCard(this.size);
+
+  @override
+  State<_SizeCard> createState() => _SizeCardState();
+}
+
+class _SizeCardState extends State<_SizeCard> {
+  Color cardColor = kInactiveColor;
+
+  TextStyle sizeTextStyle = const TextStyle(
+      color: kTextLightColor, fontWeight: FontWeight.bold, fontSize: 17);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          cardColor = cardColor == kActiveColor ? kInactiveColor : kActiveColor;
+        });
+      },
+      child: SizedBox(
+        height: 40,
+        width: 50,
+        child: Card(
+          color: cardColor,
+          elevation: 4,
+          child: Center(
+            child: Text(widget.size,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 17)),
+          ),
+        ),
       ),
     );
   }
