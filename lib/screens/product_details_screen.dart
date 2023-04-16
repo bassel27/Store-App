@@ -17,39 +17,72 @@ class ProductDetailsScreen extends StatelessWidget {
     late Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
     // TODO: use provider
-    return Scaffold(
-      appBar: AppBar(title: Text(product.title)),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.only(left: 10, bottom: 5, right: 5),
-              children: [
-                _ImageContainer(product: product),
-                const SizedBox(
-                  height: 15,
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    _ImageContainer(product: product),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10, bottom: 5, right: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(
+                                    fontWeight: FontWeight.w700, fontSize: 22),
+                          ),
+                          CurrencyAndPriceText(price: product.price),
+                          product.description == null ||
+                                  product.description == ''
+                              ? Container()
+                              : Text("Descripton: ${product.description}"),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: product.sizeQuantity.keys
+                                  .map((String size) => SizeAndQuantityCard(
+                                        size: size,
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                CurrencyAndPriceText(price: product.price),
-                product.description == null || product.description == ''
-                    ? Container()
-                    : Text("Descripton: ${product.description}"),
-                // product.sizeQuantity.map((key, value) => SizeAndQuantityCard(onAdd: onAdd))
-              ],
-            ),
+              ),
+              SizedBox(
+                // margin: const EdgeInsets.symmetric(horizontal: 5),
+                width: double.infinity,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  width: double.infinity,
+                  color: Theme.of(context).colorScheme.background,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: _BottomRow(product)),
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            // margin: const EdgeInsets.symmetric(horizontal: 5),
-            width: double.infinity,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              width: double.infinity,
-              color: Theme.of(context).colorScheme.background,
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: _BottomRow(product)),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
@@ -168,7 +201,7 @@ class _ImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      // margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(),
       child: Hero(
         tag: product.id,
