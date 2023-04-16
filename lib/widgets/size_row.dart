@@ -91,10 +91,6 @@ class _SizeCardState extends State<_SizeCard> {
 
   void _showSizeQuantityDialog(
       int? inputQuantity, String? inputSize, BuildContext context) async {
-    final theme = Theme.of(context).copyWith(
-      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orange),
-    );
-
     String size = inputSize ?? '';
     int quantity = inputQuantity ?? 0;
 
@@ -102,6 +98,7 @@ class _SizeCardState extends State<_SizeCard> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),

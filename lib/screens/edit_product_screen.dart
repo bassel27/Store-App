@@ -9,7 +9,6 @@ import 'package:uuid/uuid.dart';
 
 import '../controllers/excpetion_handler.dart';
 import '../mixins/validate_image_mixin.dart';
-import '../models/my_theme.dart';
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 import '../widgets/description_text_form_field.dart';

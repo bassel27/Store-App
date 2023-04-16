@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
@@ -8,7 +7,6 @@ import 'package:store_app/widgets/my_cached_network_image.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
-import 'currency_and_price_text.dart';
 
 const double kRoundedEdgeRadius = 22;
 const double kPhotoPadding = 9;
@@ -34,50 +32,77 @@ class ProductGridTile extends StatelessWidget {
               _ImageAndFavoriteStack(
                   product: product, constraints: constraints),
               const SizedBox(height: 10),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        product.title,
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w700, fontSize: 18),
-                      ))),
-              const SizedBox(height: 2),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CurrencyAndPriceText(price: product.price),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: product.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
+                        ),
+                        TextSpan(
+                          text: "\n${product.price}",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Consumer<CartNotifier>(
-                    builder: (context, cartProvider, child) {
-                  CartItem? cartItem = cartProvider.getCartItem(product);
-                  return AnimatedSwitcher(
-                    transitionBuilder: (child, animation) =>
-                        ScaleTransition(scale: animation, child: child),
-                    duration: const Duration(milliseconds: 300),
-                    switchInCurve: Curves.decelerate,
-                    child: cartItem != null
-                        ? _ChangeQuantityRow(
-                            cartItem: cartItem, product: product)
-                        : Center(
-                            child: _MyIconButton(
-                              Icons.shopping_cart_outlined,
-                              () {
-                                cartProvider.add(product);
-                              },
-                            ),
-                          ),
-                  );
-                }),
-              ),
-              const SizedBox(
-                height: 6,
               )
+              // Padding(
+              //     padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              //     child: Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: AutoSizeText(
+              //           product.title,
+              //           maxLines: 1,
+              //           style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              //               fontWeight: FontWeight.w700, fontSize: 18),
+              //         ))),
+              // const SizedBox(height: 2),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              //   child: Align(
+              //     alignment: Alignment.centerLeft,
+              //     child: CurrencyAndPriceText(price: product.price),
+              //   ),
+              // ),
+              // Expanded(
+              //   child: Consumer<CartNotifier>(
+              //       builder: (context, cartProvider, child) {
+              //     CartItem? cartItem = cartProvider.getCartItem(product);
+              //     return AnimatedSwitcher(
+              //       transitionBuilder: (child, animation) =>
+              //           ScaleTransition(scale: animation, child: child),
+              //       duration: const Duration(milliseconds: 300),
+              //       switchInCurve: Curves.decelerate,
+              //       child: cartItem != null
+              //           ? _ChangeQuantityRow(
+              //               cartItem: cartItem, product: product)
+              //           : Center(
+              //               child: _MyIconButton(
+              //                 Icons.shopping_cart_outlined,
+              //                 () {
+              //                   cartProvider.add(product);
+              //                 },
+              //               ),
+              //             ),
+              //     );
+              //   }),
+              // ),
+              // const SizedBox(
+              //   height: 6,
+              // ),
             ],
           ),
         ),
@@ -107,7 +132,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
             child: SizedBox(
-              height: constraints.maxHeight * 0.7,
+              height: constraints.maxHeight * 0.77,
               width: double.infinity,
               child: Hero(
                 tag: product.id,

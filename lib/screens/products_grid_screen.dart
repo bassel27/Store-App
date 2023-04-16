@@ -134,7 +134,7 @@ class _ScaffoldBody extends StatelessWidget {
               gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                 crossAxisCount: 2,
-                height: 390,
+                height: 340,
               ),
               itemBuilder: (context, i) {
                 return ProductGridTile(products[i]);
