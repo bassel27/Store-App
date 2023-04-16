@@ -13,14 +13,14 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   ProductsNotifier(this.items);
   late final ProductController _productsController = ProductController();
   Product editedProduct = const Product(
-      id: '', title: '', description: null, price: 0, imageUrl: null);
+      id: '', title: '', description: '', price: 0, imageUrl: null);
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
     editedProduct = const Product(
         id: '',
         title: '',
-        description: null,
+        description: '',
         price: 0,
         imageUrl: null,
         sizeQuantity: {});

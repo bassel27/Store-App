@@ -11,13 +11,19 @@ class SizeRow extends StatefulWidget {
 }
 
 class _SizeRowState extends State<SizeRow> {
-  final List<_SizeAndQuantityCard> _sizeCards = [];
   TextStyle sizeTextStyle = const TextStyle(color: kTextLightColor);
+  List<_SizeAndQuantityCard> get _sizeCards {
+    final productsNotifier = Provider.of<ProductsNotifier>(context);
+    return productsNotifier.editedProduct.sizeQuantity.entries
+        .map(
+          (entry) => _SizeAndQuantityCard(
+              size: entry.key, quantity: entry.value, onAdd: addSizeCard),
+        )
+        .toList();
+  }
+
   void addSizeCard(String size, int quantity) {
-    setState(() {
-      _sizeCards.add(_SizeAndQuantityCard(
-          size: size, quantity: quantity, onAdd: addSizeCard));
-    });
+    setState(() {});
   }
 
   @override
