@@ -54,16 +54,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: product.sizeQuantity.keys
-                                  .map((String size) => _SizeCard(
-                                        size,
-                                      ))
-                                  .toList(),
-                            ),
-                          ),
+                          SizesRow(product: product),
                         ],
                       ),
                     ),
@@ -85,6 +76,37 @@ class ProductDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SizesRow extends StatefulWidget {
+  const SizesRow({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final Product product;
+
+  @override
+  State<SizesRow> createState() => _SizesRowState();
+}
+
+class _SizesRowState extends State<SizesRow> {
+  String? selectedSize;
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: widget.product.sizeQuantity.keys
+            .map((String size) => _SizeCard(size, (String selected) {
+                  setState(() {
+                    selectedSize = selected; // Update selected size
+                  });
+                }, selectedSize == size))
+            .toList(),
       ),
     );
   }
@@ -213,17 +235,11 @@ class _ImageContainer extends StatelessWidget {
   }
 }
 
-class _SizeCard extends StatefulWidget {
+class _SizeCard extends StatelessWidget {
   final String size;
-
-  const _SizeCard(this.size);
-
-  @override
-  State<_SizeCard> createState() => _SizeCardState();
-}
-
-class _SizeCardState extends State<_SizeCard> {
-  Color cardColor = kInactiveColor;
+  final bool isSelected;
+  final Function(String) onSelected;
+  _SizeCard(this.size, this.onSelected, this.isSelected);
 
   TextStyle sizeTextStyle = const TextStyle(
       color: kTextLightColor, fontWeight: FontWeight.bold, fontSize: 17);
@@ -232,18 +248,16 @@ class _SizeCardState extends State<_SizeCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          cardColor = cardColor == kActiveColor ? kInactiveColor : kActiveColor;
-        });
+        onSelected(size);
       },
       child: SizedBox(
         height: 40,
         width: 50,
         child: Card(
-          color: cardColor,
+          color: isSelected ? kActiveColor : kInactiveColor,
           elevation: 4,
           child: Center(
-            child: Text(widget.size,
+            child: Text(size,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w600,
