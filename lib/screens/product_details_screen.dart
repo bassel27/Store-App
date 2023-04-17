@@ -234,11 +234,28 @@ class _ImageContainer extends StatelessWidget {
   final Product product;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Hero(
-        tag: product.id,
-        child: MyCachedNetworkImage(product.imageUrl!),
+    return Hero(
+      tag: product.id,
+      child: Stack(
+        children: [
+          SizedBox(
+              width: double.infinity,
+              child: MyCachedNetworkImage(product.imageUrl!)),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: const Alignment(0, 0.6),
+                  colors: [
+                    Colors.black.withOpacity(0.25),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
