@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
+import 'package:store_app/widgets/fab_favorite.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
 
 import '../models/cart_item/cart_item.dart';
@@ -25,7 +26,10 @@ class ProductDetailsScreen extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    _ImageContainer(product: product),
+                    Stack(alignment: Alignment.topRight, children: [
+                      _ImageContainer(product: product),
+                      FABFavorite(product)
+                    ]),
                     const SizedBox(
                       height: 15,
                     ),

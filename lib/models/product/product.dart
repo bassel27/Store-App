@@ -23,10 +23,6 @@ class Product with _$Product {
   static int sizeComparator(String size1, String size2) {
     // Define the order of sizes for clothes
     List<String> clothesOrder = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
-
-    // Define the order of sizes for shoes
-    List<int> shoeOrder = List.generate(100, (index) => index + 1);
-
     // Check if the sizes are for clothes or shoes
     bool isClothes =
         clothesOrder.contains(size1) && clothesOrder.contains(size2);
