@@ -142,7 +142,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
           ),
         ),
 
-        FABFavorite(product)
+        FABFavorite(product.id, 30)
         // child is a reference to the Consumer's child property which doesn't rebuild
       ],
     );

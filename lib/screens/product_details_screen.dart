@@ -5,6 +5,7 @@ import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/fab_favorite.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
+import 'package:store_app/widgets/product_grid_tile.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
@@ -26,9 +27,14 @@ class ProductDetailsScreen extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    Stack(alignment: Alignment.topRight, children: [
+                    Stack(children: [
                       _ImageContainer(product: product),
-                      FABFavorite(product)
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: FABFavorite(product.id, 35)),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: _FABBack(product.id, 35)),
                     ]),
                     const SizedBox(
                       height: 15,
@@ -267,6 +273,34 @@ class _SizeCard extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: 17)),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FABBack extends FABFavorite {
+  _FABBack(String productId, double circleDiameter)
+      : super(productId, circleDiameter);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      margin: const EdgeInsets.symmetric(
+          vertical: kPhotoPadding + 9, horizontal: kPhotoPadding + 7),
+      width: circleDiameter,
+      height: circleDiameter,
+      child: RawMaterialButton(
+        fillColor: Theme.of(context).colorScheme.primary,
+        shape: const CircleBorder(),
+        onPressed: () => Navigator.of(context).pop(),
+        child: Icon(
+          size: circleDiameter / 1.35,
+          Icons.arrow_back_ios_new_rounded,
+          color: Theme.of(context).colorScheme.tertiary,
         ),
       ),
     );
