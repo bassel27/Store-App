@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
@@ -45,24 +46,47 @@ class ProductDetailsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: AutoSizeText(
+                                  "${product.title} Blue White Faded",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 22,
+                                      ),
+                                  maxLines: 2,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              CurrencyAndPriceText(
+                                price: product.price,
+                                sizeMultiplicationFactor: 1.32,
+                              ),
+                              product.description == null ||
+                                      product.description == ''
+                                  ? Container()
+                                  : Text("Description: ${product.description}"),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
                           Text(
-                            product.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText2!
-                                .copyWith(
-                                    fontWeight: FontWeight.w700, fontSize: 22),
+                            "Available Sizes".toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                           const SizedBox(
-                            height: 5,
-                          ),
-                          CurrencyAndPriceText(price: product.price),
-                          product.description == null ||
-                                  product.description == ''
-                              ? Container()
-                              : Text("Descripton: ${product.description}"),
-                          const SizedBox(
-                            height: 10,
+                            height: 8,
                           ),
                           SizesRow(product: product),
                         ],
@@ -271,29 +295,34 @@ class _SizeCard extends StatelessWidget {
   final String size;
   final bool isSelected;
   final Function(String) onSelected;
-  _SizeCard(this.size, this.onSelected, this.isSelected);
-
-  TextStyle sizeTextStyle = const TextStyle(
-      color: kTextLightColor, fontWeight: FontWeight.bold, fontSize: 17);
+  const _SizeCard(this.size, this.onSelected, this.isSelected);
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    TextStyle sizeTextStyle = TextStyle(
+        color: isSelected
+            ? kTextLightColor
+            : Theme.of(context).colorScheme.secondary,
+        fontWeight: FontWeight.bold,
+        fontSize: 17);
     return GestureDetector(
       onTap: () {
         onSelected(size);
       },
       child: SizedBox(
-        height: 40,
-        width: 50,
+        height: 45,
+        width: 55,
         child: Card(
-          color: isSelected ? kActiveColor : kInactiveColor,
+          color: isSelected ? kActiveColor : colorScheme.primary,
           elevation: 4,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(
+                color: Color.fromARGB(255, 191, 189, 189), width: 0.8),
+            borderRadius: BorderRadius.circular(900),
+          ),
           child: Center(
-            child: Text(size,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 17)),
+            child: Text(size, style: sizeTextStyle),
           ),
         ),
       ),
