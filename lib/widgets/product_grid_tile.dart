@@ -123,28 +123,28 @@ class _ImageAndFavoriteStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topRight,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-              top: kPhotoPadding, left: kPhotoPadding, right: kPhotoPadding),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
-            child: SizedBox(
-              height: constraints.maxHeight * 0.77,
-              width: double.infinity,
-              child: Hero(
-                tag: product.id,
+    return Hero(
+      tag: product.id,
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                top: kPhotoPadding, left: kPhotoPadding, right: kPhotoPadding),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(kRoundedEdgeRadius),
+              child: SizedBox(
+                height: constraints.maxHeight * 0.77,
+                width: double.infinity,
                 child: MyCachedNetworkImage(product.imageUrl!),
               ),
             ),
           ),
-        ),
 
-        FABFavorite(product.id, 30)
-        // child is a reference to the Consumer's child property which doesn't rebuild
-      ],
+          FABFavorite(product.id, 30)
+          // child is a reference to the Consumer's child property which doesn't rebuild
+        ],
+      ),
     );
   }
 }

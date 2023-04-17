@@ -28,15 +28,18 @@ class ProductDetailsScreen extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: [
-                    Stack(children: [
-                      _ImageContainer(product: product),
-                      Align(
-                          alignment: Alignment.topRight,
-                          child: FABFavorite(product.id, 35)),
-                      Align(
-                          alignment: Alignment.topLeft,
-                          child: _FABBack(product.id, 35)),
-                    ]),
+                    Hero(
+                      tag: product.id,
+                      child: Stack(children: [
+                        _ImageContainer(product: product),
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: FABFavorite(product.id, 35)),
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: _FABBack(product.id, 35)),
+                      ]),
+                    ),
                     const SizedBox(
                       height: 15,
                     ),
@@ -258,34 +261,31 @@ class _ImageContainer extends StatelessWidget {
   final Product product;
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: product.id,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(45),
-          bottomRight: Radius.circular(45),
-        ),
-        child: Stack(
-          children: [
-            SizedBox(
-                width: double.infinity,
-                child: MyCachedNetworkImage(product.imageUrl!)),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: const Alignment(0, 0.6),
-                    colors: [
-                      Colors.black.withOpacity(0.25),
-                      Colors.transparent,
-                    ],
-                  ),
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(45),
+        bottomRight: Radius.circular(45),
+      ),
+      child: Stack(
+        children: [
+          SizedBox(
+              width: double.infinity,
+              child: MyCachedNetworkImage(product.imageUrl!)),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: const Alignment(0, 0.6),
+                  colors: [
+                    Colors.black.withOpacity(0.25),
+                    Colors.transparent,
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
