@@ -13,7 +13,7 @@ class MyCachedNetworkImage extends StatelessWidget with ExceptionHandler {
       imageUrl: imageUrl,
       placeholder: (context, url) => Image.asset(
         kPlaceHolder,
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.cover,
       ),
       errorWidget: (context, url, error) {
         handleException(error);

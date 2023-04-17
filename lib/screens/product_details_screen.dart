@@ -234,9 +234,8 @@ class _ImageContainer extends StatelessWidget {
   final Product product;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // margin: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(),
+    return SizedBox(
+      width: double.infinity,
       child: Hero(
         tag: product.id,
         child: MyCachedNetworkImage(product.imageUrl!),
