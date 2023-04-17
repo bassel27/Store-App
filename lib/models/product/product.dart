@@ -46,10 +46,4 @@ class Product with _$Product {
       return int.parse(size1) - int.parse(size2);
     }
   }
-
-  Map<String, int> get sizeQunatity {
-    List<MapEntry<String, int>> entries = sizeQuantity.entries.toList();
-    entries.sort((a, b) => sizeComparator(a.key, b.key));
-    return Map.fromEntries(entries);
-  }
 }

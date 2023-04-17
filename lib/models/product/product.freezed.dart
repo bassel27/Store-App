@@ -206,9 +206,16 @@ class _$_Product implements _Product {
   @override
   @JsonKey()
   Map<String, int> get sizeQuantity {
-    if (_sizeQuantity is EqualUnmodifiableMapView) return _sizeQuantity;
+    if (_sizeQuantity is EqualUnmodifiableMapView)
+      return Map.fromEntries(
+        _sizeQuantity.entries.toList()
+          ..sort((a, b) => Product.sizeComparator(a.key, b.key)),
+      );
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_sizeQuantity);
+    return EqualUnmodifiableMapView(Map.fromEntries(
+      _sizeQuantity.entries.toList()
+        ..sort((a, b) => Product.sizeComparator(a.key, b.key)),
+    ));
   }
 
   @override

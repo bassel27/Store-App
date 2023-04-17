@@ -16,5 +16,5 @@ Map<String, dynamic> _$$_CartItemToJson(_$_CartItem instance) =>
     <String, dynamic>{
       'id': instance.id,
       'quantity': instance.quantity,
-      'product': instance.product.toJson(),
+      'product': instance.product,
     };
