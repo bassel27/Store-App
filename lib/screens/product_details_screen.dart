@@ -20,12 +20,15 @@ class ProductDetailsScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Product;
     final sizeProvider = Provider.of<SizeNotifier>(context, listen: false);
     sizeProvider.product = product;
-
+    const double circleDiameter = 35;
     // TODO: use provider
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: SafeArea(
         child: Scaffold(
+          floatingActionButton: Align(
+              alignment: Alignment.topLeft,
+              child: _FABBack(product.id, circleDiameter)),
           body: Column(
             children: [
               Expanded(
@@ -37,10 +40,10 @@ class ProductDetailsScreen extends StatelessWidget {
                         _ImageContainer(product: product),
                         Align(
                             alignment: Alignment.topRight,
-                            child: FABFavorite(product.id, 35)),
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: _FABBack(product.id, 35)),
+                            child: FABFavorite(product.id, circleDiameter)),
+                        // Align(
+                        //     alignment: Alignment.topLeft,
+                        //     child: _FABBack(product.id, 35)),
                       ]),
                     ),
                     const SizedBox(
@@ -340,11 +343,11 @@ class _FABBack extends FABFavorite {
         shape: BoxShape.circle,
       ),
       margin: const EdgeInsets.symmetric(
-          vertical: kPhotoPadding + 9, horizontal: kPhotoPadding + 7),
+          vertical: kPhotoPadding + 24, horizontal: kPhotoPadding + 18),
       width: circleDiameter,
       height: circleDiameter,
-      child: RawMaterialButton(
-        fillColor: Theme.of(context).colorScheme.primary,
+      child: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         shape: const CircleBorder(),
         onPressed: () => Navigator.of(context).pop(),
         child: Icon(
