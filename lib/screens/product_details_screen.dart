@@ -5,12 +5,13 @@ import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/selected_size.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
+import 'package:store_app/widgets/drop_shadow.dart';
 import 'package:store_app/widgets/fab_favorite.dart';
-import 'package:store_app/widgets/my_cached_network_image.dart';
 import 'package:store_app/widgets/product_grid_tile.dart';
-import 'package:drop_shadow_image/drop_shadow_image.dart';
+
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
+import '../widgets/my_cached_network_image.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   static const route = '/bottom_nav_bar/product_details';
@@ -47,7 +48,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       ]),
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 47,
                     ),
                     Padding(
                       padding:
@@ -60,7 +61,7 @@ class ProductDetailsScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: AutoSizeText(
-                                  "${product.title} Blue White Faded",
+                                  product.title,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -80,12 +81,15 @@ class ProductDetailsScreen extends StatelessWidget {
                                     : product.price,
                                 sizeMultiplicationFactor: 1.32,
                               ),
-                              product.description == null ||
-                                      product.description == ''
-                                  ? Container()
-                                  : Text("Description: ${product.description}"),
                             ],
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          product.description == null ||
+                                  product.description == ''
+                              ? Container()
+                              : Text("Description: ${product.description}"),
                           const SizedBox(
                             height: 30,
                           ),
@@ -262,45 +266,51 @@ class _ImageContainer extends StatelessWidget {
   final Product product;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x54000000),
-            spreadRadius: 2,
-            blurRadius: 50,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(45),
-          bottomRight: Radius.circular(45),
-        ),
-        child: Stack(
-          children: [
-            SizedBox(
-                width: double.infinity,
-                child: MyCachedNetworkImage(product.imageUrl!)),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: const Alignment(0, 0.6),
-                    colors: [
-                      Colors.black.withOpacity(0.25),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return DropShadowImage(
+        offset: const Offset(0, 10),
+        scale: 1.1,
+        blurRadius: 30,
+        borderRadius: 35,
+        cachedNetworkImage: MyCachedNetworkImage(product.imageUrl!));
+    // Container(
+    //   decoration: const BoxDecoration(
+    //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+    //     boxShadow: [
+    //       BoxShadow(
+    //         color: Color(0x54000000),
+    //         spreadRadius: 2,
+    //         blurRadius: 50,
+    //       ),
+    //     ],
+    //   ),
+    //   child: ClipRRect(
+    //     borderRadius: const BorderRadius.only(
+    //       bottomLeft: Radius.circular(45),
+    //       bottomRight: Radius.circular(45),
+    //     ),
+    //     child: Stack(
+    //       children: [
+    //         SizedBox(
+    //             width: double.infinity,
+    //             child: MyCachedNetworkImage(product.imageUrl!)),
+    //         Positioned.fill(
+    //           child: Container(
+    //             decoration: BoxDecoration(
+    //               gradient: LinearGradient(
+    //                 begin: Alignment.bottomCenter,
+    //                 end: const Alignment(0, 0.6),
+    //                 colors: [
+    //                   Colors.black.withOpacity(0.25),
+    //                   Colors.transparent,
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 

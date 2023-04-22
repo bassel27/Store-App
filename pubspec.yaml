@@ -64,7 +64,6 @@ dependencies:
   image: ^3.0.2
   firebase_messaging: ^14.2.6
   palette_generator: ^0.3.3+2
-  drop_shadow_image: ^0.9.1
   
 dev_dependencies:
   flutter_test:
