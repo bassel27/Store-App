@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/models/constants.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
@@ -48,7 +49,15 @@ class ProductGridTile extends StatelessWidget {
                                   fontWeight: FontWeight.w700, fontSize: 18),
                         ),
                         TextSpan(
-                          text: "\n${product.price}",
+                          text: "\n$kCurrency ",
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                        ),
+                        TextSpan(
+                          text:
+                              "${product.price == product.price.toInt() ? product.price.toInt() : product.price}",
                           style:
                               Theme.of(context).textTheme.bodyText2!.copyWith(
                                     fontWeight: FontWeight.w500,
@@ -125,7 +134,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: product.id,
-      child: Stack( 
+      child: Stack(
         alignment: Alignment.topRight,
         children: [
           Padding(

@@ -9,7 +9,7 @@ class CurrencyAndPriceText extends StatelessWidget {
     this.sizeMultiplicationFactor = 1,
   }) : super(key: key);
   final double sizeMultiplicationFactor;
-  final double price;
+  final num price;
 
   @override
   Widget build(BuildContext context) {

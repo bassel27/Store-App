@@ -72,7 +72,9 @@ class ProductDetailsScreen extends StatelessWidget {
                                 width: 15,
                               ),
                               CurrencyAndPriceText(
-                                price: product.price,
+                                price: product.price == product.price.toInt()
+                                    ? product.price.toInt()
+                                    : product.price,
                                 sizeMultiplicationFactor: 1.32,
                               ),
                               product.description == null ||
