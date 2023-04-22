@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/providers/cart_notifier.dart';
+import 'package:store_app/providers/selected_size.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/fab_favorite.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
@@ -13,11 +14,13 @@ import '../models/product/product.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   static const route = '/bottom_nav_bar/product_details';
-
   @override
   Widget build(BuildContext context) {
     late Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
+    final sizeProvider = Provider.of<SizeNotifier>(context, listen: false);
+    sizeProvider.product = product;
+
     // TODO: use provider
     return Container(
       color: Theme.of(context).colorScheme.background,
@@ -91,7 +94,9 @@ class ProductDetailsScreen extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-                          SizesRow(product: product),
+                          SizesRow(
+                            product: product,
+                          ),
                         ],
                       ),
                     ),
@@ -118,31 +123,20 @@ class ProductDetailsScreen extends StatelessWidget {
   }
 }
 
-class SizesRow extends StatefulWidget {
+class SizesRow extends StatelessWidget {
   const SizesRow({
     Key? key,
     required this.product,
   }) : super(key: key);
 
   final Product product;
-
-  @override
-  State<SizesRow> createState() => _SizesRowState();
-}
-
-class _SizesRowState extends State<SizesRow> {
-  String? selectedSize;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: widget.product.sizeQuantity.keys
-            .map((String size) => _SizeCard(size, (String selected) {
-                  setState(() {
-                    selectedSize = selected; // Update selected size
-                  });
-                }, selectedSize == size))
+        children: product.sizeQuantity.keys
+            .map((String size) => _SizeCard(size))
             .toList(),
       ),
     );
@@ -151,6 +145,7 @@ class _SizesRowState extends State<SizesRow> {
 
 class _BottomRow extends StatefulWidget {
   final Product product;
+
   const _BottomRow(this.product);
 
   @override
@@ -158,18 +153,19 @@ class _BottomRow extends StatefulWidget {
 }
 
 class _BottomRowState extends State<_BottomRow> {
-  final List<int> quantityList = List<int>.generate(100, (i) => i + 1);
-
   late final CartNotifier cartProvider = context.read<CartNotifier>();
   late CartItem? cartItem = cartProvider.getCartItem(widget.product);
-  late String dropdownValue = cartItem == null
-      ? quantityList.first.toString()
-      : cartItem!.quantity.toString();
+  late String dropdownValue =
+      cartItem == null ? "1" : cartItem!.quantity.toString();
   @override
   Widget build(BuildContext context) {
+    late final List<int> quantityList = List<int>.generate(
+        widget.product
+            .sizeQuantity[context.watch<SizeNotifier>().currentlySelectedSize]!,
+        (i) => i + 1);
     return Row(
       children: [
-        dropdownMenu(context),
+        dropdownMenu(context, quantityList),
         const SizedBox(width: 6),
         Expanded(
           child: SizedBox(
@@ -197,7 +193,7 @@ class _BottomRowState extends State<_BottomRow> {
     );
   }
 
-  Container dropdownMenu(BuildContext context) {
+  Container dropdownMenu(BuildContext context, List quantityList) {
     return Container(
       padding: const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
@@ -293,12 +289,13 @@ class _ImageContainer extends StatelessWidget {
 
 class _SizeCard extends StatelessWidget {
   final String size;
-  final bool isSelected;
-  final Function(String) onSelected;
-  const _SizeCard(this.size, this.onSelected, this.isSelected);
+
+  const _SizeCard(this.size);
 
   @override
   Widget build(BuildContext context) {
+    final sizeProvider = Provider.of<SizeNotifier>(context);
+    final isSelected = sizeProvider.currentlySelectedSize == size;
     final colorScheme = Theme.of(context).colorScheme;
     TextStyle sizeTextStyle = TextStyle(
         color: isSelected
@@ -308,7 +305,7 @@ class _SizeCard extends StatelessWidget {
         fontSize: 17);
     return GestureDetector(
       onTap: () {
-        onSelected(size);
+        sizeProvider.currentlySelectedSize = size;
       },
       child: SizedBox(
         height: 45,

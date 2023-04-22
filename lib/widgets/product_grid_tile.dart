@@ -125,7 +125,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: product.id,
-      child: Stack(
+      child: Stack( 
         alignment: Alignment.topRight,
         children: [
           Padding(
