@@ -8,7 +8,7 @@ import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/fab_favorite.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
 import 'package:store_app/widgets/product_grid_tile.dart';
-
+import 'package:drop_shadow_image/drop_shadow_image.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
@@ -262,31 +262,43 @@ class _ImageContainer extends StatelessWidget {
   final Product product;
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(45),
-        bottomRight: Radius.circular(45),
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x54000000),
+            spreadRadius: 2,
+            blurRadius: 50,
+          ),
+        ],
       ),
-      child: Stack(
-        children: [
-          SizedBox(
-              width: double.infinity,
-              child: MyCachedNetworkImage(product.imageUrl!)),
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: const Alignment(0, 0.6),
-                  colors: [
-                    Colors.black.withOpacity(0.25),
-                    Colors.transparent,
-                  ],
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(45),
+          bottomRight: Radius.circular(45),
+        ),
+        child: Stack(
+          children: [
+            SizedBox(
+                width: double.infinity,
+                child: MyCachedNetworkImage(product.imageUrl!)),
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: const Alignment(0, 0.6),
+                    colors: [
+                      Colors.black.withOpacity(0.25),
+                      Colors.transparent,
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
