@@ -23,6 +23,7 @@ mixin _$CartItem {
   String get id => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError;
+  String get size => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $CartItemCopyWith<$Res> {
   factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
       _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
-  $Res call({String id, int quantity, Product product});
+  $Res call({String id, int quantity, Product product, String size});
 
   $ProductCopyWith<$Res> get product;
 }
@@ -56,6 +57,7 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? id = null,
     Object? quantity = null,
     Object? product = null,
+    Object? size = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -70,6 +72,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -89,7 +95,7 @@ abstract class _$$_CartItemCopyWith<$Res> implements $CartItemCopyWith<$Res> {
       __$$_CartItemCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, int quantity, Product product});
+  $Res call({String id, int quantity, Product product, String size});
 
   @override
   $ProductCopyWith<$Res> get product;
@@ -109,6 +115,7 @@ class __$$_CartItemCopyWithImpl<$Res>
     Object? id = null,
     Object? quantity = null,
     Object? product = null,
+    Object? size = null,
   }) {
     return _then(_$_CartItem(
       id: null == id
@@ -123,6 +130,10 @@ class __$$_CartItemCopyWithImpl<$Res>
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -131,7 +142,10 @@ class __$$_CartItemCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CartItem implements _CartItem {
   const _$_CartItem(
-      {required this.id, required this.quantity, required this.product});
+      {required this.id,
+      required this.quantity,
+      required this.product,
+      required this.size});
 
   factory _$_CartItem.fromJson(Map<String, dynamic> json) =>
       _$$_CartItemFromJson(json);
@@ -142,10 +156,12 @@ class _$_CartItem implements _CartItem {
   final int quantity;
   @override
   final Product product;
+  @override
+  final String size;
 
   @override
   String toString() {
-    return 'CartItem(id: $id, quantity: $quantity, product: $product)';
+    return 'CartItem(id: $id, quantity: $quantity, product: $product, size: $size)';
   }
 
   @override
@@ -156,12 +172,13 @@ class _$_CartItem implements _CartItem {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
-            (identical(other.product, product) || other.product == product));
+            (identical(other.product, product) || other.product == product) &&
+            (identical(other.size, size) || other.size == size));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, quantity, product);
+  int get hashCode => Object.hash(runtimeType, id, quantity, product, size);
 
   @JsonKey(ignore: true)
   @override
@@ -181,7 +198,8 @@ abstract class _CartItem implements CartItem {
   const factory _CartItem(
       {required final String id,
       required final int quantity,
-      required final Product product}) = _$_CartItem;
+      required final Product product,
+      required final String size}) = _$_CartItem;
 
   factory _CartItem.fromJson(Map<String, dynamic> json) = _$_CartItem.fromJson;
 
@@ -191,6 +209,8 @@ abstract class _CartItem implements CartItem {
   int get quantity;
   @override
   Product get product;
+  @override
+  String get size;
   @override
   @JsonKey(ignore: true)
   _$$_CartItemCopyWith<_$_CartItem> get copyWith =>

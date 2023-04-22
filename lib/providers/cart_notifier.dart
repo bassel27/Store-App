@@ -85,7 +85,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
     }
   }
 
-  Future<void> setQuantity(Product product, int quantity) async {
+  Future<void> setQuantity(Product product, int quantity, String size) async {
     for (int i = 0; i < cartItems.length; i++) {
       // if already exists in cart
       if (cartItems[i].product.id == product.id) {
@@ -100,7 +100,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
     }
 
     CartItem newCartItem =
-        CartItem(id: const Uuid().v4(), product: product, quantity: quantity);
+        CartItem(id: const Uuid().v4(), product: product, quantity: quantity, size: size);
 
     await _cartController
         .create(newCartItem)
@@ -110,7 +110,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   /// Adds a new product to cart or increases the quantity of an already existing one.
-  void add(Product product) async {
+  void add(Product product, String size) async {
     for (int i = 0; i < cartItems.length; i++) {
       if (cartItems[i].product.id == product.id) {
         await _cartController
@@ -123,7 +123,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
     }
     // create new cartItem with quantity of 1
     CartItem newCartItem =
-        CartItem(id: const Uuid().v4(), product: product, quantity: 1);
+        CartItem(id: const Uuid().v4(), product: product, quantity: 1, size: size);
 
     await _cartController
         .create(newCartItem)

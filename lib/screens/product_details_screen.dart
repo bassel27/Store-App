@@ -187,7 +187,10 @@ class _BottomRowState extends State<_BottomRow> {
               ),
               onPressed: () {
                 cartProvider.setQuantity(
-                    widget.product, int.parse(dropdownValue));
+                    widget.product,
+                    int.parse(dropdownValue),
+                    Provider.of<SizeNotifier>(context, listen: false)
+                        .currentlySelectedSize!);
               },
               child: const Text(
                 "ADD TO CART",

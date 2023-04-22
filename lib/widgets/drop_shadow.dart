@@ -68,13 +68,19 @@ class DropShadowImage extends StatelessWidget {
               ),
             ),
           ),
-          ClipRRect(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(borderRadius),
-                bottomRight: Radius.circular(borderRadius),
-              ),
-              child:
-                  SizedBox(width: double.infinity, child: cachedNetworkImage))
+          Container(
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(borderRadius),
+            //   border: Border.all(color: Colors.white, width: 2.0),
+            // ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(borderRadius),
+                  bottomRight: Radius.circular(borderRadius),
+                ),
+                child: SizedBox(
+                    width: double.infinity, child: cachedNetworkImage)),
+          )
         ],
       ),
     );
