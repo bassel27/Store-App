@@ -5,7 +5,6 @@ import 'package:store_app/helper/dialog_helper.dart';
 import '../models/cart_item/cart_item.dart';
 
 class CartController {
-  CartController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   CollectionReference get cartItemsCollection {
     return db

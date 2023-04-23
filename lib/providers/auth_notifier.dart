@@ -24,7 +24,7 @@ class AuthNotifier
   bool isDateNotReached(DateTime date) {
     return date.isAfter(DateTime.now());
   }
-  
+
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email.trim());
   }
@@ -41,9 +41,11 @@ class AuthNotifier
     DialogHelper.showLoading();
     UserCredential authResult = await _auth.createUserWithEmailAndPassword(
         email: user.email.trim(), password: user.password);
+    String generatedUserId = authResult.user!.uid;
+    user = user.copyWith(id: generatedUserId);
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(authResult.user!.uid)
+        .doc(generatedUserId)
         .set(user.toJson());
     DialogHelper.hideCurrentDialog();
   }

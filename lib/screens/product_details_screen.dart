@@ -319,45 +319,6 @@ class _ImageContainer extends StatelessWidget {
         blurRadius: 30,
         borderRadius: 35,
         cachedNetworkImage: MyCachedNetworkImage(product.imageUrl!));
-    // Container(
-    //   decoration: const BoxDecoration(
-    //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-    //     boxShadow: [
-    //       BoxShadow(
-    //         color: Color(0x54000000),
-    //         spreadRadius: 2,
-    //         blurRadius: 50,
-    //       ),
-    //     ],
-    //   ),
-    //   child: ClipRRect(
-    //     borderRadius: const BorderRadius.only(
-    //       bottomLeft: Radius.circular(45),
-    //       bottomRight: Radius.circular(45),
-    //     ),
-    //     child: Stack(
-    //       children: [
-    //         SizedBox(
-    //             width: double.infinity,
-    //             child: MyCachedNetworkImage(product.imageUrl!)),
-    //         Positioned.fill(
-    //           child: Container(
-    //             decoration: BoxDecoration(
-    //               gradient: LinearGradient(
-    //                 begin: Alignment.bottomCenter,
-    //                 end: const Alignment(0, 0.6),
-    //                 colors: [
-    //                   Colors.black.withOpacity(0.25),
-    //                   Colors.transparent,
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
 
