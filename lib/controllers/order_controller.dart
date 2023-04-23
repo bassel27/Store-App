@@ -9,7 +9,6 @@ class OrderController with ExceptionHandler {
   OrderController();
   FirebaseFirestore db = FirebaseFirestore.instance;
   final String kOrdersCollection = 'orders';
-  
 
   /// Returns fetched orders.
   ///

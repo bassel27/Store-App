@@ -37,7 +37,7 @@ class ProductController with ExceptionHandler {
     DialogHelper.showLoading();
     final Reference ref = FirebaseStorage.instance
         .ref()
-        .child('product_image')
+        .child('productImages')
         .child(newProduct.id);
     await ref.putFile(imageFile).whenComplete(() => null);
     Product newProductWithImageUrl =
@@ -95,7 +95,7 @@ class ProductController with ExceptionHandler {
     } else {
       final Reference ref = FirebaseStorage.instance
           .ref()
-          .child('product_image')
+          .child('productImages')
           .child(newProduct.id);
       await deleteImageFile(newProduct.id);
       await ref.putFile(imageFile).whenComplete(() => null);
@@ -120,7 +120,7 @@ class ProductController with ExceptionHandler {
 
   Future<void> deleteImageFile(String productId) async {
     final desertRef =
-        FirebaseStorage.instance.ref().child('product_image').child(productId);
+        FirebaseStorage.instance.ref().child('productImages').child(productId);
     await desertRef.delete();
   }
 }
