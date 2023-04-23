@@ -166,6 +166,7 @@ class SizeAndQuantityCard extends StatelessWidget {
                             }
                             productsProvider.editedProduct = newProduct;
                             Navigator.of(context).pop();
+                            FocusScope.of(context).unfocus();
                           }
                         },
                       ),
