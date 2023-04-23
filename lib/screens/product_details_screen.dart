@@ -163,7 +163,7 @@ class _BottomRow extends StatefulWidget {
 
 class _BottomRowState extends State<_BottomRow> {
   late final CartNotifier cartProvider = context.read<CartNotifier>();
-  late String dropdownValue;
+  late String dropdownValue = "1";
   @override
   Widget build(BuildContext context) {
     final SizeNotifier sizeProvider = Provider.of<SizeNotifier>(context);
@@ -175,7 +175,7 @@ class _BottomRowState extends State<_BottomRow> {
                 widget.product.sizeQuantity[currentlySelectedSize]!,
                 (i) => i + 1), (value) {
           dropdownValue = value;
-        }),
+        }, widget.product),
         const SizedBox(width: 6),
         Expanded(
           child: SizedBox(
@@ -207,9 +207,10 @@ class _BottomRowState extends State<_BottomRow> {
 }
 
 class DropDown extends StatefulWidget {
-  const DropDown(this.quantityList, this.onQuantityChanged);
+  const DropDown(this.quantityList, this.onQuantityChanged, this.product);
   final List quantityList;
   final Function(String) onQuantityChanged;
+  final Product product;
 
   @override
   State<DropDown> createState() => _DropDownState();
@@ -237,8 +238,9 @@ class _DropDownState extends State<DropDown> {
   String? getQuantityIfCartItemExists() {
     for (CartItem cartItem in cartProvider.items) {
       if (cartItem.size ==
-          Provider.of<SizeNotifier>(context, listen: false)
-              .currentlySelectedSize) {
+              Provider.of<SizeNotifier>(context, listen: false)
+                  .currentlySelectedSize &&
+          cartItem.product.id == widget.product.id) {
         return cartItem.quantity.toString();
       }
     }

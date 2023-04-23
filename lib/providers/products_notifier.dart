@@ -10,7 +10,7 @@ import '../services/app_exception.dart';
 class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   bool areProductsFetched = false;
 
-  ProductsNotifier();
+  ProductsNotifier(this.items);
   late final ProductController _productsController = ProductController();
   Product editedProduct = const Product(
       id: '', title: '', description: '', price: 0, imageUrl: null);

@@ -10,9 +10,9 @@ import '../models/order/order.dart';
 class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   /// List of all order sorted by recency.
   // TODO: make private
-  List<Order> ordersList=[];
+  List<Order> ordersList;
 
-  OrdersNotifier();
+  OrdersNotifier(this.ordersList);
 
   late final OrderController _ordersController = OrderController();
   List<Order> get orders => [...ordersList]..sort((a, b) {

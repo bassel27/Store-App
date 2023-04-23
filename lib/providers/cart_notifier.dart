@@ -9,8 +9,8 @@ import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 class CartNotifier with ChangeNotifier, ExceptionHandler {
-  List<CartItem> cartItems=[];
-  CartNotifier();
+  List<CartItem> cartItems;
+  CartNotifier(this.cartItems);
   late final CartController _cartController = CartController();
   bool isCartFetched = false;
   
