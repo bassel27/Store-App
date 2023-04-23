@@ -40,7 +40,7 @@ class AuthNotifier
   Future<void> signup(User user) async {
     DialogHelper.showLoading();
     UserCredential authResult = await _auth.createUserWithEmailAndPassword(
-        email: user.email.trim(), password: user.password);
+        email: user.email.trim(), password: user.password!);
     String generatedUserId = authResult.user!.uid;
     user = user.copyWith(id: generatedUserId);
     await FirebaseFirestore.instance

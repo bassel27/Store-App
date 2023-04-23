@@ -24,7 +24,8 @@ mixin _$User {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  String? get password => throw _privateConstructorUsedError;
   List<CartItem> get favoriteProducts => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +43,7 @@ abstract class $UserCopyWith<$Res> {
       String firstName,
       String lastName,
       String id,
-      String password,
+      @JsonKey(ignore: true) String? password,
       List<CartItem> favoriteProducts});
 }
 
@@ -63,7 +64,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? firstName = null,
     Object? lastName = null,
     Object? id = null,
-    Object? password = null,
+    Object? password = freezed,
     Object? favoriteProducts = null,
   }) {
     return _then(_value.copyWith(
@@ -83,10 +84,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      password: null == password
+      password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       favoriteProducts: null == favoriteProducts
           ? _value.favoriteProducts
           : favoriteProducts // ignore: cast_nullable_to_non_nullable
@@ -106,7 +107,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String firstName,
       String lastName,
       String id,
-      String password,
+      @JsonKey(ignore: true) String? password,
       List<CartItem> favoriteProducts});
 }
 
@@ -123,7 +124,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? firstName = null,
     Object? lastName = null,
     Object? id = null,
-    Object? password = null,
+    Object? password = freezed,
     Object? favoriteProducts = null,
   }) {
     return _then(_$_User(
@@ -143,10 +144,10 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      password: null == password
+      password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       favoriteProducts: null == favoriteProducts
           ? _value._favoriteProducts
           : favoriteProducts // ignore: cast_nullable_to_non_nullable
@@ -163,7 +164,7 @@ class _$_User implements _User {
       required this.firstName,
       required this.lastName,
       required this.id,
-      required this.password,
+      @JsonKey(ignore: true) this.password,
       final List<CartItem> favoriteProducts = const []})
       : _favoriteProducts = favoriteProducts;
 
@@ -178,7 +179,8 @@ class _$_User implements _User {
   @override
   final String id;
   @override
-  final String password;
+  @JsonKey(ignore: true)
+  final String? password;
   final List<CartItem> _favoriteProducts;
   @override
   @JsonKey()
@@ -236,7 +238,7 @@ abstract class _User implements User {
       required final String firstName,
       required final String lastName,
       required final String id,
-      required final String password,
+      @JsonKey(ignore: true) final String? password,
       final List<CartItem> favoriteProducts}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -250,7 +252,8 @@ abstract class _User implements User {
   @override
   String get id;
   @override
-  String get password;
+  @JsonKey(ignore: true)
+  String? get password;
   @override
   List<CartItem> get favoriteProducts;
   @override
