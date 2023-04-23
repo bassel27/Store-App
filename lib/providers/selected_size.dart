@@ -9,11 +9,11 @@ class SizeNotifier with ChangeNotifier {
     _currentlySelectedSize = product.sizeQuantity.keys.toList().first;
   }
 
-  String? get currentlySelectedSize {
-    return _currentlySelectedSize;
+  String get currentlySelectedSize {
+    return _currentlySelectedSize!;
   }
 
-  set currentlySelectedSize(String? size) {
+  set currentlySelectedSize(String size) {
     _currentlySelectedSize = size;
     notifyListeners();
   }

@@ -28,7 +28,7 @@ class CartItemTile extends StatelessWidget {
                   product: cartItem.product,
                 ),
           title: Text(
-            cartItem.product.title,
+            "${cartItem.product.title} ${cartItem.size}",
             style: Theme.of(context)
                 .textTheme
                 .bodyText2!

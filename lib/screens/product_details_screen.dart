@@ -163,18 +163,19 @@ class _BottomRow extends StatefulWidget {
 
 class _BottomRowState extends State<_BottomRow> {
   late final CartNotifier cartProvider = context.read<CartNotifier>();
-  late CartItem? cartItem = cartProvider.getCartItem(widget.product);
-  late String dropdownValue =
-      cartItem == null ? "1" : cartItem!.quantity.toString();
+  late String dropdownValue;
   @override
   Widget build(BuildContext context) {
-    late final List<int> quantityList = List<int>.generate(
-        widget.product
-            .sizeQuantity[context.watch<SizeNotifier>().currentlySelectedSize]!,
-        (i) => i + 1);
+    final SizeNotifier sizeProvider = Provider.of<SizeNotifier>(context);
+    String currentlySelectedSize = sizeProvider.currentlySelectedSize;
     return Row(
       children: [
-        dropdownMenu(context, quantityList),
+        DropDown(
+            List<int>.generate(
+                widget.product.sizeQuantity[currentlySelectedSize]!,
+                (i) => i + 1), (value) {
+          dropdownValue = value;
+        }),
         const SizedBox(width: 6),
         Expanded(
           child: SizedBox(
@@ -189,8 +190,7 @@ class _BottomRowState extends State<_BottomRow> {
                 cartProvider.setQuantity(
                     widget.product,
                     int.parse(dropdownValue),
-                    Provider.of<SizeNotifier>(context, listen: false)
-                        .currentlySelectedSize!);
+                    sizeProvider.currentlySelectedSize);
               },
               child: const Text(
                 "ADD TO CART",
@@ -204,8 +204,49 @@ class _BottomRowState extends State<_BottomRow> {
       ],
     );
   }
+}
 
-  Container dropdownMenu(BuildContext context, List quantityList) {
+class DropDown extends StatefulWidget {
+  const DropDown(this.quantityList, this.onQuantityChanged);
+  final List quantityList;
+  final Function(String) onQuantityChanged;
+
+  @override
+  State<DropDown> createState() => _DropDownState();
+}
+
+class _DropDownState extends State<DropDown> {
+  late String dropdownValue = "1";
+  late final CartNotifier cartProvider = context.read<CartNotifier>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dropdownValue = getQuantityIfCartItemExists() ?? "1";
+  }
+
+  @override
+  void didUpdateWidget(covariant DropDown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check if the widget has been rebuilt due to a change in the parent widget (due to size change)
+    if (widget != oldWidget) {
+      dropdownValue = getQuantityIfCartItemExists() ?? "1";
+    }
+  }
+
+  String? getQuantityIfCartItemExists() {
+    for (CartItem cartItem in cartProvider.items) {
+      if (cartItem.size ==
+          Provider.of<SizeNotifier>(context, listen: false)
+              .currentlySelectedSize) {
+        return cartItem.quantity.toString();
+      }
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 7),
       decoration: BoxDecoration(
@@ -225,7 +266,7 @@ class _BottomRowState extends State<_BottomRow> {
           ),
           elevation: 16,
           selectedItemBuilder: (BuildContext ctxt) {
-            return quantityList
+            return widget.quantityList
                 .map(
                   (quantityNumber) => DropdownMenuItem<String>(
                     value: quantityNumber.toString(),
@@ -237,7 +278,7 @@ class _BottomRowState extends State<_BottomRow> {
                 .toList();
           },
           style: const TextStyle(color: kTextLightColor),
-          items: quantityList
+          items: widget.quantityList
               .map(
                 (quantityNumber) => DropdownMenuItem<String>(
                   value: quantityNumber.toString(),
@@ -251,7 +292,8 @@ class _BottomRowState extends State<_BottomRow> {
               .toList(),
           onChanged: (value) {
             setState(() {
-              dropdownValue = value!;
+              widget.onQuantityChanged(value!);
+              dropdownValue = value;
             });
           },
         ),

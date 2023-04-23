@@ -28,7 +28,7 @@ class DropShadowImage extends StatelessWidget {
   final double blurRadius;
 
   /// The required image to be used.
-  final MyCachedNetworkImage cachedNetworkImage;
+  final Widget cachedNetworkImage;
 
   const DropShadowImage({
     this.key,

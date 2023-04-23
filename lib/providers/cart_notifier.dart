@@ -13,7 +13,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   CartNotifier(this.cartItems);
   late final CartController _cartController = CartController();
   bool isCartFetched = false;
-
+  
   //TODO: remove productID if not used and convert it to a list
   // TODO: make items private
   /// Key is productId and value is cartItem.
@@ -38,21 +38,21 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
     return total;
   }
 
-  CartItem? getCartItem(Product product) {
-    int c = 0;
-    CartItem? retVal;
-    for (CartItem cartItem in cartItems) {
-      if (cartItem.product.id == product.id) {
-        retVal = cartItem;
-        c++;
-      }
-    }
-    if (c == 1) {
-      return retVal;
-    } else {
-      return null;
-    }
-  }
+  // CartItem? getCartItem(Product product) {
+  //   int c = 0;
+  //   CartItem? retVal;
+  //   for (CartItem cartItem in cartItems) {
+  //     if (cartItem.product.id == product.id) {
+  //       retVal = cartItem;
+  //       c++;
+  //     }
+  //   }
+  //   if (c == 1) {
+  //     return retVal;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future<void> getAndSetCart() async {
     List<CartItem>? items = await _cartController.get();
@@ -88,10 +88,8 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   Future<void> setQuantity(Product product, int quantity, String size) async {
     for (int i = 0; i < cartItems.length; i++) {
       // if already exists in cart
-      if (cartItems[i].product.id == product.id) {
-        await _cartController
-            .setQuantity(cartItems[i], quantity)
-            .then((value) {
+      if (cartItems[i].product.id == product.id && size == cartItems[i].size) {
+        await _cartController.setQuantity(cartItems[i], quantity).then((value) {
           cartItems[i] = cartItems[i].copyWith(quantity: quantity);
         }).catchError(handleException);
         notifyListeners();
@@ -99,8 +97,11 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       }
     }
 
-    CartItem newCartItem =
-        CartItem(id: const Uuid().v4(), product: product, quantity: quantity, size: size);
+    CartItem newCartItem = CartItem(
+        id: const Uuid().v4(),
+        product: product,
+        quantity: quantity,
+        size: size);
 
     await _cartController
         .create(newCartItem)
@@ -112,7 +113,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product, String size) async {
     for (int i = 0; i < cartItems.length; i++) {
-      if (cartItems[i].product.id == product.id) {
+      if (cartItems[i].product.id == product.id && cartItems[i].size == size) {
         await _cartController
             .incrementQuantity(cartItems[i])
             .then((value) => increment(cartItems[i]))
@@ -122,8 +123,8 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       }
     }
     // create new cartItem with quantity of 1
-    CartItem newCartItem =
-        CartItem(id: const Uuid().v4(), product: product, quantity: 1, size: size);
+    CartItem newCartItem = CartItem(
+        id: const Uuid().v4(), product: product, quantity: 1, size: size);
 
     await _cartController
         .create(newCartItem)

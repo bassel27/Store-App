@@ -22,10 +22,10 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    _future = lol();
+    _future = fetchCart();
   }
 
-  Future<void> lol() {
+  Future<void> fetchCart() {
     CartNotifier cartProvider =
         Provider.of<CartNotifier>(context, listen: false);
     if (!cartProvider.isCartFetched) {
