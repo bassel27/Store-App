@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
 import 'package:uuid/uuid.dart';
@@ -16,7 +17,7 @@ import '../widgets/name_text_form_field.dart';
 import '../widgets/price_text_form_field.dart';
 import '../widgets/size_row.dart';
 
-class EditProductScreen extends StatefulWidget {
+class EditProductScreen extends StatefulWidget with DialogHelper {
   static const route = "/bottom_nav_bar/my_account/edit_products_screen";
   final Product? product;
   const EditProductScreen(this.product);
@@ -120,7 +121,7 @@ class _EditProductScreenState extends State<EditProductScreen>
     );
   }
 
-  bool validateFormFieldsAndImage() {
+  bool validateFormFieldsAndImageAndSize() {
     if (context.read<ProductImageNotifier>().image == null) {
       // invalid
       setState(() {
@@ -129,6 +130,11 @@ class _EditProductScreenState extends State<EditProductScreen>
       _formKey.currentState!.validate();
       return false;
     } // valid
+
+    if (context.read<ProductsNotifier>().editedProduct.sizeQuantity.isEmpty) {
+      DialogHelper.showErroDialog(description: "Add sizes");
+      return false;
+    }
     if (_formKey.currentState!.validate()) {
       return true;
     } else {
@@ -139,7 +145,7 @@ class _EditProductScreenState extends State<EditProductScreen>
   /// Runs all the validators and all the savers when the save button is pressed
   /// or the keyboard's done button is pressed in the image URL text field.
   void _saveForm() async {
-    if (validateFormFieldsAndImage()) {
+    if (validateFormFieldsAndImageAndSize()) {
       dismissKeyboard();
       // this runs all the validators
       _formKey.currentState!.save(); // this runs all the savers
