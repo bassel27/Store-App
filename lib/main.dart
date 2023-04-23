@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
-import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/selected_size.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
@@ -37,24 +36,14 @@ class MyApp extends StatelessWidget {
         create: (_) => AuthNotifier()), // the object you wanna keep track of
     ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
         // this provider will be rebuilt when Auth changes
-        update: (context, auth, previousProduct) => ProductsNotifier(
-            previousProduct == null ? [] : previousProduct.items),
-        create: (context) => ProductsNotifier([])),
+        update: (context, auth, previousProduct) => ProductsNotifier(),
+        create: (context) => ProductsNotifier()),
     ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
-      update: (context, auth, previousCart) =>
-          CartNotifier(previousCart == null ? [] : previousCart.cartItems),
-      create: (context) => CartNotifier([]),
+      update: (context, auth, previousCart) => CartNotifier(),
+      create: (context) => CartNotifier(),
     ),
-    ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
-      update: (context, auth, previousOrdersProvider) => OrdersNotifier(
-          previousOrdersProvider == null ? [] : previousOrdersProvider.orders),
-      create: (context) => OrdersNotifier([]),
-    ),
-    ChangeNotifierProvider(create: (_) => SizeNotifier()),
 
-    // ChangeNotifierProvider(
-    //   create: (_) => ThemeNotifier(),
-    // ),
+    ChangeNotifierProvider(create: (_) => SizeNotifier()),
   ];
   @override
   Widget build(BuildContext context) {
