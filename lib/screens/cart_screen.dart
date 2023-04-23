@@ -94,7 +94,7 @@ class _SuccessfulScaffoldBody extends StatelessWidget {
                           },
                           child: CartItemTile(
                             cartItem: cartItem,
-                            isHeroAnimationOn: true,
+                            isHeroAnimationOn: false,
                           ),
                         ),
                       );
