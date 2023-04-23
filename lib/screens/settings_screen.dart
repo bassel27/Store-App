@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
+import 'package:store_app/providers/user_notifier.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
@@ -12,11 +13,11 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  // late var theme = Provider.of<ThemeNotifier>(context, listen: false);
   // late bool _switchValue = theme.isDarkMode;
   double circleAvatarRadius = 60;
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserNotifier>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Account"),
@@ -37,10 +38,10 @@ class _AccountScreenState extends State<AccountScreen> {
         const SizedBox(
           height: 15,
         ),
-        const Center(
+        Center(
             child: Text(
-          "Bassel Attia",
-          style: TextStyle(fontSize: 22),
+          "${userProvider.currentUser!.firstName} ${userProvider.currentUser!.lastName}",
+          style: const TextStyle(fontSize: 22),
         )),
         const SizedBox(
           height: 20,
@@ -52,28 +53,15 @@ class _AccountScreenState extends State<AccountScreen> {
           },
           title: "Orders",
         ),
-        // const Divider(),
-        // ListTile(
-        //   leading: const Icon(Icons.dark_mode_outlined),
-        //   title: const Text("Dark Mode"),
-        //   trailing: Switch(
-        //     value: _switchValue,
-        //     onChanged: (value) {
-        //       theme.toggleThemeMode(value);
-        //       setState(() {
-        //         _switchValue = !_switchValue;
-        //       });
-        //     },
-        //   ),
-        // ),
-        // const Divider(),
-        _ClickableListTile(
-          icon: Icons.edit,
-          onTap: () {
-            Navigator.pushNamed(context, ProductsManagerScreen.route);
-          },
-          title: "Products Manager",
-        ),
+        userProvider.currentUser!.isAdmin
+            ? _ClickableListTile(
+                icon: Icons.edit,
+                onTap: () {
+                  Navigator.pushNamed(context, ProductsManagerScreen.route);
+                },
+                title: "Products Manager",
+              )
+            : Container(),
         _ClickableListTile(
             onTap: () {
               Navigator.pushNamed(context, ChatScreen.route);

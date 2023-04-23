@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/cart_notifier.dart';
+import 'package:store_app/providers/user_notifier.dart';
 
 import '../providers/products_notifier.dart';
 import '../widgets/exception_scaffold_body.dart';
@@ -18,7 +19,9 @@ class SplashScreen extends StatelessWidget {
           future: Future.wait([
             context.read<CartNotifier>().getAndSetCart(),
             Provider.of<ProductsNotifier>(context, listen: false)
-                .getAndSetProducts()
+                .getAndSetProducts(),
+            Provider.of<UserNotifier>(context, listen: false)
+                .fetchCurrentUser(),
           ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
