@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
@@ -97,11 +98,12 @@ void onProductDelete(Product product, BuildContext context) async {
   try {
     productOldIndex = await productsProvider.deleteProduct(product.id);
   } catch (e) {
-    scaffoldMessenger.hideCurrentSnackBar();
-    scaffoldMessenger.showSnackBar(const SnackBar(
-      content: Text("Deleting failed! Product is not available."),
-    ));
-    return;
+    ExceptionHandler().handleException(e);
+    // scaffoldMessenger.hideCurrentSnackBar();
+    // scaffoldMessenger.showSnackBar(const SnackBar(
+    //   content: Text("Deleting failed! Product is not available."),
+    // ));
+    // return;
   }
 
   // scaffoldMessenger

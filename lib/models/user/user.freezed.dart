@@ -24,6 +24,7 @@ mixin _$User {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  bool get isAdmin => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String? get password => throw _privateConstructorUsedError;
   List<CartItem> get favoriteProducts => throw _privateConstructorUsedError;
@@ -43,6 +44,7 @@ abstract class $UserCopyWith<$Res> {
       String firstName,
       String lastName,
       String id,
+      bool isAdmin,
       @JsonKey(ignore: true) String? password,
       List<CartItem> favoriteProducts});
 }
@@ -64,6 +66,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? firstName = null,
     Object? lastName = null,
     Object? id = null,
+    Object? isAdmin = null,
     Object? password = freezed,
     Object? favoriteProducts = null,
   }) {
@@ -84,6 +87,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      isAdmin: null == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool,
       password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -107,6 +114,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String firstName,
       String lastName,
       String id,
+      bool isAdmin,
       @JsonKey(ignore: true) String? password,
       List<CartItem> favoriteProducts});
 }
@@ -124,6 +132,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? firstName = null,
     Object? lastName = null,
     Object? id = null,
+    Object? isAdmin = null,
     Object? password = freezed,
     Object? favoriteProducts = null,
   }) {
@@ -144,6 +153,10 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      isAdmin: null == isAdmin
+          ? _value.isAdmin
+          : isAdmin // ignore: cast_nullable_to_non_nullable
+              as bool,
       password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -164,6 +177,7 @@ class _$_User implements _User {
       required this.firstName,
       required this.lastName,
       required this.id,
+      this.isAdmin = false,
       @JsonKey(ignore: true) this.password,
       final List<CartItem> favoriteProducts = const []})
       : _favoriteProducts = favoriteProducts;
@@ -179,6 +193,9 @@ class _$_User implements _User {
   @override
   final String id;
   @override
+  @JsonKey()
+  final bool isAdmin;
+  @override
   @JsonKey(ignore: true)
   final String? password;
   final List<CartItem> _favoriteProducts;
@@ -193,7 +210,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, password: $password, favoriteProducts: $favoriteProducts)';
+    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, isAdmin: $isAdmin, password: $password, favoriteProducts: $favoriteProducts)';
   }
 
   @override
@@ -207,6 +224,7 @@ class _$_User implements _User {
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             const DeepCollectionEquality()
@@ -215,8 +233,15 @@ class _$_User implements _User {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, email, firstName, lastName, id,
-      password, const DeepCollectionEquality().hash(_favoriteProducts));
+  int get hashCode => Object.hash(
+      runtimeType,
+      email,
+      firstName,
+      lastName,
+      id,
+      isAdmin,
+      password,
+      const DeepCollectionEquality().hash(_favoriteProducts));
 
   @JsonKey(ignore: true)
   @override
@@ -238,6 +263,7 @@ abstract class _User implements User {
       required final String firstName,
       required final String lastName,
       required final String id,
+      final bool isAdmin,
       @JsonKey(ignore: true) final String? password,
       final List<CartItem> favoriteProducts}) = _$_User;
 
@@ -251,6 +277,8 @@ abstract class _User implements User {
   String get lastName;
   @override
   String get id;
+  @override
+  bool get isAdmin;
   @override
   @JsonKey(ignore: true)
   String? get password;

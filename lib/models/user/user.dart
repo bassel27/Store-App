@@ -12,7 +12,8 @@ class User with _$User {
     required String firstName,
     required String lastName,
     required String id,
-    @JsonKey(ignore: true) String ?password,
+    @Default(false) bool isAdmin,
+    @JsonKey(ignore: true) String? password,
     @Default([]) List<CartItem> favoriteProducts,
   }) = _User;
 
