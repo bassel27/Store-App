@@ -13,12 +13,17 @@ class OrderController with ExceptionHandler {
   /// Returns fetched orders.
   ///
   /// Throws an exception if operation fails.
-  Future<List<Order>> get() async {
+  Future<List<Order>> get(bool isAdmin ) async {
     List<Order> products = [];
-    QuerySnapshot snapshot = await db
-        .collection(kOrdersCollection)
-        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .get();
+    QuerySnapshot snapshot;
+    if (!isAdmin) {
+      snapshot = await db
+          .collection(kOrdersCollection)
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+    } else {
+      snapshot = await db.collection(kOrdersCollection).get();
+    }
     for (var docSnapshot in snapshot.docs) {
       products.add(Order.fromJson(docSnapshot.data() as Map<String, dynamic>));
     }

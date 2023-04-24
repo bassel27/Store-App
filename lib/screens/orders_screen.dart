@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/orders_notifier.dart';
+import 'package:store_app/providers/user_notifier.dart';
 import 'package:store_app/widgets/exception_scaffold_body.dart';
 import 'package:store_app/widgets/order_list_tile.dart';
 
@@ -16,6 +17,7 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   late Future _lol;
+  late bool isAdmin = context.read<UserNotifier>().currentUser!.isAdmin;
   @override
   void initState() {
     super.initState();
@@ -26,7 +28,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     OrdersNotifier ordersProvider =
         Provider.of<OrdersNotifier>(context, listen: false);
     if (!ordersProvider.areOrdersFetched) {
-      return ordersProvider.getAndSetOrders();
+      return ordersProvider.getAndSetOrders(isAdmin);
     } else {
       return Future.delayed(Duration.zero);
     }
@@ -36,7 +38,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Orders"),
+          title: Text(isAdmin ? "All Orders" : "Orders"),
         ),
         body: Center(
           child: FutureBuilder(

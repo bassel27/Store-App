@@ -15,9 +15,11 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   OrdersNotifier(this.ordersList);
 
   late final OrderController _ordersController = OrderController();
+
   List<Order> get orders => [...ordersList]..sort((a, b) {
       return b.dateTime.compareTo(a.dateTime);
     });
+
   set orders(List<Order> orders) {
     ordersList = orders;
   }
@@ -31,8 +33,8 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   /// Throws exception if fails.
-  Future<void> getAndSetOrders() async {
-    ordersList = await _ordersController.get();
+  Future<void> getAndSetOrders(bool isAdmin) async {
+    ordersList = await _ordersController.get(isAdmin);
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
     notifyListeners();
   }
