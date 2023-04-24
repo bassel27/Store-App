@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/product_controller.dart';
+import 'package:store_app/helper/dialog_helper.dart';
 
 import '../controllers/cart_controller.dart';
 import '../models/product/product.dart';
@@ -92,7 +93,9 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
 
   /// Deletes a product from the products list by id and returns its index.
   Future<int> deleteProduct(String productId) async {
+    DialogHelper.showLoading();
     await _productsController.delete(productId);
+    await CartController().deleteCartItemsByProductId(productId);
     int index = -1;
     for (int i = 0; i < items.length; i++) {
       if (items[i].id == productId) {
@@ -107,6 +110,7 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
       throw ProductUnavailableException(
           "Deleting failed! Product not available.");
     }
+    DialogHelper.hideCurrentDialog();
     return index;
   }
 

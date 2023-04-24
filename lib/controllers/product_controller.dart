@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 
@@ -97,7 +98,9 @@ class ProductController with ExceptionHandler {
           .ref()
           .child('productImages')
           .child(newProduct.id);
+
       await deleteImageFile(newProduct.id);
+
       await ref.putFile(imageFile).whenComplete(() => null);
       newProductWithImageUrl =
           newProduct.copyWith(imageUrl: await ref.getDownloadURL());
@@ -113,14 +116,30 @@ class ProductController with ExceptionHandler {
 
   Future<void> delete(String productId) async {
     DialogHelper.showLoading();
-    await deleteImageFile(productId);
     await db.collection(kProductsCollection).doc(productId).delete();
+    await deleteImageFile(productId);
     DialogHelper.hideCurrentDialog();
   }
 
   Future<void> deleteImageFile(String productId) async {
-    final desertRef =
-        FirebaseStorage.instance.ref().child('productImages').child(productId);
-    await desertRef.delete();
+    try {
+      final desertRef = FirebaseStorage.instance
+          .ref()
+          .child('productImages')
+          .child(productId);
+      await desertRef.delete();
+    } on PlatformException catch (e) {
+      if (e.code == 'firebase_storage' || e.code == 'object-not-found') {
+        // image not found to delete
+      } else {
+        rethrow;
+      }
+    } on FirebaseException catch (e) {
+      if (e.code == 'firebase_storage/object-not-found' ||
+          e.message == 'No object exists at the desired reference.') {
+      } else {
+        rethrow;
+      }
+    }
   }
 }

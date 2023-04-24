@@ -6,16 +6,18 @@ import '../models/cart_item/cart_item.dart';
 
 class CartController {
   FirebaseFirestore db = FirebaseFirestore.instance;
-  CollectionReference get cartItemsCollection {
+  CollectionReference get cartItemsCollectionForCurrentUser {
     return db
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('cartItems');
   }
 
+  late final CollectionReference cartItemsCollectionForAllUsers =
+      db.collection('users');
   Future<List<CartItem>> get() async {
     List<CartItem> cartItems = [];
-    QuerySnapshot docSnapshot = await cartItemsCollection.get();
+    QuerySnapshot docSnapshot = await cartItemsCollectionForCurrentUser.get();
     for (var docSnapshot in docSnapshot.docs) {
       cartItems
           .add(CartItem.fromJson(docSnapshot.data() as Map<String, dynamic>));
@@ -28,7 +30,9 @@ class CartController {
   /// Throws an exception if operatoin fails.
   Future<void> create(CartItem cartItem) async {
     await httpRequestTemplate(() async {
-      await cartItemsCollection.doc(cartItem.id).set(cartItem.toJson());
+      await cartItemsCollectionForCurrentUser
+          .doc(cartItem.id)
+          .set(cartItem.toJson());
     });
   }
 
@@ -51,7 +55,7 @@ class CartController {
   /// Throws an exception if operatoin fails.
   Future<void> setQuantity(CartItem cartItem, int quantity) async {
     await httpRequestTemplate(() async {
-      await cartItemsCollection.doc(cartItem.id).set(
+      await cartItemsCollectionForCurrentUser.doc(cartItem.id).set(
           cartItem.copyWith(quantity: quantity).toJson(),
           SetOptions(merge: true));
     });
@@ -60,7 +64,7 @@ class CartController {
   /// Throws an exception if operatoin fails.
   Future<void> delete(String cartItemId, {bool showLoading = true}) async {
     await httpRequestTemplate(() async {
-      await cartItemsCollection.doc(cartItemId).delete();
+      await cartItemsCollectionForCurrentUser.doc(cartItemId).delete();
     }, showLoading: showLoading);
   }
 
@@ -75,5 +79,25 @@ class CartController {
     for (var cartItem in cartItems) {
       await delete(cartItem.id, showLoading: false);
     }
+  }
+
+  Future<void> deleteCartItemsByProductId(String productId) async {
+    print(FirebaseAuth.instance.currentUser!.uid);
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    final batch = FirebaseFirestore.instance.batch();
+
+    for (final userDoc in userSnapshot.docs) {
+      final cartItemsSnapshot = await userDoc.reference
+          .collection('cartItems')
+          .where('product.id', isEqualTo: productId)
+          .get();
+
+      for (final cartItemDoc in cartItemsSnapshot.docs) {
+        batch.delete(cartItemDoc.reference);
+      }
+    }
+
+    await batch.commit();
   }
 }
