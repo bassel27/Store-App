@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/screens/settings_screen.dart';
+import 'package:store_app/widgets/my_search_bar.dart';
 
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
@@ -60,10 +61,10 @@ class ProductsGridScreen extends StatelessWidget {
                   ]),
             ),
           ),
-          bottom:
-              AppBar(elevation: 0, title: const _SearchBar(), actions: const [
-            // IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list))
-          ]),
+          bottom: AppBar(
+            elevation: 0,
+            title: const _SearchBar(),
+          ),
         ),
         SliverToBoxAdapter(
           child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
@@ -77,32 +78,49 @@ class _SearchBar extends StatelessWidget {
   const _SearchBar({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 0.5),
-              blurRadius: 0.5,
-              spreadRadius: 0.5,
-              color: Colors.black26,
+    final colorScheme = Theme.of(context).colorScheme;
+    final suggestionsList =
+        Provider.of<ProductsNotifier>(context, listen: false)
+            .items
+            .map((e) => e.title)
+            .toList()
+            .toSet()
+            .toList();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: SizedBox(
+        height: kToolbarHeight - 10,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius:
+                const BorderRadius.only(bottomLeft: Radius.circular(250)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.13),
+                spreadRadius: 0,
+                blurRadius: 10,
+                offset: const Offset(4, 4),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            child: MySearchBar(
+              elevation: 10,
+              backgroundColor: colorScheme.primary,
+              searchBackgroundColor: colorScheme.background,
+              searchCursorColor: colorScheme.tertiary,
+              searchBackIconTheme: IconThemeData(color: colorScheme.tertiary),
+              suggestionBackgroundColor: colorScheme.background,
+              title: const Text(
+                'Search',
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 17),
+              ),
+              onSearch: (value) => print(value),
+              suggestions: suggestionsList,
             ),
-          ],
-          color: Colors.white,
-          // border: Border.all(
-          //   color: Colors.black,
-          // ),
-          borderRadius: BorderRadius.circular(5)),
-      width: double.infinity,
-      height: 40,
-      child: const Center(
-        child: TextField(
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Search',
-            prefixIcon: Icon(Icons.search_sharp),
           ),
         ),
       ),

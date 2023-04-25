@@ -488,6 +488,10 @@ class _MySearchBarState extends State<MySearchBar>
                                                           TextOverflow.ellipsis,
                                                       child: widget.title,
                                                     ))),
+                                            const Icon(Icons.search),
+                                            const SizedBox(
+                                              width: 14,
+                                            ),
                                             // ...List.generate(
                                             //     widget.actions.length + 1,
                                             //     (index) {
@@ -567,7 +571,7 @@ class _MySearchBarState extends State<MySearchBar>
                                                             hintText: widget.searchHintText,
                                                             hintMaxLines: 1,
                                                             hintStyle: searchHintStyle,
-                                                            border: InputBorder.none,
+                                                            focusedBorder: InputBorder.none,
                                                             prefixIcon: IconTheme(
                                                                 data: searchIconTheme,
                                                                 child: IconButton(
