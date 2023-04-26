@@ -87,7 +87,9 @@ class _EditProductScreenState extends State<EditProductScreen>
               const NameTextFormField(),
               PriceTextFormField(_priceFocusNode, _descriptionFocusNode),
               DescriptionTextFormField(_descriptionFocusNode),
-              mySizedBox,
+              const SizedBox(
+                height: 13,
+              ),
               Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(child: _ImageContainer(imageContainerTextColor)),
                 const SizedBox(
@@ -99,14 +101,27 @@ class _EditProductScreenState extends State<EditProductScreen>
               const SizedBox(
                 height: 12,
               ),
+              const Text(
+                "Sizes",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               SizeRow(),
               const SizedBox(
                 height: 12,
               ),
-              AuthButton(
+              WideElevatedButton(
                 onPressed: _saveForm,
                 child: "Save",
               ),
+              const SizedBox(
+                height: 5,
+              )
             ],
           ),
         ),

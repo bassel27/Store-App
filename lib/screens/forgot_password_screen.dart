@@ -61,7 +61,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
             const SizedBox(
               height: 30,
             ),
-            AuthButton(
+            WideElevatedButton(
                 child: "Reset Password",
                 onPressed: () async {
                   dismissKeyboard();

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AuthButton extends StatelessWidget {
+class WideElevatedButton extends StatelessWidget {
   final String child;
   final VoidCallback? onPressed;
-  const AuthButton({required this.child, required this.onPressed});
+  const WideElevatedButton({required this.child, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 45,
+      height: 35,
       child: ElevatedButton(
           onPressed: onPressed,
           style: ButtonStyle(

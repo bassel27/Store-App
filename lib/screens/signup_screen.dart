@@ -140,7 +140,7 @@ class SignupScreen extends StatelessWidget
                 },
               ),
               mySizedBox,
-              AuthButton(
+              WideElevatedButton(
                   child: "Finish setting up",
                   onPressed: () async {
                     try {

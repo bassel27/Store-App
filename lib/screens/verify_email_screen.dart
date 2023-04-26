@@ -82,7 +82,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     const SizedBox(
                       height: 40,
                     ),
-                    AuthButton(
+                    WideElevatedButton(
                         child: "Ok",
                         onPressed: () async {
                           await context
@@ -92,7 +92,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    AuthButton(
+                    WideElevatedButton(
                         child: "Resend Email",
                         onPressed:
                             canResendEmail ? sendVerificationEmail : null)

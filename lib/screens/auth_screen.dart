@@ -171,7 +171,7 @@ class _AuthContainer extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              AuthButton(
+              WideElevatedButton(
                 onPressed: () {
                   _submitForm(context);
                 },
