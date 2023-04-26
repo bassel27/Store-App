@@ -24,6 +24,7 @@ mixin _$User {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  Address? get address => throw _privateConstructorUsedError;
   bool get isAdmin => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String? get password => throw _privateConstructorUsedError;
@@ -44,9 +45,12 @@ abstract class $UserCopyWith<$Res> {
       String firstName,
       String lastName,
       String id,
+      Address? address,
       bool isAdmin,
       @JsonKey(ignore: true) String? password,
       List<CartItem> favoriteProducts});
+
+  $AddressCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -66,6 +70,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? firstName = null,
     Object? lastName = null,
     Object? id = null,
+    Object? address = freezed,
     Object? isAdmin = null,
     Object? password = freezed,
     Object? favoriteProducts = null,
@@ -87,6 +92,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address?,
       isAdmin: null == isAdmin
           ? _value.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
@@ -101,6 +110,18 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
               as List<CartItem>,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res>? get address {
+    if (_value.address == null) {
+      return null;
+    }
+
+    return $AddressCopyWith<$Res>(_value.address!, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -114,9 +135,13 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String firstName,
       String lastName,
       String id,
+      Address? address,
       bool isAdmin,
       @JsonKey(ignore: true) String? password,
       List<CartItem> favoriteProducts});
+
+  @override
+  $AddressCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -132,6 +157,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? firstName = null,
     Object? lastName = null,
     Object? id = null,
+    Object? address = freezed,
     Object? isAdmin = null,
     Object? password = freezed,
     Object? favoriteProducts = null,
@@ -153,6 +179,10 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address?,
       isAdmin: null == isAdmin
           ? _value.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
@@ -177,6 +207,7 @@ class _$_User implements _User {
       required this.firstName,
       required this.lastName,
       required this.id,
+      this.address,
       this.isAdmin = false,
       @JsonKey(ignore: true) this.password,
       final List<CartItem> favoriteProducts = const []})
@@ -192,6 +223,8 @@ class _$_User implements _User {
   final String lastName;
   @override
   final String id;
+  @override
+  final Address? address;
   @override
   @JsonKey()
   final bool isAdmin;
@@ -210,7 +243,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, isAdmin: $isAdmin, password: $password, favoriteProducts: $favoriteProducts)';
+    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, address: $address, isAdmin: $isAdmin, password: $password, favoriteProducts: $favoriteProducts)';
   }
 
   @override
@@ -224,6 +257,7 @@ class _$_User implements _User {
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.address, address) || other.address == address) &&
             (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin) &&
             (identical(other.password, password) ||
                 other.password == password) &&
@@ -239,6 +273,7 @@ class _$_User implements _User {
       firstName,
       lastName,
       id,
+      address,
       isAdmin,
       password,
       const DeepCollectionEquality().hash(_favoriteProducts));
@@ -263,6 +298,7 @@ abstract class _User implements User {
       required final String firstName,
       required final String lastName,
       required final String id,
+      final Address? address,
       final bool isAdmin,
       @JsonKey(ignore: true) final String? password,
       final List<CartItem> favoriteProducts}) = _$_User;
@@ -277,6 +313,8 @@ abstract class _User implements User {
   String get lastName;
   @override
   String get id;
+  @override
+  Address? get address;
   @override
   bool get isAdmin;
   @override

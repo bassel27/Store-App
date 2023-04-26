@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:store_app/models/address/address.dart';
+import 'package:store_app/providers/user_notifier.dart';
 import 'package:store_app/widgets/wide_elevated_button.dart';
 
 class AddressScreen extends StatelessWidget {
@@ -7,66 +9,7 @@ class AddressScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey();
   Address editedAddress = const Address(
       firstName: '', lastName: '', address: '', city: '', mobileNumber: '');
-  late final widgets = [
-    _MyTextFormField(
-      formKey: formKey,
-      labelText: 'First Name',
-      onSaved: (value) {
-        editedAddress = editedAddress.copyWith(firstName: value!);
-      },
-    ),
-    _MyTextFormField(
-      formKey: formKey,
-      labelText: 'Last Name',
-      onSaved: (value) {
-        editedAddress = editedAddress.copyWith(lastName: value!);
-      },
-    ),
-    _MyTextFormField(
-      formKey: formKey,
-      labelText: 'Address',
-      maxLines: 2,
-      onSaved: (value) {
-        editedAddress = editedAddress.copyWith(address: value!);
-      },
-    ),
-    _MyTextFormField(
-      formKey: formKey,
-      labelText: 'City',
-      onSaved: (value) {
-        editedAddress = editedAddress.copyWith(city: value!);
-      },
-    ),
-    _MyTextFormField(
-      formKey: formKey,
-      labelText: 'Mobile Number',
-      textInputType: TextInputType.number,
-      onSaved: (value) {
-        editedAddress = editedAddress.copyWith(mobileNumber: value!);
-      },
-    ),
-    _MyTextFormField(
-      formKey: formKey,
-      labelText: 'Additional Information',
-      maxLines: 2 ,
-      onSaved: (value) {
-        editedAddress = editedAddress.copyWith(additionalInformation: value!);
-      },
-    ),
-    const SizedBox(
-      height: 10,
-    ),
-    WideElevatedButton(
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            formKey.currentState!.save();
-          }
-        },
-        child: "Save"),
-    const SizedBox(
-      height: 10,
-    ),
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,14 +18,79 @@ class AddressScreen extends StatelessWidget {
         key: formKey,
         child: ListView.separated(
           separatorBuilder: (context, index) => const SizedBox(height: 10),
-          itemCount: widgets.length,
+          itemCount: widgets(context).length,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           itemBuilder: (context, index) {
-            return widgets[index];
+            return widgets(context)[index];
           },
         ),
       ),
     );
+  }
+
+  List<Widget> widgets(BuildContext context) {
+    return [
+      _MyTextFormField(
+        formKey: formKey,
+        labelText: 'First Name',
+        onSaved: (value) {
+          editedAddress = editedAddress.copyWith(firstName: value!);
+        },
+      ),
+      _MyTextFormField(
+        formKey: formKey,
+        labelText: 'Last Name',
+        onSaved: (value) {
+          editedAddress = editedAddress.copyWith(lastName: value!);
+        },
+      ),
+      _MyTextFormField(
+        formKey: formKey,
+        labelText: 'Address',
+        maxLines: 2,
+        onSaved: (value) {
+          editedAddress = editedAddress.copyWith(address: value!);
+        },
+      ),
+      _MyTextFormField(
+        formKey: formKey,
+        labelText: 'City',
+        onSaved: (value) {
+          editedAddress = editedAddress.copyWith(city: value!);
+        },
+      ),
+      _MyTextFormField(
+        formKey: formKey,
+        labelText: 'Mobile Number',
+        textInputType: TextInputType.number,
+        onSaved: (value) {
+          editedAddress = editedAddress.copyWith(mobileNumber: value!);
+        },
+      ),
+      _MyTextFormField(
+        formKey: formKey,
+        labelText: 'Additional Information',
+        maxLines: 2,
+        onSaved: (value) {
+          editedAddress = editedAddress.copyWith(additionalInformation: value!);
+        },
+      ),
+      const SizedBox(
+        height: 10,
+      ),
+      WideElevatedButton(
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              formKey.currentState!.save();
+              Provider.of<UserNotifier>(context, listen: false)
+                  .postAddress(editedAddress);
+            }
+          },
+          child: "Save"),
+      const SizedBox(
+        height: 10,
+      ),
+    ];
   }
 }
 
@@ -109,6 +117,7 @@ class _MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: "la",
       validator: validateString,
       textInputAction: TextInputAction.next,
       onSaved: onSaved,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../address/address.dart';
 import '../cart_item/cart_item.dart';
 
 part 'user.freezed.dart';
@@ -13,6 +14,7 @@ class User with _$User{
     required String firstName,
     required String lastName,
     required String id,
+    Address? address,
     @Default(false) bool isAdmin,
     @JsonKey(ignore: true) String? password,
     @Default([]) List<CartItem> favoriteProducts,
