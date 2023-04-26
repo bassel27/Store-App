@@ -12,6 +12,11 @@ class AddressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Address? userCurrentAddress =
+        Provider.of<UserNotifier>(context, listen: false).currentUser!.address;
+    if (userCurrentAddress != null) {
+      editedAddress = userCurrentAddress;
+    }
     return Scaffold(
       appBar: AppBar(title: const Text("Address")),
       body: Form(
@@ -33,6 +38,7 @@ class AddressScreen extends StatelessWidget {
       _MyTextFormField(
         formKey: formKey,
         labelText: 'First Name',
+        initialValue: editedAddress.firstName,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(firstName: value!);
         },
@@ -40,6 +46,7 @@ class AddressScreen extends StatelessWidget {
       _MyTextFormField(
         formKey: formKey,
         labelText: 'Last Name',
+        initialValue: editedAddress.lastName,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(lastName: value!);
         },
@@ -47,6 +54,7 @@ class AddressScreen extends StatelessWidget {
       _MyTextFormField(
         formKey: formKey,
         labelText: 'Address',
+        initialValue: editedAddress.address,
         maxLines: 2,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(address: value!);
@@ -55,6 +63,7 @@ class AddressScreen extends StatelessWidget {
       _MyTextFormField(
         formKey: formKey,
         labelText: 'City',
+        initialValue: editedAddress.city,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(city: value!);
         },
@@ -62,6 +71,7 @@ class AddressScreen extends StatelessWidget {
       _MyTextFormField(
         formKey: formKey,
         labelText: 'Mobile Number',
+        initialValue: editedAddress.mobileNumber,
         textInputType: TextInputType.number,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(mobileNumber: value!);
@@ -70,6 +80,7 @@ class AddressScreen extends StatelessWidget {
       _MyTextFormField(
         formKey: formKey,
         labelText: 'Additional Information',
+        initialValue: editedAddress.additionalInformation,
         maxLines: 2,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(additionalInformation: value!);
@@ -102,22 +113,27 @@ String? validateString(value) {
 }
 
 class _MyTextFormField extends StatelessWidget {
-  const _MyTextFormField(
+  _MyTextFormField(
       {required this.formKey,
       required this.labelText,
       required this.onSaved,
+      this.initialValue,
       this.maxLines = 1,
       this.textInputType});
   final GlobalKey<FormState> formKey;
   final String labelText;
+  String? initialValue;
   final int maxLines;
   final TextInputType? textInputType;
   final Function(String?) onSaved;
 
   @override
   Widget build(BuildContext context) {
+    if (initialValue == '') {
+      initialValue = null;
+    }
     return TextFormField(
-      initialValue: "la",
+      initialValue: initialValue,
       validator: validateString,
       textInputAction: TextInputAction.next,
       onSaved: onSaved,

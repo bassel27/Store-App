@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:store_app/models/product/product.dart';
 
 import '../address/address.dart';
 import '../cart_item/cart_item.dart';
@@ -17,7 +18,7 @@ class User with _$User{
     Address? address,
     @Default(false) bool isAdmin,
     @JsonKey(ignore: true) String? password,
-    @Default([]) List<CartItem> favoriteProducts,
+    @Default([]) List<Product> favoriteProducts,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

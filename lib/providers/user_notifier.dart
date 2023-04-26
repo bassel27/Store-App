@@ -9,14 +9,8 @@ import 'package:store_app/models/user/user.dart';
 class UserNotifier with ChangeNotifier, ExceptionHandler {
   User? currentUser;
   final UserController _userController = UserController();
-  Future<void> fetchCurrentUser() async {
-    currentUser = User(
-      email: await _userController.getEmail(),
-      firstName: await _userController.getFirstName(),
-      lastName: await _userController.getLastName(),
-      id: _userController.userId,
-      isAdmin: await _userController.isAdmin(),
-    );
+  Future<void> getAndSetCurrentUser() async {
+    currentUser = await _userController.get();
   }
 
   Future<void> postAddress(Address address) async {

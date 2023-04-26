@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
             Provider.of<ProductsNotifier>(context, listen: false)
                 .getAndSetProducts(),
             Provider.of<UserNotifier>(context, listen: false)
-                .fetchCurrentUser(),
+                .getAndSetCurrentUser(),
           ]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
