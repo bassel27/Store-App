@@ -16,7 +16,6 @@ class NameTextFormField extends StatelessWidget {
       initialValue: productsProvider.editedProduct.title,
       decoration: const InputDecoration(
         labelText: "Name",
-        
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

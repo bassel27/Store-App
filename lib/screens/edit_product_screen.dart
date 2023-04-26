@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
+import 'package:store_app/widgets/auth_button.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';
 import 'package:uuid/uuid.dart';
 
@@ -102,21 +103,13 @@ class _EditProductScreenState extends State<EditProductScreen>
               const SizedBox(
                 height: 12,
               ),
-              saveButton(context),
+              AuthButton(
+                onPressed: _saveForm,
+                child: "Save",
+              ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  ElevatedButton saveButton(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-      onPressed: _saveForm,
-      child: Text(
-        "Save",
-        style: Theme.of(context).textTheme.button,
       ),
     );
   }
