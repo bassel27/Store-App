@@ -127,8 +127,6 @@ class MySearchBar extends StatefulWidget implements PreferredSizeWidget {
   /// Can be used to create custom suggestion item widget
   final Widget Function(String data)? suggestionBuilder;
 
-  /// Instead of using the default suggestion tap action that fills the textField, you can set your own custom action for it
-  final Function(String data)? onSuggestionTap;
 
   /// Can be used to set the debounce time for async data fetch
   final Duration debounceDuration;
@@ -144,7 +142,6 @@ class MySearchBar extends StatefulWidget implements PreferredSizeWidget {
     this.searchTextStyle = const TextStyle(),
     this.systemOverlayStyle,
     this.suggestions,
-    this.onSuggestionTap,
     this.searchBackIconTheme,
     this.asyncSuggestions,
     this.searchCursorColor,
