@@ -13,71 +13,81 @@ import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_he
 /// This screen is used for home and favorites screens.
 class ProductsGridScreen extends StatelessWidget {
   final List<Product> products;
-  final String? initialText;
-  const ProductsGridScreen(this.products, [this.initialText]);
+  String? searchValue;
+  late final bool isPushedScreen;
+  ProductsGridScreen(this.products, [this.searchValue]) {
+    isPushedScreen = searchValue != null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.account_circle_outlined),
-            onPressed: () {
-              Navigator.pushNamed(context, AccountScreen.route);
-            },
-          ),
-          floating: true,
-          snap: true,
-          pinned: true,
-          centerTitle: true,
-          title: Container(
-            padding: const EdgeInsets.all(7),
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.tertiary,
-                // border: Border.all(
-                //   color: Colors.red,
-                // ),
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
-            child: FittedBox(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      " Delivering to .......",
-                      style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_down_sharp,
-                      color: Colors.white,
-                    ),
-                  ]),
+    if (!isPushedScreen) {
+      return Scaffold(
+          body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.account_circle_outlined),
+              onPressed: () {
+                Navigator.pushNamed(context, AccountScreen.route);
+              },
+            ),
+            floating: true,
+            snap: true,
+            pinned: true,
+            centerTitle: true,
+            title: Container(
+              padding: const EdgeInsets.all(7),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  // border: Border.all(
+                  //   color: Colors.red,
+                  // ),
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              child: FittedBox(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        " Delivering to .......",
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: Colors.white,
+                      ),
+                    ]),
+              ),
+            ),
+            bottom: AppBar(
+              elevation: 0,
+              title: const _SearchBar(),
             ),
           ),
-          bottom: AppBar(
-            elevation: 0,
-            title: _SearchBar(initialText),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: _ScaffoldBody(products),
-        )
-      ],
-    ));
+          SliverToBoxAdapter(
+            child: _ScaffoldBody(products),
+          )
+        ],
+      ));
+    } else {
+      return Scaffold(
+          body: _ScaffoldBody(products),
+          appBar: AppBar(
+            title: Text(searchValue!),
+          ));
+    }
   }
 }
 
 class _SearchBar extends StatelessWidget {
-  _SearchBar([this.initialText]);
-  final String? initialText;
+  const _SearchBar();
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -121,7 +131,6 @@ class _SearchBar extends StatelessWidget {
               onSearch: (value) => print(value),
               suggestions: suggestionsList,
               key: UniqueKey(),
-              initialText: initialText,
             ),
           ),
         ),

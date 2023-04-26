@@ -132,41 +132,40 @@ class MySearchBar extends StatefulWidget implements PreferredSizeWidget {
 
   /// Can be used to set the debounce time for async data fetch
   final Duration debounceDuration;
-  final String? initialText;
-  const MySearchBar(
-      {Key? key,
-      required this.title,
-      required this.onSearch,
-      this.suggestionBuilder,
-      this.leading,
-      this.actions = const [],
-      this.searchHintStyle,
-      this.searchTextStyle = const TextStyle(),
-      this.systemOverlayStyle,
-      this.suggestions,
-      this.onSuggestionTap,
-      this.searchBackIconTheme,
-      this.asyncSuggestions,
-      this.searchCursorColor,
-      this.searchHintText = '',
-      this.searchBackgroundColor,
-      this.suggestionLoaderBuilder,
-      this.suggestionsElevation = 5,
-      this.backgroundColor,
-      this.foregroundColor,
-      this.elevation,
-      this.appBarHeight = 56,
-      this.isFloating = false,
-      this.openOverlayOnSearch = false,
-      this.titleTextStyle,
-      this.iconTheme,
-      this.suggestionTextStyle = const TextStyle(),
-      this.suggestionBackgroundColor,
-      this.animationDuration = const Duration(milliseconds: 450),
-      this.debounceDuration = const Duration(milliseconds: 400),
-      this.searchTextKeyboardType = TextInputType.text,
-      this.initialText})
-      : assert(elevation == null || elevation >= 0.0),
+
+  const MySearchBar({
+    Key? key,
+    required this.title,
+    required this.onSearch,
+    this.suggestionBuilder,
+    this.leading,
+    this.actions = const [],
+    this.searchHintStyle,
+    this.searchTextStyle = const TextStyle(),
+    this.systemOverlayStyle,
+    this.suggestions,
+    this.onSuggestionTap,
+    this.searchBackIconTheme,
+    this.asyncSuggestions,
+    this.searchCursorColor,
+    this.searchHintText = '',
+    this.searchBackgroundColor,
+    this.suggestionLoaderBuilder,
+    this.suggestionsElevation = 5,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.elevation,
+    this.appBarHeight = 56,
+    this.isFloating = false,
+    this.openOverlayOnSearch = false,
+    this.titleTextStyle,
+    this.iconTheme,
+    this.suggestionTextStyle = const TextStyle(),
+    this.suggestionBackgroundColor,
+    this.animationDuration = const Duration(milliseconds: 450),
+    this.debounceDuration = const Duration(milliseconds: 400),
+    this.searchTextKeyboardType = TextInputType.text,
+  })  : assert(elevation == null || elevation >= 0.0),
         super(key: key);
 
   @override
@@ -192,8 +191,7 @@ class _MySearchBarState extends State<MySearchBar>
   late Animation _containerSizeAnimation;
   late Animation _containerBorderRadiusAnimation;
   late Animation _textFieldOpacityAnimation;
-  late final TextEditingController _searchController =
-      TextEditingController(text: widget.initialText);
+  late final TextEditingController _searchController = TextEditingController();
   onInputBoxPressed() {
     _controller.forward();
     _focusNode.requestFocus();
@@ -296,17 +294,35 @@ class _MySearchBarState extends State<MySearchBar>
                                 text: value,
                                 selection: TextSelection.collapsed(
                                     offset: value.length));
-                            if (widget.onSuggestionTap != null) {
-                              widget.onSuggestionTap!(value);
-                            }
-                            widget.onSearch(value);
-                            closeOverlay();
+                            onSearch(value);
                           })))));
     }
     if (!_hasOpenedOverlay &&
         (widget.suggestions != null || widget.asyncSuggestions != null)) {
       Overlay.of(context)!.insert(_overlayEntry!);
       setState(() => _hasOpenedOverlay = true);
+    }
+  }
+
+  void onSearch(String value) {
+    if (value.isNotEmpty) {
+      resetSearchBar();
+      final soughtProducts =
+          Provider.of<ProductsNotifier>(context, listen: false)
+              .products
+              .where((Product product) =>
+                  product.title.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+      widget.onSearch(_searchController.text);
+
+      _focusNode.unfocus();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProductsGridScreen(soughtProducts, value)),
+      );
+      closeOverlay();
+      _searchController.clear();
     }
   }
 
@@ -564,49 +580,7 @@ class _MySearchBarState extends State<MySearchBar>
                                                         topRight: Radius.circular(widget.isFloating ? 5 : 0),
                                                         bottomRight: Radius.circular(widget.isFloating ? 5 : 0)),
                                                     color: searchBackgroundColor),
-                                                child: Opacity(
-                                                    opacity: _textFieldOpacityAnimation.value,
-                                                    child: TextField(
-                                                        onSubmitted: (value) {
-                                                          resetSearchBar();
-                                                          final soughtProducts = Provider.of<
-                                                                      ProductsNotifier>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .products
-                                                              .where((Product
-                                                                      product) =>
-                                                                  product.title
-                                                                      .toLowerCase()
-                                                                      .contains(
-                                                                          value))
-                                                              .toList();
-                                                          widget.onSearch(
-                                                              _searchController
-                                                                  .text);
-
-                                                          _focusNode.unfocus();
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    ProductsGridScreen(
-                                                                        soughtProducts,
-                                                                        value)),
-                                                          );
-                                                          closeOverlay();
-                                                          _searchController
-                                                              .clear();
-                                                        },
-                                                        maxLines: 1,
-                                                        controller: _searchController,
-                                                        textInputAction: TextInputAction.search,
-                                                        cursorColor: cursorColor,
-                                                        focusNode: _focusNode,
-                                                        textAlignVertical: TextAlignVertical.center,
-                                                        style: widget.searchTextStyle,
-                                                        keyboardType: widget.searchTextKeyboardType,
-                                                        decoration: InputDecoration(contentPadding: const EdgeInsets.only(left: 20, right: 10), fillColor: searchBackgroundColor, filled: true, hintText: widget.searchHintText, hintMaxLines: 1, hintStyle: searchHintStyle, focusedBorder: InputBorder.none, prefixIcon: IconTheme(data: searchIconTheme, child: IconButton(icon: const Icon(Icons.close_outlined), onPressed: resetSearchBar))))));
+                                                child: Opacity(opacity: _textFieldOpacityAnimation.value, child: TextField(onSubmitted: onSearch, maxLines: 1, controller: _searchController, textInputAction: TextInputAction.search, cursorColor: cursorColor, focusNode: _focusNode, textAlignVertical: TextAlignVertical.center, style: widget.searchTextStyle, keyboardType: widget.searchTextKeyboardType, decoration: InputDecoration(contentPadding: const EdgeInsets.only(left: 20, right: 10), fillColor: searchBackgroundColor, filled: true, hintText: widget.searchHintText, hintMaxLines: 1, hintStyle: searchHintStyle, focusedBorder: InputBorder.none, prefixIcon: IconTheme(data: searchIconTheme, child: IconButton(icon: const Icon(Icons.close_outlined), onPressed: resetSearchBar))))));
                                           }))
                                 ])));
                       }),
