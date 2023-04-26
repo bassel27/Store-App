@@ -349,9 +349,9 @@ class _SizeCard extends StatelessWidget {
           color: isSelected ? kActiveColor : colorScheme.primary,
           elevation: 4,
           shape: RoundedRectangleBorder(
-            side: const BorderSide(
-                color: Color.fromARGB(255, 191, 189, 189), width: 0.8),
-            borderRadius: BorderRadius.circular(900),
+            // side: const BorderSide(
+            //     color: Color.fromARGB(255, 191, 189, 189), width: 0.8),
+            borderRadius: BorderRadius.circular(30),
           ),
           child: Center(
             child: Text(size, style: sizeTextStyle),
