@@ -14,6 +14,7 @@ class AddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Address? userCurrentAddress =
         Provider.of<UserNotifier>(context, listen: false).currentUser!.address;
+        
     if (userCurrentAddress != null) {
       editedAddress = userCurrentAddress;
     }

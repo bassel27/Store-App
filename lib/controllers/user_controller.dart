@@ -11,15 +11,15 @@ class UserController {
   }
 
   Future<User> get() async {
-    return User.fromJson(await userDocData);
+    _userDocData = (await userDoc.get()).data() as Map<String, dynamic>;
+    return User.fromJson(_userDocData);
   }
 
-  late final userDoc = db.collection('users').doc(userId);
-  Map<String, dynamic>? _userDocData;
-  Future<Map<String, dynamic>> get userDocData async {
-    _userDocData ??= (await userDoc.get()).data() as Map<String, dynamic>;
-    return _userDocData!;
+  get userDoc {
+    return db.collection('users').doc(userId);
   }
+
+  late Map<String, dynamic> _userDocData;
 
   Future<void> postAddress(Address address) async {
     await userDoc.update({'address': address.toJson()});
