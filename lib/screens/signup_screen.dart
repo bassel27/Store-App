@@ -37,7 +37,7 @@ class SignupScreen extends StatelessWidget
             children: [
               TextFormField(
                 textInputAction: TextInputAction.next,
-                decoration: inputDecoration(
+                decoration: authenticationInputDecoration(
                     context: context,
                     hintText: "First Name",
                     icon: const Icon(Icons.person)),
@@ -58,7 +58,7 @@ class SignupScreen extends StatelessWidget
               mySizedBox,
               TextFormField(
                 textInputAction: TextInputAction.next,
-                decoration: inputDecoration(
+                decoration: authenticationInputDecoration(
                     context: context,
                     hintText: "Last Name",
                     icon: const Icon(Icons.person_add)),
@@ -79,7 +79,7 @@ class SignupScreen extends StatelessWidget
               mySizedBox,
               TextFormField(
                 textInputAction: TextInputAction.next,
-                decoration: inputDecoration(
+                decoration: authenticationInputDecoration(
                     context: context,
                     hintText: "Email",
                     icon: const Icon(Icons.email)),
@@ -104,7 +104,7 @@ class SignupScreen extends StatelessWidget
                 textInputAction: TextInputAction.next,
                 obscureText: true,
                 controller: _passwordController,
-                decoration: inputDecoration(
+                decoration: authenticationInputDecoration(
                     context: context,
                     hintText: "Password",
                     icon: const Icon(Icons.password)),
@@ -121,7 +121,7 @@ class SignupScreen extends StatelessWidget
               TextFormField(
                 textInputAction: TextInputAction.done,
                 obscureText: true,
-                decoration: inputDecoration(
+                decoration: authenticationInputDecoration(
                     context: context,
                     hintText: "Confirm password",
                     icon: const Icon(Icons.password)),
@@ -164,7 +164,7 @@ class SignupScreen extends StatelessWidget
     try {
       Navigator.pop(context);
       await Provider.of<AuthNotifier>(context, listen: false)
-          .signup(editedUser);  
+          .signup(editedUser);
       // FocusScope.of(context).requestFocus(FocusNode()); // dismiss keyboard
 
     } on PlatformException catch (e) {
@@ -182,5 +182,3 @@ class SignupScreen extends StatelessWidget
     return string[0].toUpperCase() + string.substring(1);
   }
 }
-
-

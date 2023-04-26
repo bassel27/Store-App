@@ -42,7 +42,7 @@ class _MessageTextFieldState extends State<MessageTextField>
           Expanded(
               child: TextField(
             controller: _messageController,
-            decoration: inputDecoration(
+            decoration: authenticationInputDecoration(
                 outlineInputBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide(

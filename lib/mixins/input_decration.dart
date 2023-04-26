@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 mixin MyInputDecoration {
-  InputDecoration inputDecoration(
+  InputDecoration authenticationInputDecoration(
       {required BuildContext context,
       required String hintText,
       Icon? icon,

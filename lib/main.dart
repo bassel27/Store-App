@@ -10,6 +10,7 @@ import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/selected_size.dart';
 import 'package:store_app/providers/user_notifier.dart';
+import 'package:store_app/screens/address_screen.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
             ChatScreen.route: (ctx) => const ChatScreen(),
             VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
             AuthScreen.route: (ctx) => AuthScreen(),
+            AddressScreen.route: (ctx) => AddressScreen(),
           },
           title: 'Flutter Demo',
           home: const LandingPage(),

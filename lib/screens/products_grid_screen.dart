@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/screens/address_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:store_app/widgets/my_search_bar.dart';
 
@@ -44,26 +45,29 @@ class ProductsGridScreen extends StatelessWidget {
                   //   color: Colors.red,
                   // ),
                   borderRadius: const BorderRadius.all(Radius.circular(20))),
-              child: FittedBox(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.location_on_outlined,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        " Delivering to .......",
-                        style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: Colors.white,
-                      ),
-                    ]),
+              child: GestureDetector(
+                onTap: () => Navigator.pushNamed(context, AddressScreen.route),
+                child: FittedBox(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          " Delivering to .......",
+                          style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          color: Colors.white,
+                        ),
+                      ]),
+                ),
               ),
             ),
             bottom: AppBar(

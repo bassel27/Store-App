@@ -245,7 +245,7 @@ class _PasswordTextFormField extends StatelessWidget with MyInputDecoration {
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: 'qwerty',
-      decoration: inputDecoration(
+      decoration: authenticationInputDecoration(
           context: context,
           hintText: 'Password',
           icon: const Icon(Icons.password)),
@@ -282,7 +282,7 @@ class _EmailTextFormField extends StatelessWidget with MyInputDecoration {
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: 'bassel_sabour@hotmail.com',
-      decoration: inputDecoration(
+      decoration: authenticationInputDecoration(
           context: context, hintText: 'Email', icon: const Icon(Icons.email)),
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,

@@ -52,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
                   }
                   return null;
                 },
-                decoration: inputDecoration(
+                decoration: authenticationInputDecoration(
                     context: context,
                     hintText: 'Email',
                     icon: const Icon(Icons.email)),
