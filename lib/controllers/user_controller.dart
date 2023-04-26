@@ -9,27 +9,23 @@ class UserController {
 
   Map? _userDoc;
   Future<Map> get userDoc async {
-    final lol = await db.collection('users').doc(userId).get();
-    return _userDoc ?? lol.data() as Map;
+    _userDoc ??= (await db.collection('users').doc(userId).get()).data() as Map;
+    return _userDoc!;
   }
 
   Future<String> getFirstName() async {
-    final lol = await userDoc;
-    return lol['firstName'];
+    return (await userDoc)['firstName'];
   }
 
   Future<String> getLastName() async {
-    final lol = await userDoc;
-    return lol['lastName'];
+    return (await userDoc)['lastName'];
   }
 
   Future<String> getEmail() async {
-    final lol = await userDoc;
-    return lol['email'];
+    return (await userDoc)['email'];
   }
 
   Future<bool> isAdmin() async {
-    final lol = await userDoc;
-    return lol['isAdmin'];
+    return (await userDoc)['isAdmin'];
   }
 }
