@@ -12,8 +12,9 @@ import '../widgets/sliver_grid_delegate_with_fixed_cross_axis_count_and_fixed_he
 // TODO: stateless?
 /// This screen is used for home and favorites screens.
 class ProductsGridScreen extends StatelessWidget {
-  final bool showFavoritesOnly;
-  const ProductsGridScreen(this.showFavoritesOnly);
+  final List<Product> products;
+  final String? initialText;
+  const ProductsGridScreen(this.products, [this.initialText]);
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +64,11 @@ class ProductsGridScreen extends StatelessWidget {
           ),
           bottom: AppBar(
             elevation: 0,
-            title: const _SearchBar(),
+            title: _SearchBar(initialText),
           ),
         ),
         SliverToBoxAdapter(
-          child: _ScaffoldBody(showFavoritesOnly: showFavoritesOnly),
+          child: _ScaffoldBody(products),
         )
       ],
     ));
@@ -75,9 +76,8 @@ class ProductsGridScreen extends StatelessWidget {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({
-    Key? key,
-  }) : super(key: key);
+  _SearchBar([this.initialText]);
+  final String? initialText;
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -120,6 +120,8 @@ class _SearchBar extends StatelessWidget {
               ),
               onSearch: (value) => print(value),
               suggestions: suggestionsList,
+              key: UniqueKey(),
+              initialText: initialText,
             ),
           ),
         ),
@@ -129,19 +131,15 @@ class _SearchBar extends StatelessWidget {
 }
 
 class _ScaffoldBody extends StatelessWidget {
-  const _ScaffoldBody({
-    Key? key,
-    required this.showFavoritesOnly,
-  }) : super(key: key);
+  const _ScaffoldBody(
+    this.products,
+  );
 
-  final bool showFavoritesOnly;
+  final List<Product> products;
 
   @override
   Widget build(BuildContext context) {
     final productsNotifier = Provider.of<ProductsNotifier>(context);
-    final List<Product> products = showFavoritesOnly
-        ? productsNotifier.favoriteProducts
-        : productsNotifier.products;
     return Center(
       child: products.isNotEmpty
           ? GridView.builder(
@@ -163,9 +161,7 @@ class _ScaffoldBody extends StatelessWidget {
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 3,
                 ),
-                (showFavoritesOnly
-                    ? const EmptyScreenText("No favorite products")
-                    : const EmptyScreenText("No Products")),
+                (const EmptyScreenText("No Products")),
               ],
             ),
     );

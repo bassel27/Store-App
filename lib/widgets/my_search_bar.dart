@@ -1,3 +1,6 @@
+// This class was adapted from https://github.com/4inka/flutter_easy_search_bar
+// Original author: 4inka
+
 // Copyright 2021 4inka
 
 // Redistribution and use in source and binary forms, with or without
@@ -32,6 +35,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:store_app/screens/products_grid_screen.dart';
+
+import '../models/product/product.dart';
+import '../providers/products_notifier.dart';
 
 class MySearchBar extends StatefulWidget implements PreferredSizeWidget {
   /// The title to be displayed inside AppBar
@@ -124,7 +132,7 @@ class MySearchBar extends StatefulWidget implements PreferredSizeWidget {
 
   /// Can be used to set the debounce time for async data fetch
   final Duration debounceDuration;
-
+  final String? initialText;
   const MySearchBar(
       {Key? key,
       required this.title,
@@ -156,7 +164,8 @@ class MySearchBar extends StatefulWidget implements PreferredSizeWidget {
       this.suggestionBackgroundColor,
       this.animationDuration = const Duration(milliseconds: 450),
       this.debounceDuration = const Duration(milliseconds: 400),
-      this.searchTextKeyboardType = TextInputType.text})
+      this.searchTextKeyboardType = TextInputType.text,
+      this.initialText})
       : assert(elevation == null || elevation >= 0.0),
         super(key: key);
 
@@ -183,14 +192,23 @@ class _MySearchBarState extends State<MySearchBar>
   late Animation _containerSizeAnimation;
   late Animation _containerBorderRadiusAnimation;
   late Animation _textFieldOpacityAnimation;
-  final TextEditingController _searchController = TextEditingController();
-  onSearchPressed() {
+  late final TextEditingController _searchController =
+      TextEditingController(text: widget.initialText);
+  onInputBoxPressed() {
     _controller.forward();
     _focusNode.requestFocus();
 
     if (widget.openOverlayOnSearch) {
       openOverlay();
     }
+  }
+
+  resetSearchBar() {
+    _controller.reverse();
+    _searchController.clear();
+    widget.onSearch(_searchController.text);
+    _focusNode.unfocus();
+    closeOverlay();
   }
 
   @override
@@ -384,7 +402,7 @@ class _MySearchBarState extends State<MySearchBar>
             : SystemUiOverlayStyle.dark);
 
     return GestureDetector(
-      onTap: onSearchPressed,
+      onTap: onInputBoxPressed,
       child: CompositedTransformTarget(
           link: _layerLink,
           child: Semantics(
@@ -451,7 +469,7 @@ class _MySearchBarState extends State<MySearchBar>
                                                                 right: 10),
                                                         child: IconButton(
                                                             icon: const Icon(Icons
-                                                                .arrow_back_outlined),
+                                                                .close_outlined),
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     context),
@@ -550,11 +568,35 @@ class _MySearchBarState extends State<MySearchBar>
                                                     opacity: _textFieldOpacityAnimation.value,
                                                     child: TextField(
                                                         onSubmitted: (value) {
+                                                          resetSearchBar();
+                                                          final soughtProducts = Provider.of<
+                                                                      ProductsNotifier>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .products
+                                                              .where((Product
+                                                                      product) =>
+                                                                  product.title
+                                                                      .toLowerCase()
+                                                                      .contains(
+                                                                          value))
+                                                              .toList();
                                                           widget.onSearch(
                                                               _searchController
                                                                   .text);
+
                                                           _focusNode.unfocus();
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    ProductsGridScreen(
+                                                                        soughtProducts,
+                                                                        value)),
+                                                          );
                                                           closeOverlay();
+                                                          _searchController
+                                                              .clear();
                                                         },
                                                         maxLines: 1,
                                                         controller: _searchController,
@@ -564,30 +606,7 @@ class _MySearchBarState extends State<MySearchBar>
                                                         textAlignVertical: TextAlignVertical.center,
                                                         style: widget.searchTextStyle,
                                                         keyboardType: widget.searchTextKeyboardType,
-                                                        decoration: InputDecoration(
-                                                            contentPadding: const EdgeInsets.only(left: 20, right: 10),
-                                                            fillColor: searchBackgroundColor,
-                                                            filled: true,
-                                                            hintText: widget.searchHintText,
-                                                            hintMaxLines: 1,
-                                                            hintStyle: searchHintStyle,
-                                                            focusedBorder: InputBorder.none,
-                                                            prefixIcon: IconTheme(
-                                                                data: searchIconTheme,
-                                                                child: IconButton(
-                                                                    icon: const Icon(Icons.arrow_back_outlined),
-                                                                    onPressed: () {
-                                                                      _controller
-                                                                          .reverse();
-                                                                      _searchController
-                                                                          .clear();
-                                                                      widget.onSearch(
-                                                                          _searchController
-                                                                              .text);
-                                                                      _focusNode
-                                                                          .unfocus();
-                                                                      closeOverlay();
-                                                                    }))))));
+                                                        decoration: InputDecoration(contentPadding: const EdgeInsets.only(left: 20, right: 10), fillColor: searchBackgroundColor, filled: true, hintText: widget.searchHintText, hintMaxLines: 1, hintStyle: searchHintStyle, focusedBorder: InputBorder.none, prefixIcon: IconTheme(data: searchIconTheme, child: IconButton(icon: const Icon(Icons.close_outlined), onPressed: resetSearchBar))))));
                                           }))
                                 ])));
                       }),

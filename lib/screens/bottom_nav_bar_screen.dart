@@ -1,7 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/providers/products_notifier.dart';
 
+import '../models/product/product.dart';
 import '../providers/cart_notifier.dart';
 import '../screens/cart_screen.dart';
 import '../screens/products_grid_screen.dart';
@@ -20,12 +22,16 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ProductsNotifier productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
+    List<Product> favoriteProducts = productsProvider.favoriteProducts;
+    List<Product> products = productsProvider.items;
     var screenToBottomNavBarItem = {
-      const ProductsGridScreen(true): const BottomNavigationBarItem(
+      ProductsGridScreen(favoriteProducts): const BottomNavigationBarItem(
         icon: Icon(Icons.favorite_outline),
         label: 'Favorites',
       ),
-      const ProductsGridScreen(false): const BottomNavigationBarItem(
+      ProductsGridScreen(products): const BottomNavigationBarItem(
         icon: Icon(Icons.home_outlined),
         label: 'Home',
       ),

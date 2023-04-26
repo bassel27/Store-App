@@ -16,6 +16,7 @@ import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_details_screen.dart';
+import 'package:store_app/screens/products_grid_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:store_app/screens/verify_email_screen.dart';
