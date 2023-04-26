@@ -7,7 +7,7 @@ import 'package:store_app/mixins/input_decration.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/forgot_password_screen.dart';
 import 'package:store_app/screens/signup_screen.dart';
-import 'package:store_app/widgets/auth_button.dart';
+import 'package:store_app/widgets/wide_elevated_button.dart';
 
 import '../providers/auth_notifier.dart';
 

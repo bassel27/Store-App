@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/models/user/user.dart';
-import 'package:store_app/widgets/auth_button.dart';
+import 'package:store_app/widgets/wide_elevated_button.dart';
 import 'package:uuid/uuid.dart';
 
 import '../mixins/input_decration.dart';

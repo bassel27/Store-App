@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/screens/splash_screen.dart';
-import 'package:store_app/widgets/auth_button.dart';
+import 'package:store_app/widgets/wide_elevated_button.dart';
 
 import '../providers/auth_notifier.dart';
 

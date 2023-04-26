@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/mixins/input_decration.dart';
 import 'package:store_app/providers/auth_notifier.dart';
-import 'package:store_app/widgets/auth_button.dart';
+import 'package:store_app/widgets/wide_elevated_button.dart';
 
 import '../helper/dialog_helper.dart';
 
