@@ -22,9 +22,6 @@ class ProductsGridScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Product> currentProducts =
-        Provider.of<ProductsNotifier>(context, listen: false).products;
-    products.removeWhere((element) => !currentProducts.contains(element));
     if (!isPushedScreen) {
       return Scaffold(
           body: CustomScrollView(
@@ -155,7 +152,9 @@ class _ScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsNotifier = Provider.of<ProductsNotifier>(context);
+    List<Product> currentProducts =
+        Provider.of<ProductsNotifier>(context).products;
+    products.removeWhere((element) => !currentProducts.contains(element));  // if any element was deleted since passing products to ProductsGridScreen
     return Center(
       child: products.isNotEmpty
           ? GridView.builder(
