@@ -95,7 +95,6 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   Future<int> deleteProduct(String productId) async {
     DialogHelper.showLoading();
     await _productsController.delete(productId);
-    await CartController().deleteCartItemsByProductId(productId);
     int index = -1;
     for (int i = 0; i < items.length; i++) {
       if (items[i].id == productId) {

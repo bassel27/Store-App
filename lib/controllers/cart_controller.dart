@@ -47,7 +47,11 @@ class CartController {
   ///
   /// Throws an exception if operatoin fails.
   Future<void> decrementQuantity(CartItem cartItem) async {
-    await setQuantity(cartItem, cartItem.quantity - 1);
+    if (cartItem.quantity == 1) {
+      await delete(cartItem.id);
+    } else {
+      await setQuantity(cartItem, cartItem.quantity - 1);
+    }
   }
 
   /// Set the quantity of an already existing CartItem.
@@ -82,7 +86,6 @@ class CartController {
   }
 
   Future<void> deleteCartItemsByProductId(String productId) async {
-    print(FirebaseAuth.instance.currentUser!.uid);
     final userSnapshot =
         await FirebaseFirestore.instance.collection('users').get();
     final batch = FirebaseFirestore.instance.batch();

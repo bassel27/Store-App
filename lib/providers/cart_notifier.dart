@@ -13,7 +13,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   CartNotifier(this.cartItems);
   late final CartController _cartController = CartController();
   bool isCartFetched = false;
-  
+
   //TODO: remove productID if not used and convert it to a list
   // TODO: make items private
   /// Key is productId and value is cartItem.
@@ -67,6 +67,12 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       cartItems.removeWhere((cartItem) => cartItemInput.id == cartItem.id);
       notifyListeners();
     }).catchError(handleException);
+  }
+
+  void deleteCartItemsByProductId(String productId) async {
+    await _cartController.deleteCartItemsByProductId(productId);
+    cartItems.removeWhere((cartItem) => productId== cartItem.product.id);
+    notifyListeners();
   }
 
   // Increments the quantity of the CartItem if it exists in cart.

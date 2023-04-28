@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
+import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/products_notifier.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
@@ -93,10 +94,12 @@ class _ProductListTile extends StatelessWidget {
 
 void onProductDelete(Product product, BuildContext context) async {
   var productsProvider = Provider.of<ProductsNotifier>(context, listen: false);
+  var cartProvider = Provider.of<CartNotifier>(context, listen: false);
   var scaffoldMessenger = ScaffoldMessenger.of(context);
   int productOldIndex;
   try {
     productOldIndex = await productsProvider.deleteProduct(product.id);
+    cartProvider.deleteCartItemsByProductId(product.id);
   } catch (e) {
     ExceptionHandler().handleException(e);
     // scaffoldMessenger.hideCurrentSnackBar();

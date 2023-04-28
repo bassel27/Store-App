@@ -42,4 +42,11 @@ class Product with _$Product {
       return int.parse(size1) - int.parse(size2);
     }
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Product &&
+          runtimeType == other.runtimeType &&
+          this.id == other.id;
 }
