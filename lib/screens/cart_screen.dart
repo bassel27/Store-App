@@ -12,53 +12,46 @@ import '../widgets/my_dismissble.dart';
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const _SuccessfulScaffoldBody();
-  }
-}
-
-class _SuccessfulScaffoldBody extends StatelessWidget {
-  const _SuccessfulScaffoldBody({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<CartNotifier>(
-      builder: (__, CartNotifier cartProvider, _) => cartProvider.items.isEmpty
-          ? const EmptyScreenText('Cart is empty')
-          : Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: cartProvider.cartItemsCount,
-                    itemBuilder: (context, i) {
-                      //TODO: better way than searching to find id
-                      CartItem cartItem = cartProvider.items[i];
-                      return MyDismissible(
-                        valueKeyId: cartItem.id,
-                        onDismissed: (_) {
-                          var cart =
-                              Provider.of<CartNotifier>(context, listen: false);
-                          cart.deleteItem(cartItem);
-                        },
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, ProductDetailsScreen.route,
-                                arguments: cartItem.product);
+    return Scaffold(
+      appBar: AppBar(title: const Text("Cart")),
+      body: Consumer<CartNotifier>(
+        builder: (__, CartNotifier cartProvider, _) =>
+            cartProvider.items.isEmpty
+                ? const EmptyScreenText('Cart is empty')
+                : Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: cartProvider.cartItemsCount,
+                          itemBuilder: (context, i) {
+                            //TODO: better way than searching to find id
+                            CartItem cartItem = cartProvider.items[i];
+                            return MyDismissible(
+                              valueKeyId: cartItem.id,
+                              onDismissed: (_) {
+                                var cart = Provider.of<CartNotifier>(context,
+                                    listen: false);
+                                cart.deleteItem(cartItem);
+                              },
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, ProductDetailsScreen.route,
+                                      arguments: cartItem.product);
+                                },
+                                child: CartItemTile(
+                                  cartItem: cartItem,
+                                  isHeroAnimationOn: false,
+                                ),
+                              ),
+                            );
                           },
-                          child: CartItemTile(
-                            cartItem: cartItem,
-                            isHeroAnimationOn: false,
-                          ),
                         ),
-                      );
-                    },
+                      ),
+                      TotalContainer(),
+                    ],
                   ),
-                ),
-                TotalContainer(),
-              ],
-            ),
+      ),
     );
   }
 }

@@ -39,7 +39,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       //   icon: Icon(Icons.category_outlined),
       //   label: 'Categories',
       // ),
-      const CartScreen(): BottomNavigationBarItem(
+      CartScreen(): BottomNavigationBarItem(
         icon: Badge(
           badgeStyle: BadgeStyle(
             badgeColor: Theme.of(context).colorScheme.secondary,
