@@ -5,7 +5,6 @@ import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/product_controller.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 
-import '../controllers/cart_controller.dart';
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
 
@@ -89,6 +88,14 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
       items[index] = product;
       notifyListeners();
     }
+  }
+
+  Future<void> decrementSizeQuantity(Product product, String size, int quantity) async {
+    await _productsController.decrementSizeQuantity(product, size, quantity); // use .then
+    int index = items.indexOf(product);
+    Map<String, int> sizeQuantity = Map.from(items[index].sizeQuantity);
+    sizeQuantity.update(size, (value) => value - quantity);
+    items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
   }
 
   /// Deletes a product from the products list by id and returns its index.

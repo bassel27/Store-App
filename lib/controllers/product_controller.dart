@@ -121,6 +121,13 @@ class ProductController with ExceptionHandler {
     DialogHelper.hideCurrentDialog();
   }
 
+  Future<void> decrementSizeQuantity(Product product, String size, int quantity) async {
+    await db
+        .collection(kProductsCollection)
+        .doc(product.id)
+        .update({'sizeQuantity.$size': FieldValue.increment(-quantity)});
+  }
+
   Future<void> deleteImageFile(String productId) async {
     try {
       final desertRef = FirebaseStorage.instance

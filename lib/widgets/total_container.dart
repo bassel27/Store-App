@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/cart_notifier.dart';
+import 'package:store_app/providers/products_notifier.dart';
 
+import '../models/cart_item/cart_item.dart';
 import '../providers/orders_notifier.dart';
 
 class TotalContainer extends StatelessWidget {
@@ -43,7 +46,7 @@ class _OrderButton extends StatefulWidget {
   State<_OrderButton> createState() => _OrderButtonState();
 }
 
-class _OrderButtonState extends State<_OrderButton> {
+class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
   bool _isLoading = false;
 
   @override
@@ -59,8 +62,15 @@ class _OrderButtonState extends State<_OrderButton> {
               try {
                 await Provider.of<OrdersNotifier>(context, listen: false)
                     .addOrder(cartProvider.items, cartProvider.total);
+                for (CartItem cartItem in cartProvider.items) {
+                  await Provider.of<ProductsNotifier>(context, listen: false)
+                      .decrementSizeQuantity(
+                          cartItem.product, cartItem.size, cartItem.quantity);
+                }
                 await cartProvider.clear();
-              } catch (e) {}// TODO: remove empty catch block
+              } catch (e) {
+                handleException(e);
+              } // TODO: remove empty catch block
               setState(() {
                 _isLoading = false;
               });
@@ -73,7 +83,7 @@ class _OrderButtonState extends State<_OrderButton> {
                   child: CircularProgressIndicator(
                 strokeWidth: 3,
               )))
-          :  Text(
+          : Text(
               "Order Now",
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
             ),

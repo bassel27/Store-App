@@ -42,13 +42,10 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
         cartItems: cartProducts,
         dateTime: DateTime.now(),
         userId: FirebaseAuth.instance.currentUser!.uid);
-    await _ordersController
-        .create(newOrder)
-        .then((_) => ordersList.insert(
-              0,
-              newOrder,
-            ))
-        .catchError(handleException);
+    await _ordersController.create(newOrder).then((_) => ordersList.insert(
+          0,
+          newOrder,
+        ));
 
     notifyListeners();
   }

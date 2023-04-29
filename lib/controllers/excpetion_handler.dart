@@ -14,9 +14,10 @@ class ExceptionHandler {
           exception.code == "too-many-requests") {
         // ignore
         return null;
+      } else {
+        DialogHelper.showErroDialog(
+            description: exception.message ?? exception.toString());
       }
-      DialogHelper.showErroDialog(
-          description: exception.message ?? exception.toString());
     }
     return null;
   }
