@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/auth_notifier.dart';
+import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/user_notifier.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
@@ -75,6 +76,8 @@ class _AccountScreenState extends State<AccountScreen> {
             await Provider.of<AuthNotifier>(context, listen: false).logout();
             Navigator.of(context).pushReplacementNamed(
                 '/'); // to go to the home screen (authentication)
+            Provider.of<OrdersNotifier>(context, listen: false)
+                .areOrdersFetched = false;
           },
           title: "Logout",
         ),

@@ -14,7 +14,7 @@ class OrderController with ExceptionHandler {
   ///
   /// Throws an exception if operation fails.
   Future<List<Order>> get(bool isAdmin ) async {
-    List<Order> products = [];
+    List<Order> orders = [];
     QuerySnapshot snapshot;
     if (!isAdmin) {
       snapshot = await db
@@ -25,9 +25,9 @@ class OrderController with ExceptionHandler {
       snapshot = await db.collection(kOrdersCollection).get();
     }
     for (var docSnapshot in snapshot.docs) {
-      products.add(Order.fromJson(docSnapshot.data() as Map<String, dynamic>));
+      orders.add(Order.fromJson(docSnapshot.data() as Map<String, dynamic>));
     }
-    return products;
+    return orders;
   }
 
   /// Returns post ID and handles error using dialog.

@@ -25,17 +25,12 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   int get numberOfOrders => ordersList.length;
-  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
-  /// Checks if orders have been fetched for the current user or not.
-  get areOrdersFetched {
-    return currentUserId != FirebaseAuth.instance.currentUser!.uid;
-  }
+  bool areOrdersFetched = false;
 
   /// Throws exception if fails.
   Future<void> getAndSetOrders(bool isAdmin) async {
     ordersList = await _ordersController.get(isAdmin);
-    currentUserId = FirebaseAuth.instance.currentUser!.uid;
     notifyListeners();
   }
 

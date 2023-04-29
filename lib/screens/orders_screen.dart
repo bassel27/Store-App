@@ -17,17 +17,22 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   late Future _lol;
-  late bool isAdmin = context.read<UserNotifier>().currentUser!.isAdmin;
+
   @override
   void initState() {
     super.initState();
     _lol = lol();
   }
 
+  get isAdmin {
+    return context.read<UserNotifier>().currentUser!.isAdmin;
+  }
+
   Future<void> lol() {
     OrdersNotifier ordersProvider =
         Provider.of<OrdersNotifier>(context, listen: false);
     if (!ordersProvider.areOrdersFetched) {
+      ordersProvider.areOrdersFetched = true;
       return ordersProvider.getAndSetOrders(isAdmin);
     } else {
       return Future.delayed(Duration.zero);
