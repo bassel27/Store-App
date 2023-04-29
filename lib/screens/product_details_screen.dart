@@ -29,7 +29,7 @@ class ProductDetailsScreen extends StatelessWidget {
         child: Scaffold(
           floatingActionButton: Align(
               alignment: Alignment.topLeft,
-              child: _FABBack(product.id, circleDiameter)),
+              child: _FABBack(product, circleDiameter)),
           body: Column(
             children: [
               Expanded(
@@ -41,7 +41,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         _ImageContainer(product: product),
                         Align(
                             alignment: Alignment.topRight,
-                            child: FABFavorite(product.id, circleDiameter)),
+                            child: FABFavorite(product, circleDiameter)),
                         // Align(
                         //     alignment: Alignment.topLeft,
                         //     child: _FABBack(product.id, 35)),
@@ -363,8 +363,8 @@ class _SizeCard extends StatelessWidget {
 }
 
 class _FABBack extends FABFavorite {
-  _FABBack(String productId, double circleDiameter)
-      : super(productId, circleDiameter);
+  _FABBack(Product product, double circleDiameter)
+      : super(product, circleDiameter);
 
   @override
   Widget build(BuildContext context) {
