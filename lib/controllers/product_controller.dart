@@ -30,6 +30,7 @@ class ProductController with ExceptionHandler {
       }
       products.add(product);
     }
+    _deleteOldFavoriteProducts(products);
     return products;
   }
 
@@ -69,10 +70,28 @@ class ProductController with ExceptionHandler {
     DialogHelper.hideCurrentDialog();
   }
 
+  /// Sets favoriteProductIds variable.
   Future<void> _setFavoriteProductsIds() async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     final userDoc = await db.collection('users').doc(userId).get();
     _favoriteProductIds = List<String>.from(userDoc['favoriteProducts']);
+  }
+
+  /// Provide products list to delete favorite products that no longer exist.
+  Future<void> _deleteOldFavoriteProducts(List<Product> products) async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    // Filter out any productIds that do not exist in the `products` list
+    final List<String> validProductIds = _favoriteProductIds.where((productId) {
+      return products.any((product) => product.id == productId);
+    }).toList();
+
+    if (validProductIds.length != _favoriteProductIds.length) {
+      await db.collection('users').doc(userId).update({
+        'favoriteProducts': validProductIds,
+      });
+    }
+
+    _favoriteProductIds = validProductIds;
   }
 
   bool isProductFavorite(String productId) {
@@ -121,7 +140,8 @@ class ProductController with ExceptionHandler {
     DialogHelper.hideCurrentDialog();
   }
 
-  Future<void> decrementSizeQuantity(Product product, String size, int quantity) async {
+  Future<void> decrementSizeQuantity(
+      Product product, String size, int quantity) async {
     await db
         .collection(kProductsCollection)
         .doc(product.id)
