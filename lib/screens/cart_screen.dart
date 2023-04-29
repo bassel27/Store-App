@@ -7,57 +7,12 @@ import 'package:store_app/widgets/empty_screen_text.dart';
 import '.././widgets/total_container.dart';
 import '../models/cart_item/cart_item.dart';
 import '../widgets/cart_item_tile.dart';
-import '../widgets/exception_scaffold_body.dart';
 import '../widgets/my_dismissble.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
-
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  late Future _future;
-  @override
-  void initState() {
-    super.initState();
-    _future = fetchCart();
-  }
-
-  Future<void> fetchCart() {
-    CartNotifier cartProvider =
-        Provider.of<CartNotifier>(context, listen: false);
-    if (!cartProvider.isCartFetched) {
-      return cartProvider.getAndSetCart();
-    } else {
-      return Future.delayed(Duration.zero);
-    }
-  }
-
+class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Cart")),
-      body: Center(
-        child: FutureBuilder(
-          future: _future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return ExceptionScaffoldBody(snapshot.error as Exception);
-              } else {
-                return const _SuccessfulScaffoldBody();
-              }
-            } else {
-              return Text('State: ${snapshot.connectionState}');
-            }
-          },
-        ),
-      ),
-    );
+    return const _SuccessfulScaffoldBody();
   }
 }
 
