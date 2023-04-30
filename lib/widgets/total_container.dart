@@ -72,10 +72,23 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                   }
                   await productsProvider.decrementSizeQuantity(
                       cartItem.product, cartItem.size, cartItem.quantity);
+                  Map currentSizeQuantity = productsProvider
+                      .getProductSizeQuantity(cartItem.product, cartItem.size);
+                  if (currentSizeQuantity[cartItem.size] - cartItem.quantity ==
+                      0) {
+                    await productsProvider.deleteProductSize(
+                        cartItem.product, cartItem.size);
+                    currentSizeQuantity =
+                        productsProvider.getProductSizeQuantity(
+                            cartItem.product, cartItem.size);
+                    if (currentSizeQuantity.isEmpty) {
+                      await productsProvider.deleteProduct(cartItem.product.id);
+                    }
+                    await Provider.of<OrdersNotifier>(context, listen: false)
+                        .addOrder(cartProvider.items, cartProvider.total);
+                    await cartProvider.clear();
+                  }
                 }
-                await Provider.of<OrdersNotifier>(context, listen: false)
-                    .addOrder(cartProvider.items, cartProvider.total);
-                await cartProvider.clear();
               } catch (e) {
                 handleException(e);
               } // TODO: remove empty catch block

@@ -55,21 +55,6 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       return false;
     }
   }
-  // CartItem? getCartItem(Product product) {
-  //   int c = 0;
-  //   CartItem? retVal;
-  //   for (CartItem cartItem in cartItems) {
-  //     if (cartItem.product.id == product.id) {
-  //       retVal = cartItem;
-  //       c++;
-  //     }
-  //   }
-  //   if (c == 1) {
-  //     return retVal;
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   Future<void> getAndSetCart() async {
     List<CartItem>? items = await _cartController.get();
@@ -99,7 +84,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       cartItems[index] = cartItem.copyWith(quantity: cartItem.quantity + 1);
     }
   }
-
+  
   // Decrements the quantity of the CartItem if it exists in cart.
   void decrement(CartItem cartItem) {
     int index = cartItems.indexOf(cartItem);

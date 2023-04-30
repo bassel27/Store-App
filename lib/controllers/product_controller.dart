@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 
-import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 // TODO: use tojson and from json. send my id
@@ -141,9 +140,15 @@ class ProductController with ExceptionHandler {
     DialogHelper.hideCurrentDialog();
   }
 
+  Future<void> deleteProductSize(Product product, String size) async {
+    await db
+        .collection(kProductsCollection)
+        .doc(product.id)
+        .update({'sizeQuantity.$size': FieldValue.delete()});
+  }
+
   Future<void> decrementSizeQuantity(
       Product product, String size, int quantity) async {
-    
     await db
         .collection(kProductsCollection)
         .doc(product.id)

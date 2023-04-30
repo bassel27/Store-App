@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/product_controller.dart';
 import 'package:store_app/helper/dialog_helper.dart';
-import 'package:store_app/models/cart_item/cart_item.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
@@ -64,8 +63,6 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     notifyListeners();
   }
 
-
-
   /// Adds the new product to the end of the list of products.
   Future<void> addProduct(Product newProduct, File imageFile) {
     return addProductByIndex(newProduct, items.length, imageFile);
@@ -91,6 +88,23 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
       items[index] = product;
       notifyListeners();
     }
+  }
+
+  /// Used for cartItem's product because it is not updated.
+  Map<String, int> getProductSizeQuantity(Product product, String size) {
+    int index = items.indexOf(product);
+    Map<String, int> sizeQuantity = items[index].sizeQuantity;
+    return sizeQuantity;
+  }
+
+  Future<void> deleteProductSize(Product product, String size) async {
+    await _productsController.deleteProductSize(product, size).then((value) {
+      int index = products.indexOf(product);
+      Map<String, int> sizeQuantity = Map.from(products[index].sizeQuantity);
+      sizeQuantity.remove(size);
+      items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
+      notifyListeners();
+    });
   }
 
   Future<void> decrementSizeQuantity(
