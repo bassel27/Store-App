@@ -66,7 +66,7 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                 await productsProvider
                     .getAndSetProducts(); //fetch current products to update their sizeQuantity
                 for (CartItem cartItem in cartProvider.items) {
-                  if (!cartProvider.isCartItemWithCurrentSizeAndQuantity(
+                  if (!cartProvider.setCartItemWithCurrentQuantity(
                       cartItem, productsProvider.items)) {
                     throw Exception(
                         "The quantity of one cart item or more has been changed due to availability.\nReview your cart again before making the order.");
@@ -76,8 +76,7 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                     Map currentSizeQuantity =
                         productsProvider.getProductSizeQuantity(
                             cartItem.product, cartItem.size);
-                    if (newQuantity==
-                        0) {
+                    if (newQuantity == 0) {
                       //check if size is over
                       await productsProvider.deleteProductSize(
                           cartItem.product, cartItem.size);
@@ -90,9 +89,9 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                         await deleteProductAndItsCartItems(cartItem.product.id);
                       }
                     }
-                      await Provider.of<OrdersNotifier>(context, listen: false)
-                          .addOrder(cartProvider.items, cartProvider.total);
-                      await cartProvider.clear();
+                    await Provider.of<OrdersNotifier>(context, listen: false)
+                        .addOrder(cartProvider.items, cartProvider.total);
+                    await cartProvider.clear();
                   }
                 }
               } catch (e) {
