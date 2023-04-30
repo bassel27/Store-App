@@ -233,10 +233,11 @@ class _$_Product implements _Product {
                 other.description == description) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
-            const DeepCollectionEquality()
-                .equals(other._sizeQuantity, _sizeQuantity));
+            (identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)
+        // &&const DeepCollectionEquality()
+        // .equals(other._sizeQuantity, _sizeQuantity) 
+        //  for comparing a product with cartItem.product where the latter doesn't have updated sizeQuantity
+        );
   }
 
   @JsonKey(ignore: true)
