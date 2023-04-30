@@ -41,10 +41,16 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   /// Checks if cartItem's size and quantity are available.
   ///
   /// This method should be called before ordering because cartItem's product doesn't get updated if a product changes.
-  Future<bool> isCartItemWithCurrentSizeAndQuantity(
-      CartItem cartItem, List<Product> products) async {
-    Product currentProduct =
-        products.firstWhere((element) => element.id == cartItem.product.id);
+  bool isCartItemWithCurrentSizeAndQuantity(
+      CartItem cartItem, List<Product> products) {
+    Product currentProduct;
+    if (products.contains(cartItem.product)) {
+      currentProduct =
+          products.firstWhere((element) => element.id == cartItem.product.id);
+    } else {
+      return false;
+    }
+
     int currentQuantity = currentProduct.sizeQuantity[cartItem.size] as int;
     if (currentQuantity >= cartItem.quantity) {
       return true;
@@ -71,7 +77,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
     }).catchError(handleException);
   }
 
-  void deleteCartItemsByProductId(String productId) async {
+  Future<void> deleteCartItemsByProductId(String productId) async {
     await _cartController.deleteCartItemsByProductId(productId);
     cartItems.removeWhere((cartItem) => productId == cartItem.product.id);
     notifyListeners();
@@ -84,7 +90,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
       cartItems[index] = cartItem.copyWith(quantity: cartItem.quantity + 1);
     }
   }
-  
+
   // Decrements the quantity of the CartItem if it exists in cart.
   void decrement(CartItem cartItem) {
     int index = cartItems.indexOf(cartItem);

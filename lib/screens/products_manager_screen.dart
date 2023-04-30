@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
+import 'package:store_app/helper/dialog_helper.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/providers/products_notifier.dart';
@@ -61,7 +62,7 @@ class ProductsManagerScreen extends StatelessWidget {
   }
 }
 
-class _ProductListTile extends StatelessWidget {
+class _ProductListTile extends StatelessWidget with DialogHelper{
   final Product product;
   const _ProductListTile(this.product);
   @override
@@ -98,8 +99,10 @@ void onProductDelete(Product product, BuildContext context) async {
   var scaffoldMessenger = ScaffoldMessenger.of(context);
   int productOldIndex;
   try {
+    DialogHelper.showLoading();
     productOldIndex = await productsProvider.deleteProduct(product.id);
-    cartProvider.deleteCartItemsByProductId(product.id);
+    await cartProvider.deleteCartItemsByProductId(product.id);
+    DialogHelper.hideCurrentDialog();
   } catch (e) {
     ExceptionHandler().handleException(e);
     // scaffoldMessenger.hideCurrentSnackBar();

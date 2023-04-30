@@ -134,10 +134,8 @@ class ProductController with ExceptionHandler {
   }
 
   Future<void> delete(String productId) async {
-    DialogHelper.showLoading();
     await db.collection(kProductsCollection).doc(productId).delete();
     await deleteImageFile(productId);
-    DialogHelper.hideCurrentDialog();
   }
 
   Future<void> deleteProductSize(Product product, String size) async {

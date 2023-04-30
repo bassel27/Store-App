@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/products_notifier.dart';
 
-import '../models/constants.dart';
-
 class NameTextFormField extends StatelessWidget {
   const NameTextFormField({super.key});
 
@@ -13,7 +11,8 @@ class NameTextFormField extends StatelessWidget {
         Provider.of<ProductsNotifier>(context, listen: false);
 
     return TextFormField(
-      initialValue: productsProvider.editedProduct.title,
+      initialValue: 'lol',
+      // initialValue: productsProvider.editedProduct.title,
       decoration: const InputDecoration(
         labelText: "Name",
       ),

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/product_controller.dart';
-import 'package:store_app/helper/dialog_helper.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
@@ -107,21 +106,26 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     });
   }
 
-  Future<void> decrementSizeQuantity(
+  /// Decreases the quantity of a size by a certain amount after it has been ordered.
+  Future<int> reduceSizeQuantity(
       Product product, String size, int quantity) async {
-    _productsController
+    late int newQuantity;
+    await _productsController
         .decrementSizeQuantity(product, size, quantity)
         .then((value) {
       int index = items.indexOf(product);
       Map<String, int> sizeQuantity = Map.from(items[index].sizeQuantity);
-      sizeQuantity.update(size, (value) => value - quantity);
+      sizeQuantity.update(size, (value) {
+        newQuantity = value - quantity;
+        return newQuantity;
+      });
       items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
     });
+    return newQuantity;
   }
 
   /// Deletes a product from the products list by id and returns its index.
   Future<int> deleteProduct(String productId) async {
-    DialogHelper.showLoading();
     await _productsController.delete(productId);
     int index = -1;
     for (int i = 0; i < items.length; i++) {
@@ -137,7 +141,6 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
       throw ProductUnavailableException(
           "Deleting failed! Product not available.");
     }
-    DialogHelper.hideCurrentDialog();
     return index;
   }
 

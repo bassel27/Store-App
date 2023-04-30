@@ -279,7 +279,6 @@ class _DropDownState extends State<DropDown> {
                 )
                 .toList();
           },
-          style: const TextStyle(color: kTextLightColor),
           items: widget.quantityList
               .map(
                 (quantityNumber) => DropdownMenuItem<String>(
@@ -292,6 +291,7 @@ class _DropDownState extends State<DropDown> {
                 ),
               )
               .toList(),
+              style: const TextStyle(color: kTextLightColor),
           onChanged: (value) {
             setState(() {
               widget.onQuantityChanged(value!);

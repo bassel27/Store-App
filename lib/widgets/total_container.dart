@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/controllers/cart_controller.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/products_notifier.dart';
@@ -65,33 +66,38 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                 await productsProvider
                     .getAndSetProducts(); //fetch current products to update their sizeQuantity
                 for (CartItem cartItem in cartProvider.items) {
-                  if (!await cartProvider.isCartItemWithCurrentSizeAndQuantity(
+                  if (!cartProvider.isCartItemWithCurrentSizeAndQuantity(
                       cartItem, productsProvider.items)) {
                     throw Exception(
-                        "Some cart items have been changed.\nReview your cart again before making the order.");
-                  }
-                  await productsProvider.decrementSizeQuantity(
-                      cartItem.product, cartItem.size, cartItem.quantity);
-                  Map currentSizeQuantity = productsProvider
-                      .getProductSizeQuantity(cartItem.product, cartItem.size);
-                  if (currentSizeQuantity[cartItem.size] - cartItem.quantity ==
-                      0) {
-                    await productsProvider.deleteProductSize(
-                        cartItem.product, cartItem.size);
-                    currentSizeQuantity =
+                        "The quantity of one cart item or more has been changed due to availability.\nReview your cart again before making the order.");
+                  } else {
+                    int newQuantity = await productsProvider.reduceSizeQuantity(
+                        cartItem.product, cartItem.size, cartItem.quantity);
+                    Map currentSizeQuantity =
                         productsProvider.getProductSizeQuantity(
                             cartItem.product, cartItem.size);
-                    if (currentSizeQuantity.isEmpty) {
-                      await productsProvider.deleteProduct(cartItem.product.id);
+                    if (newQuantity==
+                        0) {
+                      //check if size is over
+                      await productsProvider.deleteProductSize(
+                          cartItem.product, cartItem.size);
+                      currentSizeQuantity =
+                          productsProvider.getProductSizeQuantity(
+                              cartItem.product,
+                              cartItem.size); // after deleting the empty size
+                      if (currentSizeQuantity.isEmpty) {
+                        // if product doesn't have any available sizes
+                        await deleteProductAndItsCartItems(cartItem.product.id);
+                      }
                     }
-                    await Provider.of<OrdersNotifier>(context, listen: false)
-                        .addOrder(cartProvider.items, cartProvider.total);
-                    await cartProvider.clear();
+                      await Provider.of<OrdersNotifier>(context, listen: false)
+                          .addOrder(cartProvider.items, cartProvider.total);
+                      await cartProvider.clear();
                   }
                 }
               } catch (e) {
                 handleException(e);
-              } // TODO: remove empty catch block
+              }
               setState(() {
                 _isLoading = false;
               });
@@ -109,5 +115,12 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
             ),
     );
+  }
+
+  Future<void> deleteProductAndItsCartItems(String productId) async {
+    ProductsNotifier productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
+    await productsProvider.deleteProduct(productId);
+    await CartController().deleteCartItemsByProductId(productId);
   }
 }

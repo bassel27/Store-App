@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../models/constants.dart';
 
 class DialogHelper {
@@ -14,10 +15,12 @@ class DialogHelper {
             children: [
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: Get.textTheme.headline4,
               ),
               Text(
                 description ?? '',
+                textAlign: TextAlign.center,
                 style: Get.textTheme.headline6,
               ),
               ElevatedButton(
