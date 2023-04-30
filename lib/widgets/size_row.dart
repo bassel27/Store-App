@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/providers/products_notifier.dart';
 
@@ -233,6 +234,7 @@ class QuantityTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: initialQuantity == null ? null : initialQuantity.toString(),
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         hintText: 'Quantity',
