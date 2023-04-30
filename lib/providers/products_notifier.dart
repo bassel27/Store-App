@@ -92,12 +92,14 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
 
   Future<void> decrementSizeQuantity(
       Product product, String size, int quantity) async {
-    await _productsController.decrementSizeQuantity(
-        product, size, quantity); // use .then
-    int index = items.indexOf(product);
-    Map<String, int> sizeQuantity = Map.from(items[index].sizeQuantity);
-    sizeQuantity.update(size, (value) => value - quantity);
-    items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
+    _productsController
+        .decrementSizeQuantity(product, size, quantity)
+        .then((value) {
+      int index = items.indexOf(product);
+      Map<String, int> sizeQuantity = Map.from(items[index].sizeQuantity);
+      sizeQuantity.update(size, (value) => value - quantity);
+      items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
+    });
   }
 
   /// Deletes a product from the products list by id and returns its index.

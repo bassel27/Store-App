@@ -142,6 +142,7 @@ class ProductController with ExceptionHandler {
 
   Future<void> decrementSizeQuantity(
       Product product, String size, int quantity) async {
+    
     await db
         .collection(kProductsCollection)
         .doc(product.id)

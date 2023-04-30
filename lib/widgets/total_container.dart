@@ -66,6 +66,7 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                   await Provider.of<ProductsNotifier>(context, listen: false)
                       .decrementSizeQuantity(
                           cartItem.product, cartItem.size, cartItem.quantity);
+                  
                 }
                 await cartProvider.clear();
               } catch (e) {
