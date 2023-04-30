@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/product_controller.dart';
 import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/models/cart_item/cart_item.dart';
 
 import '../models/product/product.dart';
 import '../services/app_exception.dart';
@@ -62,6 +63,8 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     areProductsFetched = true;
     notifyListeners();
   }
+
+
 
   /// Adds the new product to the end of the list of products.
   Future<void> addProduct(Product newProduct, File imageFile) {

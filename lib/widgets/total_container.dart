@@ -52,6 +52,8 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
   @override
   Widget build(BuildContext context) {
     CartNotifier cartProvider = Provider.of<CartNotifier>(context);
+    ProductsNotifier productsProvider =
+        Provider.of<ProductsNotifier>(context, listen: false);
     return TextButton(
       onPressed: (cartProvider.cartItemsCount == 0 || _isLoading == true)
           ? null
@@ -60,14 +62,19 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                 _isLoading = true;
               });
               try {
+                await productsProvider
+                    .getAndSetProducts(); //fetch current products to update their sizeQuantity
+                for (CartItem cartItem in cartProvider.items) {
+                  if (!await cartProvider.isCartItemWithCurrentSizeAndQuantity(
+                      cartItem, productsProvider.items)) {
+                    throw Exception(
+                        "Some cart items have been changed.\nReview your cart again before making the order.");
+                  }
+                  await productsProvider.decrementSizeQuantity(
+                      cartItem.product, cartItem.size, cartItem.quantity);
+                }
                 await Provider.of<OrdersNotifier>(context, listen: false)
                     .addOrder(cartProvider.items, cartProvider.total);
-                for (CartItem cartItem in cartProvider.items) {
-                  await Provider.of<ProductsNotifier>(context, listen: false)
-                      .decrementSizeQuantity(
-                          cartItem.product, cartItem.size, cartItem.quantity);
-                  
-                }
                 await cartProvider.clear();
               } catch (e) {
                 handleException(e);

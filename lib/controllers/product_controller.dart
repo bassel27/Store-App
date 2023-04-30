@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/helper/dialog_helper.dart';
 
+import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
 
 // TODO: use tojson and from json. send my id
