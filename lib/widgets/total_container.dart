@@ -69,7 +69,7 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                   if (!cartProvider.setCartItemWithCurrentQuantity(
                       cartItem, productsProvider.items)) {
                     throw Exception(
-                        "The quantity of one cart item or more has been changed due to availability.\nReview your cart again before making the order.");
+                        "The quantity of one or more items in your cart has been adjusted due to unavailability in the requested size/quantity.\nPlease review your cart before placing the order.");
                   } else {
                     int newQuantity = await productsProvider.reduceSizeQuantity(
                         cartItem.product, cartItem.size, cartItem.quantity);

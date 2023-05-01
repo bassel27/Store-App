@@ -11,8 +11,7 @@ class NameTextFormField extends StatelessWidget {
         Provider.of<ProductsNotifier>(context, listen: false);
 
     return TextFormField(
-      initialValue: 'lol',
-      // initialValue: productsProvider.editedProduct.title,
+      initialValue: productsProvider.editedProduct.title,
       decoration: const InputDecoration(
         labelText: "Name",
       ),

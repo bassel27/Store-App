@@ -22,7 +22,12 @@ class ProductDetailsScreen extends StatelessWidget {
     final sizeProvider = Provider.of<SizeNotifier>(context, listen: false);
     sizeProvider.product = product;
     const double circleDiameter = 35;
-    // TODO: use provider
+    TextStyle descriptionTextStyle =
+        TextStyle(color: Theme.of(context).colorScheme.secondary);
+    TextStyle titleTextStyle = Theme.of(context)
+        .textTheme
+        .bodyText2!
+        .copyWith(fontWeight: FontWeight.w700, fontSize: 22);
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: SafeArea(
@@ -62,13 +67,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               Expanded(
                                 child: AutoSizeText(
                                   product.title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 22,
-                                      ),
+                                  style: titleTextStyle,
                                   maxLines: 2,
                                 ),
                               ),
@@ -89,16 +88,21 @@ class ProductDetailsScreen extends StatelessWidget {
                           product.description == null ||
                                   product.description == ''
                               ? Container()
-                              : Text("Description: ${product.description}"),
+                              : Column(children: [
+                                  Text(
+                                    product.description!,
+                                    style: descriptionTextStyle,
+                                  ),
+                                ]),
                           const SizedBox(
-                            height: 30,
+                            height: 15,
                           ),
-                          Text(
-                            "Available Sizes".toUpperCase(),
+                          const Text(
+                            "Choose Size",
                             style: TextStyle(
-                                fontSize: 21,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.secondary),
+                                color: Colors.black),
                           ),
                           const SizedBox(
                             height: 8,
@@ -291,7 +295,7 @@ class _DropDownState extends State<DropDown> {
                 ),
               )
               .toList(),
-              style: const TextStyle(color: kTextLightColor),
+          style: const TextStyle(color: kTextLightColor),
           onChanged: (value) {
             setState(() {
               widget.onQuantityChanged(value!);
