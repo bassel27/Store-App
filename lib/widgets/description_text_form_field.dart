@@ -5,14 +5,16 @@ import '../providers/products_notifier.dart';
 
 class DescriptionTextFormField extends StatelessWidget {
   final FocusNode _descriptionFocusNode;
-  const DescriptionTextFormField(this._descriptionFocusNode);
+  DescriptionTextFormField(this._descriptionFocusNode);
+  final _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     var productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     return TextFormField(
         initialValue: productsProvider.editedProduct.description,
-        maxLines: 2,
+        scrollController: _scrollController,
+        maxLines: null,
         keyboardType: TextInputType.multiline,
         decoration: const InputDecoration(labelText: "Description"),
         focusNode: _descriptionFocusNode,

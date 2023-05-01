@@ -12,10 +12,9 @@ class PriceTextFormField extends StatelessWidget {
     var productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     return TextFormField(
-      initialValue: 99.toString(),
-      // initialValue: productsProvider.editedProduct.price == 0
-      //     ? null
-      //     : productsProvider.editedProduct.price.toStringAsFixed(2),
+      initialValue: productsProvider.editedProduct.price == 0
+          ? null
+          : productsProvider.editedProduct.price.toStringAsFixed(2),
       decoration: const InputDecoration(labelText: "Price"),
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.number,
