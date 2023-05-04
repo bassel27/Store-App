@@ -32,28 +32,11 @@ https://drive.google.com/file/d/10tj0rmah6i6M8tQS_EU7qKeScB4XKWk2/view?usp=share
 <div style="overflow-x:auto;">
   <table style="height: 400px;">
     <tr>
-      <th>Login</th>
-      <th>Home</th>
-      <th>Product Details</th>
-    </tr>
-    <tr>
       <td><img src="https://user-images.githubusercontent.com/40627412/236239935-1e4b1d33-9373-4096-81d7-7f4915081a5f.png" height="400"></td>
       <td><img src="https://user-images.githubusercontent.com/40627412/236240197-18ba04a2-c857-4e0d-989e-1b19b3545c6a.png" height="400"></td>
       <td><img src="https://user-images.githubusercontent.com/40627412/236240272-14db1dc1-a040-469a-ba13-a4326e4dd885.png" height="400"></td>
-    </tr>
-  </table>
-</div>
-  
-
-
-
-<div style="overflow-x:auto;">
-  <table style="height: 400px;">
-    <tr>
-      <th>Products Manager</th>
-    </tr>
-    <tr>
       <td><img src="https://user-images.githubusercontent.com/40627412/236240820-f589ab1f-0047-4d7e-9124-0dbe15e048c4.png" height="400"></td>
     </tr>
   </table>
 </div>
+  
