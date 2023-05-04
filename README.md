@@ -1,6 +1,17 @@
 # Store App
 This app is designed for an online clothes store. The app allows customers to easily browse and purchase items from the store using their mobile devices.
 
+<div style="overflow-x:auto;">
+  <table style="height: 400px;">
+    <tr>
+      <td><img src="https://user-images.githubusercontent.com/40627412/236239935-1e4b1d33-9373-4096-81d7-7f4915081a5f.png" height="400"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/236240197-18ba04a2-c857-4e0d-989e-1b19b3545c6a.png" height="400"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/236240272-14db1dc1-a040-469a-ba13-a4326e4dd885.png" height="400"></td>
+      <td><img src="https://user-images.githubusercontent.com/40627412/236240820-f589ab1f-0047-4d7e-9124-0dbe15e048c4.png" height="400"></td>
+    </tr>
+  </table>
+</div>
+
 ## Technologies Used
 The mobile application is developed using the Flutter framework and Firebase services. The **Firebase Authentication** service is utilized to provide secure user authentication. The **Firestore** service is used to persistently store chats, products, orders, and cart items. Push notifications are implemented using the **Firebase Cloud Messaging** service. Additionally, the **Firebase Cloud Storage** service is utilized to securely store and retrieve images used in the application.
 
@@ -27,16 +38,5 @@ The UI/UX design for this project was taken from a free Figma community file ava
 
 https://drive.google.com/file/d/10tj0rmah6i6M8tQS_EU7qKeScB4XKWk2/view?usp=share_link
 
-## Mockup
 
-<div style="overflow-x:auto;">
-  <table style="height: 400px;">
-    <tr>
-      <td><img src="https://user-images.githubusercontent.com/40627412/236239935-1e4b1d33-9373-4096-81d7-7f4915081a5f.png" height="400"></td>
-      <td><img src="https://user-images.githubusercontent.com/40627412/236240197-18ba04a2-c857-4e0d-989e-1b19b3545c6a.png" height="400"></td>
-      <td><img src="https://user-images.githubusercontent.com/40627412/236240272-14db1dc1-a040-469a-ba13-a4326e4dd885.png" height="400"></td>
-      <td><img src="https://user-images.githubusercontent.com/40627412/236240820-f589ab1f-0047-4d7e-9124-0dbe15e048c4.png" height="400"></td>
-    </tr>
-  </table>
-</div>
   
