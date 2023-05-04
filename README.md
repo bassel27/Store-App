@@ -57,17 +57,3 @@ https://drive.google.com/file/d/10tj0rmah6i6M8tQS_EU7qKeScB4XKWk2/view?usp=share
     </tr>
   </table>
 </div>
-
-
-<div style="overflow-x:auto;">
-  <table style="height: 400px;">
-    <tr>
-      <th>Edit Product</th>
-      <th>Chat Support</th>
-    </tr>
-    <tr>
-      <td><img src="https://user-images.githubusercontent.com/40627412/224509764-71ca03ef-fd70-4e8d-8841-473fe7537628.png" height="400"></td>
-      <td><img src="https://user-images.githubusercontent.com/40627412/224506247-95521e90-c00f-4e5e-ac68-5e8eab5365c5.png" height="400"></td>
-    </tr>
-  </table>
-</div>
