@@ -74,7 +74,7 @@ class ProductController with ExceptionHandler {
   Future<void> _setFavoriteProductsIds() async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
     final userDoc = await db.collection('users').doc(userId).get();
-    _favoriteProductIds = List<String>.from(userDoc['favoriteProducts']);
+    _favoriteProductIds = List<String>.from(userDoc['favoriteProductsIds']);
   }
 
   /// Provide products list to delete favorite products that no longer exist.

@@ -15,10 +15,10 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
           ? null
           : Address.fromJson(json['address'] as Map<String, dynamic>),
       isAdmin: json['isAdmin'] as bool? ?? false,
-      // favoriteProducts: (json['favoriteProducts'] as List<dynamic>?)
-      //         ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
-      //         .toList() ??
-      //     const [],
+      favoriteProductsIds: (json['favoriteProductsIds'] as List<dynamic>?)
+              ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
@@ -28,5 +28,5 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'id': instance.id,
       'address': instance.address,
       'isAdmin': instance.isAdmin,
-      'favoriteProducts': instance.favoriteProducts,
+      'favoriteProductsIds': instance.favoriteProductsIds,
     };

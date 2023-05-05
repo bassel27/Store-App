@@ -28,7 +28,7 @@ mixin _$User {
   bool get isAdmin => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String? get password => throw _privateConstructorUsedError;
-  List<Product> get favoriteProducts => throw _privateConstructorUsedError;
+  List<Product> get favoriteProductsIds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +48,7 @@ abstract class $UserCopyWith<$Res> {
       Address? address,
       bool isAdmin,
       @JsonKey(ignore: true) String? password,
-      List<Product> favoriteProducts});
+      List<Product> favoriteProductsIds});
 
   $AddressCopyWith<$Res>? get address;
 }
@@ -73,7 +73,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? address = freezed,
     Object? isAdmin = null,
     Object? password = freezed,
-    Object? favoriteProducts = null,
+    Object? favoriteProductsIds = null,
   }) {
     return _then(_value.copyWith(
       email: null == email
@@ -104,9 +104,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String?,
-      favoriteProducts: null == favoriteProducts
-          ? _value.favoriteProducts
-          : favoriteProducts // ignore: cast_nullable_to_non_nullable
+      favoriteProductsIds: null == favoriteProductsIds
+          ? _value.favoriteProductsIds
+          : favoriteProductsIds // ignore: cast_nullable_to_non_nullable
               as List<Product>,
     ) as $Val);
   }
@@ -138,7 +138,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       Address? address,
       bool isAdmin,
       @JsonKey(ignore: true) String? password,
-      List<Product> favoriteProducts});
+      List<Product> favoriteProductsIds});
 
   @override
   $AddressCopyWith<$Res>? get address;
@@ -160,7 +160,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? address = freezed,
     Object? isAdmin = null,
     Object? password = freezed,
-    Object? favoriteProducts = null,
+    Object? favoriteProductsIds = null,
   }) {
     return _then(_$_User(
       email: null == email
@@ -191,9 +191,9 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String?,
-      favoriteProducts: null == favoriteProducts
-          ? _value._favoriteProducts
-          : favoriteProducts // ignore: cast_nullable_to_non_nullable
+      favoriteProductsIds: null == favoriteProductsIds
+          ? _value._favoriteProductsIds
+          : favoriteProductsIds // ignore: cast_nullable_to_non_nullable
               as List<Product>,
     ));
   }
@@ -210,8 +210,8 @@ class _$_User implements _User {
       this.address,
       this.isAdmin = false,
       @JsonKey(ignore: true) this.password,
-      final List<Product> favoriteProducts = const []})
-      : _favoriteProducts = favoriteProducts;
+      final List<Product> favoriteProductsIds = const []})
+      : _favoriteProductsIds = favoriteProductsIds;
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
@@ -231,19 +231,19 @@ class _$_User implements _User {
   @override
   @JsonKey(ignore: true)
   final String? password;
-  final List<Product> _favoriteProducts;
+  final List<Product> _favoriteProductsIds;
   @override
   @JsonKey()
-  List<Product> get favoriteProducts {
-    if (_favoriteProducts is EqualUnmodifiableListView)
-      return _favoriteProducts;
+  List<Product> get favoriteProductsIds {
+    if (_favoriteProductsIds is EqualUnmodifiableListView)
+      return _favoriteProductsIds;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_favoriteProducts);
+    return EqualUnmodifiableListView(_favoriteProductsIds);
   }
 
   @override
   String toString() {
-    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, address: $address, isAdmin: $isAdmin, password: $password, favoriteProducts: $favoriteProducts)';
+    return 'User(email: $email, firstName: $firstName, lastName: $lastName, id: $id, address: $address, isAdmin: $isAdmin, password: $password, favoriteProductsIds: $favoriteProductsIds)';
   }
 
   @override
@@ -262,7 +262,7 @@ class _$_User implements _User {
             (identical(other.password, password) ||
                 other.password == password) &&
             const DeepCollectionEquality()
-                .equals(other._favoriteProducts, _favoriteProducts));
+                .equals(other._favoriteProductsIds, _favoriteProductsIds));
   }
 
   @JsonKey(ignore: true)
@@ -276,7 +276,7 @@ class _$_User implements _User {
       address,
       isAdmin,
       password,
-      const DeepCollectionEquality().hash(_favoriteProducts));
+      const DeepCollectionEquality().hash(_favoriteProductsIds));
 
   @JsonKey(ignore: true)
   @override
@@ -301,7 +301,7 @@ abstract class _User implements User {
       final Address? address,
       final bool isAdmin,
       @JsonKey(ignore: true) final String? password,
-      final List<Product> favoriteProducts}) = _$_User;
+      final List<Product> favoriteProductsIds}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
@@ -321,7 +321,7 @@ abstract class _User implements User {
   @JsonKey(ignore: true)
   String? get password;
   @override
-  List<Product> get favoriteProducts;
+  List<Product> get favoriteProductsIds;
   @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
