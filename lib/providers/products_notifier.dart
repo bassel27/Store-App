@@ -134,9 +134,10 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     }
     return null;
   }
+
   /// Deletes a product from the products list by id and returns its index.
-  Future<int> deleteProduct(String productId) async {
-    await _productsController.delete(productId);
+  Future<int> deleteProduct(String productId, {bool deleteImage = true}) async {
+    await _productsController.delete(productId, deleteImage);
     int index = -1;
     for (int i = 0; i < items.length; i++) {
       if (items[i].id == productId) {

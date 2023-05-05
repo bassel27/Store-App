@@ -127,7 +127,7 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
   Future<void> deleteProductAndItsCartItems(String productId) async {
     ProductsNotifier productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
-    await productsProvider.deleteProduct(productId);
+    await productsProvider.deleteProduct(productId, deleteImage: false);
     await CartController().deleteCartItemsByProductId(productId);
   }
 }

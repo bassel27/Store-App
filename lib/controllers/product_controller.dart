@@ -133,9 +133,11 @@ class ProductController with ExceptionHandler {
     return newProductWithImageUrl;
   }
 
-  Future<void> delete(String productId) async {
+  Future<void> delete(String productId, [bool deleteImage = true]) async {
     await db.collection(kProductsCollection).doc(productId).delete();
-    await deleteImageFile(productId);
+    if (deleteImage) {
+      await deleteImageFile(productId);
+    }
   }
 
   Future<void> deleteProductSize(Product product, String size) async {
