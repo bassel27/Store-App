@@ -124,6 +124,16 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     return newQuantity;
   }
 
+  Product? getProductById(String id) {
+    for (Product product in products) {
+      if (product.id == id) {
+        {
+          return product;
+        }
+      }
+    }
+    return null;
+  }
   /// Deletes a product from the products list by id and returns its index.
   Future<int> deleteProduct(String productId) async {
     await _productsController.delete(productId);
