@@ -37,13 +37,12 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
 
     return total;
   }
-
+  
   /// Returns true if the quantity is enough for the cartItem's quantity.
   ///
   /// If current quantity is zero, cartItem is removed from cart.
   /// This method should be called before ordering because cartItem's product doesn't get updated if a product changes.
-  bool setCartItemWithCurrentQuantity(
-      CartItem cartItem, List<Product> products) {
+  bool iscartItemQuantityEnough(CartItem cartItem, List<Product> products) {
     Product currentProduct;
     int index = items.indexOf(cartItem);
     if (products.contains(cartItem.product)) {
