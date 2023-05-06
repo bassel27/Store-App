@@ -34,17 +34,9 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   var providers = [
+    ChangeNotifierProvider(create: (_) => AuthNotifier()),
+    ChangeNotifierProvider(create: (context) => ProductsNotifier([])),
     ChangeNotifierProvider(
-        // here you're not using the .value because Products() object is created inside the changenotifierprovider
-        create: (_) => AuthNotifier()), // the object you wanna keep track of
-    ChangeNotifierProxyProvider<AuthNotifier, ProductsNotifier>(
-        // this provider will be rebuilt when Auth changes
-        update: (context, auth, previousProduct) => ProductsNotifier(
-            previousProduct == null ? [] : previousProduct.items),
-        create: (context) => ProductsNotifier([])),
-    ChangeNotifierProxyProvider<AuthNotifier, CartNotifier>(
-      update: (context, auth, previousCart) =>
-          CartNotifier(previousCart == null ? [] : previousCart.cartItems),
       create: (context) => CartNotifier([]),
     ),
     ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
@@ -61,26 +53,24 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       // TODO: use materialapp
-      builder: (context, child) => Consumer<AuthNotifier>(
-        builder: (context, auth, _) => GetMaterialApp(
-          // themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
-          theme: MyTheme.lightTheme,
-          // darkTheme: MyTheme.darkTheme,
-          routes: {
-            BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
-            ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
-            OrdersScreen.route: (ctx) => const OrdersScreen(),
-            ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
-            AccountScreen.route: (ctx) => AccountScreen(),
-            EditProductScreen.route: (ctx) => const EditProductScreen(null),
-            ChatScreen.route: (ctx) => const ChatScreen(),
-            VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
-            AuthScreen.route: (ctx) => AuthScreen(),
-            AddressScreen.route: (ctx) => AddressScreen(),
-          },
-          title: 'Flutter Demo',
-          home: const LandingPage(),
-        ),
+      builder: (context, child) => GetMaterialApp(
+        // themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
+        theme: MyTheme.lightTheme,
+        // darkTheme: MyTheme.darkTheme,
+        routes: {
+          BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
+          ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
+          OrdersScreen.route: (ctx) => const OrdersScreen(),
+          ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
+          AccountScreen.route: (ctx) => AccountScreen(),
+          EditProductScreen.route: (ctx) => const EditProductScreen(null),
+          ChatScreen.route: (ctx) => const ChatScreen(),
+          VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
+          AuthScreen.route: (ctx) => AuthScreen(),
+          AddressScreen.route: (ctx) => AddressScreen(),
+        },
+        title: 'Flutter Demo',
+        home: const LandingPage(),
       ),
     );
   }
