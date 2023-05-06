@@ -97,7 +97,7 @@ class _SearchBar extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final suggestionsList =
         Provider.of<ProductsNotifier>(context, listen: false)
-            .items
+            .products
             .map((e) => e.title)
             .toList()
             .toSet()

@@ -12,7 +12,7 @@ class FABFavorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductsNotifier productsProvider = context.watch<ProductsNotifier>();
-    return !productsProvider.items.contains(product)
+    return !productsProvider.products.contains(product)
         ? Container()
         : Container(
             decoration: const BoxDecoration(

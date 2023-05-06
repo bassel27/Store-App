@@ -25,7 +25,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
     ProductsNotifier productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     List<Product> favoriteProducts = productsProvider.favoriteProducts;
-    List<Product> products = productsProvider.items;
+    List<Product> products = productsProvider.products;
     var screenToBottomNavBarItem = {
       ProductsGridScreen(favoriteProducts): const BottomNavigationBarItem(
         icon: Icon(Icons.favorite_outline),

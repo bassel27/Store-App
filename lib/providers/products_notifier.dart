@@ -9,8 +9,8 @@ import '../services/app_exception.dart';
 
 class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   bool areProductsFetched = false;
-
-  ProductsNotifier(this.items);
+  List<Product> _items = [];
+  ProductsNotifier();
   late final ProductController _productsController = ProductController();
   Product editedProduct = const Product(
       id: '', title: '', description: '', price: 0, imageUrl: null);
@@ -32,23 +32,23 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   List<Product> get products {
-    return [...items];
+    return [..._items];
   }
 
   // Returns a copy so that the only way to add a
   // product is through our method which calls notifyListeners().
   // If you added to the returned original list, notifyListeners won't be called.
   List<Product> get favoriteProducts {
-    return [...items].where((product) => product.isFavorite).toList();
+    return [..._items].where((product) => product.isFavorite).toList();
   }
 
   Future<void> determineFavoriteStatus(Product product) async {
-    int index = items.indexOf(product);
+    int index = _items.indexOf(product);
     if (index != -1) {
       try {
         await _productsController.updateProductFavoriteStatus(
             product.id, !product.isFavorite);
-        items[index] = product.copyWith(isFavorite: !product.isFavorite);
+        _items[index] = product.copyWith(isFavorite: !product.isFavorite);
         notifyListeners();
       } catch (e) {
         handleException(e);
@@ -57,14 +57,14 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   Future<void> getAndSetProducts() async {
-    items = await _productsController.getProducts();
+    _items = await _productsController.getProducts();
     areProductsFetched = true;
     notifyListeners();
   }
 
   /// Adds the new product to the end of the list of products.
   Future<void> addProduct(Product newProduct, File imageFile) {
-    return addProductByIndex(newProduct, items.length, imageFile);
+    return addProductByIndex(newProduct, _items.length, imageFile);
   }
 
   /// Inserts the new product at a specific index in the list of products.
@@ -74,25 +74,25 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
       Product newProduct, int index, File imageFile) async {
     Product newpProductWithImageUrl =
         await _productsController.create(newProduct, imageFile);
-    items.insert(index, newpProductWithImageUrl);
+    _items.insert(index, newpProductWithImageUrl);
     notifyListeners();
   }
 
   Future<void> updateProduct(Product newProduct, File? imageFile) async {
     //TODO: find the obejct itself
-    final index = items.indexWhere((element) => element.id == newProduct.id);
+    final index = _items.indexWhere((element) => element.id == newProduct.id);
     if (index >= 0) {
       Product product =
           await _productsController.updateProduct(newProduct, imageFile);
-      items[index] = product;
+      _items[index] = product;
       notifyListeners();
     }
   }
 
   /// Used for cartItem's product because it is not updated.
   Map<String, int> getProductSizeQuantity(Product product, String size) {
-    int index = items.indexOf(product);
-    Map<String, int> sizeQuantity = items[index].sizeQuantity;
+    int index = _items.indexOf(product);
+    Map<String, int> sizeQuantity = _items[index].sizeQuantity;
     return sizeQuantity;
   }
 
@@ -101,7 +101,7 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
       int index = products.indexOf(product);
       Map<String, int> sizeQuantity = Map.from(products[index].sizeQuantity);
       sizeQuantity.remove(size);
-      items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
+      _items[index] = _items[index].copyWith(sizeQuantity: sizeQuantity);
       notifyListeners();
     });
   }
@@ -113,13 +113,13 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     await _productsController
         .decrementSizeQuantity(product, size, quantity)
         .then((value) {
-      int index = items.indexOf(product);
-      Map<String, int> sizeQuantity = Map.from(items[index].sizeQuantity);
+      int index = _items.indexOf(product);
+      Map<String, int> sizeQuantity = Map.from(_items[index].sizeQuantity);
       sizeQuantity.update(size, (value) {
         newQuantity = value - quantity;
         return newQuantity;
       });
-      items[index] = items[index].copyWith(sizeQuantity: sizeQuantity);
+      _items[index] = _items[index].copyWith(sizeQuantity: sizeQuantity);
     });
     return newQuantity;
   }
@@ -139,13 +139,13 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   Future<int> deleteProduct(String productId, {bool deleteImage = true}) async {
     await _productsController.delete(productId, deleteImage);
     int index = -1;
-    for (int i = 0; i < items.length; i++) {
-      if (items[i].id == productId) {
+    for (int i = 0; i < _items.length; i++) {
+      if (_items[i].id == productId) {
         index = i;
       }
     }
     if (index != -1) {
-      items.removeAt(index);
+      _items.removeAt(index);
       notifyListeners();
     } else {
       // product not found in list
@@ -154,7 +154,4 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     }
     return index;
   }
-
-  // TODO: make it private
-  List<Product> items = [];
 }

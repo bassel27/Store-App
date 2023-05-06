@@ -35,7 +35,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   var providers = [
     ChangeNotifierProvider(create: (_) => AuthNotifier()),
-    ChangeNotifierProvider(create: (context) => ProductsNotifier([])),
+    ChangeNotifierProvider(create: (context) => ProductsNotifier()),
     ChangeNotifierProvider(
       create: (context) => CartNotifier([]),
     ),
