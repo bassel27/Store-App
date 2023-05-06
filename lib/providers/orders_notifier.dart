@@ -10,27 +10,27 @@ import '../models/order/order.dart';
 class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   /// List of all order sorted by recency.
   // TODO: make private
-  List<Order> ordersList;
+  List<Order> _orders=[];
 
-  OrdersNotifier(this.ordersList);
+  OrdersNotifier();
 
   late final OrderController _ordersController = OrderController();
 
-  List<Order> get orders => [...ordersList]..sort((a, b) {
+  List<Order> get orders => [..._orders]..sort((a, b) {
       return b.dateTime.compareTo(a.dateTime);
     });
 
   set orders(List<Order> orders) {
-    ordersList = orders;
+    _orders = orders;
   }
 
-  int get numberOfOrders => ordersList.length;
+  int get numberOfOrders => _orders.length;
 
   bool areOrdersFetched = false;
 
   /// Throws exception if fails.
   Future<void> getAndSetOrders(bool isAdmin) async {
-    ordersList = await _ordersController.get(isAdmin);
+    _orders = await _ordersController.get(isAdmin);
     notifyListeners();
   }
 
@@ -42,7 +42,7 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
         cartItems: cartProducts,
         dateTime: DateTime.now(),
         userId: FirebaseAuth.instance.currentUser!.uid);
-    await _ordersController.create(newOrder).then((_) => ordersList.insert(
+    await _ordersController.create(newOrder).then((_) => _orders.insert(
           0,
           newOrder,
         ));
