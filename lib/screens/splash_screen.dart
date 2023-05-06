@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
       body: Center(
         child: FutureBuilder(
           future: Future.wait([
-            context.read<CartNotifier>().getAndSetCart(),
+            Provider.of<CartNotifier>(context, listen: false).getAndSetCart(),
             Provider.of<ProductsNotifier>(context, listen: false)
                 .getAndSetProducts(),
             Provider.of<UserNotifier>(context, listen: false)
