@@ -46,7 +46,9 @@ class OrderController with ExceptionHandler {
       final order = Order.fromJson(doc.data() as Map<String, dynamic>);
       orders.add(order);
     }
-
+    if (ordersDocs.isNotEmpty) {
+      _startAfter = ordersDocs.last;
+    }
     return orders;
   }
 
