@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/widgets/product_grid_tile.dart';
 
 import '../models/product/product.dart';
 import '../providers/products_notifier.dart';
 
-class FABFavorite extends StatelessWidget {
-  Product product;
+class FABFavorite extends StatefulWidget {
   final double circleDiameter;
-  FABFavorite(this.product, this.circleDiameter);
+  const FABFavorite(this.productId, this.circleDiameter);
+  final String productId;
+  @override
+  State<FABFavorite> createState() => _FABFavoriteState();
+}
+
+class _FABFavoriteState extends State<FABFavorite> with ExceptionHandler {
   @override
   Widget build(BuildContext context) {
     final ProductsNotifier productsProvider = context.watch<ProductsNotifier>();
-    return !productsProvider.products.contains(product)
+    Product? product;
+    if (productsProvider.products.any(
+      (element) => element.id == widget.productId,
+    )) {
+      product = productsProvider.products.singleWhere(
+        (element) => element.id == widget.productId,
+      );
+    }
+
+    return product == null
         ? Container()
         : Container(
             decoration: const BoxDecoration(
@@ -20,15 +35,20 @@ class FABFavorite extends StatelessWidget {
             ),
             margin: const EdgeInsets.symmetric(
                 vertical: kPhotoPadding + 9, horizontal: kPhotoPadding + 7),
-            width: circleDiameter,
-            height: circleDiameter,
+            width: widget.circleDiameter,
+            height: widget.circleDiameter,
             child: RawMaterialButton(
               fillColor: Theme.of(context).colorScheme.primary,
               shape: const CircleBorder(),
-              onPressed: () =>
-                  productsProvider.determineFavoriteStatus(product),
+              onPressed: () async {
+                await productsProvider
+                    .determineFavoriteStatus(product!)
+                    .then((value) {
+                  setState(() {});
+                }).catchError(handleException);
+              },
               child: Icon(
-                size: circleDiameter / 1.35,
+                size: widget.circleDiameter / 1.35,
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: Theme.of(context).colorScheme.tertiary,
               ),

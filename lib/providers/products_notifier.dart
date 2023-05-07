@@ -45,14 +45,12 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   Future<void> determineFavoriteStatus(Product product) async {
     int index = _items.indexOf(product);
     if (index != -1) {
-      try {
+      
         await _productsController.updateProductFavoriteStatus(
             product.id, !product.isFavorite);
         _items[index] = product.copyWith(isFavorite: !product.isFavorite);
         notifyListeners();
-      } catch (e) {
-        handleException(e);
-      }
+      
     }
   }
 

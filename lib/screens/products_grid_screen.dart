@@ -76,13 +76,13 @@ class ProductsGridScreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: _ScaffoldBody(products),
+            child: _ScaffoldBody(products, isPushedScreen),
           )
         ],
       ));
     } else {
       return Scaffold(
-          body: _ScaffoldBody(products),
+          body: _ScaffoldBody(products, isPushedScreen),
           appBar: AppBar(
             title: Text(searchValue!),
           ));
@@ -144,18 +144,24 @@ class _SearchBar extends StatelessWidget {
 }
 
 class _ScaffoldBody extends StatelessWidget {
-  const _ScaffoldBody(
+  _ScaffoldBody(
     this.products,
+    this.isPushedScreen,
   );
-
-  final List<Product> products;
+  final bool isPushedScreen;
+  List<Product> products;
 
   @override
   Widget build(BuildContext context) {
     var productsProvider = Provider.of<ProductsNotifier>(context);
-    List<Product> currentProducts =productsProvider.products;
-    products.removeWhere((element) => !currentProducts.contains(
-        element)); // if any element was deleted since passing products to ProductsGridScreen
+    List<Product> currentProducts = productsProvider.products;
+    if (isPushedScreen) {
+      products.removeWhere((element) => !currentProducts.contains(
+          element)); // if any element was deleted since passing products to ProductsGridScreen
+    } else {
+      products = currentProducts;
+    }
+
     return Center(
       child: products.isNotEmpty
           ? GridView.builder(

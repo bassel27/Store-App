@@ -146,7 +146,7 @@ class _ImageAndFavoriteStack extends StatelessWidget {
               ),
             ),
           ),
-          FABFavorite(product, 30)
+          FABFavorite(product.id, 30)
           // child is a reference to the Consumer's child property which doesn't rebuild
         ],
       ),
@@ -154,41 +154,6 @@ class _ImageAndFavoriteStack extends StatelessWidget {
   }
 }
 
-// class _ChangeQuantityRow extends StatelessWidget {
-//   const _ChangeQuantityRow({
-//     Key? key,
-//     required this.cartItem,
-//     required this.product,
-//   }) : super(key: key);
-
-//   final CartItem cartItem;
-//   final Product product;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final CartNotifier cartProvider = Provider.of<CartNotifier>(context);
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//       children: [
-//         const SizedBox(
-//           width: 10,
-//         ),
-//         _MyIconButton(Icons.remove_circle, () {
-//           cartProvider.decrementQuantity(cartItem);
-//         }),
-//         Text(
-//           cartItem.quantity.toString(),
-//         ),
-//         _MyIconButton(Icons.add_circle, () {
-//           cartProvider.add(product, );
-//         }),
-//         const SizedBox(
-//           width: 10,
-//         ),
-//       ],
-//     );
-//   }
-// }
 
 class _MyIconButton extends StatelessWidget {
   final VoidCallback onPressed;
