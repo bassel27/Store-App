@@ -22,13 +22,14 @@ The mobile application is developed using the Flutter framework and Firebase ser
 5. Retrieve cart items
 6. Make orders
 7. Favorite products
-8. View past orders
-9. Chat with customer service
-10. Push notifications
-11. Manage products (add, delete, or edit) (only for admins)
-12. Animations
-13. Use of Provider for state management
-14. Error handling
+8. Lazy loading of products and orders.
+9. View past orders
+10. Chat with customer service
+11. Push notifications
+12. Manage products (add, delete, or edit) (only for admins)
+13. Animations
+14. Use of Provider for state management
+15. Error handling
 
 ## Design:
 
