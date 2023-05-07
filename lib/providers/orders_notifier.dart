@@ -10,15 +10,13 @@ import '../models/order/order.dart';
 class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   /// List of all order sorted by recency.
   // TODO: make private
-  List<Order> _orders=[];
+  List<Order> _orders = [];
 
   OrdersNotifier();
 
   late final OrderController _ordersController = OrderController();
 
-  List<Order> get orders => [..._orders]..sort((a, b) {
-      return b.dateTime.compareTo(a.dateTime);
-    });
+  List<Order> get orders => _orders;
 
   set orders(List<Order> orders) {
     _orders = orders;
@@ -29,8 +27,10 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   bool areOrdersFetched = false;
 
   /// Throws exception if fails.
-  Future<void> getAndSetOrders(bool isAdmin) async {
-    _orders = await _ordersController.get(isAdmin);
+  Future<void> getAndSetOrders(bool isAdmin,
+      {int numberOfOrdersToFetch = 5}) async {
+    _orders.addAll(await _ordersController.getOrdersByBatch(isAdmin,
+        numberOfOrdersToFetch: numberOfOrdersToFetch));
     notifyListeners();
   }
 

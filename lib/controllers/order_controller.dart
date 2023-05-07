@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart'
-    show FirebaseFirestore, QuerySnapshot;
+    show
+        DocumentSnapshot,
+        FirebaseFirestore,
+        Query,
+        QueryDocumentSnapshot,
+        QuerySnapshot;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 
@@ -7,26 +12,41 @@ import '../models/order/order.dart';
 
 class OrderController with ExceptionHandler {
   OrderController();
-  FirebaseFirestore db = FirebaseFirestore.instance;
   final String kOrdersCollection = 'orders';
+  DocumentSnapshot? _startAfter;
+  late final _ordersCollection =
+      FirebaseFirestore.instance.collection(kOrdersCollection);
 
   /// Returns fetched orders.
   ///
   /// Throws an exception if operation fails.
-  Future<List<Order>> get(bool isAdmin ) async {
-    List<Order> orders = [];
-    QuerySnapshot snapshot;
-    if (!isAdmin) {
-      snapshot = await db
-          .collection(kOrdersCollection)
-          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .get();
+  Future<List<Order>> getOrdersByBatch(bool isAdmin,
+      {numberOfOrdersToFetch = 5}) async {
+    late Query ordersQuery;
+
+    if (isAdmin) {
+      ordersQuery = _ordersCollection.orderBy('dateTime', descending: true);
     } else {
-      snapshot = await db.collection(kOrdersCollection).get();
+      ordersQuery = _ordersCollection
+          .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .orderBy('dateTime', descending: true);
     }
-    for (var docSnapshot in snapshot.docs) {
-      orders.add(Order.fromJson(docSnapshot.data() as Map<String, dynamic>));
+
+    if (_startAfter != null) {
+      ordersQuery = ordersQuery.startAfterDocument(_startAfter!);
     }
+
+    ordersQuery = ordersQuery.limit(numberOfOrdersToFetch);
+
+    final querySnapshot = await ordersQuery.get();
+    final ordersDocs = querySnapshot.docs;
+    final List<Order> orders = [];
+
+    for (final doc in ordersDocs) {
+      final order = Order.fromJson(doc.data() as Map<String, dynamic>);
+      orders.add(order);
+    }
+
     return orders;
   }
 
@@ -34,9 +54,6 @@ class OrderController with ExceptionHandler {
   ///
   /// Throws exception if operation not successful.
   Future<void> create(Order newOrder) async {
-    await db
-        .collection(kOrdersCollection)
-        .doc(newOrder.id)
-        .set(newOrder.toJson());
+    await _ordersCollection.doc(newOrder.id).set(newOrder.toJson());
   }
 }
