@@ -17,8 +17,6 @@ class AuthNotifier
     with ChangeNotifier, ExceptionHandler, TryCatchFirebaseWrapper {
   final authControler = AuthController();
 
-  DateTime? _expiryDate;
-  Timer? _authTimer;
   final _auth = FirebaseAuth.instance;
 
   bool isDateNotReached(DateTime date) {

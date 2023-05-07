@@ -52,7 +52,7 @@ class _OrderListTileState extends State<OrderListTile> {
         child: ListTile(
           title: Text("$kCurrency ${widget.order.total.toStringAsFixed(2)}"),
           subtitle: Text(
-            DateFormat("dd/MM/yyyy, hh:mm a").format(widget.order.dateTime),
+            DateFormat("dd/MM/yyyy").format(widget.order.dateTime),
           ),
           trailing: IconButton(
             icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
