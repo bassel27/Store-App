@@ -26,12 +26,19 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
 
   bool areOrdersFetched = false;
 
-  /// Throws exception if fails.
-  Future<void> getAndSetOrders(bool isAdmin,
+  /// Returns newly fetched orders.
+  Future<List<Order>> getAndSetOrders(bool isAdmin,
       {int numberOfOrdersToFetch = 5}) async {
-    _orders.addAll(await _ordersController.getOrdersByBatch(isAdmin,
-        numberOfOrdersToFetch: numberOfOrdersToFetch));
+    List<Order> newOrders = await _ordersController.getOrdersByBatch(
+        isAdmin, numberOfOrdersToFetch);
+
+    _orders.addAll(newOrders);
+    if (newOrders.isEmpty) {
+      // all orders have been fetched
+      areOrdersFetched = true;
+    }
     notifyListeners();
+    return newOrders;
   }
 
   /// Throws an exception if operation not successful.

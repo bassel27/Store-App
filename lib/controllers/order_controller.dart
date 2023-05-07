@@ -21,7 +21,7 @@ class OrderController with ExceptionHandler {
   ///
   /// Throws an exception if operation fails.
   Future<List<Order>> getOrdersByBatch(bool isAdmin,
-      {numberOfOrdersToFetch = 5}) async {
+      numberOfOrdersToFetch ) async {
     late Query ordersQuery;
 
     if (isAdmin) {
