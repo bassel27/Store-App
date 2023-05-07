@@ -56,4 +56,10 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
 
     notifyListeners();
   }
+
+  // called when user logs out to reset all provider's data
+  void reset() {
+    _orders = [];
+    areOrdersFetched = false;
+  }
 }

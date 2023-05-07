@@ -7,6 +7,9 @@ import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 
+import '../providers/cart_notifier.dart';
+import '../providers/products_notifier.dart';
+
 class AccountScreen extends StatefulWidget {
   static const route = "/bottom_nav_bar/my_account";
   @override
@@ -73,11 +76,12 @@ class _AccountScreenState extends State<AccountScreen> {
           icon: Icons.logout,
           onTap: () async {
             // Navigator.pop(context);
-            await Provider.of<AuthNotifier>(context, listen: false).logout();
+            await Provider.of<AuthNotifier>(context, listen: false).signout();
             Navigator.of(context).pushReplacementNamed(
                 '/'); // to go to the home screen (authentication)
-            Provider.of<OrdersNotifier>(context, listen: false)
-                .areOrdersFetched = false;
+            Provider.of<OrdersNotifier>(context, listen: false).reset();
+            Provider.of<ProductsNotifier>(context, listen: false).reset();
+            Provider.of<CartNotifier>(context, listen: false).reset();
           },
           title: "Logout",
         ),

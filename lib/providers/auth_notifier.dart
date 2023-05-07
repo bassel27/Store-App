@@ -61,7 +61,7 @@ class AuthNotifier
     }
   }
 
-  Future<void> logout() async {
+  Future<void> signout() async {
     try {
       await _auth.signOut();
     } on PlatformException catch (e) {

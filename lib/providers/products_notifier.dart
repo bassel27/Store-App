@@ -154,4 +154,9 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
     }
     return index;
   }
+
+  // called when user logs out to reset all provider's data
+  void reset() {
+    _items = [];
+  }
 }

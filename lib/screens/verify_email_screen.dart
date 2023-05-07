@@ -87,7 +87,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         onPressed: () async {
                           await context
                               .read<AuthNotifier>()
-                              .logout(); // this returns authscreen
+                              .signout(); // this returns authscreen
                         }),
                     const SizedBox(
                       height: 20,
