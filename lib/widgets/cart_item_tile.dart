@@ -54,22 +54,20 @@ class CartItemTile extends StatelessWidget {
               "Total: $kCurrency ${(cartItem.product.price * Decimal.parse(cartItem.quantity.toString())).toStringAsFixed(2)}"),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-          trailing: Column(
-            children: [
-              Expanded(
-                child: IconButton(
-                    onPressed: () {
-                      var cart =
-                          Provider.of<CartNotifier>(context, listen: false);
-                      cart.deleteItem(cartItem);
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                      color: Theme.of(context).colorScheme.error,
-                    )),
-              ),
-            ],
-          ),
+          trailing: isHeroAnimationOn
+              ? Expanded(
+                  child: IconButton(
+                      onPressed: () {
+                        var cart =
+                            Provider.of<CartNotifier>(context, listen: false);
+                        cart.deleteItem(cartItem);
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).colorScheme.error,
+                      )),
+                )
+              : null,
         ),
         const Divider(
           thickness: 1,
