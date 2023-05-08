@@ -1,15 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:decimal/decimal.dart';
 
 part 'product.freezed.dart';
 part 'product.g.dart';
-
 @freezed
 class Product with _$Product {
   const factory Product({
     required String title,
     required String? description, // TODO: remove required
     required String id,
-    required double price,
+    required Decimal price,
     @Default(false) @JsonKey(ignore: true) bool isFavorite,
     String? imageUrl,
     @Default({})

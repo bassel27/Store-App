@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/cart_controller.dart';
 import 'package:uuid/uuid.dart';
@@ -29,10 +30,11 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   /// Cart total amount.
-  double get total {
-    double total = 0.00;
+  Decimal get total {
+    Decimal total = Decimal.parse('0');
     for (var cartItem in _cartItems) {
-      total += cartItem.product.price * cartItem.quantity;
+      total +=
+          cartItem.product.price * Decimal.parse(cartItem.quantity.toString());
     }
 
     return total;
@@ -105,8 +107,11 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   Future<void> setQuantity(Product product, int quantity, String size) async {
     for (int i = 0; i < _cartItems.length; i++) {
       // if already exists in cart
-      if (_cartItems[i].product.id == product.id && size == _cartItems[i].size) {
-        await _cartController.setQuantity(_cartItems[i], quantity).then((value) {
+      if (_cartItems[i].product.id == product.id &&
+          size == _cartItems[i].size) {
+        await _cartController
+            .setQuantity(_cartItems[i], quantity)
+            .then((value) {
           _cartItems[i] = _cartItems[i].copyWith(quantity: quantity);
         }).catchError(handleException);
         notifyListeners();
@@ -130,7 +135,8 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   /// Adds a new product to cart or increases the quantity of an already existing one.
   void add(Product product, String size) async {
     for (int i = 0; i < _cartItems.length; i++) {
-      if (_cartItems[i].product.id == product.id && _cartItems[i].size == size) {
+      if (_cartItems[i].product.id == product.id &&
+          _cartItems[i].size == size) {
         await _cartController
             .incrementQuantity(_cartItems[i])
             .then((value) => increment(_cartItems[i]))
@@ -183,7 +189,7 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
 
   // called when user logs out to reset all provider's data
   void reset() {
- _cartItems = [];
+    _cartItems = [];
   }
 }
 

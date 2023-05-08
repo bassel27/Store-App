@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../cart_item/cart_item.dart';
-
+import 'package:decimal/decimal.dart';
 part 'order.freezed.dart';
 part 'order.g.dart';
 
@@ -10,7 +10,7 @@ class Order with _$Order {
   const Order._();
   const factory Order(
       {required String id,
-      required double total,
+      required Decimal total,
       required List<CartItem> cartItems,
       required String userId,
       required DateTime dateTime}) = _Order;

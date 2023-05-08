@@ -98,7 +98,7 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                       }
                     }
                     await Provider.of<OrdersNotifier>(context, listen: false)
-                        .addOrder(cartProvider.items, cartProvider.total);
+                        .addOrder(cartProvider.items, cartProvider.total.toDouble());
                     await cartProvider.clear();
                   }
                 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/controllers/product_controller.dart';
@@ -12,16 +13,16 @@ class ProductsNotifier with ChangeNotifier, ExceptionHandler {
   List<Product> _items = [];
   ProductsNotifier();
   late final ProductController _productsController = ProductController();
-  Product editedProduct = const Product(
-      id: '', title: '', description: '', price: 0, imageUrl: null);
+  Product editedProduct =  Product(
+      id: '', title: '', description: '', price: Decimal.parse('0'), imageUrl: null);
 
   /// Called when you're done with editing or adding a new product to make editedProduct ready for another use.
   void resetEditedProduct() {
-    editedProduct = const Product(
+    editedProduct =  Product(
         id: '',
         title: '',
         description: '',
-        price: 0,
+        price: Decimal.parse('0'),
         imageUrl: null,
         sizeQuantity: {});
     notifyListeners();

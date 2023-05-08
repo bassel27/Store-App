@@ -24,7 +24,7 @@ mixin _$Product {
   String? get description =>
       throw _privateConstructorUsedError; // TODO: remove required
   String get id => throw _privateConstructorUsedError;
-  double get price => throw _privateConstructorUsedError;
+  Decimal get price => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   bool get isFavorite => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $ProductCopyWith<$Res> {
       {String title,
       String? description,
       String id,
-      double price,
+      Decimal price,
       @JsonKey(ignore: true) bool isFavorite,
       String? imageUrl,
       Map<String, int> sizeQuantity});
@@ -87,7 +87,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as double,
+              as Decimal,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -115,7 +115,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       {String title,
       String? description,
       String id,
-      double price,
+      Decimal price,
       @JsonKey(ignore: true) bool isFavorite,
       String? imageUrl,
       Map<String, int> sizeQuantity});
@@ -155,7 +155,7 @@ class __$$_ProductCopyWithImpl<$Res>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as double,
+              as Decimal,
       isFavorite: null == isFavorite
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -196,7 +196,7 @@ class _$_Product implements _Product {
   @override
   final String id;
   @override
-  final double price;
+  final Decimal price;
   @override
   @JsonKey(ignore: true)
   final bool isFavorite;
@@ -231,11 +231,9 @@ class _$_Product implements _Product {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)
+                     (identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)
         // &&const DeepCollectionEquality()
-        // .equals(other._sizeQuantity, _sizeQuantity) 
+        // .equals(other._sizeQuantity, _sizeQuantity)
         //  for comparing a product with cartItem.product where the latter doesn't have updated sizeQuantity
         );
   }
@@ -264,7 +262,7 @@ abstract class _Product implements Product {
       {required final String title,
       required final String? description,
       required final String id,
-      required final double price,
+      required final Decimal price,
       @JsonKey(ignore: true) final bool isFavorite,
       final String? imageUrl,
       final Map<String, int> sizeQuantity}) = _$_Product;
@@ -278,7 +276,7 @@ abstract class _Product implements Product {
   @override // TODO: remove required
   String get id;
   @override
-  double get price;
+  Decimal get price;
   @override
   @JsonKey(ignore: true)
   bool get isFavorite;

@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,7 @@ class PriceTextFormField extends StatelessWidget {
     var productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     return TextFormField(
-      initialValue: productsProvider.editedProduct.price == 0
+      initialValue: productsProvider.editedProduct.price.toDouble().toInt() == 0
           ? null
           : productsProvider.editedProduct.price.toStringAsFixed(2),
       decoration: const InputDecoration(labelText: "Price"),
@@ -26,7 +27,7 @@ class PriceTextFormField extends StatelessWidget {
       onSaved: (value) {
         if (value != null) {
           productsProvider.editedProduct = productsProvider.editedProduct
-              .copyWith(price: double.parse(value));
+              .copyWith(price: Decimal.parse(value));
         }
       },
     );
