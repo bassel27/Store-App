@@ -16,7 +16,7 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
           : Address.fromJson(json['address'] as Map<String, dynamic>),
       isAdmin: json['isAdmin'] as bool? ?? false,
       favoriteProductsIds: (json['favoriteProductsIds'] as List<dynamic>?)
-              ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => e as String)
               .toList() ??
           const [],
     );

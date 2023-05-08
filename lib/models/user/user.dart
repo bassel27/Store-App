@@ -18,7 +18,7 @@ class User with _$User{
     Address? address,
     @Default(false) bool isAdmin,
     @JsonKey(ignore: true) String? password,
-    @Default([]) List<Product> favoriteProductsIds,
+    @Default([]) List<String> favoriteProductsIds,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

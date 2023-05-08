@@ -60,11 +60,11 @@ class ProductController with ExceptionHandler {
     var usersCollection = db.collection('users');
     if (isFavorite) {
       await usersCollection.doc(userId).update({
-        'favoriteProducts': FieldValue.arrayUnion([productId]),
+        'favoriteProductsIds': FieldValue.arrayUnion([productId]),
       });
     } else {
       await usersCollection.doc(userId).update({
-        'favoriteProducts': FieldValue.arrayRemove([productId]),
+        'favoriteProductsIds': FieldValue.arrayRemove([productId]),
       });
     }
     DialogHelper.hideCurrentDialog();
@@ -87,7 +87,7 @@ class ProductController with ExceptionHandler {
 
     if (validProductIds.length != _favoriteProductIds.length) {
       await db.collection('users').doc(userId).update({
-        'favoriteProducts': validProductIds,
+        'favoriteProductsIds': validProductIds,
       });
     }
 
