@@ -21,7 +21,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Order {
   String get id => throw _privateConstructorUsedError;
-  double get total => throw _privateConstructorUsedError;
+  Decimal get total => throw _privateConstructorUsedError;
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   DateTime get dateTime => throw _privateConstructorUsedError;
@@ -38,7 +38,7 @@ abstract class $OrderCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      double total,
+      Decimal total,
       List<CartItem> cartItems,
       String userId,
       DateTime dateTime});
@@ -71,7 +71,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as double,
+              as Decimal,
       cartItems: null == cartItems
           ? _value.cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
@@ -96,7 +96,7 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      double total,
+      Decimal total,
       List<CartItem> cartItems,
       String userId,
       DateTime dateTime});
@@ -125,7 +125,7 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as double,
+              as Decimal,
       cartItems: null == cartItems
           ? _value._cartItems
           : cartItems // ignore: cast_nullable_to_non_nullable
@@ -160,7 +160,7 @@ class _$_Order extends _Order {
   @override
   final String id;
   @override
-  final double total;
+  final Decimal total;
   final List<CartItem> _cartItems;
   @override
   List<CartItem> get cartItems {
@@ -215,7 +215,7 @@ class _$_Order extends _Order {
 abstract class _Order extends Order {
   const factory _Order(
       {required final String id,
-      required final double total,
+      required final Decimal total,
       required final List<CartItem> cartItems,
       required final String userId,
       required final DateTime dateTime}) = _$_Order;
@@ -226,7 +226,7 @@ abstract class _Order extends Order {
   @override
   String get id;
   @override
-  double get total;
+  Decimal get total;
   @override
   List<CartItem> get cartItems;
   @override
