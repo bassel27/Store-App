@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
 import 'package:store_app/screens/product_details_screen.dart';
@@ -54,7 +55,7 @@ class ProductGridTile extends StatelessWidget {
                         ),
                         TextSpan(
                           text:
-                              "${product.price == product.price.toInt() ? product.price.toInt() : product.price}",
+                              "${product.price.toStringAsFixed(2).endsWith('00') ? Decimal.parse(product.price.toDouble().toInt().toString()) : product.price}",
                           style:
                               Theme.of(context).textTheme.bodyText2!.copyWith(
                                     fontWeight: FontWeight.w500,
@@ -153,7 +154,6 @@ class _ImageAndFavoriteStack extends StatelessWidget {
     );
   }
 }
-
 
 class _MyIconButton extends StatelessWidget {
   final VoidCallback onPressed;

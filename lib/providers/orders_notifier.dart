@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
@@ -45,7 +46,7 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final Order newOrder = Order(
         id: const Uuid().v4(),
-        total: total,
+        total: Decimal.parse(total.toString()),
         cartItems: cartProducts,
         dateTime: DateTime.now(),
         userId: FirebaseAuth.instance.currentUser!.uid);

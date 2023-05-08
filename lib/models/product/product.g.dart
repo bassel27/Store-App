@@ -23,7 +23,7 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'title': instance.title,
       'description': instance.description,
       'id': instance.id,
-      'price': instance.price,
+      'price': instance.price.toJson(),
       'imageUrl': instance.imageUrl,
       'sizeQuantity': instance.sizeQuantity,
     };

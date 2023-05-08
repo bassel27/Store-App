@@ -206,9 +206,16 @@ class _$_Product implements _Product {
   @override
   @JsonKey()
   Map<String, int> get sizeQuantity {
-    if (_sizeQuantity is EqualUnmodifiableMapView) return _sizeQuantity;
+    if (_sizeQuantity is EqualUnmodifiableMapView)
+      return Map.fromEntries(
+        _sizeQuantity.entries.toList()
+          ..sort((a, b) => Product.sizeComparator(a.key, b.key)),
+      );
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_sizeQuantity);
+    return EqualUnmodifiableMapView(Map.fromEntries(
+      _sizeQuantity.entries.toList()
+        ..sort((a, b) => Product.sizeComparator(a.key, b.key)),
+    ));
   }
 
   @override
@@ -224,14 +231,11 @@ class _$_Product implements _Product {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.isFavorite, isFavorite) ||
-                other.isFavorite == isFavorite) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
-            const DeepCollectionEquality()
-                .equals(other._sizeQuantity, _sizeQuantity));
+                     (identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)
+        // &&const DeepCollectionEquality()
+        // .equals(other._sizeQuantity, _sizeQuantity)
+        //  for comparing a product with cartItem.product where the latter doesn't have updated sizeQuantity
+        );
   }
 
   @JsonKey(ignore: true)

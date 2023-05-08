@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/constants.dart';
@@ -50,7 +51,7 @@ class CartItemTile extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-              "Total: $kCurrency ${(cartItem.product.price * cartItem.quantity).toStringAsFixed(2)}"),
+              "Total: $kCurrency ${(cartItem.product.price * Decimal.parse(cartItem.quantity.toString())).toStringAsFixed(2)}"),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           trailing: Column(

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/models/my_theme.dart';
@@ -15,10 +16,12 @@ import '../widgets/my_cached_network_image.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   static const route = '/bottom_nav_bar/product_details';
+
   @override
   Widget build(BuildContext context) {
     late Product product =
         ModalRoute.of(context)!.settings.arguments as Product;
+
     final sizeProvider = Provider.of<SizeNotifier>(context, listen: false);
     sizeProvider.product = product;
     const double circleDiameter = 35;
@@ -74,8 +77,11 @@ class ProductDetailsScreen extends StatelessWidget {
                                 width: 15,
                               ),
                               CurrencyAndPriceText(
-                                price: product.price == product.price.toInt()
-                                    ? product.price.toInt()
+                                price: product.price
+                                        .toStringAsFixed(2)
+                                        .endsWith('00')
+                                    ? Decimal.parse(
+                                        product.price.toDouble().toInt().toString())
                                     : product.price,
                                 sizeMultiplicationFactor: 1.32,
                               ),

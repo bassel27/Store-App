@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
 import '../models/constants.dart';
@@ -9,7 +10,7 @@ class CurrencyAndPriceText extends StatelessWidget {
     this.sizeMultiplicationFactor = 1,
   }) : super(key: key);
   final double sizeMultiplicationFactor;
-  final num price;
+  final Decimal price;
 
   @override
   Widget build(BuildContext context) {
