@@ -158,27 +158,25 @@ class _ScaffoldBody extends StatelessWidget {
     if (isPushedScreen) {
       products.removeWhere((element) => !currentProducts.contains(
           element)); // if any element was deleted since passing products to ProductsGridScreen
-    } else {
-      products = currentProducts;
     }
 
-    return Center(
-      child: products.isNotEmpty
-          ? GridView.builder(
-              primary: false,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(top: 10),
-              itemCount: products.length,
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                crossAxisCount: 2,
-                height: 340,
-              ),
-              itemBuilder: (context, i) {
-                return ProductGridTile(products[i]);
-              },
-            )
-          : Column(
+    return products.isNotEmpty
+        ? GridView.builder(
+            primary: false,
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(top: 10),
+            itemCount: products.length,
+            gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+              crossAxisCount: 2,
+              height: 340,
+            ),
+            itemBuilder: (context, i) {
+              return ProductGridTile(products[i]);
+            },
+          )
+        : Center(
+            child: Column(
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height / 3,
@@ -186,6 +184,6 @@ class _ScaffoldBody extends StatelessWidget {
                 (const EmptyScreenText("No Products")),
               ],
             ),
-    );
+          );
   }
 }
