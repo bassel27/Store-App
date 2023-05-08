@@ -158,6 +158,8 @@ class _ScaffoldBody extends StatelessWidget {
     if (isPushedScreen) {
       products.removeWhere((element) => !currentProducts.contains(
           element)); // if any element was deleted since passing products to ProductsGridScreen
+    } else if (!products.every((product) => product.isFavorite == true)) {
+      products = currentProducts; // normal case
     }
 
     return products.isNotEmpty
