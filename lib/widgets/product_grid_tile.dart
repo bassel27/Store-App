@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/constants.dart';
@@ -35,34 +36,36 @@ class ProductGridTile extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: product.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(
-                                  fontWeight: FontWeight.w700, fontSize: 18),
-                        ),
-                        TextSpan(
-                          text: "\n$kCurrency ",
-                          style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                        ),
-                        TextSpan(
-                          text:
-                              "${product.price.toStringAsFixed(2).endsWith('00') ? Decimal.parse(product.price.toDouble().toInt().toString()) : product.price}",
-                          style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AutoSizeText(
+                        product.title,
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                        maxLines: 1,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '$kCurrency ',
+                            style:
+                                Theme.of(context).textTheme.bodyText2!.copyWith(
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                          ),
+                          Text(
+                            '${product.price.toStringAsFixed(2).endsWith('00') ? Decimal.parse(product.price.toDouble().toInt().toString()) : product.price}',
+                            style:
+                                Theme.of(context).textTheme.bodyText2!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               )
