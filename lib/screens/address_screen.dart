@@ -14,7 +14,7 @@ class AddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Address? userCurrentAddress =
         Provider.of<UserNotifier>(context, listen: false).currentUser!.address;
-        
+
     if (userCurrentAddress != null) {
       editedAddress = userCurrentAddress;
     }
@@ -83,6 +83,7 @@ class AddressScreen extends StatelessWidget {
         labelText: 'Additional Information',
         initialValue: editedAddress.additionalInformation,
         maxLines: 2,
+        isValidateString: false,
         onSaved: (value) {
           editedAddress = editedAddress.copyWith(additionalInformation: value!);
         },
@@ -120,9 +121,11 @@ class _MyTextFormField extends StatelessWidget {
       required this.onSaved,
       this.initialValue,
       this.maxLines = 1,
+      this.isValidateString = true,
       this.textInputType});
   final GlobalKey<FormState> formKey;
   final String labelText;
+  final bool isValidateString;
   String? initialValue;
   final int maxLines;
   final TextInputType? textInputType;
@@ -135,7 +138,7 @@ class _MyTextFormField extends StatelessWidget {
     }
     return TextFormField(
       initialValue: initialValue,
-      validator: validateString,
+      validator: isValidateString ? validateString : null,
       textInputAction: TextInputAction.next,
       onSaved: onSaved,
       keyboardType: textInputType,
