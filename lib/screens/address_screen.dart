@@ -92,11 +92,12 @@ class AddressScreen extends StatelessWidget {
         height: 10,
       ),
       WideElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();
-              Provider.of<UserNotifier>(context, listen: false)
+              await Provider.of<UserNotifier>(context, listen: false)
                   .postAddress(editedAddress);
+              Navigator.pop(context);
             }
           },
           child: "Save"),
