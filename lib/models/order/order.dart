@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:store_app/models/address/address.dart';
 
 import '../cart_item/cart_item.dart';
 import 'package:decimal/decimal.dart';
@@ -13,6 +14,7 @@ class Order with _$Order {
       required Decimal total,
       required List<CartItem> cartItems,
       required String userId,
+      required Address address,
       required DateTime dateTime}) = _Order;
   int get numberOfProducts {
     return cartItems.length;

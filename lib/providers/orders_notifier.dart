@@ -1,5 +1,4 @@
 import 'package:decimal/decimal.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -7,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import '../controllers/order_controller.dart';
 import '../models/cart_item/cart_item.dart';
 import '../models/order/order.dart';
+import '../models/user/user.dart';
 
 class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   /// List of all order sorted by recency.
@@ -43,13 +43,15 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
   }
 
   /// Throws an exception if operation not successful.
-  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+  Future<void> addOrder(
+      List<CartItem> cartProducts, double total, User user) async {
     final Order newOrder = Order(
         id: const Uuid().v4(),
         total: Decimal.parse(total.toString()),
         cartItems: cartProducts,
         dateTime: DateTime.now(),
-        userId: FirebaseAuth.instance.currentUser!.uid);
+        userId: user.id,
+        address: user.address!);
     await _ordersController.create(newOrder).then((_) => _orders.insert(
           0,
           newOrder,

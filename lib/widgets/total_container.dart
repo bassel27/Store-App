@@ -4,6 +4,7 @@ import 'package:store_app/controllers/cart_controller.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/products_notifier.dart';
+import 'package:store_app/providers/user_notifier.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../providers/orders_notifier.dart';
@@ -98,7 +99,11 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                       }
                     }
                     await Provider.of<OrdersNotifier>(context, listen: false)
-                        .addOrder(cartProvider.items, cartProvider.total.toDouble());
+                        .addOrder(
+                            cartProvider.items,
+                            cartProvider.total.toDouble(),
+                            Provider.of<UserNotifier>(context, listen: false)
+                                .currentUser!);
                     await cartProvider.clear();
                   }
                 }

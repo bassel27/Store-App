@@ -24,6 +24,7 @@ mixin _$Order {
   Decimal get total => throw _privateConstructorUsedError;
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  Address get address => throw _privateConstructorUsedError;
   DateTime get dateTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +42,10 @@ abstract class $OrderCopyWith<$Res> {
       Decimal total,
       List<CartItem> cartItems,
       String userId,
+      Address address,
       DateTime dateTime});
+
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -61,6 +65,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? total = null,
     Object? cartItems = null,
     Object? userId = null,
+    Object? address = null,
     Object? dateTime = null,
   }) {
     return _then(_value.copyWith(
@@ -80,11 +85,23 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
       dateTime: null == dateTime
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get address {
+    return $AddressCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
   }
 }
 
@@ -99,7 +116,11 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       Decimal total,
       List<CartItem> cartItems,
       String userId,
+      Address address,
       DateTime dateTime});
+
+  @override
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -115,6 +136,7 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
     Object? total = null,
     Object? cartItems = null,
     Object? userId = null,
+    Object? address = null,
     Object? dateTime = null,
   }) {
     return _then(_$_Order(
@@ -134,6 +156,10 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
       dateTime: null == dateTime
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
@@ -150,6 +176,7 @@ class _$_Order extends _Order {
       required this.total,
       required final List<CartItem> cartItems,
       required this.userId,
+      required this.address,
       required this.dateTime})
       : _cartItems = cartItems,
         super._();
@@ -172,11 +199,13 @@ class _$_Order extends _Order {
   @override
   final String userId;
   @override
+  final Address address;
+  @override
   final DateTime dateTime;
 
   @override
   String toString() {
-    return 'Order(id: $id, total: $total, cartItems: $cartItems, userId: $userId, dateTime: $dateTime)';
+    return 'Order(id: $id, total: $total, cartItems: $cartItems, userId: $userId, address: $address, dateTime: $dateTime)';
   }
 
   @override
@@ -189,14 +218,21 @@ class _$_Order extends _Order {
             const DeepCollectionEquality()
                 .equals(other._cartItems, _cartItems) &&
             (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.address, address) || other.address == address) &&
             (identical(other.dateTime, dateTime) ||
                 other.dateTime == dateTime));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, total,
-      const DeepCollectionEquality().hash(_cartItems), userId, dateTime);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      total,
+      const DeepCollectionEquality().hash(_cartItems),
+      userId,
+      address,
+      dateTime);
 
   @JsonKey(ignore: true)
   @override
@@ -218,6 +254,7 @@ abstract class _Order extends Order {
       required final Decimal total,
       required final List<CartItem> cartItems,
       required final String userId,
+      required final Address address,
       required final DateTime dateTime}) = _$_Order;
   const _Order._() : super._();
 
@@ -231,6 +268,8 @@ abstract class _Order extends Order {
   List<CartItem> get cartItems;
   @override
   String get userId;
+  @override
+  Address get address;
   @override
   DateTime get dateTime;
   @override
