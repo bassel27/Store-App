@@ -23,6 +23,6 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
       'cartItems':
           instance.cartItems.map((cartItem) => cartItem.toJson()).toList(),
       'userId': instance.userId,
-      'address': instance.address,
+      'address': instance.address.toJson(),
       'dateTime': instance.dateTime.toIso8601String(),
     };

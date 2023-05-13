@@ -8,6 +8,7 @@ import 'package:store_app/providers/user_notifier.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../providers/orders_notifier.dart';
+import '../screens/address_screen.dart';
 
 class TotalContainer extends StatelessWidget {
   @override
@@ -64,47 +65,58 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                 _isLoading = true;
               });
               try {
-                await productsProvider
-                    .getAndSetProducts(); //fetch current products to update their sizeQuantity
-                for (CartItem cartItem in cartProvider.items) {
-                  if (!cartProvider.setUpdatedCartItemQuantity(
-                      cartItem, productsProvider.products)) {
-                    // to modify all the rest then show the exception dialog in case of modification of more than one cartITEM
-                    for (CartItem cartItem in cartProvider.items) {
-                      cartProvider.setUpdatedCartItemQuantity(
-                          cartItem, productsProvider.products);
-                    }
-                    throw Exception(
-                        "The quantity of one or more items in your cart has been adjusted due to unavailability in the requested size/quantity.\nPlease review your cart before placing the order.");
-                  } else {
-                    cartItem = cartItem.copyWith(
-                        product: productsProvider
-                            .getProductById(cartItem.product.id)!);
-                    int newQuantity = await productsProvider.reduceSizeQuantity(
-                        cartItem.product, cartItem.size, cartItem.quantity);
-                    Map currentSizeQuantity =
-                        productsProvider.getProductSizeQuantity(
-                            cartItem.product, cartItem.size);
-                    if (newQuantity == 0) {
-                      //check if size is over
-                      await productsProvider.deleteProductSize(
-                          cartItem.product, cartItem.size);
-                      currentSizeQuantity =
-                          productsProvider.getProductSizeQuantity(
-                              cartItem.product,
-                              cartItem.size); // after deleting the empty size
-                      if (currentSizeQuantity.isEmpty) {
-                        // if product doesn't have any available sizes
-                        await deleteProductAndItsCartItems(cartItem.product.id);
+                if (Provider.of<UserNotifier>(context, listen: false)
+                        .currentUser!
+                        .address ==
+                    null) {
+                  Navigator.pushNamed(context, AddressScreen.route);
+                } else {
+                  await productsProvider
+                      .getAndSetProducts(); //fetch current products to update their sizeQuantity
+                  for (CartItem cartItem in cartProvider.items) {
+                    if (!cartProvider.setUpdatedCartItemQuantity(
+                        cartItem, productsProvider.products)) {
+                      // to modify all the rest then show the exception dialog in case of modification of more than one cartITEM
+                      for (CartItem cartItem in cartProvider.items) {
+                        cartProvider.setUpdatedCartItemQuantity(
+                            cartItem, productsProvider.products);
                       }
+                      throw Exception(
+                          "The quantity of one or more items in your cart has been adjusted due to unavailability in the requested size/quantity.\nPlease review your cart before placing the order.");
+                    } else {
+                      cartItem = cartItem.copyWith(
+                          product: productsProvider
+                              .getProductById(cartItem.product.id)!);
+                      int newQuantity =
+                          await productsProvider.reduceSizeQuantity(
+                              cartItem.product,
+                              cartItem.size,
+                              cartItem.quantity);
+                      Map currentSizeQuantity =
+                          productsProvider.getProductSizeQuantity(
+                              cartItem.product, cartItem.size);
+                      if (newQuantity == 0) {
+                        //check if size is over
+                        await productsProvider.deleteProductSize(
+                            cartItem.product, cartItem.size);
+                        currentSizeQuantity =
+                            productsProvider.getProductSizeQuantity(
+                                cartItem.product,
+                                cartItem.size); // after deleting the empty size
+                        if (currentSizeQuantity.isEmpty) {
+                          // if product doesn't have any available sizes
+                          await deleteProductAndItsCartItems(
+                              cartItem.product.id);
+                        }
+                      }
+                      await Provider.of<OrdersNotifier>(context, listen: false)
+                          .addOrder(
+                              cartProvider.items,
+                              cartProvider.total.toDouble(),
+                              Provider.of<UserNotifier>(context, listen: false)
+                                  .currentUser!);
+                      await cartProvider.clear();
                     }
-                    await Provider.of<OrdersNotifier>(context, listen: false)
-                        .addOrder(
-                            cartProvider.items,
-                            cartProvider.total.toDouble(),
-                            Provider.of<UserNotifier>(context, listen: false)
-                                .currentUser!);
-                    await cartProvider.clear();
                   }
                 }
               } catch (e) {

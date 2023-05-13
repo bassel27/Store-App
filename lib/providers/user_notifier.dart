@@ -16,10 +16,13 @@ class UserNotifier with ChangeNotifier, ExceptionHandler {
   Future<void> postAddress(Address address) async {
     DialogHelper.showLoading();
     try {
-      await _userController.postAddress(address);
+      await _userController.postAddress(address).then((_) {
+        currentUser = currentUser!.copyWith(address: address);
+      });
     } catch (e) {
       handleException(e);
     }
     DialogHelper.hideCurrentDialog();
+    notifyListeners();
   }
 }
