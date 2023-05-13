@@ -44,7 +44,8 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
   ///
   /// If current quantity is zero, cartItem is removed from cart.
   /// This method should be called before ordering because cartItem's product doesn't get updated if a product changes.
-  bool setUpdatedCartItemQuantity(CartItem cartItem, List<Product> products) {
+  Future<bool> setUpdatedCartItemQuantity(
+      CartItem cartItem, List<Product> products) async {
     Product currentProduct;
     int index = items.indexOf(cartItem);
     if (products.contains(cartItem.product)) {
@@ -55,13 +56,20 @@ class CartNotifier with ChangeNotifier, ExceptionHandler {
     }
     int? currentQuantity = currentProduct.sizeQuantity[cartItem.size];
     if (currentQuantity == null) {
-      _cartItems.removeAt(index);
+      await _cartController.delete(cartItem.id).then((value) {
+        _cartItems.removeAt(index);
+      });
       notifyListeners();
       return false;
     } else if (currentQuantity >= cartItem.quantity) {
       return true;
     } else {
-      _cartItems[index] = cartItem.copyWith(quantity: currentQuantity);
+      await _cartController
+          .setQuantity(cartItem, currentQuantity)
+          .then((value) {
+        _cartItems[index] = cartItem.copyWith(quantity: currentQuantity);
+      });
+
       notifyListeners();
       return false;
     }

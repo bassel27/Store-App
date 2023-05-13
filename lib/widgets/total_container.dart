@@ -74,11 +74,11 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
                   await productsProvider
                       .getAndSetProducts(); //fetch current products to update their sizeQuantity
                   for (CartItem cartItem in cartProvider.items) {
-                    if (!cartProvider.setUpdatedCartItemQuantity(
+                    if (!await cartProvider.setUpdatedCartItemQuantity(
                         cartItem, productsProvider.products)) {
                       // to modify all the rest then show the exception dialog in case of modification of more than one cartITEM
                       for (CartItem cartItem in cartProvider.items) {
-                        cartProvider.setUpdatedCartItemQuantity(
+                        await cartProvider.setUpdatedCartItemQuantity(
                             cartItem, productsProvider.products);
                       }
                       throw Exception(
