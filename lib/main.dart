@@ -15,6 +15,7 @@ import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/edit_product_screen.dart';
+import 'package:store_app/screens/order_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
         routes: {
           BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
           ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
-          OrdersScreen.route: (ctx) =>  OrdersScreen(),
+          OrdersScreen.route: (ctx) => OrdersScreen(),
           ProductsManagerScreen.route: (ctx) => const ProductsManagerScreen(),
           AccountScreen.route: (ctx) => AccountScreen(),
           EditProductScreen.route: (ctx) => const EditProductScreen(null),
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
           VerifyEmailPage.route: (ctx) => const VerifyEmailPage(),
           AuthScreen.route: (ctx) => AuthScreen(),
           AddressScreen.route: (ctx) => AddressScreen(),
+          OrderScreen.route: (ctx) => const OrderScreen(),
         },
         title: 'Flutter Demo',
         home: const LandingPage(),
