@@ -26,7 +26,7 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'id': instance.id,
-      'address': instance.address,
+      'address': instance.address == null? null : instance.address!.toJson(),
       'isAdmin': instance.isAdmin,
       'favoriteProductsIds': instance.favoriteProductsIds,
     };
