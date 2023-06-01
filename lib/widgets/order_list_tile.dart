@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
+import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/providers/orders_notifier.dart';
 
 import '../models/order/order.dart';
 import '../screens/order_screen.dart';
@@ -13,7 +17,8 @@ class OrderListTile extends StatefulWidget {
   State<OrderListTile> createState() => _OrderListTileState();
 }
 
-class _OrderListTileState extends State<OrderListTile> {
+class _OrderListTileState extends State<OrderListTile>
+    with DialogHelper, ExceptionHandler {
   bool isExpanded = false;
   bool isDone = false;
   var myBorderSide = const BorderSide(color: Colors.grey, width: 1);
@@ -50,18 +55,31 @@ class _OrderListTileState extends State<OrderListTile> {
                   DateFormat("dd/MM/yyyy").format(widget.order.dateTime),
                 ),
                 trailing: Transform.scale(
-                    scale: 1.17, // Adjust the scale factor as needed
-                    child: Checkbox(
-                        value: isDone,
-                        activeColor: Theme.of(context).colorScheme.tertiary,
-                        onChanged: ((value) => setState(() {
-                              isDone = value!;
-                            })))
-                    // CurrencyAndPriceText(
-                    //   price: widget.order.total,
-                    //   sizeMultiplicationFactor: 1.2,
-                    // ),
-                    ),
+                  scale: 1.17, // Adjust the scale factor as needed
+                  child: Checkbox(
+                    value: isDone,
+                    activeColor: Theme.of(context).colorScheme.tertiary,
+                    onChanged: ((value) async {
+                      try {
+                        DialogHelper.showLoading();
+                        await Provider.of<OrdersNotifier>(context,
+                                listen: false)
+                            .setOrderStatus(widget.order.id, !isDone);
+                        setState(() {
+                          isDone = !isDone;
+                        });
+                        DialogHelper.hideCurrentDialog();
+                      } catch (e) {
+                        handleException(e);
+                      }
+                    }
+                        // CurrencyAndPriceText(
+                        //   price: widget.order.total,
+                        //   sizeMultiplicationFactor: 1.2,
+                        // ),
+                        ),
+                  ),
+                ),
               ),
             ),
           ),

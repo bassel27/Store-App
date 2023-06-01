@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:store_app/models/address/address.dart';
+import 'package:store_app/widgets/currency_and_price_text.dart';
 
 import '../models/order/order.dart';
 import '../widgets/cart_item_tile.dart';
@@ -71,10 +72,28 @@ class OrderScreen extends StatelessWidget {
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: ListView(
-                      children: order.cartItems
-                          .map((cartItem) => CartItemTile(cartItem: cartItem))
-                          .toList()),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                            children: order.cartItems
+                                .map((cartItem) =>
+                                    CartItemTile(cartItem: cartItem))
+                                .toList()),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: Row(
+                          children: [
+                            const Text("Total: ",
+                                style: TextStyle(fontSize: 25)),
+                            CurrencyAndPriceText(price: order.total),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

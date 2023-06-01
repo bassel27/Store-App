@@ -15,6 +15,7 @@ class Order with _$Order {
       required List<CartItem> cartItems,
       required String userId,
       required Address address,
+      @Default(false)  bool isDone,
       required DateTime dateTime}) = _Order;
   int get numberOfProducts {
     return cartItems.length;

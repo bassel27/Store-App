@@ -25,6 +25,7 @@ mixin _$Order {
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   Address get address => throw _privateConstructorUsedError;
+  bool get isDone => throw _privateConstructorUsedError;
   DateTime get dateTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,6 +44,7 @@ abstract class $OrderCopyWith<$Res> {
       List<CartItem> cartItems,
       String userId,
       Address address,
+      bool isDone,
       DateTime dateTime});
 
   $AddressCopyWith<$Res> get address;
@@ -66,6 +68,7 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? cartItems = null,
     Object? userId = null,
     Object? address = null,
+    Object? isDone = null,
     Object? dateTime = null,
   }) {
     return _then(_value.copyWith(
@@ -89,6 +92,10 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as Address,
+      isDone: null == isDone
+          ? _value.isDone
+          : isDone // ignore: cast_nullable_to_non_nullable
+              as bool,
       dateTime: null == dateTime
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
@@ -117,6 +124,7 @@ abstract class _$$_OrderCopyWith<$Res> implements $OrderCopyWith<$Res> {
       List<CartItem> cartItems,
       String userId,
       Address address,
+      bool isDone,
       DateTime dateTime});
 
   @override
@@ -137,6 +145,7 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
     Object? cartItems = null,
     Object? userId = null,
     Object? address = null,
+    Object? isDone = null,
     Object? dateTime = null,
   }) {
     return _then(_$_Order(
@@ -160,6 +169,10 @@ class __$$_OrderCopyWithImpl<$Res> extends _$OrderCopyWithImpl<$Res, _$_Order>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as Address,
+      isDone: null == isDone
+          ? _value.isDone
+          : isDone // ignore: cast_nullable_to_non_nullable
+              as bool,
       dateTime: null == dateTime
           ? _value.dateTime
           : dateTime // ignore: cast_nullable_to_non_nullable
@@ -177,6 +190,7 @@ class _$_Order extends _Order {
       required final List<CartItem> cartItems,
       required this.userId,
       required this.address,
+      this.isDone = false,
       required this.dateTime})
       : _cartItems = cartItems,
         super._();
@@ -201,11 +215,14 @@ class _$_Order extends _Order {
   @override
   final Address address;
   @override
+  @JsonKey()
+  final bool isDone;
+  @override
   final DateTime dateTime;
 
   @override
   String toString() {
-    return 'Order(id: $id, total: $total, cartItems: $cartItems, userId: $userId, address: $address, dateTime: $dateTime)';
+    return 'Order(id: $id, total: $total, cartItems: $cartItems, userId: $userId, address: $address, isDone: $isDone, dateTime: $dateTime)';
   }
 
   @override
@@ -219,6 +236,7 @@ class _$_Order extends _Order {
                 .equals(other._cartItems, _cartItems) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.address, address) || other.address == address) &&
+            (identical(other.isDone, isDone) || other.isDone == isDone) &&
             (identical(other.dateTime, dateTime) ||
                 other.dateTime == dateTime));
   }
@@ -232,6 +250,7 @@ class _$_Order extends _Order {
       const DeepCollectionEquality().hash(_cartItems),
       userId,
       address,
+      isDone,
       dateTime);
 
   @JsonKey(ignore: true)
@@ -255,6 +274,7 @@ abstract class _Order extends Order {
       required final List<CartItem> cartItems,
       required final String userId,
       required final Address address,
+      final bool isDone,
       required final DateTime dateTime}) = _$_Order;
   const _Order._() : super._();
 
@@ -270,6 +290,8 @@ abstract class _Order extends Order {
   String get userId;
   @override
   Address get address;
+  @override
+  bool get isDone;
   @override
   DateTime get dateTime;
   @override

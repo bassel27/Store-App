@@ -58,4 +58,8 @@ class OrderController with ExceptionHandler {
   Future<void> create(Order newOrder) async {
     await _ordersCollection.doc(newOrder.id).set(newOrder.toJson());
   }
+
+  setOrderStatus(String orderId, bool isDone)async{
+    await _ordersCollection.doc(orderId).update({'isDone': isDone});
+  }
 }

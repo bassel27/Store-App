@@ -14,6 +14,7 @@ _$_Order _$$_OrderFromJson(Map<String, dynamic> json) => _$_Order(
           .toList(),
       userId: json['userId'] as String,
       address: Address.fromJson(json['address'] as Map<String, dynamic>),
+      isDone: json['isDone'] as bool? ?? false,
       dateTime: DateTime.parse(json['dateTime'] as String),
     );
 
@@ -24,5 +25,6 @@ Map<String, dynamic> _$$_OrderToJson(_$_Order instance) => <String, dynamic>{
           instance.cartItems.map((cartItem) => cartItem.toJson()).toList(),
       'userId': instance.userId,
       'address': instance.address.toJson(),
+      'isDone': instance.isDone,
       'dateTime': instance.dateTime.toIso8601String(),
     };

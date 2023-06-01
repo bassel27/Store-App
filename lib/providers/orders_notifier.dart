@@ -65,4 +65,8 @@ class OrdersNotifier with ChangeNotifier, ExceptionHandler {
     _orders = [];
     areOrdersFetched = false;
   }
+
+  Future<void> setOrderStatus(String orderId, bool isDone) async {
+    await _ordersController.setOrderStatus(orderId, isDone);
+  }
 }
