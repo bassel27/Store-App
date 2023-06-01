@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:store_app/widgets/currency_and_price_text.dart';
 
 import '../models/order/order.dart';
 import '../screens/order_screen.dart';
@@ -16,6 +15,7 @@ class OrderListTile extends StatefulWidget {
 
 class _OrderListTileState extends State<OrderListTile> {
   bool isExpanded = false;
+  bool isDone = false;
   var myBorderSide = const BorderSide(color: Colors.grey, width: 1);
   @override
   Widget build(BuildContext context) {
@@ -30,34 +30,40 @@ class _OrderListTileState extends State<OrderListTile> {
           );
         },
         child: Card(
-          child: mainContainer(),
-        ),
-      ),
-    );
-  }
-
-  Material mainContainer() {
-    return Material(
-      elevation: 3,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            right: myBorderSide,
-            left: myBorderSide,
-            top: myBorderSide,
-          ),
-        ),
-        child: ListTile(
-          title: Text(
-            "${widget.order.address.firstName} ${widget.order.address.lastName}",
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 17.5),
-          ),
-          subtitle: Text(
-            DateFormat("dd/MM/yyyy").format(widget.order.dateTime),
-          ),
-          trailing: CurrencyAndPriceText(
-            price: widget.order.total,
-            sizeMultiplicationFactor: 1.2,
+          child: Material(
+            elevation: 3,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  right: myBorderSide,
+                  left: myBorderSide,
+                  top: myBorderSide,
+                ),
+              ),
+              child: ListTile(
+                title: Text(
+                  "${widget.order.address.firstName} ${widget.order.address.lastName}",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 17.5),
+                ),
+                subtitle: Text(
+                  DateFormat("dd/MM/yyyy").format(widget.order.dateTime),
+                ),
+                trailing: Transform.scale(
+                    scale: 1.17, // Adjust the scale factor as needed
+                    child: Checkbox(
+                        value: isDone,
+                        activeColor: Theme.of(context).colorScheme.tertiary,
+                        onChanged: ((value) => setState(() {
+                              isDone = value!;
+                            })))
+                    // CurrencyAndPriceText(
+                    //   price: widget.order.total,
+                    //   sizeMultiplicationFactor: 1.2,
+                    // ),
+                    ),
+              ),
+            ),
           ),
         ),
       ),
