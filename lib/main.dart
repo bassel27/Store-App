@@ -30,6 +30,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getToken();
+  final fcm = FirebaseMessaging.instance;
+  await fcm.subscribeToTopic('newProduct');
   runApp(MyApp());
 }
 

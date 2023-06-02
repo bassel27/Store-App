@@ -19,55 +19,18 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  void setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission();
+    
+  }
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-
-    FirebaseMessaging.instance.getInitialMessage().then((value) {
-      print("lol");
-      if (value != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return const ChatScreen();
-            },
-            settings: RouteSettings(
-              arguments: value.data,
-            ),
-          ),
-        );
-      }
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("lol");
-      if (message.notification != null) {
-        print(message.data);
-        print('Message on Foreground: ${message.notification}');
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(message.data);
-      print("lol");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) {
-              return const ChatScreen();
-            },
-            settings: RouteSettings(
-              arguments: message.data,
-            )),
-      );
-    });
-
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    setupPushNotifications();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +63,7 @@ class _Messages extends StatelessWidget {
           case ConnectionState.active:
           case ConnectionState.done:
             if (snapshot.hasError) {
+              print(snapshot.error.toString());
               return ExceptionScaffoldBody(snapshot.error as Exception);
             } else if (snapshot.hasData) {
               var docs = snapshot.data!.docs;
