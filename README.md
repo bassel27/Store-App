@@ -33,10 +33,6 @@ The mobile application is developed using the Flutter framework and Firebase ser
 16. Admin Dashboard: accessible only to admin users.
 17. Dynamic Inventory Management: user's orders impact the product inventory based on the selected size. This feature ensures that when a user places an order with a specific cart item size, the corresponding quantity of that size is decremented from the total product inventory. Additionally, if an order depletes all available sizes of a product, that particular product is automatically removed from the inventory.
 
-## Design:
-
-The UI/UX design for this project was taken from a free Figma community file available under the Creative Commons Attribution 4.0 International License. The original design was created by Mohsin Jutt.
-
 ## Screens:
 
 1. Login Screen 
@@ -50,5 +46,6 @@ The UI/UX design for this project was taken from a free Figma community file ava
 7. Favorites Screen: Lists the products marked as favorites by the user for easy access and quick purchase.
 8. Products Manager Screen: Accessible only to admin users, this screen provides tools for managing products, such as adding, editing, or deleting products.
 
+## Design:
 
-  
+The UI/UX design for this project was taken from a free Figma community file available under the Creative Commons Attribution 4.0 International License. The original design was created by Mohsin Jutt.
