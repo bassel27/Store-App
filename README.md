@@ -37,9 +37,18 @@ The mobile application is developed using the Flutter framework and Firebase ser
 
 The UI/UX design for this project was taken from a free Figma community file available under the Creative Commons Attribution 4.0 International License. The original design was created by Mohsin Jutt.
 
-## App Demonstration Video
+## Screens:
 
-https://drive.google.com/file/d/10tj0rmah6i6M8tQS_EU7qKeScB4XKWk2/view?usp=share_link
+1. Login Screen 
+  a. Verify Email Screen: Prompts users to verify their email address if it hasn't been verified yet.
+  b. Forgot Password Screen
+  c. Sign Up Screen
+3. Home Screen: Displays a list of all available products in the store, allowing users to browse and search for items.
+4. Product Details Screen: Provides detailed information about a specific product, including images, description, price, and options to add it to the cart or mark it as a favorite.
+5. Cart Screen: Shows the items added to the user's cart, allowing them to adjust quantities, remove items, and proceed to checkout.
+6. Orders Screen: Displays the user's past orders, including order details, status, and the ability to track shipments.
+7. Favorites Screen: Lists the products marked as favorites by the user for easy access and quick purchase.
+8. Products Manager Screen: Accessible only to admin users, this screen provides tools for managing products, such as adding, editing, or deleting products.
 
 
   
