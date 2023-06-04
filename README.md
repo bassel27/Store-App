@@ -37,11 +37,11 @@ The mobile application is developed using the Flutter framework and Firebase ser
 
 1. Login Screen 
   
-  a. Verify Email Screen: Prompts users to verify their email address if it hasn't been verified yet.
-  
-  b. Forgot Password Screen
-  
-  c. Sign Up Screen
+      a. Verify Email Screen: Prompts users to verify their email address if it hasn't been verified yet.
+
+      b. Forgot Password Screen
+
+      c. Sign Up Screen
   
 2. Home Screen: Displays a list of all available products in the store, allowing users to browse and search for items.
 3. Product Details Screen: Provides detailed information about a specific product, including images, description, price, and options to add it to the cart or mark it as a favorite.
