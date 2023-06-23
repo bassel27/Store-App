@@ -24,4 +24,9 @@ class UserController {
   Future<void> postAddress(Address address) async {
     await userDoc.update({'address': address.toJson()});
   }
+
+  Future<void> deleteCurrentUser() async {
+    await userDoc.delete();
+    await FirebaseAuth.instance.currentUser!.delete();
+  }
 }

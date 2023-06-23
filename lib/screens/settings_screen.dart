@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/user_notifier.dart';
@@ -7,6 +8,7 @@ import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 
+import '../helper/dialog_helper.dart';
 import '../providers/cart_notifier.dart';
 import '../providers/products_notifier.dart';
 import '../providers/theme_notifier.dart';
@@ -17,7 +19,7 @@ class AccountScreen extends StatefulWidget {
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
   late var theme = Provider.of<ThemeNotifier>(context, listen: false);
   late bool switchValue = theme.isDarkMode;
   double circleAvatarRadius = 60;
@@ -96,13 +98,7 @@ class _AccountScreenState extends State<AccountScreen> {
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
-            // Navigator.pop(context);
-            await Provider.of<AuthNotifier>(context, listen: false).signout();
-            Navigator.of(context).pushReplacementNamed(
-                '/'); // to go to the home screen (authentication)
-            Provider.of<OrdersNotifier>(context, listen: false).reset();
-            Provider.of<ProductsNotifier>(context, listen: false).reset();
-            Provider.of<CartNotifier>(context, listen: false).reset();
+            await logoutAndReset();
           },
           title: "Logout",
         ),
@@ -112,13 +108,30 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  showConfirmationDialog() {
+  Future<void> logoutAndReset() async {
+    await Provider.of<AuthNotifier>(context, listen: false).signout();
+    if (mounted) {
+      Navigator.of(context).pushReplacementNamed(
+          '/'); // to go to the home screen (authentication)
+      Provider.of<OrdersNotifier>(context, listen: false).reset();
+      Provider.of<ProductsNotifier>(context, listen: false).reset();
+      Provider.of<CartNotifier>(context, listen: false).reset();
+    }
+  }
+
+  void showConfirmationDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Confirmation"),
-          content: const Text("Are you sure you want to delete your account?"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Reduce the dialog's height
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text("Are you sure you want to delete your account?"),
+            ],
+          ),
           actions: <Widget>[
             TextButton(
               child: const Text("Cancel"),
@@ -128,8 +141,18 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             TextButton(
               child: const Text("Delete"),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+              onPressed: () async {
+                Navigator.of(context).pop();
+                DialogHelper.showLoading();
+                try {
+                  final userNotifier =
+                      Provider.of<UserNotifier>(context, listen: false);
+                  await userNotifier.deleteCurrentUser();
+                  await logoutAndReset();
+                  DialogHelper.hideCurrentDialog();
+                } catch (e) {
+                  handleException(e);
+                }
               },
             ),
           ],

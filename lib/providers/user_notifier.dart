@@ -25,4 +25,8 @@ class UserNotifier with ChangeNotifier, ExceptionHandler {
     DialogHelper.hideCurrentDialog();
     notifyListeners();
   }
+
+  Future<void> deleteCurrentUser() async {
+    await _userController.deleteCurrentUser();
+  }
 }

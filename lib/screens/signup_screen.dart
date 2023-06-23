@@ -83,7 +83,7 @@ class SignupScreen extends StatelessWidget
                     context: context,
                     hintText: "Email",
                     icon: const Icon(Icons.email)),
-                initialValue: "bassel_sabour@hotmail.com",
+                initialValue: "bassel_sabour@yopmail.com",
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null ||
