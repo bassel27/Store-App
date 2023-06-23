@@ -17,12 +17,12 @@ The mobile application is developed using the Flutter framework and Firebase ser
 
 ## Features and Functionalities
 1. User Authentication: log in, sign up, forgot Password and log out (Firebase Authentication)
-2. Shows all available products
+2. Lazy loading of products and orders.
 4. Add products to cart and specify quantity
 5. Retrieve cart items of current user
-6. Make orders
+6. Dynamic Inventory Management: user's orders impact the product inventory based on the selected size. This feature ensures that when a user places an order with a specific cart item size, the corresponding quantity of that size is decremented from the total product inventory. Additionally, if an order depletes all available sizes of a product, that particular product is automatically removed from the inventory.
 7. Favorite products
-8. Lazy loading of products and orders.
+8. Show all available products
 9. View past orders
 10. Chat with customer service
 11. Push notifications
@@ -31,15 +31,25 @@ The mobile application is developed using the Flutter framework and Firebase ser
 14. Use of Provider for state management
 15. Error handling
 16. Admin Dashboard: accessible only to admin users.
-17. Dynamic Inventory Management: user's orders impact the product inventory based on the selected size. This feature ensures that when a user places an order with a specific cart item size, the corresponding quantity of that size is decremented from the total product inventory. Additionally, if an order depletes all available sizes of a product, that particular product is automatically removed from the inventory.
+17. Make orders
+
+## Screens:
+
+1. Login Screen 
+  
+      a. Verify Email Screen: Prompts users to verify their email address if it hasn't been verified yet.
+
+      b. Forgot Password Screen
+
+      c. Sign Up Screen
+  
+2. Home Screen: Displays a list of all available products in the store, allowing users to browse and search for items.
+3. Product Details Screen: Provides detailed information about a specific product, including images, description, price, and options to add it to the cart or mark it as a favorite.
+4. Cart Screen: Shows the items added to the user's cart, allowing them to adjust quantities, remove items, and proceed to checkout.
+5. Orders Screen: Displays the user's past orders, including order details, status, and the ability to track shipments.
+6. Favorites Screen: Lists the products marked as favorites by the user for easy access and quick purchase.
+7. Products Manager Screen: Accessible only to admin users, this screen provides tools for managing products, such as adding, editing, or deleting products.
 
 ## Design:
 
 The UI/UX design for this project was taken from a free Figma community file available under the Creative Commons Attribution 4.0 International License. The original design was created by Mohsin Jutt.
-
-## App Demonstration Video
-
-https://drive.google.com/file/d/10tj0rmah6i6M8tQS_EU7qKeScB4XKWk2/view?usp=share_link
-
-
-  
