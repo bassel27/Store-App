@@ -88,6 +88,11 @@ class _AccountScreenState extends State<AccountScreen> {
             },
           ),
         ),
+        ListTile(
+          leading: const Icon(Icons.delete),
+          title: const Text("Delete Account"),
+          onTap: showConfirmationDialog,
+        ),
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
@@ -104,6 +109,32 @@ class _AccountScreenState extends State<AccountScreen> {
 
         // const Divider(),
       ]),
+    );
+  }
+
+  showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Confirmation"),
+          content: const Text("Are you sure you want to delete your account?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Delete"),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

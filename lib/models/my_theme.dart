@@ -27,7 +27,6 @@ class MyTheme {
     ),
     // for text firelds
     inputDecorationTheme: const InputDecorationTheme(
-      
       errorStyle: TextStyle(fontWeight: FontWeight.w400, color: kErrorColor),
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: kAccentColor),
@@ -54,7 +53,7 @@ class MyTheme {
         onTertiary: Colors.white),
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-            backgroundColor: kBackgroundColor,
+            backgroundColor: kAccentColor,
             textStyle: const TextStyle(color: kAccentColor))),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
