@@ -34,8 +34,7 @@ Future<void> main() async {
   await FirebaseMessaging.instance.getToken();
   final fcm = FirebaseMessaging.instance;
   await fcm.subscribeToTopic('newProduct');
-  ThemeNotifier themeNotifier;
-  themeNotifier = ThemeNotifier();
+  ThemeNotifier themeNotifier = ThemeNotifier();
   await themeNotifier.loadThemeMode();
   runApp(MyApp(themeNotifier));
 }
