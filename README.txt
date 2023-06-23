@@ -1,0 +1,3 @@
+- Light and dark modes:
+    - Preference saved locally and loaded on app start
+    - Used toggle button on account settings screen

@@ -20,3 +20,4 @@ const kLoginUrl =
     "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$kWebApiKey";
 const String kPlaceHolder = "assets/gifs/placeholder.gif";
 const String kMyChatId = "NPk9JESVRMmRf533mww8";
+const String kThemePreferenceKey = 'themePreference';

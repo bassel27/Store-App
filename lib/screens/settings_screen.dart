@@ -9,6 +9,7 @@ import 'package:store_app/screens/products_manager_screen.dart';
 
 import '../providers/cart_notifier.dart';
 import '../providers/products_notifier.dart';
+import '../providers/theme_notifier.dart';
 
 class AccountScreen extends StatefulWidget {
   static const route = "/bottom_nav_bar/my_account";
@@ -17,7 +18,8 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  // late bool _switchValue = theme.isDarkMode;
+  late var theme = Provider.of<ThemeNotifier>(context, listen: false);
+  late bool switchValue = theme.isDarkMode;
   double circleAvatarRadius = 60;
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class _AccountScreenState extends State<AccountScreen> {
           "${userProvider.currentUser!.firstName} ${userProvider.currentUser!.lastName}",
           style: const TextStyle(fontSize: 22),
         )),
+
         const SizedBox(
           height: 20,
         ),
@@ -72,6 +75,19 @@ class _AccountScreenState extends State<AccountScreen> {
             },
             title: 'Chat Support',
             icon: Icons.chat),
+        ListTile(
+          leading: const Icon(Icons.dark_mode_outlined),
+          title: const Text("Dark Mode"),
+          trailing: Switch(
+            value: switchValue,
+            onChanged: (value) {
+              theme.toggleThemeMode(value);
+              setState(() {
+                switchValue = !switchValue;
+              });
+            },
+          ),
+        ),
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
@@ -85,6 +101,7 @@ class _AccountScreenState extends State<AccountScreen> {
           },
           title: "Logout",
         ),
+
         // const Divider(),
       ]),
     );

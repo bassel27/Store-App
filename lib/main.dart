@@ -9,6 +9,7 @@ import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/selected_size.dart';
+import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/providers/user_notifier.dart';
 import 'package:store_app/screens/address_screen.dart';
 import 'package:store_app/screens/auth_screen.dart';
@@ -26,17 +27,24 @@ import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
 
 //TODO: use something else except double for monetary values
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getToken();
   final fcm = FirebaseMessaging.instance;
   await fcm.subscribeToTopic('newProduct');
-  runApp(MyApp());
+  ThemeNotifier themeNotifier;
+  themeNotifier = ThemeNotifier();
+  await themeNotifier.loadThemeMode();
+  runApp(MyApp(themeNotifier));
 }
 
 class MyApp extends StatelessWidget {
-  var providers = [
+  final ThemeNotifier themeNotifier;
+
+  MyApp(this.themeNotifier);
+  late var providers = [
     ChangeNotifierProvider(create: (_) => AuthNotifier()),
     ChangeNotifierProvider(create: (context) => ProductsNotifier()),
     ChangeNotifierProvider(
@@ -45,6 +53,9 @@ class MyApp extends StatelessWidget {
     ChangeNotifierProxyProvider<AuthNotifier, OrdersNotifier>(
       update: (context, auth, previousOrdersProvider) => OrdersNotifier(),
       create: (context) => OrdersNotifier(),
+    ),
+    ChangeNotifierProvider.value(
+      value: themeNotifier,
     ),
     ChangeNotifierProvider(create: (_) => SizeNotifier()),
     ChangeNotifierProvider(create: (_) => UserNotifier()),
@@ -56,9 +67,9 @@ class MyApp extends StatelessWidget {
       providers: providers,
       // TODO: use materialapp
       builder: (context, child) => GetMaterialApp(
-        // themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
+        themeMode: Provider.of<ThemeNotifier>(context).currentThemeMode,
         theme: MyTheme.lightTheme,
-        // darkTheme: MyTheme.darkTheme,
+        darkTheme: MyTheme.darkTheme,
         routes: {
           BottomNavBarScreen.route: (p0) => const BottomNavBarScreen(),
           ProductDetailsScreen.route: (ctx) => ProductDetailsScreen(),
