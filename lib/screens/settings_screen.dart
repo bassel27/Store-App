@@ -5,6 +5,7 @@ import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/user_notifier.dart';
+import 'package:store_app/screens/about_screen.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
@@ -110,6 +111,13 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
           onTap: () {
             NotificationWidget.showNotification(
                 title: "Notification", body: "Test");
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text("About"),
+          onTap: () {
+            Navigator.pushNamed(context, AboutScreen.route);
           },
         ),
         _ClickableListTile(

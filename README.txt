@@ -7,3 +7,4 @@
     (delete data in Firestore and the account in Firebase Authentication.)
     - When no internet, the delete request is executed when internet is available again.
 - Included haptic feecdback in delete account confirmation dialog and on button click (in SettingsScreen). Light feedback is heavier than heavy feedback.
+- About page that includes details about the app in the settings screen.

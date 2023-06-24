@@ -11,6 +11,7 @@ import 'package:store_app/providers/orders_notifier.dart';
 import 'package:store_app/providers/selected_size.dart';
 import 'package:store_app/providers/theme_notifier.dart';
 import 'package:store_app/providers/user_notifier.dart';
+import 'package:store_app/screens/about_screen.dart';
 import 'package:store_app/screens/address_screen.dart';
 import 'package:store_app/screens/auth_screen.dart';
 import 'package:store_app/screens/bottom_nav_bar_screen.dart';
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
           AuthScreen.route: (ctx) => AuthScreen(),
           AddressScreen.route: (ctx) => AddressScreen(),
           OrderScreen.route: (ctx) => const OrderScreen(),
+          AboutScreen.route: (ctx) =>  AboutScreen(),
         },
         title: 'Flutter Demo',
         home: const LandingPage(),
