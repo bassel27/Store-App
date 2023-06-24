@@ -128,6 +128,7 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        SystemSound.play(SystemSoundType.alert);
         HapticFeedback.lightImpact();
         return AlertDialog(
           title: const Text("Confirmation"),
@@ -149,6 +150,7 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
             TextButton(
               child: const Text("Delete"),
               onPressed: () async {
+                SystemSound.play(SystemSoundType.click);
                 HapticFeedback.selectionClick();
                 Navigator.of(context).pop();
                 DialogHelper.showLoading();
