@@ -1,9 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/mixins/input_decration.dart';
+import 'package:store_app/models/constants.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/forgot_password_screen.dart';
 import 'package:store_app/screens/signup_screen.dart';
@@ -145,9 +147,61 @@ class _AuthContainer extends StatelessWidget {
               height: 30,
             ),
             const _NoAccountText(),
+            const SizedBox(
+              height: 2,
+            ),
+            GestureDetector(
+              onTap: () {
+                _showTermsAndConditions(context);
+              },
+              child: Text(
+                "Terms and Conditions",
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showTermsAndConditions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          insetPadding: const EdgeInsets.only(
+              left: 17, right: 17, bottom: kToolbarHeight / 2),
+          title: const Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Terms and Conditions',
+                style: TextStyle(fontSize: 23),
+              )),
+          content: const SizedBox(
+            width: double.maxFinite,
+            child: Markdown(
+              shrinkWrap: true,
+              data: kTermsAndConditions,
+            ),
+          ),
+          actions: [
+            Align(
+              alignment: Alignment.center,
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

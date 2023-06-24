@@ -167,6 +167,7 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
             TextButton(
               child: const Text("Cancel"),
               onPressed: () {
+                SystemSound.play(SystemSoundType.click);
                 HapticFeedback.selectionClick();
                 Navigator.of(context).pop();
               },

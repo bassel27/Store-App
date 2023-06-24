@@ -69,6 +69,7 @@ dependencies:
   pagination_view: ^2.0.0
   decimal: ^2.3.2
   flutter_local_notifications: ^14.1.1
+  flutter_markdown: ^0.6.15
   
 dev_dependencies:
   flutter_test:
