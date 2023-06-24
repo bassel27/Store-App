@@ -6,28 +6,30 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:store_app/providers/auth_notifier.dart';
-import 'package:store_app/providers/cart_notifier.dart';
-import 'package:store_app/providers/orders_notifier.dart';
-import 'package:store_app/providers/selected_size.dart';
-import 'package:store_app/providers/theme_notifier.dart';
-import 'package:store_app/providers/user_notifier.dart';
-import 'package:store_app/screens/about_screen.dart';
-import 'package:store_app/screens/address_screen.dart';
-import 'package:store_app/screens/auth_screen.dart';
-import 'package:store_app/screens/bottom_nav_bar_screen.dart';
-import 'package:store_app/screens/chat_screen.dart';
-import 'package:store_app/screens/edit_product_screen.dart';
-import 'package:store_app/screens/order_screen.dart';
-import 'package:store_app/screens/orders_screen.dart';
-import 'package:store_app/screens/product_details_screen.dart';
-import 'package:store_app/screens/products_manager_screen.dart';
-import 'package:store_app/screens/settings_screen.dart';
-import 'package:store_app/screens/verify_email_screen.dart';
-import 'package:store_app/widgets/notification_widget.dart';
+import 'package:store_app/data/models/my_theme.dart';
+import 'package:store_app/presentation/notifiers/auth_notifier.dart';
+import 'package:store_app/presentation/notifiers/cart_notifier.dart';
+import 'package:store_app/presentation/notifiers/orders_notifier.dart';
+import 'package:store_app/presentation/notifiers/products_notifier.dart';
+import 'package:store_app/presentation/notifiers/selected_size.dart';
+import 'package:store_app/presentation/notifiers/theme_notifier.dart';
+import 'package:store_app/presentation/notifiers/user_notifier.dart';
+import 'package:store_app/presentation/pages/about_screen.dart';
+import 'package:store_app/presentation/pages/address_screen.dart';
+import 'package:store_app/presentation/pages/auth_screen.dart';
+import 'package:store_app/presentation/pages/bottom_nav_bar_screen.dart';
+import 'package:store_app/presentation/pages/chat_screen.dart';
+import 'package:store_app/presentation/pages/edit_product_screen.dart';
+import 'package:store_app/presentation/pages/order_screen.dart';
+import 'package:store_app/presentation/pages/orders_screen.dart';
+import 'package:store_app/presentation/pages/settings_screen.dart';
+import 'package:store_app/presentation/pages/verify_email_screen.dart';
+import 'package:store_app/presentation/widgets/notification_widget.dart';
 
-import 'models/my_theme.dart';
-import 'providers/products_notifier.dart';
+import 'presentation/pages/product_details_screen.dart';
+import 'presentation/pages/products_manager_screen.dart';
+
+
 
 Future<void> _onBackgroundMessageHandler(RemoteMessage message) async {
   if (message.data.isNotEmpty) {
@@ -123,7 +125,7 @@ class LandingPage extends StatelessWidget {
           return const VerifyEmailPage();
         }
         return AuthScreen();
-      },
+      },  
     );
   }
 }
