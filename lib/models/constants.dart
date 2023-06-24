@@ -21,3 +21,4 @@ const kLoginUrl =
 const String kPlaceHolder = "assets/gifs/placeholder.gif";
 const String kMyChatId = "NPk9JESVRMmRf533mww8";
 const String kThemePreferenceKey = 'themePreference';
+const double kPhotoPadding = 9;

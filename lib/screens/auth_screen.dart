@@ -7,6 +7,7 @@ import 'package:store_app/mixins/input_decration.dart';
 import 'package:store_app/models/my_theme.dart';
 import 'package:store_app/screens/forgot_password_screen.dart';
 import 'package:store_app/screens/signup_screen.dart';
+import 'package:store_app/widgets/brandatak_stack.dart';
 import 'package:store_app/widgets/wide_elevated_button.dart';
 
 import '../providers/auth_notifier.dart';
@@ -20,31 +21,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration:
-                BoxDecoration(color: Theme.of(context).colorScheme.tertiary),
-          ),
-          SingleChildScrollView(
-            child: SizedBox(
-              height: deviceSize.height,
-              width: deviceSize.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const _BrandName(),
-                  Expanded(child: _AuthContainer()),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return BrandatakStack(child: _AuthContainer());
   }
 }
 
@@ -116,73 +93,59 @@ class _AuthContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(40),
-          topLeft: Radius.circular(40),
-        ),
-      ),
-      // height: _authMode == AuthMode.SIGNUP ? 320 : 260,
-      // constraints:
-      //     BoxConstraints(minHeight: _authMode == AuthMode.SIGNUP ? 320 : 260),
-      // width: deviceSize.width * 0.75,
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.centerLeft,
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Log in\nto your account",
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.w400),
+              ),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            _EmailTextFormField(authData: _authData),
+            const SizedBox(
+              height: 17,
+            ),
+            _PasswordTextFormField(
+                authData: _authData, submitFunction: _submitForm),
+            const SizedBox(
+              height: 15,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ForgotPasswordScreen(),
+                )),
                 child: Text(
-                  "Log in\nto your account",
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w400),
+                  "Forgot Password?",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.tertiary),
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
-              _EmailTextFormField(authData: _authData),
-              const SizedBox(
-                height: 17,
-              ),
-              _PasswordTextFormField(
-                  authData: _authData, submitFunction: _submitForm),
-              const SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ForgotPasswordScreen(),
-                  )),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.tertiary),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              WideElevatedButton(
-                onPressed: () {
-                  _submitForm(context);
-                },
-                child: 'LOGIN',
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const _NoAccountText(),
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            WideElevatedButton(
+              onPressed: () {
+                _submitForm(context);
+              },
+              child: 'LOGIN',
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const _NoAccountText(),
+          ],
         ),
       ),
     );

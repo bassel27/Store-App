@@ -9,7 +9,6 @@ import '../models/product/product.dart';
 import 'fab_favorite.dart';
 
 const double kRoundedEdgeRadius = 22;
-const double kPhotoPadding = 9;
 
 class ProductGridTile extends StatelessWidget {
   final Product product;

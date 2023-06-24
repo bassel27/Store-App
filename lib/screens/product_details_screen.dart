@@ -8,10 +8,10 @@ import 'package:store_app/providers/selected_size.dart';
 import 'package:store_app/widgets/currency_and_price_text.dart';
 import 'package:store_app/widgets/drop_shadow.dart';
 import 'package:store_app/widgets/fab_favorite.dart';
-import 'package:store_app/widgets/product_grid_tile.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';
+import '../widgets/FAB_back.dart';
 import '../widgets/my_cached_network_image.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -36,7 +36,7 @@ class ProductDetailsScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           floatingActionButton: const Align(
-              alignment: Alignment.topLeft, child: _FABBack(circleDiameter)),
+              alignment: Alignment.topLeft, child: FABBack(circleDiameter)),
           body: Column(
             children: [
               Expanded(
@@ -49,9 +49,6 @@ class ProductDetailsScreen extends StatelessWidget {
                         Align(
                             alignment: Alignment.topRight,
                             child: FABFavorite(product.id, circleDiameter)),
-                        // Align(
-                        //     alignment: Alignment.topLeft,
-                        //     child: _FABBack(product.id, 35)),
                       ]),
                     ),
                     const SizedBox(
@@ -80,8 +77,10 @@ class ProductDetailsScreen extends StatelessWidget {
                                 price: product.price
                                         .toStringAsFixed(2)
                                         .endsWith('00')
-                                    ? Decimal.parse(
-                                        product.price.toDouble().toInt().toString())
+                                    ? Decimal.parse(product.price
+                                        .toDouble()
+                                        .toInt()
+                                        .toString())
                                     : product.price,
                                 sizeMultiplicationFactor: 1.32,
                               ),
@@ -365,34 +364,6 @@ class _SizeCard extends StatelessWidget {
           child: Center(
             child: Text(size, style: sizeTextStyle),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _FABBack extends StatelessWidget {
-  const _FABBack(this.circleDiameter);
-  final double circleDiameter;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-      ),
-      margin: const EdgeInsets.symmetric(
-          vertical: kPhotoPadding + 24, horizontal: kPhotoPadding + 18),
-      width: circleDiameter,
-      height: circleDiameter,
-      child: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        shape: const CircleBorder(),
-        onPressed: () => Navigator.of(context).pop(),
-        child: Icon(
-          size: circleDiameter / 1.35,
-          Icons.arrow_back_ios_new_rounded,
-          color: Theme.of(context).colorScheme.tertiary,
         ),
       ),
     );
