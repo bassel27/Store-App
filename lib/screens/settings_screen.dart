@@ -25,30 +25,10 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
-  late var theme = Provider.of<ThemeNotifier>(context, listen: false);
-  late bool switchValue = theme.isDarkMode;
-  double circleAvatarRadius = 60;
-  bool isMarketingOn = false;
-  bool isPersonalNotificationsOn = true;
-//TODO:  revise
-  @override
-  void initState() {
-    super.initState();
-    NotificationWidget.init();
-    getMarketingOnStatus();
-  }
-
-  Future<void> getMarketingOnStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      isMarketingOn = prefs.getBool('isMarketingOn') ?? true;
-    });
-  }
-
+  final double circleAvatarRadius = 60;
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserNotifier>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Account"),
@@ -77,6 +57,45 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
         const SizedBox(
           height: 20,
         ),
+        const ListTiles(),
+      ]),
+    );
+  }
+}
+
+class ListTiles extends StatefulWidget {
+  const ListTiles({super.key});
+
+  @override
+  State<ListTiles> createState() => _ListTilesState();
+}
+
+class _ListTilesState extends State<ListTiles> with ExceptionHandler {
+  late var theme = Provider.of<ThemeNotifier>(context, listen: false);
+  late bool switchValue = theme.isDarkMode;
+
+  bool isMarketingOn = false;
+  bool isPersonalNotificationsOn = true;
+//TODO:  revise
+  @override
+  void initState() {
+    super.initState();
+    NotificationWidget.init();
+    getMarketingOnStatus();
+  }
+
+  Future<void> getMarketingOnStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isMarketingOn = prefs.getBool('isMarketingOn') ?? true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserNotifier>(context, listen: false);
+    return Column(
+      children: [
         _ClickableListTile(
           icon: Icons.list_alt_rounded,
           onTap: () {
@@ -100,6 +119,14 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
             title: 'Chat Support',
             icon: Icons.chat),
         ListTile(
+          leading: const Icon(Icons.notifications_active),
+          title: const Text("Send Notification"),
+          onTap: () {
+            NotificationWidget.showNotification(
+                title: "Notification", body: "Test");
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.dark_mode_outlined),
           title: const Text("Dark Mode"),
           trailing: Switch(
@@ -111,26 +138,6 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
               });
             },
           ),
-        ),
-        ListTile(
-          leading: const Icon(Icons.delete),
-          title: const Text("Delete Account"),
-          onTap: showConfirmationDialog,
-        ),
-        ListTile(
-          leading: const Icon(Icons.notifications_active),
-          title: const Text("Send Notification"),
-          onTap: () {
-            NotificationWidget.showNotification(
-                title: "Notification", body: "Test");
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.info),
-          title: const Text("About"),
-          onTap: () {
-            Navigator.pushNamed(context, AboutScreen.route);
-          },
         ),
         ListTile(
           leading: const Icon(Icons.notifications),
@@ -163,6 +170,18 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
             },
           ),
         ),
+        ListTile(
+          leading: const Icon(Icons.delete),
+          title: const Text("Delete Account"),
+          onTap: showConfirmationDialog,
+        ),
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text("About"),
+          onTap: () {
+            Navigator.pushNamed(context, AboutScreen.route);
+          },
+        ),
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
@@ -174,7 +193,7 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
           },
           title: "Logout",
         ),
-      ]),
+      ],
     );
   }
 
