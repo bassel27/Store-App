@@ -8,6 +8,7 @@ import 'package:store_app/providers/user_notifier.dart';
 import 'package:store_app/screens/chat_screen.dart';
 import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
+import 'package:store_app/widgets/notification_widget.dart';
 
 import '../helper/dialog_helper.dart';
 import '../providers/cart_notifier.dart';
@@ -24,6 +25,13 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
   late var theme = Provider.of<ThemeNotifier>(context, listen: false);
   late bool switchValue = theme.isDarkMode;
   double circleAvatarRadius = 60;
+
+  @override // TODO: revise
+  void initState() {
+    super.initState();
+    NotificationWidget.init();
+  }
+
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserNotifier>(context, listen: false);
@@ -95,6 +103,14 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
           leading: const Icon(Icons.delete),
           title: const Text("Delete Account"),
           onTap: showConfirmationDialog,
+        ),
+        ListTile(
+          leading: const Icon(Icons.notifications_active),
+          title: const Text("Send Notification"),
+          onTap: () {
+            NotificationWidget.showNotification(
+                title: "Notification", body: "Test");
+          },
         ),
         _ClickableListTile(
           icon: Icons.logout,

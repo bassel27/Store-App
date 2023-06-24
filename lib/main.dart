@@ -22,17 +22,26 @@ import 'package:store_app/screens/product_details_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/screens/settings_screen.dart';
 import 'package:store_app/screens/verify_email_screen.dart';
+import 'package:store_app/widgets/notification_widget.dart';
 
 import 'models/my_theme.dart';
 import 'providers/products_notifier.dart';
 
-//TODO: use something else except double for monetary values
+Future<void> _onBackgroundMessageHandler(RemoteMessage message) async {
+  if (message.data.isNotEmpty) {
+    final data = message.data;
+    final title = data['title'];
+    final body = data['message'];
+    NotificationWidget.showNotification(title: title, body: body);
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getToken();
   final fcm = FirebaseMessaging.instance;
+  FirebaseMessaging.onBackgroundMessage(_onBackgroundMessageHandler);
   await fcm.subscribeToTopic('newProduct');
   ThemeNotifier themeNotifier = ThemeNotifier();
   await themeNotifier.loadThemeMode();
