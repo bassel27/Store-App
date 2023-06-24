@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/constants.dart';
@@ -7,9 +6,8 @@ import '../models/constants.dart';
 class ThemeNotifier extends ChangeNotifier {
   ThemeMode get currentThemeMode => _currentThemeMode;
 
-  ThemeMode _currentThemeMode = ThemeMode.system;
-  bool get isDarkMode =>
-      SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+  late ThemeMode _currentThemeMode;
+  bool get isDarkMode => _currentThemeMode == ThemeMode.dark;
 
   Future<void> loadThemeMode() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -18,6 +16,10 @@ class ThemeNotifier extends ChangeNotifier {
       _currentThemeMode = ThemeMode.dark;
     } else if (savedThemeMode == 'light') {
       _currentThemeMode = ThemeMode.light;
+    } else {
+      WidgetsBinding.instance.window.platformBrightness == Brightness.dark
+          ? _currentThemeMode = ThemeMode.dark
+          : _currentThemeMode = ThemeMode.light;
     }
     notifyListeners();
   }
