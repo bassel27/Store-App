@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
@@ -11,10 +13,10 @@ import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/widgets/notification_widget.dart';
 
-import '../services/dialog_helper.dart';
 import '../providers/cart_notifier.dart';
 import '../providers/products_notifier.dart';
 import '../providers/theme_notifier.dart';
+import '../services/dialog_helper.dart';
 
 class AccountScreen extends StatefulWidget {
   static const route = "/bottom_nav_bar/my_account";
@@ -26,16 +28,27 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
   late var theme = Provider.of<ThemeNotifier>(context, listen: false);
   late bool switchValue = theme.isDarkMode;
   double circleAvatarRadius = 60;
-
-  @override // TODO: revise
+  bool isMarketingOn = false;
+  bool isPersonalNotificationsOn = true;
+//TODO:  revise
+  @override
   void initState() {
     super.initState();
     NotificationWidget.init();
+    getMarketingOnStatus();
+  }
+
+  Future<void> getMarketingOnStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isMarketingOn = prefs.getBool('isMarketingOn') ?? true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserNotifier>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Account"),
@@ -61,7 +74,6 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
           "${userProvider.currentUser!.firstName} ${userProvider.currentUser!.lastName}",
           style: const TextStyle(fontSize: 22),
         )),
-
         const SizedBox(
           height: 20,
         ),
@@ -120,6 +132,37 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
             Navigator.pushNamed(context, AboutScreen.route);
           },
         ),
+        ListTile(
+          leading: const Icon(Icons.notifications),
+          title: const Text("Marketing Notifications"),
+          trailing: Switch(
+            value: isMarketingOn,
+            onChanged: (value) async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              if (!value) {
+                await FirebaseMessaging.instance
+                    .unsubscribeFromTopic('newProduct');
+              } else {
+                await FirebaseMessaging.instance.subscribeToTopic('newProduct');
+              }
+              await prefs.setBool('isMarketingOn', value);
+              isMarketingOn = value;
+              setState(() {});
+            },
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.notifications),
+          title: const Text("Personal Notifications"),
+          trailing: Switch(
+            value: isPersonalNotificationsOn,
+            onChanged: (value) {
+              setState(() {
+                isPersonalNotificationsOn = value;
+              });
+            },
+          ),
+        ),
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
@@ -131,8 +174,6 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
           },
           title: "Logout",
         ),
-
-        // const Divider(),
       ]),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/providers/cart_notifier.dart';
 import 'package:store_app/providers/orders_notifier.dart';
@@ -41,9 +42,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getToken();
-  final fcm = FirebaseMessaging.instance;
-  FirebaseMessaging.onBackgroundMessage(_onBackgroundMessageHandler);
-  await fcm.subscribeToTopic('newProduct');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isMarketingOn = prefs.getBool('isMarketingOn') ?? true;
+  if (isMarketingOn) {
+    final fcm = FirebaseMessaging.instance;
+    FirebaseMessaging.onBackgroundMessage(_onBackgroundMessageHandler);
+    await fcm.subscribeToTopic('newProduct');
+  }
   ThemeNotifier themeNotifier = ThemeNotifier();
   await themeNotifier.loadThemeMode();
   runApp(MyApp(themeNotifier));
@@ -91,7 +96,7 @@ class MyApp extends StatelessWidget {
           AuthScreen.route: (ctx) => AuthScreen(),
           AddressScreen.route: (ctx) => AddressScreen(),
           OrderScreen.route: (ctx) => const OrderScreen(),
-          AboutScreen.route: (ctx) =>  AboutScreen(),
+          AboutScreen.route: (ctx) => AboutScreen(),
         },
         title: 'Flutter Demo',
         home: const LandingPage(),
