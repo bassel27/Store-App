@@ -186,7 +186,7 @@ class _ListTilesState extends State<ListTiles> with ExceptionHandler {
           icon: Icons.logout,
           onTap: () async {
             try {
-              await logoutAndReset();
+              await logoutAndResetProviders();
             } catch (e) {
               handleException(e);
             }
@@ -197,7 +197,7 @@ class _ListTilesState extends State<ListTiles> with ExceptionHandler {
     );
   }
 
-  Future<void> logoutAndReset() async {
+  Future<void> logoutAndResetProviders() async {
     await Provider.of<AuthNotifier>(context, listen: false).signout();
     if (mounted) {
       Navigator.of(context).pushReplacementNamed(
@@ -242,7 +242,7 @@ class _ListTilesState extends State<ListTiles> with ExceptionHandler {
                 final userNotifier =
                     Provider.of<UserNotifier>(context, listen: false);
                 await userNotifier.deleteCurrentUser();
-                await logoutAndReset();
+                await logoutAndResetProviders();
                 DialogHelper.hideCurrentDialog();
               },
             ),

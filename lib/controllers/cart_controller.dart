@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:store_app/services/dialog_helper.dart';
 
 import '../models/cart_item/cart_item.dart';
-import '../models/product/product.dart';
 
 class CartController {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -14,7 +13,6 @@ class CartController {
         .collection('cartItems');
   }
 
-  
   late final CollectionReference cartItemsCollectionForAllUsers =
       db.collection('users');
   Future<List<CartItem>> get() async {

@@ -192,7 +192,7 @@ class _BottomRowState extends State<_BottomRow> {
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                backgroundColor: kAccentColor,
+                backgroundColor: kLightAccentColor,
               ),
               onPressed: () {
                 cartProvider.setQuantity(
