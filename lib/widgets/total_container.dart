@@ -58,6 +58,8 @@ class _OrderButtonState extends State<_OrderButton> with ExceptionHandler {
     ProductsNotifier productsProvider =
         Provider.of<ProductsNotifier>(context, listen: false);
     return TextButton(
+      style: TextButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.background),
       onPressed: (cartProvider.cartItemsCount == 0 || _isLoading == true)
           ? null
           : () async {

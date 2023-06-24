@@ -15,7 +15,7 @@ class UserController {
     return User.fromJson(_userDocData);
   }
 
-  get userDoc {
+  DocumentReference get userDoc {
     return db.collection('users').doc(userId);
   }
 

@@ -1,3 +1,8 @@
 - Light and dark modes:
     - Preference saved locally and loaded on app start
     - Used toggle button on account settings screen
+- Deleting account while ensuring the integrity of this feature in the database. 
+  It is preferred if this is done in NoSQL database like firebase.
+    - Integrity as far as I understood is deleting that account's past data to avoid having data for a non-existent account 
+    (delete data in Firestore and the account in Firebase Authentication.)
+    - When no internet, the delete request is executed when internet is available again.

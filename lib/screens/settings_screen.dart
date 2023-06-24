@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
 import 'package:store_app/providers/auth_notifier.dart';
@@ -98,7 +99,11 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
         _ClickableListTile(
           icon: Icons.logout,
           onTap: () async {
-            await logoutAndReset();
+            try {
+              await logoutAndReset();
+            } catch (e) {
+              handleException(e);
+            }
           },
           title: "Logout",
         ),
@@ -123,6 +128,7 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        HapticFeedback.lightImpact();
         return AlertDialog(
           title: const Text("Confirmation"),
           content: Column(
@@ -136,23 +142,21 @@ class _AccountScreenState extends State<AccountScreen> with ExceptionHandler {
             TextButton(
               child: const Text("Cancel"),
               onPressed: () {
+                HapticFeedback.selectionClick();
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: const Text("Delete"),
               onPressed: () async {
+                HapticFeedback.selectionClick();
                 Navigator.of(context).pop();
                 DialogHelper.showLoading();
-                try {
-                  final userNotifier =
-                      Provider.of<UserNotifier>(context, listen: false);
-                  await userNotifier.deleteCurrentUser();
-                  await logoutAndReset();
-                  DialogHelper.hideCurrentDialog();
-                } catch (e) {
-                  handleException(e);
-                }
+                final userNotifier =
+                    Provider.of<UserNotifier>(context, listen: false);
+                await userNotifier.deleteCurrentUser();
+                await logoutAndReset();
+                DialogHelper.hideCurrentDialog();
               },
             ),
           ],

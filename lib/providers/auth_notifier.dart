@@ -62,12 +62,6 @@ class AuthNotifier
   }
 
   Future<void> signout() async {
-    try {
-      await _auth.signOut();
-    } on PlatformException catch (e) {
-      handleException(e);
-    } on FirebaseAuthException catch (e) {
-      handleException(e);
-    }
+    await _auth.signOut();
   }
 }
