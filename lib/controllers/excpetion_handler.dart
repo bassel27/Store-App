@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/services/dialog_helper.dart';
 import 'package:store_app/widgets/exception_scaffold_body.dart';
 
 class ExceptionHandler {

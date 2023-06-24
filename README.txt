@@ -9,3 +9,9 @@
 - Sounds for clicking on buttons (diaog boxes like t&c and delete account)
 - Included haptic feecdback in delete account confirmation dialog and on button click (diaog boxes like t&c and delete account). Light feedback is heavier than heavy feedback.
 - About page that includes details about the app in the settings screen.
+- Add terms and conditions in login screen.
+
+
+Clean Architecture:
+  - Domain layer: model classes (pure dart no flutter)
+  - Data layer: controllers dealing with backend  

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/services/dialog_helper.dart';
 
 import '../models/cart_item/cart_item.dart';
 import '../models/product/product.dart';

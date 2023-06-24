@@ -11,7 +11,7 @@ import 'package:store_app/screens/orders_screen.dart';
 import 'package:store_app/screens/products_manager_screen.dart';
 import 'package:store_app/widgets/notification_widget.dart';
 
-import '../helper/dialog_helper.dart';
+import '../services/dialog_helper.dart';
 import '../providers/cart_notifier.dart';
 import '../providers/products_notifier.dart';
 import '../providers/theme_notifier.dart';

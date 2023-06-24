@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/services/dialog_helper.dart';
 import 'package:store_app/providers/product_image_notifier.dart';
 import 'package:store_app/widgets/wide_elevated_button.dart';
 import 'package:store_app/widgets/my_cached_network_image.dart';

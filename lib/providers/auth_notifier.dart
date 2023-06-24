@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:store_app/controllers/auth_controller.dart';
 import 'package:store_app/controllers/excpetion_handler.dart';
-import 'package:store_app/helper/dialog_helper.dart';
+import 'package:store_app/services/dialog_helper.dart';
 import 'package:store_app/models/user/user.dart';
 
 import '../mixins/try_catch_firebase.dart';

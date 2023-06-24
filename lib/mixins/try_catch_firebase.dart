@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
 import '../controllers/excpetion_handler.dart';
-import '../helper/dialog_helper.dart';
+import '../services/dialog_helper.dart';
 
 mixin TryCatchFirebaseWrapper {
   Future<void> wrapInTryCatch(Future<void> Function() foo,

@@ -8,7 +8,7 @@ import 'package:store_app/mixins/input_decration.dart';
 import 'package:store_app/providers/auth_notifier.dart';
 import 'package:store_app/widgets/wide_elevated_button.dart';
 
-import '../helper/dialog_helper.dart';
+import '../services/dialog_helper.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
